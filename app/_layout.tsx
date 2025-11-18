@@ -15,7 +15,7 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const token = "null"; // Replace with actual authentication logic
+  const token = null; // Replace with actual authentication logic
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>

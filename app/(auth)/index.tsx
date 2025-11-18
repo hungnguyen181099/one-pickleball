@@ -4,17 +4,14 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   ScrollView,
-  Image,
   Dimensions,
-  Platform,
-  StatusBar,
 } from 'react-native';
 import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from '@/assets/styles/login.styles';
 import { router } from 'expo-router';
+import { ThemedText } from '@/components/themed-text';
 
 const { width } = Dimensions.get('window');
 
@@ -55,7 +52,6 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffffff" />
       <ScrollView 
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -66,15 +62,15 @@ export default function LoginScreen() {
               <AntDesign name="check" size={40} color="#fff" />
             </View>
           </View>
-          <Text style={styles.title}>Chào mừng trở lại</Text>
-          <Text style={styles.subtitle}>Đăng nhập để tiếp tục</Text>
+          <ThemedText style={styles.title}>Chào mừng trở lại</ThemedText>
+          <ThemedText style={styles.subtitle}>Đăng nhập để tiếp tục</ThemedText>
         </View>
 
         {/* Form */}
         <View style={styles.formContainer}>
           {/* Email Input */}
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Email hoặc số điện thoại</Text>
+            <ThemedText style={styles.label}>Email hoặc số điện thoại</ThemedText>
             <TextInput
               style={styles.input}
               placeholder="Nhập email hoặc số điện thoại"
@@ -88,7 +84,7 @@ export default function LoginScreen() {
 
           {/* Password Input */}
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Mật khẩu</Text>
+            <ThemedText style={styles.label}>Mật khẩu</ThemedText>
             <View style={styles.passwordContainer}>
               <TextInput
                 style={styles.passwordInput}
@@ -125,10 +121,10 @@ export default function LoginScreen() {
                   <Ionicons name="checkmark" size={14} color="#00D9B5" />
                 )}
               </TouchableOpacity>
-              <Text style={styles.checkboxLabel}>Ghi nhớ đăng nhập</Text>
+              <ThemedText style={styles.checkboxLabel}>Ghi nhớ đăng nhập</ThemedText>
             </View>
             <TouchableOpacity>
-              <Text style={styles.linkText}>Quên mật khẩu?</Text>
+              <ThemedText style={styles.linkText}>Quên mật khẩu?</ThemedText>
             </TouchableOpacity>
           </View>
 
@@ -158,7 +154,7 @@ export default function LoginScreen() {
             onPress={() => handleSocialLogin('facebook')}
           >
             <FontAwesome name="facebook" size={20} color="#1877F2" />
-            <Text style={styles.socialButtonText}>Facebook</Text>
+            <ThemedText style={styles.socialButtonText}>Facebook</ThemedText>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -166,15 +162,15 @@ export default function LoginScreen() {
             onPress={() => handleSocialLogin('google')}
           >
             <AntDesign name="google" size={20} color="#EA4335" />
-            <Text style={styles.socialButtonText}>Google</Text>
+            <ThemedText style={styles.socialButtonText}>Google</ThemedText>
           </TouchableOpacity>
         </View>
 
         {/* Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Chưa có tài khoản? </Text>
+          <ThemedText style={styles.footerText}>Chưa có tài khoản? </ThemedText>
           <TouchableOpacity onPress={() => router.navigate('/(auth)/register')}>
-            <Text style={styles.linkTextBold}>Đăng ký ngay</Text>
+            <ThemedText style={styles.linkTextBold}>Đăng ký ngay</ThemedText>
           </TouchableOpacity>
         </View>
       </ScrollView>

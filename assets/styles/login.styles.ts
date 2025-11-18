@@ -30,12 +30,10 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#000',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
   },
   formContainer: {
     marginBottom: 32,
@@ -46,7 +44,6 @@ export const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#000',
     marginBottom: 8,
   },
   input: {
@@ -97,12 +94,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxChecked: {
-    backgroundColor: '#f0f0f0',
     borderColor: '#00D9B5',
   },
   checkboxLabel: {
     fontSize: 14,
-    color: '#333',
   },
   linkText: {
     fontSize: 14,
@@ -158,7 +153,6 @@ export const styles = StyleSheet.create({
   socialButtonText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#333',
   },
   footer: {
     flexDirection: 'row',
@@ -168,7 +162,6 @@ export const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: '#666',
   },
   linkTextBold: {
     fontSize: 14,
