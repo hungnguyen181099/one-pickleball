@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from '@/assets/styles/login.styles';
 import { router } from 'expo-router';
 import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
 
 const { width } = Dimensions.get('window');
 
@@ -52,7 +53,7 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -71,21 +72,23 @@ export default function LoginScreen() {
           {/* Email Input */}
           <View style={styles.formGroup}>
             <ThemedText style={styles.label}>Email hoặc số điện thoại</ThemedText>
-            <TextInput
-              style={styles.input}
-              placeholder="Nhập email hoặc số điện thoại"
-              placeholderTextColor="#999"
-              value={formData.email}
-              onChangeText={(text) => handleInputChange('email', text)}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
+            <ThemedView>
+              <TextInput
+                style={styles.input}
+                placeholder="Nhập email hoặc số điện thoại"
+                placeholderTextColor="#999"
+                value={formData.email}
+                onChangeText={(text) => handleInputChange('email', text)}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </ThemedView>
           </View>
 
           {/* Password Input */}
           <View style={styles.formGroup}>
             <ThemedText style={styles.label}>Mật khẩu</ThemedText>
-            <View style={styles.passwordContainer}>
+            <ThemedView style={styles.passwordContainer}>
               <TextInput
                 style={styles.passwordInput}
                 placeholder="Nhập mật khẩu"
@@ -104,7 +107,7 @@ export default function LoginScreen() {
                   color="#666"
                 />
               </TouchableOpacity>
-            </View>
+            </ThemedView>
           </View>
 
           {/* Remember & Forgot Password */}

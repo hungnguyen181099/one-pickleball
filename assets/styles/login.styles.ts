@@ -53,7 +53,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 14,
-    backgroundColor: '#fafafa',
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -61,7 +60,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e0e0e0',
     borderRadius: 8,
-    backgroundColor: '#fafafa',
     paddingRight: 12,
   },
   passwordInput: {

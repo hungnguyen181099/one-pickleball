@@ -14,7 +14,9 @@ import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from '@/assets/styles/register.styles';
-import { ThemedText } from '@/components/themed-text';
+import { ThemedText, ThemedTextProps } from '@/components/themed-text';
+import { useThemeColor } from '@/hooks/use-theme-color';
+import { ThemedView } from '@/components/themed-view';
 
 const { width } = Dimensions.get('window');
 
@@ -26,7 +28,11 @@ interface RegisterFormData {
   agreeTerms: boolean;
 }
 
-export default function RegisterScreen() {
+export default function RegisterScreen({
+  lightColor,
+  darkColor,
+}: ThemedTextProps) {
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
   const [formData, setFormData] = useState<RegisterFormData>({
     fullName: '',
     email: '',
@@ -70,11 +76,11 @@ export default function RegisterScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={handleBack}>
-          <Ionicons name="chevron-back" size={28} color="#000" />
+          <Ionicons name="chevron-back" size={28}  color={color}/>
         </TouchableOpacity>
       </View>
 
-      <ScrollView 
+      <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -92,18 +98,20 @@ export default function RegisterScreen() {
           {/* Full Name Input */}
           <View style={styles.formGroup}>
             <ThemedText style={styles.label}>Họ và tên</ThemedText>
+            <ThemedView>
             <TextInput
               style={styles.input}
               placeholder="Nhập họ và tên"
               placeholderTextColor="#999"
               value={formData.fullName}
               onChangeText={(text) => handleInputChange('fullName', text)}
-            />
+            /></ThemedView>
           </View>
 
           {/* Email Input */}
           <View style={styles.formGroup}>
             <ThemedText style={styles.label}>Email</ThemedText>
+            <ThemedView>
             <TextInput
               style={styles.input}
               placeholder="Nhập email"
@@ -112,12 +120,13 @@ export default function RegisterScreen() {
               onChangeText={(text) => handleInputChange('email', text)}
               keyboardType="email-address"
               autoCapitalize="none"
-            />
+            /></ThemedView>
           </View>
 
           {/* Phone Input */}
           <View style={styles.formGroup}>
             <ThemedText style={styles.label}>Số điện thoại</ThemedText>
+            <ThemedView>
             <TextInput
               style={styles.input}
               placeholder="Nhập số điện thoại"
@@ -125,13 +134,13 @@ export default function RegisterScreen() {
               value={formData.phone}
               onChangeText={(text) => handleInputChange('phone', text)}
               keyboardType="phone-pad"
-            />
+            /></ThemedView>
           </View>
 
           {/* Password Input */}
           <View style={styles.formGroup}>
             <ThemedText style={styles.label}>Mật khẩu</ThemedText>
-            <View style={styles.passwordContainer}>
+            <ThemedView style={styles.passwordContainer}>
               <TextInput
                 style={styles.passwordInput}
                 placeholder="Tạo mật khẩu"
@@ -150,7 +159,7 @@ export default function RegisterScreen() {
                   color="#666"
                 />
               </TouchableOpacity>
-            </View>
+            </ThemedView>
           </View>
 
           {/* Terms Agreement */}
