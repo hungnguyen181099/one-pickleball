@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   scrollContent: {
-    paddingBottom: 100,
   },
   header: {
     flexDirection: 'row',

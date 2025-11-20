@@ -202,6 +202,7 @@ export default function HomeScreen() {
           <FlatList
             data={events}
             renderItem={({ item }) => <EventCardComponent item={item} />}
+            showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id}
             horizontal={true}
           />

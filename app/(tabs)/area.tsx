@@ -1,128 +1,325 @@
-import { Image } from "expo-image";
-import { Platform, StyleSheet } from "react-native";
 
-import { ExternalLink } from "@/components/external-link";
-import ParallaxScrollView from "@/components/parallax-scroll-view";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { Collapsible } from "@/components/ui/collapsible";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Fonts } from "@/constants/theme";
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  Image,
+  Dimensions,
+  StatusBar,
+} from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from '@/assets/styles/area.styles';
+
+
+interface Court {
+  id: string;
+  name: string;
+  rating: number;
+  reviews: number;
+  price: number;
+  location: string;
+  distance: number;
+  courts: number;
+  features: string[];
+  status: 'open' | 'busy' | 'closed';
+  statusText: string;
+  isFavorite: boolean;
+  isPremium?: boolean;
+  image: string;
+  badgeColor?: string;
+}
+
+type FilterType = 'nearby' | 'open' | 'rated' | 'filter';
 
 const AreaPage = () => {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}
-        >
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>
-        This app includes example code to help you get started.
-      </ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{" "}
-          and{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{" "}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the
-          web version, press <ThemedText type="defaultSemiBold">w</ThemedText>{" "}
-          in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the{" "}
-          <ThemedText type="defaultSemiBold">@2x</ThemedText> and{" "}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to
-          provide files for different screen densities
-        </ThemedText>
-        <Image
-          source={require("@/assets/images/react-logo.png")}
-          style={{ width: 100, height: 100, alignSelf: "center" }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{" "}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook
-          lets you inspect what the user&apos;s current color scheme is, and so
-          you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{" "}
-          <ThemedText type="defaultSemiBold">
-            components/HelloWave.tsx
-          </ThemedText>{" "}
-          component uses the powerful{" "}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{" "}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The{" "}
-              <ThemedText type="defaultSemiBold">
-                components/ParallaxScrollView.tsx
-              </ThemedText>{" "}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
-  );
-};
+  const [activeFilter, setActiveFilter] = useState<FilterType>('nearby');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [favorites, setFavorites] = useState<string[]>(['2']);
 
-const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});
+  const courts: Court[] = [
+    {
+      id: '1',
+      name: 'Sân Pickleball Rạch Chiếc',
+      rating: 4.9,
+      reviews: 156,
+      price: 250,
+      location: 'Quận 2, TP.HCM',
+      distance: 1.2,
+      courts: 6,
+      features: ['6 sân indoor', 'Có đèn', 'Có WC'],
+      status: 'open',
+      statusText: 'Đang mở • Đóng cửa lúc 23:00',
+      isFavorite: false,
+      isPremium: true,
+      image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    },
+    {
+      id: '2',
+      name: 'Landmark 81 Sports Center',
+      rating: 4.8,
+      reviews: 203,
+      price: 300,
+      location: 'Bình Thạnh, TP.HCM',
+      distance: 2.5,
+      courts: 4,
+      features: ['4 sân indoor', 'View đẹp', 'Cho thuê vợt'],
+      status: 'open',
+      statusText: 'Đang mở • Đóng cửa lúc 22:00',
+      isFavorite: false,
+      image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    },
+    {
+      id: '3',
+      name: 'Sân Thể Thao Thảo Điền',
+      rating: 4.7,
+      reviews: 89,
+      price: 200,
+      location: 'Quận 2, TP.HCM',
+      distance: 3.8,
+      courts: 3,
+      features: ['3 sân outdoor', 'Bãi xe rộng'],
+      status: 'busy',
+      statusText: 'Gần hết chỗ • Còn 2 sân trống',
+      isFavorite: false,
+      image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    },
+    {
+      id: '4',
+      name: 'Vinhomes Central Park Sports',
+      rating: 4.6,
+      reviews: 124,
+      price: 280,
+      location: 'Bình Thạnh, TP.HCM',
+      distance: 4.2,
+      courts: 5,
+      features: ['5 sân indoor', 'Có Cafe'],
+      status: 'closed',
+      statusText: 'Đã đóng cửa • Mở lại lúc 06:00',
+      isFavorite: false,
+      image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    },
+  ];
+
+  const filters: { id: FilterType; label: string; icon: string }[] = [
+    { id: 'nearby', label: 'Gần tôi', icon: 'location' },
+    { id: 'open', label: 'Đang mở', icon: 'timer' },
+    { id: 'rated', label: 'Đánh giá cao', icon: 'star' },
+    { id: 'filter', label: 'Bộ lọc', icon: 'options' },
+  ];
+
+  const toggleFavorite = (courtId: string) => {
+    if (favorites.includes(courtId)) {
+      setFavorites(favorites.filter(id => id !== courtId));
+    } else {
+      setFavorites([...favorites, courtId]);
+    }
+  };
+
+  const handleBookCourt = (courtId: string) => {
+    console.log('Book court:', courtId);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'open':
+        return '#4CAF50';
+      case 'busy':
+        return '#FF9800';
+      case 'closed':
+        return '#F44336';
+      default:
+        return '#999';
+    }
+  };
+
+  const CourtCard = ({ item }: { item: Court }) => (
+    <TouchableOpacity
+      style={[styles.courtCard,]}
+      onPress={() => console.log('View court details:', item.id)}
+    >
+      {item.isPremium && (
+        <View style={styles.premiumBadge}>
+          <Text style={styles.premiumBadgeText}>Premium</Text>
+        </View>
+      )}
+
+      {/* <View style={[styles.courtImage, { backgroundColor: item.image as any }]} /> */}
+      <Image source={{uri:item.image}} style={styles.courtImage}/>
+
+      <TouchableOpacity
+        style={styles.favoriteBtn}
+        onPress={() => toggleFavorite(item.id)}
+      >
+        <Ionicons
+          name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+          size={24}
+          color={favorites.includes(item.id) ? '#FF4444' : '#fff'}
+        />
+      </TouchableOpacity>
+
+      {/* Court Content */}
+      <View style={styles.courtContent}>
+        {/* Header */}
+        <View style={styles.courtHeader}>
+          <View style={styles.courtInfo}>
+            <Text style={styles.courtName}>{item.name}</Text>
+            <View style={styles.rating}>
+              <MaterialCommunityIcons name="star" size={16} color="#FFB800" />
+              <Text style={styles.ratingScore}>{item.rating}</Text>
+              <Text style={styles.reviewCount}>({item.reviews})</Text>
+            </View>
+          </View>
+          <View style={styles.price}>
+            <Text style={styles.priceAmount}>{item.price}k</Text>
+            <Text style={styles.priceUnit}>/giờ</Text>
+          </View>
+        </View>
+
+        {/* Location */}
+        <View style={styles.metaItem}>
+          <Ionicons name="location" size={16} color="#666" />
+          <Text style={styles.locationText}>{item.location}</Text>
+          <Text style={styles.distance}>• {item.distance} km</Text>
+        </View>
+
+        {/* Features */}
+        <View style={styles.features}>
+          {item.features.map((feature, idx) => (
+            <View key={idx} style={styles.featureTag}>
+              <Text style={styles.featureText}>{feature}</Text>
+            </View>
+          ))}
+          {item.features.length < 3 && (
+            <View style={styles.featureTag}>
+              <Text style={styles.featureMore}>+{3 - item.features.length}</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Status */}
+        <View style={styles.status}>
+          <View
+            style={[
+              styles.statusIndicator,
+              { backgroundColor: getStatusColor(item.status) },
+            ]}
+          />
+          <Text style={styles.statusText}>{item.statusText}</Text>
+        </View>
+
+        {/* Book Button */}
+        <TouchableOpacity
+          style={[
+            styles.bookBtn,
+            item.status === 'closed' && styles.bookBtnOutline,
+          ]}
+          onPress={() => handleBookCourt(item.id)}
+        >
+          <Text
+            style={[
+              styles.bookBtnText,
+              item.status === 'closed' && styles.bookBtnTextOutline,
+            ]}
+          >
+            {item.status === 'closed' ? 'Xem chi tiết' : 'Đặt sân ngay'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+
+      <View style={styles.pageHeader}>
+        <Text style={styles.pageTitle}>Sân thi đấu</Text>
+        <TouchableOpacity>
+          <Ionicons name="search" size={24} color="#000" />
+        </TouchableOpacity>
+      </View>
+    
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.filterBar}
+        contentContainerStyle={styles.filterContent}
+      >
+        {filters.map((filter) => (
+          <TouchableOpacity
+            key={filter.id}
+            style={[
+              styles.filterChip,
+              activeFilter === filter.id && styles.filterChipActive,
+            ]}
+            onPress={() => setActiveFilter(filter.id)}
+          >
+            <Ionicons
+              name={filter.icon as any}
+              size={16}
+              color={activeFilter === filter.id ? '#fff' : '#666'}
+            />
+            <Text
+              style={[
+                styles.filterLabel,
+                activeFilter === filter.id && styles.filterLabelActive,
+              ]}
+            >
+              {filter.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+
+      <View style={styles.viewToggle}>
+        <View style={styles.toggleBtns}>
+          <TouchableOpacity
+            style={[
+              styles.toggleBtn,
+              viewMode === 'list' && styles.toggleBtnActive,
+            ]}
+            onPress={() => setViewMode('list')}
+          >
+            <Ionicons
+              name="list"
+              size={20}
+              color={viewMode === 'list' ? '#00D9B5' : '#ccc'}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.toggleBtn,
+              viewMode === 'map' && styles.toggleBtnActive,
+            ]}
+            onPress={() => setViewMode('map')}
+          >
+            <MaterialCommunityIcons
+              name="map"
+              size={20}
+              color={viewMode === 'map' ? '#00D9B5' : '#ccc'}
+            />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.resultCount}>
+          Tìm thấy <Text style={styles.resultCountBold}>{courts.length}</Text> sân
+        </Text>
+      </View>
+
+      <FlatList
+        data={courts}
+        renderItem={({ item }) => <CourtCard item={item} />}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.courtsList}
+        scrollEnabled={viewMode === 'list'}
+      />
+    </SafeAreaView>
+  );
+}
 
 export default AreaPage;
