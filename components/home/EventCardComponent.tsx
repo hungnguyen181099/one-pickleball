@@ -2,10 +2,20 @@ import { EventCard } from "@/app/(tabs)";
 import { styles } from "@/assets/styles/home.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export const EventCardComponent = ({ item }: { item: EventCard }) => (
-    <TouchableOpacity style={styles.eventCard}>
+    <TouchableOpacity
+        style={styles.eventCard}
+        activeOpacity={0.8}
+        onPress={() => {
+            router.push({
+                pathname: '/(details)/eventDetail/[id]',
+                params: { id: item.id }
+            })
+        }}
+    >
         {item.badge && (
             <View style={styles.eventBadge}>
                 <Text style={styles.eventBadgeText}>{item.badge}</Text>

@@ -16,9 +16,10 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styles } from '@/assets/styles/area.styles';
+import { router } from 'expo-router';
 
 
-interface Court {
+export interface Court {
   id: string;
   name: string;
   rating: number;
@@ -38,12 +39,7 @@ interface Court {
 
 type FilterType = 'nearby' | 'open' | 'rated' | 'filter';
 
-const AreaPage = () => {
-  const [activeFilter, setActiveFilter] = useState<FilterType>('nearby');
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
-  const [favorites, setFavorites] = useState<string[]>(['2']);
-
-  const courts: Court[] = [
+export const courts: Court[] = [
     {
       id: '1',
       name: 'Sân Pickleball Rạch Chiếc',
@@ -73,6 +69,7 @@ const AreaPage = () => {
       status: 'open',
       statusText: 'Đang mở • Đóng cửa lúc 22:00',
       isFavorite: false,
+      isPremium: false,
       image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
     },
     {
@@ -88,6 +85,7 @@ const AreaPage = () => {
       status: 'busy',
       statusText: 'Gần hết chỗ • Còn 2 sân trống',
       isFavorite: false,
+      isPremium: false,
       image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
     },
     {
@@ -103,9 +101,17 @@ const AreaPage = () => {
       status: 'closed',
       statusText: 'Đã đóng cửa • Mở lại lúc 06:00',
       isFavorite: false,
+      isPremium: false,
       image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
     },
   ];
+
+const AreaPage = () => {
+  const [activeFilter, setActiveFilter] = useState<FilterType>('nearby');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [favorites, setFavorites] = useState<string[]>(['2']);
+
+  
 
   const filters: { id: FilterType; label: string; icon: string }[] = [
     { id: 'nearby', label: 'Gần tôi', icon: 'location' },
@@ -123,7 +129,10 @@ const AreaPage = () => {
   };
 
   const handleBookCourt = (courtId: string) => {
-    console.log('Book court:', courtId);
+    router.push({
+    pathname: '/(details)/courtDetail/[id]',
+    params: { id: courtId }
+  });
   };
 
   const getStatusColor = (status: string) => {
@@ -140,9 +149,8 @@ const AreaPage = () => {
   };
 
   const CourtCard = ({ item }: { item: Court }) => (
-    <TouchableOpacity
+    <View
       style={[styles.courtCard,]}
-      onPress={() => console.log('View court details:', item.id)}
     >
       {item.isPremium && (
         <View style={styles.premiumBadge}>
@@ -156,6 +164,7 @@ const AreaPage = () => {
       <TouchableOpacity
         style={styles.favoriteBtn}
         onPress={() => toggleFavorite(item.id)}
+        activeOpacity={0.5}
       >
         <Ionicons
           name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
@@ -163,10 +172,9 @@ const AreaPage = () => {
           color={favorites.includes(item.id) ? '#FF4444' : '#fff'}
         />
       </TouchableOpacity>
-
-      {/* Court Content */}
+      
       <View style={styles.courtContent}>
-        {/* Header */}
+        
         <View style={styles.courtHeader}>
           <View style={styles.courtInfo}>
             <Text style={styles.courtName}>{item.name}</Text>
@@ -181,15 +189,14 @@ const AreaPage = () => {
             <Text style={styles.priceUnit}>/giờ</Text>
           </View>
         </View>
-
-        {/* Location */}
+        
         <View style={styles.metaItem}>
           <Ionicons name="location" size={16} color="#666" />
           <Text style={styles.locationText}>{item.location}</Text>
           <Text style={styles.distance}>• {item.distance} km</Text>
         </View>
 
-        {/* Features */}
+
         <View style={styles.features}>
           {item.features.map((feature, idx) => (
             <View key={idx} style={styles.featureTag}>
@@ -203,7 +210,7 @@ const AreaPage = () => {
           )}
         </View>
 
-        {/* Status */}
+
         <View style={styles.status}>
           <View
             style={[
@@ -214,7 +221,7 @@ const AreaPage = () => {
           <Text style={styles.statusText}>{item.statusText}</Text>
         </View>
 
-        {/* Book Button */}
+
         <TouchableOpacity
           style={[
             styles.bookBtn,
@@ -232,7 +239,7 @@ const AreaPage = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   return (

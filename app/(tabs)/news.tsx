@@ -12,6 +12,7 @@ import {
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageBackground } from "expo-image";
 import { styles } from "@/assets/styles/news.styles";
+import { router } from "expo-router";
 
 
 interface NewsItem {
@@ -138,6 +139,10 @@ const NewsPage = () => {
   const NewsCard = ({ item }: { item: NewsItem }) => (
     <TouchableOpacity
       style={styles.newsCard}
+      onPress={()=> router.push({
+        pathname:'/(details)/newDetail/[id]',
+        params:{id: item.id}
+      })}
     >
       <View style={styles.newsCardInner}>
         <View style={[styles.newsThumbnail, { backgroundColor: item.image as any }]}>

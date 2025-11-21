@@ -103,11 +103,11 @@ export default function HomeScreen() {
   ];
 
   const handleSearch = () => {
-    console.log('Search for:', searchQuery);
+    
   };
 
   const handleActionPress = (action: string) => {
-    console.log('Action pressed:', action);
+    
   };
 
 
@@ -191,7 +191,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Upcoming Events */}
+
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Sự kiện sắp tới</Text>
@@ -208,7 +208,7 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Recent News */}
+
         <View style={[styles.section, styles.lastSection]}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Tin tức mới</Text>
