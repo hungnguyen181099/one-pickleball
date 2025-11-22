@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
         fontWeight: '600',
     },
     contentSection: {
-        paddingHorizontal: 16,
+        padding: 16,
         marginVertical: 20,
 
     },
@@ -319,6 +319,8 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 20,
         marginBottom: 20,
+        padding: 16,
+        borderRadius: 12,
     },
     ratingOverview: {
         alignItems: 'center',

@@ -1,17 +1,17 @@
+import { styles } from '@/assets/styles/home.styles';
+import { ActionCard, EventCardComponent, NewsItemComponent, StatCard } from '@/components/home';
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  View,
+  FlatList,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  FlatList,
+  View,
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Image } from 'expo-image';
-import { styles } from '@/assets/styles/home.styles';
-import { ActionCard, EventCardComponent, NewsItemComponent, StatCard } from '@/components/home';
 
 
 
@@ -45,6 +45,8 @@ export interface NewsItem {
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
+  const { theme } = useTheme();
+  const colors = useThemedColors();
 
   const statCards: StatCardProps[] = [
     { id: '1', icon: 'account', number: '24', label: 'Trận đấu', color: '#00D9B5' },
@@ -103,16 +105,16 @@ export default function HomeScreen() {
   ];
 
   const handleSearch = () => {
-    
+
   };
 
   const handleActionPress = (action: string) => {
-    
+
   };
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -120,12 +122,12 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.greetingText}>Xin chào,</Text>
-            <Text style={styles.userName}>Minh Tuấn</Text>
+            <Text style={[styles.greetingText, { color: colors.textTertiary }]}>Xin chào,</Text>
+            <Text style={[styles.userName, { color: colors.text }]}>Minh Tuấn</Text>
           </View>
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.notificationBtn}>
-              <Ionicons name="notifications-outline" size={24} color="#000" />
+            <TouchableOpacity style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
+              <Ionicons name="notifications-outline" size={24} color={colors.icon} />
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>3</Text>
               </View>
@@ -139,17 +141,17 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.searchSection}>
-          <View style={styles.searchBar}>
-            <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
+          <View style={[styles.searchBar, { backgroundColor: colors.input }]}>
+            <Ionicons name="search" size={20} color={colors.textTertiary} style={styles.searchIcon} />
             <TextInput
-              style={styles.searchInput}
+              style={[styles.searchInput, { color: colors.text }]}
               placeholder="Tìm sân, giải đấu, người chơi..."
-              placeholderTextColor="#999"
+              placeholderTextColor={colors.textTertiary}
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
             <TouchableOpacity style={styles.filterBtn}>
-              <Ionicons name="options-outline" size={20} color="#666" />
+              <Ionicons name="options-outline" size={20} color={colors.icon} />
             </TouchableOpacity>
           </View>
         </View>
@@ -162,7 +164,7 @@ export default function HomeScreen() {
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Hành động nhanh</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Hành động nhanh</Text>
           <View style={styles.actionGrid}>
             <ActionCard
               icon="grid"
@@ -194,7 +196,7 @@ export default function HomeScreen() {
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Sự kiện sắp tới</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Sự kiện sắp tới</Text>
             <TouchableOpacity>
               <Text style={styles.seeAll}>Xem tất cả</Text>
             </TouchableOpacity>
@@ -211,7 +213,7 @@ export default function HomeScreen() {
 
         <View style={[styles.section, styles.lastSection]}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Tin tức mới</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin tức mới</Text>
             <TouchableOpacity>
               <Text style={styles.seeAll}>Xem tất cả</Text>
             </TouchableOpacity>

@@ -1,20 +1,18 @@
+import { styles } from '@/assets/styles/newdetail.styles';
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    View,
+    Dimensions,
+    FlatList,
+    StatusBar,
     Text,
     TouchableOpacity,
-    StyleSheet,
-    FlatList,
-    Dimensions,
-    StatusBar,
+    View
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
-import { styles } from '@/assets/styles/newdetail.styles';
 
 const { width } = Dimensions.get('window');
 
@@ -41,6 +39,8 @@ interface RelatedNews {
 export default function NewsDetailScreen() {
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState(342);
+    const { theme } = useTheme();
+    const colors = useThemedColors();
     const [comments, setComments] = useState<Comment[]>([
         {
             id: '1',
@@ -101,28 +101,28 @@ export default function NewsDetailScreen() {
     };
 
     const CommentItem = ({ item }: { item: Comment }) => (
-        <View style={styles.commentItem}>
+        <View style={[styles.commentItem, { backgroundColor: colors.cardSecondary, borderColor: colors.border }]}>
             <View style={[styles.commentAvatar, { backgroundColor: item.userColor }]}>
                 <Text style={styles.commentAvatarText}>{item.userInitials}</Text>
             </View>
             <View style={styles.commentContent}>
                 <View style={styles.commentHeader}>
                     <View>
-                        <Text style={styles.commentUserName}>{item.userName}</Text>
-                        <Text style={styles.commentTime}>{item.time}</Text>
+                        <Text style={[styles.commentUserName, { color: colors.text }]}>{item.userName}</Text>
+                        <Text style={[styles.commentTime, { color: colors.textTertiary }]}>{item.time}</Text>
                     </View>
                     <TouchableOpacity style={styles.moreBtn}>
-                        <Ionicons name="ellipsis-horizontal" size={16} color="#999" />
+                        <Ionicons name="ellipsis-horizontal" size={16} color={colors.textTertiary} />
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.commentText}>{item.text}</Text>
+                <Text style={[styles.commentText, { color: colors.textSecondary }]}>{item.text}</Text>
                 <View style={styles.commentActions}>
                     <TouchableOpacity style={styles.commentAction}>
-                        <Ionicons name="thumbs-up-outline" size={14} color="#999" />
-                        <Text style={styles.commentActionText}>{item.likes}</Text>
+                        <Ionicons name="thumbs-up-outline" size={14} color={colors.textTertiary} />
+                        <Text style={[styles.commentActionText, { color: colors.textTertiary }]}>{item.likes}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.commentAction}>
-                        <Text style={styles.commentActionText}>Trả lời</Text>
+                        <Text style={[styles.commentActionText, { color: colors.textTertiary }]}>Trả lời</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -130,7 +130,7 @@ export default function NewsDetailScreen() {
     );
 
     const RelatedNewsItem = ({ item }: { item: RelatedNews }) => (
-        <TouchableOpacity style={styles.relatedNewsItem}>
+        <TouchableOpacity style={[styles.relatedNewsItem, { backgroundColor: colors.cardSecondary, borderColor: colors.border }]}>
             <View style={[styles.relatedNewsThumbnail, { backgroundColor: item.image as any }]} />
             <View style={styles.relatedNewsContent}>
                 <View style={[styles.relatedNewsCategory, { backgroundColor: `${item.categoryColor}20` }]}>
@@ -138,17 +138,18 @@ export default function NewsDetailScreen() {
                         {item.category}
                     </Text>
                 </View>
-                <Text style={styles.relatedNewsTitle} numberOfLines={2}>
+                <Text style={[styles.relatedNewsTitle, { color: colors.text }]} numberOfLines={2}>
                     {item.title}
                 </Text>
-                <Text style={styles.relatedNewsTime}>{item.time}</Text>
+                <Text style={[styles.relatedNewsTime, { color: colors.textTertiary }]}>{item.time}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
         </TouchableOpacity>
     );
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+            <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
 
             <FlatList
                 ListHeaderComponent={
@@ -180,7 +181,7 @@ export default function NewsDetailScreen() {
                             </View>
                         </View>
 
-                        <View style={styles.contentSection}>
+                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
 
                             <View style={[styles.categoryBadge, { backgroundColor: '#FF980020' }]}>
                                 <Text style={[styles.categoryBadgeText, { color: '#FF9800' }]}>
@@ -188,7 +189,7 @@ export default function NewsDetailScreen() {
                                 </Text>
                             </View>
 
-                            <Text style={styles.title}>
+                            <Text style={[styles.title, { color: colors.text }]}>
                                 5 Tips nâng cao kỹ thuật serve trong Pickleball
                             </Text>
 
@@ -198,8 +199,8 @@ export default function NewsDetailScreen() {
                                         <Text style={styles.authorAvatarText}>TT</Text>
                                     </View>
                                     <View>
-                                        <Text style={styles.authorName}>Trần Minh Tuấn</Text>
-                                        <Text style={styles.publishTime}>2 giờ trước</Text>
+                                        <Text style={[styles.authorName, { color: colors.text }]}>Trần Minh Tuấn</Text>
+                                        <Text style={[styles.publishTime, { color: colors.textTertiary }]}>2 giờ trước</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity>
@@ -210,55 +211,55 @@ export default function NewsDetailScreen() {
 
                             <View style={styles.stats}>
                                 <View style={styles.statItem}>
-                                    <Ionicons name="eye" size={16} color="#999" />
-                                    <Text style={styles.statText}>1.2K</Text>
+                                    <Ionicons name="eye" size={16} color={colors.textTertiary} />
+                                    <Text style={[styles.statText, { color: colors.textTertiary }]}>1.2K</Text>
                                 </View>
                                 <View style={styles.statItem}>
-                                    <MaterialCommunityIcons name="comment-outline" size={16} color="#999" />
-                                    <Text style={styles.statText}>24</Text>
+                                    <MaterialCommunityIcons name="comment-outline" size={16} color={colors.textTertiary} />
+                                    <Text style={[styles.statText, { color: colors.textTertiary }]}>24</Text>
                                 </View>
                                 <View style={styles.statItem}>
-                                    <Ionicons name="share-social-outline" size={16} color="#999" />
-                                    <Text style={styles.statText}>18</Text>
+                                    <Ionicons name="share-social-outline" size={16} color={colors.textTertiary} />
+                                    <Text style={[styles.statText, { color: colors.textTertiary }]}>18</Text>
                                 </View>
                             </View>
                         </View>
 
                         {/* Article Content */}
-                        <View style={styles.articleContent}>
-                            <Text style={styles.articleText}>
+                        <View style={[styles.articleContent, { backgroundColor: colors.card }]}>
+                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
                                 Serve là một trong những kỹ thuật quan trọng nhất trong Pickleball. Một cú serve tốt không chỉ giúp bạn bắt đầu điểm số với lợi thế mà còn tạo áp lực cho đối phương.
                             </Text>
 
-                            <Text style={styles.sectionSubtitle}>1. Kiểm tra lại cách cầm gậy</Text>
-                            <Text style={styles.articleText}>
+                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>1. Kiểm tra lại cách cầm gậy</Text>
+                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
                                 Cách cầm gậy là nền tảng của tất cả các cú đánh. Hãy chắc chắn rằng bạn đang cầm gậy ở vị trí continental grip hoặc eastern grip. Tránh cầm quá chặt vì điều này sẽ giới hạn độ linh hoạt của cổ tay.
                             </Text>
 
-                            <Text style={styles.sectionSubtitle}>2. Điều chỉnh vị trí đứng</Text>
-                            <Text style={styles.articleText}>
+                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>2. Điều chỉnh vị trí đứng</Text>
+                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
                                 Đứng cách net khoảng 6-8 feet, chân rộng bằng vai. Bước chân trước nên hơi bước vào một chút để tạo momentum. Vị trí đứng đúng sẽ giúp bạn dễ dàng thực hiện các cú serve khác nhau.
                             </Text>
 
-                            <Text style={styles.sectionSubtitle}>3. Sử dụng động tác tay tự nhiên</Text>
-                            <Text style={styles.articleText}>
+                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>3. Sử dụng động tác tay tự nhiên</Text>
+                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
                                 Động tác serve trong Pickleball khác với Tennis. Hãy sử dụng động tác underhand hoặc waist-high serve. Tránh swing quá mạnh vì điều này sẽ khiến bạn mất kiểm soát.
                             </Text>
 
-                            <Text style={styles.sectionSubtitle}>4. Tập trung vào độ chính xác</Text>
-                            <Text style={styles.articleText}>
+                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>4. Tập trung vào độ chính xác</Text>
+                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
                                 Thay vì cố serve mạnh nhất, hãy tập trung vào độ chính xác. Hãy luyện tập để serve về các góc khác nhau của sân. Khi bạn thành thạo độ chính xác, việc tăng tốc độ sẽ dễ hơn.
                             </Text>
 
-                            <Text style={styles.sectionSubtitle}>5. Luyện tập thường xuyên</Text>
-                            <Text style={styles.articleText}>
+                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>5. Luyện tập thường xuyên</Text>
+                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
                                 Điều quan trọng nhất là luyện tập thường xuyên. Hãy dành ít nhất 15-20 phút mỗi ngày để luyện tập serve. Khi bạn luyện tập đủ nhiều, serve sẽ trở thành phản xạ tự nhiên.
                             </Text>
                         </View>
 
 
-                        <View style={styles.engagementSection}>
-                            <View style={styles.divider} />
+                        <View style={[styles.engagementSection, { backgroundColor: colors.card }]}>
+                            <View style={[styles.divider, { backgroundColor: colors.border }]} />
                             <View style={styles.engagementStats}>
                                 <TouchableOpacity
                                     style={styles.engagementItem}
@@ -267,31 +268,32 @@ export default function NewsDetailScreen() {
                                     <Ionicons
                                         name={isLiked ? 'heart' : 'heart-outline'}
                                         size={24}
-                                        color={isLiked ? '#FF4444' : '#999'}
+                                        color={isLiked ? '#FF4444' : colors.textTertiary}
                                     />
                                     <Text style={[
                                         styles.engagementText,
-                                        isLiked && { color: '#FF4444' }
+                                        isLiked && { color: '#FF4444' },
+                                        !isLiked && { color: colors.textTertiary }
                                     ]}>
                                         {likes}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.engagementItem}>
-                                    <MaterialCommunityIcons name="comment-outline" size={24} color="#999" />
-                                    <Text style={styles.engagementText}>24</Text>
+                                    <MaterialCommunityIcons name="comment-outline" size={24} color={colors.textTertiary} />
+                                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>24</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.engagementItem}>
-                                    <Ionicons name="share-social-outline" size={24} color="#999" />
-                                    <Text style={styles.engagementText}>18</Text>
+                                    <Ionicons name="share-social-outline" size={24} color={colors.textTertiary} />
+                                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>18</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.divider} />
+                            <View style={[styles.divider, { backgroundColor: colors.border }]} />
                         </View>
 
 
-                        <View style={styles.commentsSection}>
+                        <View style={[styles.commentsSection, { backgroundColor: colors.card }]}>
                             <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionTitle}>Bình luận (24)</Text>
+                                <Text style={[styles.sectionTitle, { color: colors.text, backgroundColor: colors.card }]}>Bình luận (24)</Text>
                                 <TouchableOpacity>
                                     <Ionicons name="filter" size={20} color="#00D9B5" />
                                 </TouchableOpacity>
@@ -307,8 +309,8 @@ export default function NewsDetailScreen() {
                         </View>
 
 
-                        <View style={styles.relatedSection}>
-                            <Text style={styles.sectionTitle}>Tin tức liên quan</Text>
+                        <View style={[styles.relatedSection, { backgroundColor: colors.card }]}>
+                            <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin tức liên quan</Text>
                             {relatedNews.map((news) => (
                                 <RelatedNewsItem key={news.id} item={news} />
                             ))}
@@ -321,12 +323,12 @@ export default function NewsDetailScreen() {
             />
 
 
-            <View style={styles.commentInputFooter}>
+            <View style={[styles.commentInputFooter, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
                 <View style={[styles.commentInputAvatar, { backgroundColor: '#667eea' }]}>
                     <Text style={styles.commentInputAvatarText}>ML</Text>
                 </View>
-                <TouchableOpacity style={styles.commentInput}>
-                    <Text style={styles.commentInputPlaceholder}>Viết bình luận...</Text>
+                <TouchableOpacity style={[styles.commentInput, { backgroundColor: colors.input }]}>
+                    <Text style={[styles.commentInputPlaceholder, { color: colors.textTertiary }]}>Viết bình luận...</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.sendBtn}>
                     <Ionicons name="send" size={20} color="#00D9B5" />

@@ -1,18 +1,19 @@
-import { SafeAreaView } from "react-native-safe-area-context";
+import { styles } from "@/assets/styles/news.styles";
+import { useTheme, useThemedColors } from "@/hooks/use-theme";
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { ImageBackground } from "expo-image";
+import { router } from "expo-router";
 import React, { useState } from 'react';
 import {
-  View,
+  FlatList,
+  ScrollView,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Dimensions,
+  View
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { ImageBackground } from "expo-image";
-import { styles } from "@/assets/styles/news.styles";
-import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 interface NewsItem {
@@ -36,10 +37,13 @@ interface NewsCategory {
   icon: string;
   color: string;
 }
+
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [likedNews, setLikedNews] = useState<string[]>([]);
+  const { theme } = useTheme();
+  const colors = useThemedColors();
 
   const categories: NewsCategory[] = [
     { id: 'all', name: 'Tất cả', icon: 'home', color: '#00D9B5' },
@@ -139,12 +143,12 @@ const NewsPage = () => {
   const NewsCard = ({ item }: { item: NewsItem }) => (
     <TouchableOpacity
       style={styles.newsCard}
-      onPress={()=> router.push({
-        pathname:'/(details)/newDetail/[id]',
-        params:{id: item.id}
+      onPress={() => router.push({
+        pathname: '/(details)/newDetail/[id]',
+        params: { id: item.id }
       })}
     >
-      <View style={styles.newsCardInner}>
+      <View style={[styles.newsCardInner, { backgroundColor: colors.card }]}>
         <View style={[styles.newsThumbnail, { backgroundColor: item.image as any }]}>
           <Text style={{ color: item.categoryColor, fontSize: 12, fontWeight: '600' }}>
             News
@@ -158,24 +162,24 @@ const NewsPage = () => {
             </Text>
           </View>
 
-          <Text style={styles.newsTitle} numberOfLines={2}>
+          <Text style={[styles.newsTitle, { color: colors.text }]} numberOfLines={2}>
             {item.title}
           </Text>
 
-          <Text style={styles.newsDescription} numberOfLines={2}>
+          <Text style={[styles.newsDescription, { color: colors.textSecondary }]} numberOfLines={2}>
             {item.description}
           </Text>
 
           <View style={styles.metaInfo}>
-            <Text style={styles.author}>{item.author}</Text>
-            <Text style={styles.dot}>•</Text>
-            <Text style={styles.time}>{item.time}</Text>
+            <Text style={[styles.author, { color: colors.textSecondary }]}>{item.author}</Text>
+            <Text style={[styles.dot, { color: colors.textTertiary }]}>•</Text>
+            <Text style={[styles.time, { color: colors.textTertiary }]}>{item.time}</Text>
           </View>
 
           <View style={styles.stats}>
             <View style={styles.statItem}>
-              <Ionicons name="eye" size={14} color="#999" />
-              <Text style={styles.statText}>{item.views}</Text>
+              <Ionicons name="eye" size={14} color={colors.textTertiary} />
+              <Text style={[styles.statText, { color: colors.textTertiary }]}>{item.views}</Text>
             </View>
             <View style={styles.statItem}>
               <TouchableOpacity
@@ -185,18 +189,18 @@ const NewsPage = () => {
                 <Ionicons
                   name={likedNews.includes(item.id) ? 'heart' : 'heart-outline'}
                   size={14}
-                  color={likedNews.includes(item.id) ? '#FF4444' : '#999'}
+                  color={likedNews.includes(item.id) ? '#FF4444' : colors.textTertiary}
                 />
               </TouchableOpacity>
-              <Text style={styles.statText}>
+              <Text style={[styles.statText, { color: colors.textTertiary }]}>
                 {item.likes + (likedNews.includes(item.id) ? 1 : 0)}
               </Text>
             </View>
-            <Text style={styles.readTime}>{item.readTime}</Text>
+            <Text style={[styles.readTime, { color: colors.textTertiary }]}>{item.readTime}</Text>
           </View>
         </View>
 
-        <Ionicons name="chevron-forward" size={20} color="#ccc" />
+        <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
       </View>
     </TouchableOpacity>
   );
@@ -206,6 +210,11 @@ const NewsPage = () => {
       style={[
         styles.categoryChip,
         activeCategory === item.id && styles.categoryChipActive,
+        {
+          backgroundColor: activeCategory === item.id ? item.color : colors.backgroundTertiary,
+          borderColor: activeCategory === item.id ? item.color : colors.border,
+          borderWidth: 1
+        }
       ]}
       onPress={() => setActiveCategory(item.id)}
     >
@@ -218,6 +227,7 @@ const NewsPage = () => {
         style={[
           styles.categoryChipText,
           activeCategory === item.id && styles.categoryChipTextActive,
+          { color: activeCategory === item.id ? '#fff' : colors.text }
         ]}
       >
         {item.name}
@@ -228,9 +238,9 @@ const NewsPage = () => {
   const renderHeader = () => (
     <>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Tin tức & Sự kiện</Text>
-        <TouchableOpacity style={styles.notificationBtn}>
-          <Ionicons name="notifications-outline" size={24} color="#000" />
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Tin tức & Sự kiện</Text>
+        <TouchableOpacity style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
+          <Ionicons name="notifications-outline" size={24} color={colors.icon} />
           <View style={styles.badge}>
             <Text style={styles.badgeText}>3</Text>
           </View>
@@ -238,12 +248,12 @@ const NewsPage = () => {
       </View>
 
       <View style={styles.searchSection}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#999" style={styles.searchIcon} />
+        <View style={[styles.searchBar, { backgroundColor: colors.input }]}>
+          <Ionicons name="search" size={20} color={colors.textTertiary} style={styles.searchIcon} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: colors.text }]}
             placeholder="Tìm tin tức..."
-            placeholderTextColor="#999"
+            placeholderTextColor={colors.textTertiary}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -251,8 +261,8 @@ const NewsPage = () => {
       </View>
 
       <View style={styles.featuredSection}>
-        <Text style={styles.sectionTitle}>Tin nổi bật</Text>
-        <TouchableOpacity style={styles.featuredCard}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin nổi bật</Text>
+        <TouchableOpacity style={[styles.featuredCard, { backgroundColor: colors.cardSecondary }]}>
           <ImageBackground style={styles.featuredImage} source={{ uri: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png' }}>
             <View style={styles.featuredOverlay}>
               <View style={[styles.featuredBadge, { backgroundColor: '#FF4444' }]}>
@@ -281,7 +291,8 @@ const NewsPage = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
       <FlatList
         ListHeaderComponent={renderHeader}
         data={filteredNews}

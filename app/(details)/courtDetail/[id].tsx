@@ -1,5 +1,6 @@
 import { courts } from '@/app/(tabs)/area';
 import { styles } from '@/assets/styles/courtdetail.styles';
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,6 +8,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
     FlatList,
+    StatusBar,
     Text,
     TouchableOpacity,
     View,
@@ -41,6 +43,8 @@ export default function CourtDetailScreen() {
     const [isFavorite, setIsFavorite] = useState(true);
     const { id } = useLocalSearchParams();
     const data: any = courts.find(court => court.id === id)
+    const { theme } = useTheme();
+    const colors = useThemedColors();
 
 
     const facilities: Facility[] = [
@@ -84,45 +88,46 @@ export default function CourtDetailScreen() {
     ];
 
     const FacilityItem = ({ item }: { item: Facility }) => (
-        <View style={styles.facilityItem}>
+        <View style={[styles.facilityItem, { backgroundColor: colors.backgroundTertiary }]}>
             <View style={styles.facilityIcon}>
                 <MaterialCommunityIcons name={item.icon as any} size={24} color="#00D9B5" />
             </View>
-            <Text style={styles.facilityName}>{item.name}</Text>
+            <Text style={[styles.facilityName, { color: colors.text }]}>{item.name}</Text>
         </View>
     );
 
     const ReviewItem = ({ item }: { item: Review }) => (
-        <View style={styles.reviewItem}>
+        <View style={[styles.reviewItem, { backgroundColor: colors.cardSecondary, borderColor: colors.border }]}>
             <View style={styles.reviewHeader}>
                 <View style={[styles.reviewAvatar, { backgroundColor: item.color }]}>
                     <Text style={styles.reviewAvatarText}>{item.userInitials}</Text>
                 </View>
                 <View style={styles.reviewUserInfo}>
-                    <Text style={styles.reviewUserName}>{item.userName}</Text>
+                    <Text style={[styles.reviewUserName, { color: colors.text }]}>{item.userName}</Text>
                     <View style={styles.reviewRating}>
                         <MaterialCommunityIcons name="star" size={14} color="#FFB800" />
-                        <Text style={styles.reviewRatingText}>{item.rating}</Text>
+                        <Text style={[styles.reviewRatingText, { color: colors.text }]}>{item.rating}</Text>
                     </View>
                 </View>
-                <Text style={styles.reviewDate}>{item.date}</Text>
+                <Text style={[styles.reviewDate, { color: colors.textTertiary }]}>{item.date}</Text>
             </View>
-            <Text style={styles.reviewText}>{item.text}</Text>
+            <Text style={[styles.reviewText, { color: colors.textSecondary }]}>{item.text}</Text>
         </View>
     );
 
     const RatingBarItem = ({ item }: { item: RatingBar }) => (
         <View style={styles.ratingBarItem}>
-            <Text style={styles.barLabel}>{item.stars}★</Text>
-            <View style={styles.barTrack}>
+            <Text style={[styles.barLabel, { color: colors.text }]}>{item.stars}★</Text>
+            <View style={[styles.barTrack, { backgroundColor: colors.backgroundTertiary }]}>
                 <View style={[styles.barFill, { width: `${item.percentage}%` }]} />
             </View>
-            <Text style={styles.barCount}>{item.count}</Text>
+            <Text style={[styles.barCount, { color: colors.textSecondary }]}>{item.count}</Text>
         </View>
     );
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+            <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
 
             <FlatList
                 ListHeaderComponent={
@@ -158,47 +163,47 @@ export default function CourtDetailScreen() {
                             </View>
                         </View>
 
-                        <View style={styles.contentSection}>
+                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
                             <View style={styles.courtDetailHeader}>
                                 <View style={styles.courtDetailInfo}>
                                     <View style={styles.premiumBadge}>
                                         <Text style={styles.premiumBadgeText}>Premium</Text>
                                     </View>
-                                    <Text style={styles.detailTitle}>{data.name}</Text>
+                                    <Text style={[styles.detailTitle, { color: colors.text }]}>{data.name}</Text>
                                     <View style={styles.courtRatingLarge}>
                                         <MaterialCommunityIcons name="star" size={18} color="#FFB800" />
-                                        <Text style={styles.ratingScore}>{data.rating}</Text>
-                                        <Text style={styles.ratingCount}>({data.reviews} đánh giá)</Text>
+                                        <Text style={[styles.ratingScore, { color: colors.text }]}>{data.rating}</Text>
+                                        <Text style={[styles.ratingCount, { color: colors.textTertiary }]}>({data.reviews} đánh giá)</Text>
                                     </View>
                                 </View>
                                 <View style={styles.courtStatusLarge}>
                                     <View style={styles.statusDot} />
-                                    <Text style={styles.statusText}>{data.status}</Text>
+                                    <Text style={[styles.statusText, { color: colors.textSecondary }]}>{data.status}</Text>
                                 </View>
                             </View>
                         </View>
 
-                        <View style={styles.contentSection}>
+                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
                             <View style={styles.quickInfoGrid}>
-                                <View style={styles.quickInfoItem}>
+                                <View style={[styles.quickInfoItem, { backgroundColor: colors.backgroundTertiary }]}>
                                     <Ionicons name="location" size={20} color="#00D9B5" />
                                     <View style={styles.quickInfoText}>
-                                        <Text style={styles.infoLabel}>Địa chỉ</Text>
-                                        <Text style={styles.infoValue}>{data.location}</Text>
+                                        <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>Địa chỉ</Text>
+                                        <Text style={[styles.infoValue, { color: colors.text }]}>{data.location}</Text>
                                     </View>
                                 </View>
-                                <View style={styles.quickInfoItem}>
+                                <View style={[styles.quickInfoItem, { backgroundColor: colors.backgroundTertiary }]}>
                                     <Ionicons name="time" size={20} color="#FF9800" />
                                     <View style={styles.quickInfoText}>
-                                        <Text style={styles.infoLabel}>Giờ mở cửa</Text>
-                                        <Text style={styles.infoValue}>{data.statusText}</Text>
+                                        <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>Giờ mở cửa</Text>
+                                        <Text style={[styles.infoValue, { color: colors.text }]}>{data.statusText}</Text>
                                     </View>
                                 </View>
-                                <View style={styles.quickInfoItem}>
+                                <View style={[styles.quickInfoItem, { backgroundColor: colors.backgroundTertiary }]}>
                                     <Ionicons name="call" size={20} color="#2196F3" />
                                     <View style={styles.quickInfoText}>
-                                        <Text style={styles.infoLabel}>Liên hệ</Text>
-                                        <Text style={styles.infoValue}>0901 234 567</Text>
+                                        <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>Liên hệ</Text>
+                                        <Text style={[styles.infoValue, { color: colors.text }]}>0901 234 567</Text>
                                     </View>
                                 </View>
                             </View>
@@ -206,16 +211,16 @@ export default function CourtDetailScreen() {
 
 
                         <View style={styles.contentSection}>
-                            <View style={styles.priceBookingCard}>
+                            <View style={[styles.priceBookingCard, { backgroundColor: colors.cardSecondary, borderColor: colors.border }]}>
                                 <View style={styles.priceSection}>
-                                    <Text style={styles.priceLabel}>Giá thuê sân</Text>
+                                    <Text style={[styles.priceLabel, { color: colors.textSecondary }]}>Giá thuê sân</Text>
                                     <View style={styles.priceRange}>
                                         <Text style={styles.priceFrom}>200k</Text>
-                                        <Text style={styles.priceSeparator}>-</Text>
+                                        <Text style={[styles.priceSeparator, { color: colors.textSecondary }]}>-</Text>
                                         <Text style={styles.priceTo}>300k</Text>
-                                        <Text style={styles.priceUnit}>/giờ</Text>
+                                        <Text style={[styles.priceUnit, { color: colors.textSecondary }]}>/giờ</Text>
                                     </View>
-                                    <Text style={styles.priceNote}>Giá thay đổi theo khung giờ</Text>
+                                    <Text style={[styles.priceNote, { color: colors.textTertiary }]}>Giá thay đổi theo khung giờ</Text>
                                 </View>
                                 <TouchableOpacity style={styles.bookBtn}>
                                     <Text style={styles.bookBtnText}>Đặt sân ngay</Text>
@@ -223,19 +228,19 @@ export default function CourtDetailScreen() {
                             </View>
                         </View>
 
-                        <View style={styles.contentSection}>
-                            <Text style={styles.sectionHeading}>Giới thiệu</Text>
-                            <Text style={styles.descriptionText}>
+                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+                            <Text style={[styles.sectionHeading, { color: colors.text }]}>Giới thiệu</Text>
+                            <Text style={[styles.descriptionText, { color: colors.textSecondary }]}>
                                 Sân Pickleball Rạch Chiếc là một trong những địa điểm chơi pickleball hàng đầu tại TP.HCM với 6 sân thi đấu tiêu chuẩn quốc tế. Tọa lạc tại vị trí trung tâm quận 2, sân được trang bị đầy đủ tiện nghi hiện đại phục vụ người chơi.
                             </Text>
-                            <Text style={styles.descriptionText}>
+                            <Text style={[styles.descriptionText, { color: colors.textSecondary }]}>
                                 Với hệ thống chiếu sáng chuyên nghiệp, bãi đỗ xe rộng rãi và không gian thoáng mát, đây là lựa chọn lý tưởng cho các buổi tập luyện và thi đấu.
                             </Text>
                         </View>
 
 
-                        <View style={styles.contentSection}>
-                            <Text style={styles.sectionHeading}>Tiện ích</Text>
+                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+                            <Text style={[styles.sectionHeading, { color: colors.text }]}>Tiện ích</Text>
                             <View style={styles.facilitiesGrid}>
                                 {facilities.map((facility) => (
                                     <FacilityItem key={facility.id} item={facility} />
@@ -244,8 +249,8 @@ export default function CourtDetailScreen() {
                         </View>
 
 
-                        <View style={styles.contentSection}>
-                            <Text style={styles.sectionHeading}>Vị trí</Text>
+                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+                            <Text style={[styles.sectionHeading, { color: colors.text }]}>Vị trí</Text>
                             <View style={styles.mapContainer}>
                                 <LinearGradient
                                     colors={['#E5E7EB', '#D1D5DB']}
@@ -259,29 +264,29 @@ export default function CourtDetailScreen() {
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.locationDetail}>
-                                <Text style={styles.locationAddress}>
+                                <Text style={[styles.locationAddress, { color: colors.text }]}>
                                     123 Xa lộ Hà Nội, Phường Thảo Điền, Quận 2, TP.HCM
                                 </Text>
                                 <View style={styles.locationDistance}>
-                                    <Ionicons name="location" size={14} color="#666" />
-                                    <Text style={styles.locationDistanceText}>
+                                    <Ionicons name="location" size={14} color={colors.icon} />
+                                    <Text style={[styles.locationDistanceText, { color: colors.textSecondary }]}>
                                         Cách bạn 1.2 km • Khoảng 5 phút lái xe
                                     </Text>
                                 </View>
                             </View>
                         </View>
 
-                        <View style={styles.contentSection}>
+                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
                             <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionHeading}>Đánh giá</Text>
+                                <Text style={[styles.sectionHeading, { color: colors.text }]}>Đánh giá</Text>
                                 <TouchableOpacity style={styles.reviewBtnSmall}>
                                     <Text style={styles.reviewBtnSmallText}>Viết đánh giá</Text>
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={styles.ratingSummary}>
+                            <View style={[styles.ratingSummary, { backgroundColor: colors.backgroundTertiary }]}>
                                 <View style={styles.ratingOverview}>
-                                    <Text style={styles.ratingBig}>{data.rating}</Text>
+                                    <Text style={[styles.ratingBig, { color: colors.text }]}>{data.rating}</Text>
                                     <View style={styles.ratingStars}>
                                         {[1, 2, 3, 4, 5].map((i) => (
                                             <MaterialCommunityIcons
@@ -292,7 +297,7 @@ export default function CourtDetailScreen() {
                                             />
                                         ))}
                                     </View>
-                                    <Text style={styles.ratingCountText}>{data.reviews} đánh giá</Text>
+                                    <Text style={[styles.ratingCountText, { color: colors.textSecondary }]}>{data.reviews} đánh giá</Text>
                                 </View>
                                 <View style={styles.ratingBars}>
                                     {ratingBars.map((bar) => (
@@ -317,9 +322,9 @@ export default function CourtDetailScreen() {
                 contentContainerStyle={styles.flatListContent}
             />
 
-            <View style={styles.detailFooter}>
+            <View style={[styles.detailFooter, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
                 <View style={styles.footerInfo}>
-                    <Text style={styles.footerPriceLabel}>Từ</Text>
+                    <Text style={[styles.footerPriceLabel, { color: colors.textSecondary }]}>Từ</Text>
                     <Text style={styles.footerPriceValue}>{data.price}/giờ</Text>
                 </View>
                 <TouchableOpacity style={styles.footerBtn}>

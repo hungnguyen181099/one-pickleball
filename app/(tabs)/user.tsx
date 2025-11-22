@@ -1,16 +1,17 @@
-import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  StatusBar,
-  Alert,
-} from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from "@/assets/styles/user";
 import { AchievementCard, SettingItemComponent, StatCard } from "@/components/user";
+import { useTheme, useThemedColors } from "@/hooks/use-theme";
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import {
+  Alert,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export interface StatCardProps {
@@ -36,6 +37,8 @@ export interface SettingsItem {
 
 const UserPage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const colors = useThemedColors();
 
   const stats: StatCardProps[] = [
     { number: '24', label: 'Trận đấu' },
@@ -51,6 +54,10 @@ const UserPage = () => {
     { id: '4', name: 'Chưa mở khóa', emoji: '🔒', locked: true },
   ];
 
+  const handleThemeToggle = () => {
+    toggleTheme();
+  };
+
   const settingsItems: SettingsItem[] = [
     {
       id: '1',
@@ -60,21 +67,27 @@ const UserPage = () => {
     },
     {
       id: '2',
+      icon: theme === 'dark' ? 'sunny' : 'moon',
+      label: theme === 'dark' ? 'Chế độ sáng' : 'Chế độ tối',
+      onPress: () => handleThemeToggle(),
+    },
+    {
+      id: '3',
       icon: 'lock',
       label: 'Bảo mật & quyền riêng tư',
     },
     {
-      id: '3',
+      id: '4',
       icon: 'bell',
       label: 'Thông báo',
     },
     {
-      id: '4',
+      id: '5',
       icon: 'help-circle',
       label: 'Trợ giúp & hỗ trợ',
     },
     {
-      id: '5',
+      id: '6',
       icon: 'logout',
       label: 'Đăng xuất',
       isLogout: true,
@@ -102,13 +115,9 @@ const UserPage = () => {
     console.log('Edit profile pressed');
   };
 
-
-
-
-
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -117,11 +126,10 @@ const UserPage = () => {
         {/* Profile Header */}
         <View style={styles.coverSection}>
           <View style={styles.cover} />
-
         </View>
 
         {/* Profile Info */}
-        <View style={styles.profileInfoSection}>
+        <View style={[styles.profileInfoSection, { backgroundColor: colors.card }]}>
           <View style={styles.avatarWrapper}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>MT</Text>
@@ -131,9 +139,9 @@ const UserPage = () => {
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.profileName}>Minh Tuấn</Text>
-          <Text style={styles.profileUsername}>@minhtuan_pb</Text>
-          <Text style={styles.profileBio}>
+          <Text style={[styles.profileName, { color: colors.text }]}>Minh Tuấn</Text>
+          <Text style={[styles.profileUsername, { color: colors.textTertiary }]}>@minhtuan_pb</Text>
+          <Text style={[styles.profileBio, { color: colors.textSecondary }]}>
             🏓 Pickleball enthusiast | 🏆 Level 4.5 | 📍 TP.HCM
           </Text>
 
@@ -151,29 +159,28 @@ const UserPage = () => {
           ))}
         </View>
 
-
         <View style={styles.quickActionsSection}>
-          <TouchableOpacity style={styles.quickActionItem}>
+          <TouchableOpacity style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}>
             <MaterialCommunityIcons name="star" size={20} color="#00D9B5" />
-            <Text style={styles.quickActionLabel}>Giải đấu của tôi</Text>
-            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+            <Text style={[styles.quickActionLabel, { color: colors.text }]}>Giải đấu của tôi</Text>
+            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.quickActionItem}>
+          <TouchableOpacity style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}>
             <Ionicons name="calendar" size={20} color="#FF9800" />
-            <Text style={styles.quickActionLabel}>Lịch sử đặt sân</Text>
-            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+            <Text style={[styles.quickActionLabel, { color: colors.text }]}>Lịch sử đặt sân</Text>
+            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.quickActionItem}>
+          <TouchableOpacity style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}>
             <Ionicons name="heart" size={20} color="#E91E63" />
-            <Text style={styles.quickActionLabel}>Sân yêu thích</Text>
-            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+            <Text style={[styles.quickActionLabel, { color: colors.text }]}>Sân yêu thích</Text>
+            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionHeading}>Thành tích</Text>
+          <Text style={[styles.sectionHeading, { color: colors.text }]}>Thành tích</Text>
           <View style={styles.achievementsGrid}>
             {achievements.map((achievement) => (
               <AchievementCard key={achievement.id} item={achievement} />
@@ -183,8 +190,8 @@ const UserPage = () => {
 
         {/* Settings */}
         <View style={[styles.section, styles.lastSection]}>
-          <Text style={styles.sectionHeading}>Cài đặt</Text>
-          <View style={styles.settingsMenu}>
+          <Text style={[styles.sectionHeading, { color: colors.text }]}>Cài đặt</Text>
+          <View style={[styles.settingsMenu, { backgroundColor: colors.cardSecondary }]}>
             {settingsItems.map((item) => (
               <SettingItemComponent key={item.id} item={item} />
             ))}
