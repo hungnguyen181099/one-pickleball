@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 100,
     flexGrow: 1,
   },
   coverSection: {
@@ -194,7 +193,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   settingsMenu: {
-    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     overflow: 'hidden',
   },
@@ -205,7 +203,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#e0e0e0',
   },
   settingsItemLogout: {
     borderBottomWidth: 0,

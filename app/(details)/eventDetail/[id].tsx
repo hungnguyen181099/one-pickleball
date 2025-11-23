@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface InfoCard {
     icon: string;
@@ -62,8 +61,7 @@ export default function EventDetailScreen() {
     ];
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-            <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
             <ScrollView showsVerticalScrollIndicator={false}>
 
                 <View style={styles.headerContainer}>
@@ -270,7 +268,7 @@ export default function EventDetailScreen() {
                     <Text style={styles.registerBtnText}>Đăng ký ngay</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 

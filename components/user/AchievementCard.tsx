@@ -1,5 +1,5 @@
 import { Achievement } from "@/app/(tabs)/user";
-import { styles } from "@/assets/styles/user";
+import { styles } from "@/assets/styles/user.styles";
 import { useThemedColors } from "@/hooks/use-theme";
 import { Text, View } from "react-native";
 

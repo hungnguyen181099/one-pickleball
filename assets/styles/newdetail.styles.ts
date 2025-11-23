@@ -229,7 +229,7 @@ export const styles = StyleSheet.create({
     },
     relatedSection: {
         padding: 16,
-        gap:12
+        gap: 12
     },
     relatedNewsItem: {
         flexDirection: 'row',
@@ -238,7 +238,7 @@ export const styles = StyleSheet.create({
         padding: 12,
         borderBottomWidth: 1,
         borderBottomColor: '#f0f0f0',
-        borderRadius:12
+        borderRadius: 12
     },
     relatedNewsThumbnail: {
         width: 80,
@@ -305,6 +305,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         paddingHorizontal: 14,
         justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
     },
     commentInputPlaceholder: {
         fontSize: 13,

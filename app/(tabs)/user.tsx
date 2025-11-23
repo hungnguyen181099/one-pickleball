@@ -1,4 +1,4 @@
-import { styles } from "@/assets/styles/user";
+import { styles } from "@/assets/styles/user.styles";
 import { AchievementCard, SettingItemComponent, StatCard } from "@/components/user";
 import { useTheme, useThemedColors } from "@/hooks/use-theme";
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,12 +6,10 @@ import React, { useState } from 'react';
 import {
   Alert,
   ScrollView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export interface StatCardProps {
@@ -63,13 +61,7 @@ const UserPage = () => {
       id: '1',
       icon: 'cog',
       label: 'Cài đặt chung',
-      route: 'Settings',
-    },
-    {
-      id: '2',
-      icon: theme === 'dark' ? 'sunny' : 'moon',
-      label: theme === 'dark' ? 'Chế độ sáng' : 'Chế độ tối',
-      onPress: () => handleThemeToggle(),
+      route: '/screen/setting',
     },
     {
       id: '3',
@@ -116,19 +108,17 @@ const UserPage = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
-
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Profile Header */}
+        
         <View style={styles.coverSection}>
           <View style={styles.cover} />
         </View>
-
-        {/* Profile Info */}
+        
         <View style={[styles.profileInfoSection, { backgroundColor: colors.card }]}>
           <View style={styles.avatarWrapper}>
             <View style={styles.avatar}>
@@ -198,7 +188,7 @@ const UserPage = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

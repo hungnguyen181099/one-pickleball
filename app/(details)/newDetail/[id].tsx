@@ -7,12 +7,14 @@ import React, { useState } from 'react';
 import {
     Dimensions,
     FlatList,
+    KeyboardAvoidingView,
+    Platform,
     StatusBar,
     Text,
+    TextInput,
     TouchableOpacity,
     View
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
@@ -148,193 +150,202 @@ export default function NewsDetailScreen() {
     );
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-            <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
-
-            <FlatList
-                ListHeaderComponent={
-                    <>
-                        <View style={styles.gallerySection}>
-                            <LinearGradient
-                                colors={['#00D9B5', '#0099CC']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.featuredImage}
-                            />
-                            <View style={styles.galleryOverlay}>
-                                <TouchableOpacity
-                                    style={styles.backBtnLight}
-                                    onPress={() => router.back()}
-                                >
-                                    <Ionicons name="chevron-back" size={28} color="#fff" />
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.iconBtnLight}
-                                    onPress={() => setIsLiked(!isLiked)}
-                                >
-                                    <Ionicons
-                                        name={isLiked ? 'heart' : 'heart-outline'}
-                                        size={24}
-                                        color={isLiked ? '#FF4444' : '#fff'}
-                                    />
-                                </TouchableOpacity>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+            <View style={[styles.container, { backgroundColor: colors.background }]}>
+                <FlatList
+                    ListHeaderComponent={
+                        <>
+                            <View style={styles.gallerySection}>
+                                <LinearGradient
+                                    colors={['#00D9B5', '#0099CC']}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                    style={styles.featuredImage}
+                                />
+                                <View style={styles.galleryOverlay}>
+                                    <TouchableOpacity
+                                        style={styles.backBtnLight}
+                                        onPress={() => router.back()}
+                                    >
+                                        <Ionicons name="chevron-back" size={28} color="#fff" />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.iconBtnLight}
+                                        onPress={() => setIsLiked(!isLiked)}
+                                    >
+                                        <Ionicons
+                                            name={isLiked ? 'heart' : 'heart-outline'}
+                                            size={24}
+                                            color={isLiked ? '#FF4444' : '#fff'}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
 
-                        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+                            <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
 
-                            <View style={[styles.categoryBadge, { backgroundColor: '#FF980020' }]}>
-                                <Text style={[styles.categoryBadgeText, { color: '#FF9800' }]}>
-                                    Kỹ thuật
+                                <View style={[styles.categoryBadge, { backgroundColor: '#FF980020' }]}>
+                                    <Text style={[styles.categoryBadgeText, { color: '#FF9800' }]}>
+                                        Kỹ thuật
+                                    </Text>
+                                </View>
+
+                                <Text style={[styles.title, { color: colors.text }]}>
+                                    5 Tips nâng cao kỹ thuật serve trong Pickleball
+                                </Text>
+
+                                <View style={styles.metaInfo}>
+                                    <View style={styles.metaItem}>
+                                        <View style={[styles.authorAvatar, { backgroundColor: '#00D9B5' }]}>
+                                            <Text style={styles.authorAvatarText}>TT</Text>
+                                        </View>
+                                        <View>
+                                            <Text style={[styles.authorName, { color: colors.text }]}>Trần Minh Tuấn</Text>
+                                            <Text style={[styles.publishTime, { color: colors.textTertiary }]}>2 giờ trước</Text>
+                                        </View>
+                                    </View>
+                                    <TouchableOpacity>
+                                        <Ionicons name="person-add-outline" size={24} color="#00D9B5" />
+                                    </TouchableOpacity>
+                                </View>
+
+
+                                <View style={styles.stats}>
+                                    <View style={styles.statItem}>
+                                        <Ionicons name="eye" size={16} color={colors.textTertiary} />
+                                        <Text style={[styles.statText, { color: colors.textTertiary }]}>1.2K</Text>
+                                    </View>
+                                    <View style={styles.statItem}>
+                                        <MaterialCommunityIcons name="comment-outline" size={16} color={colors.textTertiary} />
+                                        <Text style={[styles.statText, { color: colors.textTertiary }]}>24</Text>
+                                    </View>
+                                    <View style={styles.statItem}>
+                                        <Ionicons name="share-social-outline" size={16} color={colors.textTertiary} />
+                                        <Text style={[styles.statText, { color: colors.textTertiary }]}>18</Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            {/* Article Content */}
+                            <View style={[styles.articleContent, { backgroundColor: colors.card }]}>
+                                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
+                                    Serve là một trong những kỹ thuật quan trọng nhất trong Pickleball. Một cú serve tốt không chỉ giúp bạn bắt đầu điểm số với lợi thế mà còn tạo áp lực cho đối phương.
+                                </Text>
+
+                                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>1. Kiểm tra lại cách cầm gậy</Text>
+                                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
+                                    Cách cầm gậy là nền tảng của tất cả các cú đánh. Hãy chắc chắn rằng bạn đang cầm gậy ở vị trí continental grip hoặc eastern grip. Tránh cầm quá chặt vì điều này sẽ giới hạn độ linh hoạt của cổ tay.
+                                </Text>
+
+                                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>2. Điều chỉnh vị trí đứng</Text>
+                                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
+                                    Đứng cách net khoảng 6-8 feet, chân rộng bằng vai. Bước chân trước nên hơi bước vào một chút để tạo momentum. Vị trí đứng đúng sẽ giúp bạn dễ dàng thực hiện các cú serve khác nhau.
+                                </Text>
+
+                                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>3. Sử dụng động tác tay tự nhiên</Text>
+                                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
+                                    Động tác serve trong Pickleball khác với Tennis. Hãy sử dụng động tác underhand hoặc waist-high serve. Tránh swing quá mạnh vì điều này sẽ khiến bạn mất kiểm soát.
+                                </Text>
+
+                                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>4. Tập trung vào độ chính xác</Text>
+                                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
+                                    Thay vì cố serve mạnh nhất, hãy tập trung vào độ chính xác. Hãy luyện tập để serve về các góc khác nhau của sân. Khi bạn thành thạo độ chính xác, việc tăng tốc độ sẽ dễ hơn.
+                                </Text>
+
+                                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>5. Luyện tập thường xuyên</Text>
+                                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
+                                    Điều quan trọng nhất là luyện tập thường xuyên. Hãy dành ít nhất 15-20 phút mỗi ngày để luyện tập serve. Khi bạn luyện tập đủ nhiều, serve sẽ trở thành phản xạ tự nhiên.
                                 </Text>
                             </View>
 
-                            <Text style={[styles.title, { color: colors.text }]}>
-                                5 Tips nâng cao kỹ thuật serve trong Pickleball
-                            </Text>
 
-                            <View style={styles.metaInfo}>
-                                <View style={styles.metaItem}>
-                                    <View style={[styles.authorAvatar, { backgroundColor: '#00D9B5' }]}>
-                                        <Text style={styles.authorAvatarText}>TT</Text>
-                                    </View>
-                                    <View>
-                                        <Text style={[styles.authorName, { color: colors.text }]}>Trần Minh Tuấn</Text>
-                                        <Text style={[styles.publishTime, { color: colors.textTertiary }]}>2 giờ trước</Text>
-                                    </View>
+                            <View style={[styles.engagementSection, { backgroundColor: colors.card }]}>
+                                <View style={[styles.divider, { backgroundColor: colors.border }]} />
+                                <View style={styles.engagementStats}>
+                                    <TouchableOpacity
+                                        style={styles.engagementItem}
+                                        onPress={handleLike}
+                                    >
+                                        <Ionicons
+                                            name={isLiked ? 'heart' : 'heart-outline'}
+                                            size={24}
+                                            color={isLiked ? '#FF4444' : colors.textTertiary}
+                                        />
+                                        <Text style={[
+                                            styles.engagementText,
+                                            isLiked && { color: '#FF4444' },
+                                            !isLiked && { color: colors.textTertiary }
+                                        ]}>
+                                            {likes}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.engagementItem}>
+                                        <MaterialCommunityIcons name="comment-outline" size={24} color={colors.textTertiary} />
+                                        <Text style={[styles.engagementText, { color: colors.textTertiary }]}>24</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.engagementItem}>
+                                        <Ionicons name="share-social-outline" size={24} color={colors.textTertiary} />
+                                        <Text style={[styles.engagementText, { color: colors.textTertiary }]}>18</Text>
+                                    </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity>
-                                    <Ionicons name="person-add-outline" size={24} color="#00D9B5" />
+                                <View style={[styles.divider, { backgroundColor: colors.border }]} />
+                            </View>
+
+
+                            <View style={[styles.commentsSection, { backgroundColor: colors.card }]}>
+                                <View style={styles.sectionHeader}>
+                                    <Text style={[styles.sectionTitle, { color: colors.text, backgroundColor: colors.card }]}>Bình luận (24)</Text>
+                                    <TouchableOpacity>
+                                        <Ionicons name="filter" size={20} color="#00D9B5" />
+                                    </TouchableOpacity>
+                                </View>
+
+                                {comments.map((comment) => (
+                                    <CommentItem key={comment.id} item={comment} />
+                                ))}
+
+                                <TouchableOpacity style={styles.viewAllComments}>
+                                    <Text style={styles.viewAllCommentsText}>Xem tất cả bình luận</Text>
                                 </TouchableOpacity>
                             </View>
 
 
-                            <View style={styles.stats}>
-                                <View style={styles.statItem}>
-                                    <Ionicons name="eye" size={16} color={colors.textTertiary} />
-                                    <Text style={[styles.statText, { color: colors.textTertiary }]}>1.2K</Text>
-                                </View>
-                                <View style={styles.statItem}>
-                                    <MaterialCommunityIcons name="comment-outline" size={16} color={colors.textTertiary} />
-                                    <Text style={[styles.statText, { color: colors.textTertiary }]}>24</Text>
-                                </View>
-                                <View style={styles.statItem}>
-                                    <Ionicons name="share-social-outline" size={16} color={colors.textTertiary} />
-                                    <Text style={[styles.statText, { color: colors.textTertiary }]}>18</Text>
-                                </View>
+                            <View style={[styles.relatedSection, { backgroundColor: colors.card }]}>
+                                <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin tức liên quan</Text>
+                                {relatedNews.map((news) => (
+                                    <RelatedNewsItem key={news.id} item={news} />
+                                ))}
                             </View>
-                        </View>
-
-                        {/* Article Content */}
-                        <View style={[styles.articleContent, { backgroundColor: colors.card }]}>
-                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                                Serve là một trong những kỹ thuật quan trọng nhất trong Pickleball. Một cú serve tốt không chỉ giúp bạn bắt đầu điểm số với lợi thế mà còn tạo áp lực cho đối phương.
-                            </Text>
-
-                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>1. Kiểm tra lại cách cầm gậy</Text>
-                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                                Cách cầm gậy là nền tảng của tất cả các cú đánh. Hãy chắc chắn rằng bạn đang cầm gậy ở vị trí continental grip hoặc eastern grip. Tránh cầm quá chặt vì điều này sẽ giới hạn độ linh hoạt của cổ tay.
-                            </Text>
-
-                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>2. Điều chỉnh vị trí đứng</Text>
-                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                                Đứng cách net khoảng 6-8 feet, chân rộng bằng vai. Bước chân trước nên hơi bước vào một chút để tạo momentum. Vị trí đứng đúng sẽ giúp bạn dễ dàng thực hiện các cú serve khác nhau.
-                            </Text>
-
-                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>3. Sử dụng động tác tay tự nhiên</Text>
-                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                                Động tác serve trong Pickleball khác với Tennis. Hãy sử dụng động tác underhand hoặc waist-high serve. Tránh swing quá mạnh vì điều này sẽ khiến bạn mất kiểm soát.
-                            </Text>
-
-                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>4. Tập trung vào độ chính xác</Text>
-                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                                Thay vì cố serve mạnh nhất, hãy tập trung vào độ chính xác. Hãy luyện tập để serve về các góc khác nhau của sân. Khi bạn thành thạo độ chính xác, việc tăng tốc độ sẽ dễ hơn.
-                            </Text>
-
-                            <Text style={[styles.sectionSubtitle, { color: colors.text }]}>5. Luyện tập thường xuyên</Text>
-                            <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                                Điều quan trọng nhất là luyện tập thường xuyên. Hãy dành ít nhất 15-20 phút mỗi ngày để luyện tập serve. Khi bạn luyện tập đủ nhiều, serve sẽ trở thành phản xạ tự nhiên.
-                            </Text>
-                        </View>
+                        </>
+                    }
+                    data={[]}
+                    renderItem={() => null}
+                    contentContainerStyle={styles.flatListContent}
+                />
 
 
-                        <View style={[styles.engagementSection, { backgroundColor: colors.card }]}>
-                            <View style={[styles.divider, { backgroundColor: colors.border }]} />
-                            <View style={styles.engagementStats}>
-                                <TouchableOpacity
-                                    style={styles.engagementItem}
-                                    onPress={handleLike}
-                                >
-                                    <Ionicons
-                                        name={isLiked ? 'heart' : 'heart-outline'}
-                                        size={24}
-                                        color={isLiked ? '#FF4444' : colors.textTertiary}
-                                    />
-                                    <Text style={[
-                                        styles.engagementText,
-                                        isLiked && { color: '#FF4444' },
-                                        !isLiked && { color: colors.textTertiary }
-                                    ]}>
-                                        {likes}
-                                    </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.engagementItem}>
-                                    <MaterialCommunityIcons name="comment-outline" size={24} color={colors.textTertiary} />
-                                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>24</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.engagementItem}>
-                                    <Ionicons name="share-social-outline" size={24} color={colors.textTertiary} />
-                                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>18</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={[styles.divider, { backgroundColor: colors.border }]} />
-                        </View>
-
-
-                        <View style={[styles.commentsSection, { backgroundColor: colors.card }]}>
-                            <View style={styles.sectionHeader}>
-                                <Text style={[styles.sectionTitle, { color: colors.text, backgroundColor: colors.card }]}>Bình luận (24)</Text>
-                                <TouchableOpacity>
-                                    <Ionicons name="filter" size={20} color="#00D9B5" />
-                                </TouchableOpacity>
-                            </View>
-
-                            {comments.map((comment) => (
-                                <CommentItem key={comment.id} item={comment} />
-                            ))}
-
-                            <TouchableOpacity style={styles.viewAllComments}>
-                                <Text style={styles.viewAllCommentsText}>Xem tất cả bình luận</Text>
-                            </TouchableOpacity>
-                        </View>
-
-
-                        <View style={[styles.relatedSection, { backgroundColor: colors.card }]}>
-                            <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin tức liên quan</Text>
-                            {relatedNews.map((news) => (
-                                <RelatedNewsItem key={news.id} item={news} />
-                            ))}
-                        </View>
-                    </>
-                }
-                data={[]}
-                renderItem={() => null}
-                contentContainerStyle={styles.flatListContent}
-            />
-
-
-            <View style={[styles.commentInputFooter, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
-                <View style={[styles.commentInputAvatar, { backgroundColor: '#667eea' }]}>
-                    <Text style={styles.commentInputAvatarText}>ML</Text>
-                </View>
-                <TouchableOpacity style={[styles.commentInput, { backgroundColor: colors.input }]}>
+                <View style={[styles.commentInputFooter, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
+                    <View style={[styles.commentInputAvatar, { backgroundColor: '#667eea' }]}>
+                        <Text style={styles.commentInputAvatarText}>ML</Text>
+                    </View>
+                    {/* <TouchableOpacity style={[styles.commentInput, { backgroundColor: colors.input }]}>
                     <Text style={[styles.commentInputPlaceholder, { color: colors.textTertiary }]}>Viết bình luận...</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.sendBtn}>
-                    <Ionicons name="send" size={20} color="#00D9B5" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                    <TextInput
+                        style={[styles.commentInput, { backgroundColor: colors.input, color: colors.text }]}
+                        placeholder="Viết bình luận..."
+                        placeholderTextColor={colors.textTertiary}
+                        autoCapitalize="none"
+                    />
+                    <TouchableOpacity style={styles.sendBtn}>
+                        <Ionicons name="send" size={20} color="#00D9B5" />
+                    </TouchableOpacity>
+                </View>
             </View>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
     );
 }
 

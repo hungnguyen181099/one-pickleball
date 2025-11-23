@@ -8,12 +8,10 @@ import {
   FlatList,
   Image,
   ScrollView,
-  StatusBar,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export interface Court {
@@ -242,12 +240,10 @@ const AreaPage = () => {
   );
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
-
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.pageHeader}>
         <Text style={[styles.pageTitle, { color: colors.text }]}>Sân thi đấu</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> router.navigate('/screen/search')}>
           <Ionicons name="search" size={24} color={colors.icon} />
         </TouchableOpacity>
       </View>
@@ -332,7 +328,7 @@ const AreaPage = () => {
         contentContainerStyle={styles.courtsList}
         scrollEnabled={viewMode === 'list'}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

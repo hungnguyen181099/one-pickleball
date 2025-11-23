@@ -1,18 +1,18 @@
+import { styles } from '@/assets/styles/login.styles';
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  Dimensions,
+  View,
 } from 'react-native';
-import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from '@/assets/styles/login.styles';
-import { router } from 'expo-router';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 
 interface LoginFormData {
   email: string;
@@ -21,6 +21,8 @@ interface LoginFormData {
 }
 
 export default function LoginScreen() {
+  const { theme } = useTheme();
+  const colors = useThemedColors();
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -50,70 +52,73 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.header}>
-          <View style={styles.logoContainer}>
-            <View style={styles.logo}>
-              <AntDesign name="check" size={40} color="#fff" />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.header}>
+            <View style={styles.logoContainer}>
+              <View style={styles.logo}>
+                <AntDesign name="check" size={40} color="#fff" />
+              </View>
             </View>
+            <Text style={[styles.title, { color: colors.text }]}>Chào mừng trở lại</Text>
+            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Đăng nhập để tiếp tục</Text>
           </View>
-          <ThemedText style={styles.title}>Chào mừng trở lại</ThemedText>
-          <ThemedText style={styles.subtitle}>Đăng nhập để tiếp tục</ThemedText>
-        </View>
 
-        {/* Form */}
-        <View style={styles.formContainer}>
-          {/* Email Input */}
-          <View style={styles.formGroup}>
-            <ThemedText style={styles.label}>Email hoặc số điện thoại</ThemedText>
-            <ThemedView>
+
+          <View style={styles.formContainer}>
+            
+            <View style={styles.formGroup}>
+              <Text style={[styles.label, { color: colors.text }]}>Email hoặc số điện thoại</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: colors.input, color: colors.text, borderColor: colors.border }]}
                 placeholder="Nhập email hoặc số điện thoại"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.textTertiary}
                 value={formData.email}
                 onChangeText={(text) => handleInputChange('email', text)}
                 keyboardType="email-address"
                 autoCapitalize="none"
               />
-            </ThemedView>
-          </View>
+            </View>
 
-          {/* Password Input */}
-          <View style={styles.formGroup}>
-            <ThemedText style={styles.label}>Mật khẩu</ThemedText>
-            <ThemedView style={styles.passwordContainer}>
-              <TextInput
-                style={styles.passwordInput}
-                placeholder="Nhập mật khẩu"
-                placeholderTextColor="#999"
-                secureTextEntry={!showPassword}
-                value={formData.password}
-                onChangeText={(text) => handleInputChange('password', text)}
-              />
-              <TouchableOpacity
-                style={styles.eyeButton}
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                <Ionicons
-                  name={showPassword ? 'eye' : 'eye-off'}
-                  size={20}
-                  color="#666"
+
+            <View style={styles.formGroup}>
+              <Text style={[styles.label, { color: colors.text }]}>Mật khẩu</Text>
+              <View style={[styles.passwordContainer, { backgroundColor: colors.input, borderColor: colors.border }]}>
+                <TextInput
+                  style={[styles.passwordInput, { color: colors.text }]}
+                  placeholder="Nhập mật khẩu"
+                  placeholderTextColor={colors.textTertiary}
+                  secureTextEntry={!showPassword}
+                  value={formData.password}
+                  onChangeText={(text) => handleInputChange('password', text)}
                 />
-              </TouchableOpacity>
-            </ThemedView>
-          </View>
+                <TouchableOpacity
+                  style={styles.eyeButton}
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Ionicons
+                    name={showPassword ? 'eye' : 'eye-off'}
+                    size={20}
+                    color={colors.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
 
-          {/* Remember & Forgot Password */}
-          <View style={styles.rowBetween}>
-            <View style={styles.checkboxContainer}>
-              <TouchableOpacity
+            <View style={styles.rowBetween}>
+              <View style={styles.checkboxContainer}>
+                {/* <TouchableOpacity
                 style={[
                   styles.checkbox,
+                  { borderColor: colors.border },
                   formData.rememberMe && styles.checkboxChecked,
                 ]}
                 onPress={() => handleInputChange('rememberMe', !formData.rememberMe)}
@@ -122,60 +127,60 @@ export default function LoginScreen() {
                   <Ionicons name="checkmark" size={14} color="#00D9B5" />
                 )}
               </TouchableOpacity>
-              <ThemedText style={styles.checkboxLabel}>Ghi nhớ đăng nhập</ThemedText>
+              <Text style={[styles.checkboxLabel, { color: colors.text }]}>Ghi nhớ đăng nhập</Text> */}
+              </View>
+              <TouchableOpacity>
+                <Text style={styles.linkText}>Quên mật khẩu?</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity>
-              <ThemedText style={styles.linkText}>Quên mật khẩu?</ThemedText>
+
+
+            <TouchableOpacity
+              style={[styles.buttonPrimary, loading && styles.buttonDisabled]}
+              onPress={handleLogin}
+              disabled={loading}
+            >
+              <Text style={styles.buttonText}>
+                {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+              </Text>
             </TouchableOpacity>
           </View>
 
-          {/* Login Button */}
-          <TouchableOpacity
-            style={[styles.buttonPrimary, loading && styles.buttonDisabled]}
-            onPress={handleLogin}
-            disabled={loading}
-          >
-            <Text style={styles.buttonText}>
-              {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
-            </Text>
-          </TouchableOpacity>
-        </View>
 
-        {/* Divider */}
-        <View style={styles.divider}>
-          <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>Hoặc đăng nhập với</Text>
-          <View style={styles.dividerLine} />
-        </View>
+          <View style={styles.divider}>
+            <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+            <Text style={[styles.dividerText, { color: colors.textSecondary }]}>Hoặc đăng nhập với</Text>
+            <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+          </View>
 
-        {/* Social Login */}
-        <View style={styles.socialContainer}>
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => handleSocialLogin('facebook')}
-          >
-            <FontAwesome name="facebook" size={20} color="#1877F2" />
-            <ThemedText style={styles.socialButtonText}>Facebook</ThemedText>
-          </TouchableOpacity>
+          <View style={styles.socialContainer}>
+            <TouchableOpacity
+              style={[styles.socialButton, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => handleSocialLogin('facebook')}
+            >
+              <FontAwesome name="facebook" size={20} color="#1877F2" />
+              <Text style={[styles.socialButtonText, { color: colors.text }]}>Facebook</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => handleSocialLogin('google')}
-          >
-            <AntDesign name="google" size={20} color="#EA4335" />
-            <ThemedText style={styles.socialButtonText}>Google</ThemedText>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={[styles.socialButton, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => handleSocialLogin('google')}
+            >
+              <AntDesign name="google" size={20} color="#EA4335" />
+              <Text style={[styles.socialButtonText, { color: colors.text }]}>Google</Text>
+            </TouchableOpacity>
+          </View>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <ThemedText style={styles.footerText}>Chưa có tài khoản? </ThemedText>
-          <TouchableOpacity onPress={() => router.navigate('/(auth)/register')}>
-            <ThemedText style={styles.linkTextBold}>Đăng ký ngay</ThemedText>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+
+          <View style={styles.footer}>
+            <Text style={[styles.footerText, { color: colors.textSecondary }]}>Chưa có tài khoản? </Text>
+            <TouchableOpacity onPress={() => router.navigate('/(auth)/register')}>
+              <Text style={styles.linkTextBold}>Đăng ký ngay</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 

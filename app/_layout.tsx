@@ -1,26 +1,20 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
-
+// import "react-native-reanimated";
 import { ThemeProvider as CustomThemeProvider } from "@/contexts/ThemeContext";
-import { useColorScheme } from "@/hooks/use-color-scheme";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBarWrapper } from "@/components/StatusBarWrapper";
 
-export const unstable_settings = {
-  anchor: "(tabs)",
-};
+// export const unstable_settings = {
+//   anchor: "(tabs)",
+// };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const token = "null"; // Replace with actual authentication logic
 
   return (
     <CustomThemeProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      {/* <StatusBarWrapper /> */}
+      <SafeAreaView style={{ flex: 1 }} >
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Protected guard={!token}>
             <Stack.Screen name="(auth)" />
@@ -33,8 +27,7 @@ export default function RootLayout() {
             />
           </Stack.Protected>
         </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      </SafeAreaView>
     </CustomThemeProvider>
   );
 }

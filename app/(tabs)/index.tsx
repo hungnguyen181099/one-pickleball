@@ -2,6 +2,8 @@ import { styles } from '@/assets/styles/home.styles';
 import { ActionCard, EventCardComponent, NewsItemComponent, StatCard } from '@/components/home';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
   FlatList,
@@ -11,9 +13,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-
 
 export interface StatCardProps {
   id: string;
@@ -47,7 +46,7 @@ export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const { theme } = useTheme();
   const colors = useThemedColors();
-
+  
   const statCards: StatCardProps[] = [
     { id: '1', icon: 'account', number: '24', label: 'Trận đấu', color: '#00D9B5' },
     { id: '2', icon: 'star', number: '68%', label: 'Tỷ lệ thắng', color: '#FF9800' },
@@ -114,19 +113,20 @@ export default function HomeScreen() {
 
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header */}
+        
         <View style={styles.header}>
           <View>
             <Text style={[styles.greetingText, { color: colors.textTertiary }]}>Xin chào,</Text>
             <Text style={[styles.userName, { color: colors.text }]}>Minh Tuấn</Text>
           </View>
           <View style={styles.headerRight}>
-            <TouchableOpacity style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
+            <TouchableOpacity onPress={()=> router.navigate('/screen/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
               <Ionicons name="notifications-outline" size={24} color={colors.icon} />
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>3</Text>
@@ -228,7 +228,7 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -1,5 +1,5 @@
 import { SettingsItem } from "@/app/(tabs)/user";
-import { styles } from "@/assets/styles/user";
+import { styles } from "@/assets/styles/user.styles";
 import { useThemedColors } from "@/hooks/use-theme";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -9,7 +9,7 @@ const handleSettingPress = (item: SettingsItem) => {
     if (item.onPress) {
         item.onPress();
     } else if (item.route) {
-        router.navigate(item.route as never);
+        router.push(item.route as never);
     }
 };
 

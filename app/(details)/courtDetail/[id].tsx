@@ -8,12 +8,10 @@ import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
     FlatList,
-    StatusBar,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
@@ -126,8 +124,7 @@ export default function CourtDetailScreen() {
     );
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-            <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
 
             <FlatList
                 ListHeaderComponent={
@@ -331,7 +328,7 @@ export default function CourtDetailScreen() {
                     <Text style={styles.footerBtnText}>Đặt sân ngay</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
+        </View>
     );
 }
 

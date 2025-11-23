@@ -7,13 +7,11 @@ import React, { useState } from 'react';
 import {
   FlatList,
   ScrollView,
-  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 interface NewsItem {
@@ -235,11 +233,12 @@ const NewsPage = () => {
     </TouchableOpacity>
   );
 
-  const renderHeader = () => (
-    <>
+
+  return (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>Tin tức & Sự kiện</Text>
-        <TouchableOpacity style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
+        <TouchableOpacity  onPress={()=> router.navigate('/screen/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
           <Ionicons name="notifications-outline" size={24} color={colors.icon} />
           <View style={styles.badge}>
             <Text style={styles.badgeText}>3</Text>
@@ -287,14 +286,7 @@ const NewsPage = () => {
           ))}
         </ScrollView>
       </View>
-    </>
-  );
-
-  return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
       <FlatList
-        ListHeaderComponent={renderHeader}
         data={filteredNews}
         renderItem={({ item }) => <NewsCard item={item} />}
         keyExtractor={(item) => item.id}
@@ -302,7 +294,7 @@ const NewsPage = () => {
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
