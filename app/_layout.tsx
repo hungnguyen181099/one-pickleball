@@ -1,20 +1,22 @@
 import { Stack } from "expo-router";
 // import "react-native-reanimated";
 import { ThemeProvider as CustomThemeProvider } from "@/contexts/ThemeContext";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { StatusBarWrapper } from "@/components/StatusBarWrapper";
+import { View } from "react-native";
 
 // export const unstable_settings = {
 //   anchor: "(tabs)",
 // };
 
 export default function RootLayout() {
+  const edgeInsets = useSafeAreaInsets();
   const token = "null"; // Replace with actual authentication logic
 
   return (
     <CustomThemeProvider>
-      {/* <StatusBarWrapper /> */}
-      <SafeAreaView style={{ flex: 1 }} >
+      <StatusBarWrapper />
+      <View style={{ marginTop: edgeInsets.top, flex:1 }}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Protected guard={!token}>
             <Stack.Screen name="(auth)" />
@@ -27,7 +29,7 @@ export default function RootLayout() {
             />
           </Stack.Protected>
         </Stack>
-      </SafeAreaView>
+      </View>
     </CustomThemeProvider>
   );
 }

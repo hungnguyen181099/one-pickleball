@@ -37,7 +37,7 @@ export const Colors = {
     backgroundSecondary: "#1E293B",
     backgroundTertiary: "#0F172A",
     card: "#1E293B",
-    cardSecondary: "#334155",
+    cardSecondary: "#1E293B",
     border: "#334155",
     borderSecondary: "#475569",
     tint: tintColorDark,

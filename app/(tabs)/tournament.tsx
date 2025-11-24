@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
+    FlatList,
     Image,
     ScrollView,
     Text,
@@ -146,6 +147,13 @@ export default function TournamentScreen() {
         }
     };
 
+    const handle = (id: string) => {
+        router.push({
+            pathname: '/(details)/eventDetail/[id]',
+            params: { id: id }
+        })
+    }
+
     const filteredTournaments = activeFilter === 'all'
         ? tournaments
         : tournaments.filter(t => t.status === activeFilter);
@@ -178,7 +186,7 @@ export default function TournamentScreen() {
     );
 
     const FeaturedTournamentCard = ({ tournament }: { tournament: Tournament }) => (
-        <TouchableOpacity style={styles.featuredCard}>
+        <View style={styles.featuredCard}>
             <View style={[styles.featuredCardInner, { backgroundColor: colors.card }]}>
                 <View style={styles.featuredImageContainer}>
                     <Image
@@ -240,16 +248,16 @@ export default function TournamentScreen() {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.registerBtn}>
+                    <TouchableOpacity onPress={() => handle(tournament.id)} style={styles.registerBtn}>
                         <Text style={styles.registerBtnText}>Đăng ký ngay</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        </TouchableOpacity>
+        </View>
     );
 
     const TournamentCompactCard = ({ tournament }: { tournament: Tournament }) => (
-        <TouchableOpacity style={[styles.compactCardInner, { backgroundColor: colors.card }]}>
+        <TouchableOpacity onPress={() => handle(tournament.id)} style={[styles.compactCardInner, { backgroundColor: colors.card }]}>
             <View style={styles.compactImageContainer}>
                 <Image
                     source={{ uri: tournament.image }}
@@ -362,12 +370,15 @@ export default function TournamentScreen() {
                         </Text>
                         <Text style={styles.resultsBadgeText}>{filteredTournaments.length} giải đấu</Text>
                     </View>
-
-                    <View style={styles.tournamentsList}>
-                        {filteredTournaments.map((tournament) => (
-                            <TournamentCompactCard key={tournament.id} tournament={tournament} />
-                        ))}
-                    </View>
+                
+                    <FlatList
+                        data={filteredTournaments}
+                        renderItem={({ item }) => <TournamentCompactCard tournament={item} />}
+                        keyExtractor={(item) => item.id}
+                        scrollEnabled={false}
+                        contentContainerStyle={styles.tournamentsList}
+                        ListEmptyComponent={<Text style={styles.emptyText}>Không có giải đấu</Text>}
+                    />
                 </View>
 
 
@@ -381,11 +392,13 @@ export default function TournamentScreen() {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.myTournamentsList}>
-                        {myTournaments.map((tournament) => (
-                            <MyTournamentCard key={tournament.id} tournament={tournament} />
-                        ))}
-                    </View>
+                    <FlatList
+                        data={myTournaments}
+                        renderItem={({ item }) => <MyTournamentCard tournament={item} />}
+                        keyExtractor={(item) => item.id}
+                        scrollEnabled={false}
+                        contentContainerStyle={styles.tournamentsList}
+                    />
                 </View>
             </ScrollView>
         </View>

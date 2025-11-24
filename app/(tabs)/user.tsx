@@ -181,7 +181,7 @@ const UserPage = () => {
         {/* Settings */}
         <View style={[styles.section, styles.lastSection]}>
           <Text style={[styles.sectionHeading, { color: colors.text }]}>Cài đặt</Text>
-          <View style={[styles.settingsMenu, { backgroundColor: colors.cardSecondary }]}>
+          <View style={[styles.settingsMenu, { backgroundColor: colors.card }]}>
             {settingsItems.map((item) => (
               <SettingItemComponent key={item.id} item={item} />
             ))}

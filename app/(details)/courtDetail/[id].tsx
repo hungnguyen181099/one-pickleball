@@ -41,7 +41,6 @@ export default function CourtDetailScreen() {
     const [isFavorite, setIsFavorite] = useState(true);
     const { id } = useLocalSearchParams();
     const data: any = courts.find(court => court.id === id)
-    const { theme } = useTheme();
     const colors = useThemedColors();
 
 
@@ -122,6 +121,10 @@ export default function CourtDetailScreen() {
             <Text style={[styles.barCount, { color: colors.textSecondary }]}>{item.count}</Text>
         </View>
     );
+
+    const handle = () =>{
+        router.push('/(booking)/bookcourse')
+    }
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -324,7 +327,7 @@ export default function CourtDetailScreen() {
                     <Text style={[styles.footerPriceLabel, { color: colors.textSecondary }]}>Từ</Text>
                     <Text style={styles.footerPriceValue}>{data.price}/giờ</Text>
                 </View>
-                <TouchableOpacity style={styles.footerBtn}>
+                <TouchableOpacity onPress={handle} style={styles.footerBtn}>
                     <Text style={styles.footerBtnText}>Đặt sân ngay</Text>
                 </TouchableOpacity>
             </View>

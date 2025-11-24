@@ -33,7 +33,6 @@ export default function EventDetailScreen() {
     const [activeTab, setActiveTab] = useState<string>('overview');
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
     const { id } = useLocalSearchParams();
-    const { theme } = useTheme();
     const colors = useThemedColors();
 
 

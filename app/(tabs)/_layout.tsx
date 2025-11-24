@@ -22,7 +22,7 @@ export default function TabLayout() {
           borderTopWidth: 1,
           paddingTop: 4,
           paddingBottom: insets.bottom,
-          height: 50 + insets.bottom,
+          height: 60 + insets.bottom,
         },
         headerShown: false,
          headerTitleStyle: {

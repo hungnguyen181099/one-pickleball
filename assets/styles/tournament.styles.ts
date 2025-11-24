@@ -215,6 +215,7 @@ export const styles = StyleSheet.create({
 
     tournamentsList: {
         gap: 12,
+        marginBottom: 12
     },
 
     compactCardInner: {
@@ -224,6 +225,7 @@ export const styles = StyleSheet.create({
         gap: 12,
         ...Shadows.sm,
         borderRadius: Radius.md,
+        overflow: 'hidden',
     },
     compactImageContainer: {
         width: 80,
@@ -275,10 +277,6 @@ export const styles = StyleSheet.create({
         fontWeight: '700',
     },
 
-    // My Tournaments
-    myTournamentsList: {
-        gap: 12,
-    },
     myTournamentCard: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -307,5 +305,12 @@ export const styles = StyleSheet.create({
     },
     myTournamentDate: {
         fontSize: 13,
+    },
+
+    emptyText: {
+        fontSize: 14,
+        textAlign: 'center',
+        margin: 16,
+        color: AppColors.gray400,
     },
 });
