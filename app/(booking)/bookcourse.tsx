@@ -44,7 +44,7 @@ export default function BookingCourse() {
     const [selectedCourt, setSelectedCourt] = useState('1');
     const [notes, setNotes] = useState('');
 
-    // Hàm tạo danh sách ngày từ hôm nay đến 10 ngày tới
+
     const generateDates = (): DateOption[] => {
         const dates: DateOption[] = [];
         const today = new Date();
@@ -73,8 +73,8 @@ export default function BookingCourse() {
     const dates: DateOption[] = generateDates();
 
     const morningSlots: TimeSlot[] = [
-        { id: '06:00', time: '06:00', price: '200k', available: false },
-        { id: '07:00', time: '07:00', price: '200k', available: false },
+        { id: '06:00', time: '06:00', price: '200k', available: true },
+        { id: '07:00', time: '07:00', price: '200k', available: true },
         { id: '08:00', time: '08:00', price: '200k', available: true },
         { id: '09:00', time: '09:00', price: '200k', available: true },
         { id: '10:00', time: '10:00', price: '200k', available: true },
@@ -103,6 +103,15 @@ export default function BookingCourse() {
         { id: '2', name: 'Sân 2', description: 'Indoor • AC', available: true },
         { id: '3', name: 'Sân 3', description: 'Indoor • AC • VIP', available: true },
     ];
+
+    const btnHandle = () => {
+        router.push({
+            pathname: '/checkout',
+            params: {
+
+            }
+        })
+    }
 
     const ProgressSteps = () => (
         <View style={[styles.progressContainer, { borderBottomColor: colors.border, backgroundColor: colors.background }]}>
@@ -169,9 +178,24 @@ export default function BookingCourse() {
 
     const TimeSlotButton = ({ slot }: { slot: TimeSlot }) => {
         const isSelected = selectedTimes.includes(slot.time);
+        const isTimeSlotPassed = (): boolean => {
+            if (selectedDate !== '1') return false;
+
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const [slotHour, slotMinute] = slot.time.split(':').map(Number);
+
+            if (slotHour < currentHour) return true;
+            if (slotHour === currentHour && slotMinute <= currentMinute) return true;
+            return false;
+        };
+
+        const isPassed = isTimeSlotPassed();
+        const isAvailable = slot.available && !isPassed;
 
         const handlePress = () => {
-            if (!slot.available) return;
+            if (!isAvailable) return;
 
             if (isSelected) {
                 setSelectedTimes(selectedTimes.filter(time => time !== slot.time));
@@ -184,13 +208,13 @@ export default function BookingCourse() {
             <TouchableOpacity
                 style={[
                     styles.timeSlot,
-                    !slot.available && styles.timeSlotUnavailable,
-                    isSelected && slot.available && styles.timeSlotActive,
-                    slot.available && !isSelected && styles.timeSlotInactive,
+                    !isAvailable && styles.timeSlotUnavailable,
+                    isSelected && isAvailable && styles.timeSlotActive,
+                    isAvailable && !isSelected && styles.timeSlotInactive,
                     slot.popular && !isSelected && styles.timeSlotPopular,
                 ]}
                 onPress={handlePress}
-                disabled={!slot.available}
+                disabled={!isAvailable}
             >
                 <Text style={[styles.timeText, { color: isSelected ? '#fff' : colors.text }]}>
                     {slot.time}
@@ -393,7 +417,7 @@ export default function BookingCourse() {
                         styles.continueBtn,
                         (!selectedDate || selectedTimes.length === 0 || !selectedCourt) && { opacity: 0.5 }
                     ]}
-                    onPress={() => setCurrentStep(3)}
+                    onPress={btnHandle}
                     disabled={!selectedDate || selectedTimes.length === 0 || !selectedCourt}
                 >
                     <Text style={styles.continueBtnText}>Tiếp tục</Text>
