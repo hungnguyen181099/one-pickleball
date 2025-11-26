@@ -75,6 +75,8 @@ export const styles = StyleSheet.create({
         flex: 1,
         height: 2,
         marginHorizontal: 8,
+        alignItems: 'center',
+        marginTop: -20,
     },
     progressLineActive: {
         backgroundColor: AppColors.primary,
@@ -146,7 +148,6 @@ export const styles = StyleSheet.create({
         gap: 4,
         minWidth: 70,
         position: 'relative',
-        // backgroundColor: AppColors.input,
     },
 
     dateCardActive: {
@@ -154,6 +155,7 @@ export const styles = StyleSheet.create({
         borderColor: AppColors.gray300,
     },
     dateCardInactive: {
+        borderColor: AppColors.gray300, 
     },
     dateDay: {
         fontSize: 12,
@@ -208,7 +210,8 @@ export const styles = StyleSheet.create({
     },
     timeSlotActive: {
         backgroundColor: AppColors.primary,
-        borderColor: AppColors.primary,
+        borderWidth: 1, 
+        borderColor: AppColors.primaryDark,
     },
     timeSlotInactive: {
         borderColor: AppColors.gray300,

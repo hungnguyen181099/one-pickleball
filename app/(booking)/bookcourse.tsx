@@ -2,7 +2,6 @@
 import { AppColors } from '@/constants/theme';
 import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
-import { Background } from '@react-navigation/elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
@@ -39,11 +38,10 @@ interface CourtOption {
 
 export default function BookingCourse() {
     const colors = useThemedColors();
-    const [currentStep, setCurrentStep] = useState(2);
+    const [currentStep, setCurrentStep] = useState(1);
     const [selectedDate, setSelectedDate] = useState('1');
-    const [selectedTime, setSelectedTime] = useState('15:00');
-    const [selectedDuration, setSelectedDuration] = useState('1.5');
-    const [selectedCourt, setSelectedCourt] = useState('2');
+    const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
+    const [selectedCourt, setSelectedCourt] = useState('1');
     const [notes, setNotes] = useState('');
 
     // Hàm tạo danh sách ngày từ hôm nay đến 10 ngày tới
@@ -100,13 +98,6 @@ export default function BookingCourse() {
         { id: '22:00', time: '22:00', price: '220k', available: true },
     ];
 
-    const durations = [
-        { id: '1', label: '1 giờ' },
-        { id: '1.5', label: '1.5 giờ' },
-        { id: '2', label: '2 giờ' },
-        { id: '3', label: '3 giờ' },
-    ];
-
     const courts: CourtOption[] = [
         { id: '1', name: 'Sân 1', description: 'Indoor • AC', available: true },
         { id: '2', name: 'Sân 2', description: 'Indoor • AC', available: true },
@@ -161,7 +152,7 @@ export default function BookingCourse() {
             <View
                 style={[
                     styles.dateCard,
-                    {backgroundColor: colors.input},
+                    { backgroundColor: colors.input },
                     selectedDate === date.id ? styles.dateCardActive : styles.dateCardInactive,
                 ]}
             >
@@ -176,47 +167,45 @@ export default function BookingCourse() {
         </TouchableOpacity>
     );
 
-    const TimeSlotButton = ({ slot }: { slot: TimeSlot }) => (
-        <TouchableOpacity
-            style={[
-                styles.timeSlot,
-                !slot.available && styles.timeSlotUnavailable,
-                selectedTime === slot.time && slot.available && styles.timeSlotActive,
-                slot.available && selectedTime !== slot.time && styles.timeSlotInactive,
-                slot.popular && selectedTime !== slot.time && styles.timeSlotPopular,
-                // { borderColor: selectedTime === slot.time ? undefined : colors.border }
-            ]}
-            onPress={() => slot.available && setSelectedTime(slot.time)}
-            disabled={!slot.available}
-        >
-            <Text style={[styles.timeText, { color: selectedTime === slot.time ? '#fff' : colors.text }]}>
-                {slot.time}
-            </Text>
-            <Text style={[styles.timePrice, { color: selectedTime === slot.time ? '#fff' : colors.textSecondary }]}>
-                {slot.price}
-            </Text>
-            {slot.popular && selectedTime !== slot.time && (
-                <View style={styles.popularBadge}>
-                    <Text style={styles.popularBadgeText}>Hot</Text>
-                </View>
-            )}
-        </TouchableOpacity>
-    );
+    const TimeSlotButton = ({ slot }: { slot: TimeSlot }) => {
+        const isSelected = selectedTimes.includes(slot.time);
 
-    const DurationButton = ({ duration }: { duration: { id: string; label: string } }) => (
-        <TouchableOpacity
-            style={[
-                styles.durationBtn,
-                selectedDuration === duration.id ? styles.durationBtnActive : styles.durationBtnInactive,
-                // { borderColor: selectedDuration === duration.id ? undefined : colors.border }
-            ]}
-            onPress={() => setSelectedDuration(duration.id)}
-        >
-            <Text style={[styles.durationBtnText, { color: selectedDuration === duration.id ? '#fff' : colors.text }]}>
-                {duration.label}
-            </Text>
-        </TouchableOpacity>
-    );
+        const handlePress = () => {
+            if (!slot.available) return;
+
+            if (isSelected) {
+                setSelectedTimes(selectedTimes.filter(time => time !== slot.time));
+            } else {
+                setSelectedTimes([...selectedTimes, slot.time].sort());
+            }
+        };
+
+        return (
+            <TouchableOpacity
+                style={[
+                    styles.timeSlot,
+                    !slot.available && styles.timeSlotUnavailable,
+                    isSelected && slot.available && styles.timeSlotActive,
+                    slot.available && !isSelected && styles.timeSlotInactive,
+                    slot.popular && !isSelected && styles.timeSlotPopular,
+                ]}
+                onPress={handlePress}
+                disabled={!slot.available}
+            >
+                <Text style={[styles.timeText, { color: isSelected ? '#fff' : colors.text }]}>
+                    {slot.time}
+                </Text>
+                <Text style={[styles.timePrice, { color: isSelected ? '#fff' : colors.textSecondary }]}>
+                    {slot.price}
+                </Text>
+                {slot.popular && !isSelected && (
+                    <View style={styles.popularBadge}>
+                        <Text style={styles.popularBadgeText}>Hot</Text>
+                    </View>
+                )}
+            </TouchableOpacity>
+        );
+    };
 
     const CourtOptionCard = ({ court }: { court: CourtOption }) => (
         <TouchableOpacity
@@ -323,15 +312,6 @@ export default function BookingCourse() {
                     </View>
                 </View>
 
-                {/* <View style={styles.section}>
-                    <Text style={[styles.sectionTitle, { color: colors.text }]}>Thời lượng</Text>
-                    <View style={styles.durationSelector}>
-                        {durations.map((duration) => (
-                            <DurationButton key={duration.id} duration={duration} />
-                        ))}
-                    </View>
-                </View> */}
-
 
                 <View style={styles.section}>
                     <Text style={[styles.sectionTitle, { color: colors.text }]}>Chọn sân</Text>
@@ -369,14 +349,53 @@ export default function BookingCourse() {
                 <View style={styles.bookingSummary}>
                     <View style={styles.summaryItem}>
                         <Text style={[styles.summaryLabel, { color: colors.textSecondary }]}>Ngày giờ:</Text>
-                        <Text style={[styles.summaryValue, { color: colors.text }]}>19/11, 15:00 - 16:30</Text>
+                        <Text style={[styles.summaryValue, { color: colors.text }]}>
+                            {(() => {
+                                const selectedDateObj = dates.find(d => d.id === selectedDate);
+                                if (!selectedDateObj || selectedTimes.length === 0) return 'Chưa chọn';
+
+                                const dateStr = `${selectedDateObj.number}/${selectedDateObj.month.replace('Th', '')}`;
+                                const sortedTimes = [...selectedTimes].sort();
+                                const startTime = sortedTimes[0];
+                                const lastTime = sortedTimes[sortedTimes.length - 1];
+                                const [hour, minute] = lastTime.split(':').map(Number);
+                                const endHour = hour + 1;
+                                const endTimeStr = `${String(endHour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+
+                                return `${dateStr}, ${startTime} - ${endTimeStr}`;
+                            })()}
+                        </Text>
                     </View>
                     <View style={styles.summaryItem}>
                         <Text style={[styles.summaryLabel, { color: colors.textSecondary }]}>Tổng tiền:</Text>
-                        <Text style={styles.priceHighlight}>375.000đ</Text>
+                        <Text style={styles.priceHighlight}>
+                            {(() => {
+                                if (selectedTimes.length === 0) return '0đ';
+
+                                const allSlots = [...morningSlots, ...afternoonSlots, ...eveningSlots];
+                                let totalPrice = 0;
+                                selectedTimes.forEach(time => {
+                                    const slot = allSlots.find(s => s.time === time);
+                                    if (slot) {
+                                        const priceStr = slot.price.replace('k', '');
+                                        const priceNumber = parseFloat(priceStr) * 1000;
+                                        totalPrice += priceNumber;
+                                    }
+                                });
+
+                                return totalPrice.toLocaleString('vi-VN') + 'đ';
+                            })()}
+                        </Text>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.continueBtn} onPress={() => setCurrentStep(3)}>
+                <TouchableOpacity
+                    style={[
+                        styles.continueBtn,
+                        (!selectedDate || selectedTimes.length === 0 || !selectedCourt) && { opacity: 0.5 }
+                    ]}
+                    onPress={() => setCurrentStep(3)}
+                    disabled={!selectedDate || selectedTimes.length === 0 || !selectedCourt}
+                >
                     <Text style={styles.continueBtnText}>Tiếp tục</Text>
                 </TouchableOpacity>
             </View>
