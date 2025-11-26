@@ -105,10 +105,47 @@ export default function BookingCourse() {
     ];
 
     const btnHandle = () => {
+        
+        const selectedDateObj = dates.find(d => d.id === selectedDate);
+        if (!selectedDateObj) return;
+
+        
+        const allSlots = [...morningSlots, ...afternoonSlots, ...eveningSlots];
+        let totalPrice = 0;
+        selectedTimes.forEach(time => {
+            const slot = allSlots.find(s => s.time === time);
+            if (slot) {
+                const priceStr = slot.price.replace('k', '');
+                const priceNumber = parseFloat(priceStr) * 1000;
+                totalPrice += priceNumber;
+            }
+        });
+
+        
+        const dateStr = `${selectedDateObj.number}/${selectedDateObj.month.replace('Th', '')}`;
+        const sortedTimes = [...selectedTimes].sort();
+        const startTime = sortedTimes[0];
+        const lastTime = sortedTimes[sortedTimes.length - 1];
+        const [hour, minute] = lastTime.split(':').map(Number);
+        const endHour = hour + 1;
+        const endTimeStr = `${String(endHour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+        const timeRange = `${startTime} - ${endTimeStr}`;
+
+        
+        const selectedCourtObj = courts.find(c => c.id === selectedCourt);
+
         router.push({
             pathname: '/checkout',
             params: {
-
+                courtName: 'Sân Pickleball Rạch Chiếc',
+                location: 'Quận 2, TP.HCM',
+                date: dateStr,
+                timeRange: timeRange,
+                selectedTimes: JSON.stringify(selectedTimes),
+                court: selectedCourtObj?.name || '',
+                courtDescription: selectedCourtObj?.description || '',
+                notes: notes,
+                totalPrice: totalPrice.toString(),
             }
         })
     }

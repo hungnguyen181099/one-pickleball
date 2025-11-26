@@ -3,7 +3,7 @@ import { AppColors } from '@/constants/theme';
 import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -23,18 +23,19 @@ interface PaymentMethod {
 export default function CheckoutScreen() {
   const colors = useThemedColors();
   const [selectedPayment, setSelectedPayment] = useState('momo');
+  const params = useLocalSearchParams();
 
-  // Mock data - trong thực tế sẽ lấy từ params hoặc state management
+  // Lấy dữ liệu từ params
   const bookingData = {
-    courtName: 'Sân Pickleball Rạch Chiếc',
-    location: 'Quận 2, TP.HCM',
-    date: '26/11',
-    timeRange: '15:00 - 18:00',
-    selectedTimes: ['15:00', '16:00', '17:00'],
-    court: 'Sân 1',
-    courtDescription: 'Indoor • AC',
-    notes: '',
-    totalPrice: 750000,
+    courtName: (params.courtName as string) || 'Sân Pickleball Rạch Chiếc',
+    location: (params.location as string) || 'Quận 2, TP.HCM',
+    date: (params.date as string) || '26/11',
+    timeRange: (params.timeRange as string) || '15:00 - 18:00',
+    selectedTimes: params.selectedTimes ? JSON.parse(params.selectedTimes as string) : ['15:00', '16:00', '17:00'],
+    court: (params.court as string) || 'Sân 1',
+    courtDescription: (params.courtDescription as string) || 'Indoor • AC',
+    notes: (params.notes as string) || '',
+    totalPrice: params.totalPrice ? parseInt(params.totalPrice as string) : 750000,
   };
 
   const paymentMethods: PaymentMethod[] = [
@@ -76,9 +77,6 @@ export default function CheckoutScreen() {
         {
           text: 'Xác nhận',
           onPress: () => {
-            // Xử lý đặt sân
-            Alert.alert('Thành công', 'Đặt sân thành công!');
-            router.back();
           }
         }
       ]
@@ -207,7 +205,7 @@ export default function CheckoutScreen() {
             <View style={{ gap: 8 }}>
               <Text style={{ fontSize: 12, color: colors.textSecondary }}>Khung giờ đã chọn</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-                {bookingData.selectedTimes.map((time) => (
+                {bookingData.selectedTimes.map((time: string) => (
                   <View
                     key={time}
                     style={{
@@ -251,7 +249,7 @@ export default function CheckoutScreen() {
             borderWidth: 1,
             borderColor: colors.border
           }}>
-            {bookingData.selectedTimes.map((time, index) => (
+            {bookingData.selectedTimes.map((time: string, index: number) => (
               <View key={time} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={{ fontSize: 14, color: colors.textSecondary }}>
                   Giờ {time}
