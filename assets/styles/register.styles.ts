@@ -34,6 +34,10 @@ export const styles = StyleSheet.create({
     borderColor: '#fff',
     marginBottom: 16,
   },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
   title: {
     fontSize: 24,
     fontWeight: '700',

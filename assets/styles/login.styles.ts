@@ -28,6 +28,10 @@ export const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: '#fff',
   },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
   title: {
     fontSize: 24,
     fontWeight: '700',

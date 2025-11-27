@@ -11,7 +11,7 @@ import { View } from "react-native";
 
 export default function RootLayout() {
   const edgeInsets = useSafeAreaInsets();
-  const token = "null"; // Replace with actual authentication logic
+  const token = null; // Replace with actual authentication logic
 
   return (
     <CustomThemeProvider>

@@ -1,6 +1,7 @@
 import { styles } from '@/assets/styles/login.styles';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
@@ -65,7 +66,8 @@ export default function LoginScreen() {
           <View style={styles.header}>
             <View style={styles.logoContainer}>
               <View style={styles.logo}>
-                <AntDesign name="check" size={40} color="#fff" />
+                {/* <AntDesign name="check" size={40} color="#fff" /> */}
+                <Image style={styles.image} source={require('@/assets/images/logo.png')} />
               </View>
             </View>
             <Text style={[styles.title, { color: colors.text }]}>Chào mừng trở lại</Text>
@@ -74,7 +76,7 @@ export default function LoginScreen() {
 
 
           <View style={styles.formContainer}>
-            
+
             <View style={styles.formGroup}>
               <Text style={[styles.label, { color: colors.text }]}>Email hoặc số điện thoại</Text>
               <TextInput
