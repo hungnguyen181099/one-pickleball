@@ -1,5 +1,5 @@
 
-import { styles } from '@/assets/styles/area.styles';
+import { styles } from '@/constants/styles/area.styles';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -243,7 +243,7 @@ const AreaPage = () => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.pageHeader}>
         <Text style={[styles.pageTitle, { color: colors.text }]}>Sân thi đấu</Text>
-        <TouchableOpacity onPress={()=> router.navigate('/screen/search')}>
+        <TouchableOpacity onPress={()=> router.navigate('/search')}>
           <Ionicons name="search" size={24} color={colors.icon} />
         </TouchableOpacity>
       </View>

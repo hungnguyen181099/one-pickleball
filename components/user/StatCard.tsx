@@ -1,5 +1,5 @@
 import { StatCardProps } from "@/app/(tabs)/user";
-import { styles } from "@/assets/styles/user.styles";
+import { styles } from "@/constants/styles/user.styles";
 import { useThemedColors } from "@/hooks/use-theme";
 import { Text, View } from "react-native";
 

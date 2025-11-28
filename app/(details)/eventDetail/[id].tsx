@@ -1,11 +1,10 @@
-import { styles } from '@/assets/styles/eventdeatil.styles';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { styles } from '@/constants/styles/eventdeatil.styles';
+import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import {
     ScrollView,
-    StatusBar,
     Text,
     TouchableOpacity,
     View

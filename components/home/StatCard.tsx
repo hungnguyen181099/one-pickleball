@@ -1,5 +1,5 @@
 import { StatCardProps } from "@/app/(tabs)";
-import { styles } from "@/assets/styles/home.styles";
+import { styles } from "@/constants/styles/home.styles";
 import { useThemedColors } from "@/hooks/use-theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";

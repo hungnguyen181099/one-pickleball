@@ -1,4 +1,4 @@
-import { styles } from '@/assets/styles/newdetail.styles';
+import { styles } from '@/constants/styles/newdetail.styles';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,7 +9,6 @@ import {
     FlatList,
     KeyboardAvoidingView,
     Platform,
-    StatusBar,
     Text,
     TextInput,
     TouchableOpacity,

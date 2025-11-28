@@ -25,10 +25,7 @@ export default function TabLayout() {
           height: 60 + insets.bottom,
         },
         headerShown: false,
-         headerTitleStyle: {
-          color: Colors[colorScheme ?? "light"].tint,
-          fontWeight: "600",
-        },
+      
       }}
     >
       <Tabs.Screen

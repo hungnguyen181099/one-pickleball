@@ -1,18 +1,18 @@
-import { styles } from '@/assets/styles/register.styles';
+import { styles } from '@/constants/styles/register.styles';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StatusBar,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 interface RegisterFormData {
   fullName: string;

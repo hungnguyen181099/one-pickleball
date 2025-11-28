@@ -1,4 +1,4 @@
-﻿import { styles } from '@/assets/styles/booking.styles';
+﻿import { styles } from '@/constants/styles/booking.styles';
 import { AppColors } from '@/constants/theme';
 import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';

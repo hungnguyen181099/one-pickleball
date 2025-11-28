@@ -1,14 +1,14 @@
-import { styles } from '@/assets/styles/setting.styles';
+import { styles } from '@/constants/styles/setting.styles';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  ScrollView,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View
+    ScrollView,
+    Switch,
+    Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
 
 export default function SettingScreen() {

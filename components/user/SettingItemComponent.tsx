@@ -1,5 +1,5 @@
 import { SettingsItem } from "@/app/(tabs)/user";
-import { styles } from "@/assets/styles/user.styles";
+import { styles } from "@/constants/styles/user.styles";
 import { useThemedColors } from "@/hooks/use-theme";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { router } from "expo-router";

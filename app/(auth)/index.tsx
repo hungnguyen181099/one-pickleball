@@ -1,4 +1,4 @@
-import { styles } from '@/assets/styles/login.styles';
+import { styles } from '@/constants/styles/login.styles';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';

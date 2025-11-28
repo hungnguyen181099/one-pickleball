@@ -1,6 +1,6 @@
 import { courts } from '@/app/(tabs)/area';
-import { styles } from '@/assets/styles/courtdetail.styles';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { styles } from '@/constants/styles/courtdetail.styles';
+import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';

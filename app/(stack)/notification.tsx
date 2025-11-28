@@ -1,4 +1,4 @@
-import { styles } from '@/assets/styles/notification.styles';
+import { styles } from '@/constants/styles/notification.styles';
 import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';

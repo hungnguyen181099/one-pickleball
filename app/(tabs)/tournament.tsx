@@ -1,4 +1,4 @@
-import { styles } from '@/assets/styles/tournament.styles';
+import { styles } from '@/constants/styles/tournament.styles';
 import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';

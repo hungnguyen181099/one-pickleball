@@ -1,5 +1,5 @@
-import { styles } from "@/assets/styles/user.styles";
 import { AchievementCard, SettingItemComponent, StatCard } from "@/components/user";
+import { styles } from "@/constants/styles/user.styles";
 import { useTheme, useThemedColors } from "@/hooks/use-theme";
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
@@ -61,7 +61,7 @@ const UserPage = () => {
       id: '1',
       icon: 'cog',
       label: 'Cài đặt chung',
-      route: '/screen/setting',
+      route: '/setting',
     },
     {
       id: '3',

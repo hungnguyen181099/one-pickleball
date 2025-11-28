@@ -1,4 +1,4 @@
-import { styles } from "@/assets/styles/news.styles";
+import { styles } from "@/constants/styles/news.styles";
 import { useTheme, useThemedColors } from "@/hooks/use-theme";
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageBackground } from "expo-image";
@@ -238,7 +238,7 @@ const NewsPage = () => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>Tin tức & Sự kiện</Text>
-        <TouchableOpacity  onPress={()=> router.navigate('/screen/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
+        <TouchableOpacity  onPress={()=> router.navigate('/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
           <Ionicons name="notifications-outline" size={24} color={colors.icon} />
           <View style={styles.badge}>
             <Text style={styles.badgeText}>3</Text>

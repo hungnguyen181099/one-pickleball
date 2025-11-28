@@ -1,5 +1,5 @@
-import { styles } from '@/assets/styles/search.styles';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { styles } from '@/constants/styles/search.styles';
+import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';

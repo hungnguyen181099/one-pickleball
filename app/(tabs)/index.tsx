@@ -1,9 +1,8 @@
-import { styles } from '@/assets/styles/home.styles';
 import { ActionCard, EventCardComponent, NewsItemComponent, StatCard } from '@/components/home';
+import { styles } from '@/constants/styles/home.styles';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import {
   FlatList,
@@ -126,7 +125,7 @@ export default function HomeScreen() {
             <Text style={[styles.userName, { color: colors.text }]}>Minh Tuấn</Text>
           </View>
           <View style={styles.headerRight}>
-            <TouchableOpacity onPress={()=> router.navigate('/screen/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
+            <TouchableOpacity onPress={()=> router.navigate('/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
               <Ionicons name="notifications-outline" size={24} color={colors.icon} />
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>3</Text>
