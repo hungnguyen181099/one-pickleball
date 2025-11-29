@@ -16,7 +16,6 @@ import {
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
-  const { theme } = useTheme();
   const colors = useThemedColors();
 
   const statCards: HomeStatCardProps[] = [

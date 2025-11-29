@@ -1,14 +1,14 @@
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { styles } from '@/constants/styles/booking.styles';
 import { AppColors } from '@/constants/theme';
 import { useThemedColors } from '@/hooks/use-theme';
+import { PaymentMethod } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { PaymentMethod } from '@/types';
 
 import {
-  Alert,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -18,6 +18,7 @@ import {
 export default function CheckoutScreen() {
   const colors = useThemedColors();
   const [selectedPayment, setSelectedPayment] = useState('momo');
+  const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const params = useLocalSearchParams();
 
   // Lấy dữ liệu từ params
@@ -61,21 +62,7 @@ export default function CheckoutScreen() {
   ];
 
   const handleConfirmBooking = () => {
-    Alert.alert(
-      'Xác nhận đặt sân',
-      'Bạn có chắc chắn muốn đặt sân này?',
-      [
-        {
-          text: 'Hủy',
-          style: 'cancel'
-        },
-        {
-          text: 'Xác nhận',
-          onPress: () => {
-          }
-        }
-      ]
-    );
+    setIsConfirmModalVisible(true);
   };
 
   const PaymentMethodCard = ({ method }: { method: PaymentMethod }) => (
@@ -286,6 +273,17 @@ export default function CheckoutScreen() {
           <Text style={styles.continueBtnText}>Xác nhận đặt sân</Text>
         </TouchableOpacity>
       </View>
+
+      <ConfirmModal
+        visible={isConfirmModalVisible}
+        title="Xác nhận đặt sân"
+        message="Bạn có chắc chắn muốn đặt sân này?"
+        onCancel={() => setIsConfirmModalVisible(false)}
+        onConfirm={() => {
+          setIsConfirmModalVisible(false);
+          // TODO: Handle booking logic here
+        }}
+      />
     </View>
   );
 }

@@ -1,10 +1,10 @@
-import { NewsItem } from "@/app/(tabs)";
 import { styles } from "@/constants/styles/home.styles";
 import { useThemedColors } from "@/hooks/use-theme";
+import { HomeNewsItem } from "@/types";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 
-export const NewsItemComponent = ({ item }: { item: NewsItem }) => {
+export const NewsItemComponent = ({ item }: { item: HomeNewsItem }) => {
   const colors = useThemedColors();
 
   return (
