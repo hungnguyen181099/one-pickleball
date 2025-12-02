@@ -127,7 +127,7 @@ export const styles = StyleSheet.create({
     },
     newsCardInner: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         backgroundColor: '#f9f9f9',
         borderRadius: 12,
         overflow: 'hidden',

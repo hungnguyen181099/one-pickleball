@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
@@ -6,8 +6,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  scrollContent: {
-  },
+  scrollContent: {},
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -99,9 +98,6 @@ export const styles = StyleSheet.create({
   statsContainer: {
     paddingHorizontal: 16,
     marginBottom: 24,
-    gap: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   statCard: {
     alignItems: 'center',
@@ -135,8 +131,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 24,
   },
-  lastSection: {
-  },
+  lastSection: {},
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
@@ -156,12 +151,14 @@ export const styles = StyleSheet.create({
   actionGrid: {
     marginTop: 12,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     flexWrap: 'wrap',
-    gap: 12,
+    marginHorizontal: -8,
+  },
+  actionCardContainer: {
+    width: '50%',
+    padding: 8,
   },
   actionCard: {
-    width: (width - 64) / 2,
     paddingVertical: 16,
     borderRadius: 12,
     borderWidth: 1.5,

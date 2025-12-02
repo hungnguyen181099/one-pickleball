@@ -1,6 +1,12 @@
-import { ActionCard, EventCardComponent, NewsItemComponent, StatCard } from '@/components/home';
+import { Grid, GridItem } from '@/components/Grid';
+import {
+  ActionCard,
+  EventCardComponent,
+  NewsItemComponent,
+  StatCard,
+} from '@/components/home';
 import { styles } from '@/constants/styles/home.styles';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { useThemedColors } from '@/hooks/use-theme';
 import { HomeEventCard, HomeNewsItem, HomeStatCardProps } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -19,9 +25,27 @@ export default function HomeScreen() {
   const colors = useThemedColors();
 
   const statCards: HomeStatCardProps[] = [
-    { id: '1', icon: 'account', number: '24', label: 'Trận đấu', color: '#00D9B5' },
-    { id: '2', icon: 'star', number: '68%', label: 'Tỷ lệ thắng', color: '#FF9800' },
-    { id: '3', icon: 'trophy', number: '#42', label: 'Xếp hạng', color: '#2196F3' },
+    {
+      id: '1',
+      icon: 'account',
+      number: '24',
+      label: 'Trận đấu',
+      color: '#00D9B5',
+    },
+    {
+      id: '2',
+      icon: 'star',
+      number: '68%',
+      label: 'Tỷ lệ thắng',
+      color: '#FF9800',
+    },
+    {
+      id: '3',
+      icon: 'trophy',
+      number: '#42',
+      label: 'Xếp hạng',
+      color: '#2196F3',
+    },
   ];
 
   const events: HomeEventCard[] = [
@@ -74,31 +98,38 @@ export default function HomeScreen() {
     },
   ];
 
-  const handleSearch = () => {
+  const handleSearch = () => {};
 
-  };
-
-  const handleActionPress = (action: string) => {
-
-  };
-
+  const handleActionPress = (action: string) => {};
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-
         <View style={styles.header}>
           <View>
-            <Text style={[styles.greetingText, { color: colors.textTertiary }]}>Xin chào,</Text>
-            <Text style={[styles.userName, { color: colors.text }]}>Minh Tuấn</Text>
+            <Text style={[styles.greetingText, { color: colors.textTertiary }]}>
+              Xin chào,
+            </Text>
+            <Text style={[styles.userName, { color: colors.text }]}>
+              Minh Tuấn
+            </Text>
           </View>
           <View style={styles.headerRight}>
-            <TouchableOpacity onPress={() => router.navigate('/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
-              <Ionicons name="notifications-outline" size={24} color={colors.icon} />
+            <TouchableOpacity
+              onPress={() => router.navigate('/notification')}
+              style={[
+                styles.notificationBtn,
+                { backgroundColor: colors.backgroundTertiary },
+              ]}
+            >
+              <Ionicons
+                name='notifications-outline'
+                size={24}
+                color={colors.icon}
+              />
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>3</Text>
               </View>
@@ -113,61 +144,80 @@ export default function HomeScreen() {
 
         <View style={styles.searchSection}>
           <View style={[styles.searchBar, { backgroundColor: colors.input }]}>
-            <Ionicons name="search" size={20} color={colors.textTertiary} style={styles.searchIcon} />
+            <Ionicons
+              name='search'
+              size={20}
+              color={colors.textTertiary}
+              style={styles.searchIcon}
+            />
             <TextInput
               style={[styles.searchInput, { color: colors.text }]}
-              placeholder="Tìm sân, giải đấu, người chơi..."
+              placeholder='Tìm sân, giải đấu, người chơi...'
               placeholderTextColor={colors.textTertiary}
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
             <TouchableOpacity style={styles.filterBtn}>
-              <Ionicons name="options-outline" size={20} color={colors.icon} />
+              <Ionicons name='options-outline' size={20} color={colors.icon} />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.statsContainer}>
-          {statCards.map(item => (
-            <StatCard key={item.id} item={item} />
+        <Grid columns={3} gap={8} style={styles.statsContainer}>
+          {statCards.map((item) => (
+            <GridItem key={item.id}>
+              <StatCard item={item} />
+            </GridItem>
           ))}
-        </View>
+        </Grid>
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Hành động nhanh</Text>
-          <View style={styles.actionGrid}>
-            <ActionCard
-              icon="grid"
-              label="Tìm sân"
-              color="#00D9B5"
-              onPress={() => handleActionPress('find-court')}
-            />
-            <ActionCard
-              icon="star"
-              label="Giải đấu"
-              color="#FF9800"
-              onPress={() => handleActionPress('tournament')}
-            />
-            <ActionCard
-              icon="timer"
-              label="Social Play"
-              color="#2196F3"
-              onPress={() => handleActionPress('social-play')}
-            />
-            <ActionCard
-              icon="people"
-              label="Tìm đối thủ"
-              color="#E91E63"
-              onPress={() => handleActionPress('find-opponent')}
-            />
-          </View>
-        </View>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            Hành động nhanh
+          </Text>
 
+          <Grid columns={2} gap={8}>
+            <GridItem>
+              <ActionCard
+                icon='grid'
+                label='Tìm sân'
+                color='#00D9B5'
+                onPress={() => handleActionPress('find-court')}
+              />
+            </GridItem>
+            <GridItem>
+              <ActionCard
+                icon='star'
+                label='Giải đấu'
+                color='#FF9800'
+                onPress={() => handleActionPress('tournament')}
+              />
+            </GridItem>
+            <GridItem>
+              <ActionCard
+                icon='timer'
+                label='Social Play'
+                color='#2196F3'
+                onPress={() => handleActionPress('social-play')}
+              />
+            </GridItem>
+            <GridItem>
+              <ActionCard
+                icon='people'
+                label='Tìm đối thủ'
+                color='#E91E63'
+                onPress={() => handleActionPress('find-opponent')}
+              />
+            </GridItem>
+          </Grid>
+        </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Sự kiện sắp tới</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Sự kiện sắp tới
+            </Text>
             <TouchableOpacity>
               <Text style={styles.seeAll}>Xem tất cả</Text>
             </TouchableOpacity>
@@ -181,10 +231,11 @@ export default function HomeScreen() {
           />
         </View>
 
-
         <View style={[styles.section, styles.lastSection]}>
           <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin tức mới</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
+              Tin tức mới
+            </Text>
             <TouchableOpacity>
               <Text style={styles.seeAll}>Xem tất cả</Text>
             </TouchableOpacity>
@@ -202,4 +253,3 @@ export default function HomeScreen() {
     </View>
   );
 }
-
