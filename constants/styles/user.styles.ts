@@ -109,15 +109,11 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   statsGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    marginBottom: 24,
-    gap: 12,
     marginTop: 16,
+    paddingHorizontal: 16
   },
   statCard: {
-    flex: 1,
+   
     paddingVertical: 16,
     backgroundColor: '#f9f9f9',
     borderRadius: 12,
@@ -136,7 +132,6 @@ export const styles = StyleSheet.create({
   quickActionsSection: {
     paddingHorizontal: 16,
     marginBottom: 24,
-    gap: 12,
   },
   quickActionItem: {
     flexDirection: 'row',
@@ -166,19 +161,11 @@ export const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 12,
   },
-  achievementsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
   achievementCard: {
-    width: (width * 0.5) - 24,
     paddingVertical: 16,
     paddingHorizontal: 12,
-    backgroundColor: '#f9f9f9',
     borderRadius: 12,
     alignItems: 'center',
-    gap: 8,
   },
   achievementLocked: {
     opacity: 0.6,

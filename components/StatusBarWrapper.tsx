@@ -1,6 +1,6 @@
 import { useTheme, useThemedColors } from "@/hooks/use-theme";
-import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { StatusBar } from "react-native";
 
 export const StatusBarWrapper = () => {
     const { theme } = useTheme();
@@ -10,8 +10,8 @@ export const StatusBarWrapper = () => {
 
     return (
         <StatusBar
+            barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
             backgroundColor={colors.background}
-            style={theme === 'dark' ? 'light' : 'dark'}
             animated
         />
     );

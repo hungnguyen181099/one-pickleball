@@ -1,9 +1,10 @@
+import { Grid, GridItem } from "@/components/Grid";
 import { AchievementCard, SettingItemComponent, StatCard } from "@/components/user";
 import { styles } from "@/constants/styles/user.styles";
 import { useTheme, useThemedColors } from "@/hooks/use-theme";
 import { UserAchievement, UserSettingsItem, UserStatCardProps } from "@/types";
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { router } from "expo-router";
+import { Href, router } from "expo-router";
 import React, { useState } from 'react';
 import {
   Alert,
@@ -32,6 +33,12 @@ const UserPage = () => {
     { id: '3', name: 'Hạng 3 Open', emoji: '🥉', locked: false },
     { id: '4', name: 'Chưa mở khóa', emoji: '🔒', locked: true },
   ];
+
+  const quickActions = [
+    { icon: <MaterialCommunityIcons name="star" size={20} color="#00D9B5" />, name: 'Giải đấu của tôi', href: '/mytournament' },
+    { icon: <Ionicons name="calendar" size={20} color="#FF9800" />, name: 'Lịch sử đặt sân', href: '/historybooking' },
+    { icon: <Ionicons name="heart" size={20} color="#E91E63" />, name: 'Sân yêu thích', href: '/favoritefield' }
+  ]
 
   const handleThemeToggle = () => {
     toggleTheme();
@@ -139,40 +146,35 @@ const UserPage = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.statsGrid}>
+        <Grid columns={4} gap={8} style={styles.statsGrid}>
           {stats.map((stat, idx) => (
-            <StatCard key={idx} item={stat} />
+            <GridItem key={idx}>
+              <StatCard item={stat} />
+            </GridItem>
           ))}
-        </View>
+        </Grid>
 
-        <View style={styles.quickActionsSection}>
-          <TouchableOpacity onPress={handleMyTournament} style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}>
-            <MaterialCommunityIcons name="star" size={20} color="#00D9B5" />
-            <Text style={[styles.quickActionLabel, { color: colors.text }]}>Giải đấu của tôi</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => router.navigate('/historybooking')} style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}>
-            <Ionicons name="calendar" size={20} color="#FF9800" />
-            <Text style={[styles.quickActionLabel, { color: colors.text }]}>Lịch sử đặt sân</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-
-
-          <TouchableOpacity onPress={() => router.navigate('/favoritefield')} style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}>
-            <Ionicons name="heart" size={20} color="#E91E63" />
-            <Text style={[styles.quickActionLabel, { color: colors.text }]}>Sân yêu thích</Text>
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-          </TouchableOpacity>
-        </View>
+        <Grid columns={1} gap={4} style={styles.quickActionsSection}>
+          {quickActions.map((action, idx) => (
+            <GridItem key={idx}>
+              <TouchableOpacity onPress={()=> router.push(action.href as Href)} style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}>
+                {action.icon}
+                <Text style={[styles.quickActionLabel, { color: colors.text }]}>{action.name}</Text>
+                <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
+              </TouchableOpacity>
+            </GridItem>
+          ))}
+        </Grid>
 
         <View style={styles.section}>
           <Text style={[styles.sectionHeading, { color: colors.text }]}>Thành tích</Text>
-          <View style={styles.achievementsGrid}>
+          <Grid columns={2} gap={8}>
             {achievements.map((achievement) => (
-              <AchievementCard key={achievement.id} item={achievement} />
+              <GridItem key={achievement.id}>
+                <AchievementCard item={achievement} />
+              </GridItem>
             ))}
-          </View>
+          </Grid>
         </View>
 
         {/* Settings */}
