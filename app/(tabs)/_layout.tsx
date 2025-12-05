@@ -49,7 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="tournament"
         options={{
-          title: "giải đấu",
+          title: "Giải đấu",
           tabBarIcon: ({ color }) => (
             <Feather name="star" size={24} color={color} />
           ),
