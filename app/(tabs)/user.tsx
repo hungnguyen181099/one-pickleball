@@ -17,13 +17,15 @@ const UserPage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const colors = useThemedColors();
-  const { signOut } = useSession();
+  const { signOut, user } = useSession();
+
+  console.log(user);
 
   const stats: UserStatCardProps[] = [
-    { number: '24', label: 'Trận đấu' },
-    { number: '68%', label: 'Tỷ lệ thắng' },
-    { number: '#42', label: 'Xếp hạng' },
-    { number: '3', label: 'Huy chương' },
+    { number: (user?.total_ocr_matches || 0).toString(), label: 'Trận đấu' },
+    { number: user?.elo_rating ? user.elo_rating.toString() : 'N/A', label: 'ELO' },
+    { number: user?.elo_rank || 'N/A', label: 'Rank' },
+    { number: user?.opr_level || 'N/A', label: 'OPR' },
   ];
 
   const achievements: UserAchievement[] = [
@@ -103,12 +105,11 @@ const UserPage = () => {
 
   const handleLogout = () => {
     Alert.alert('Đăng xuất', 'Bạn có chắc chắn muốn đăng xuất?', [
-      { text: 'Hủy', onPress: () => {}, style: 'cancel' },
+      { text: 'Hủy', onPress: () => { }, style: 'cancel' },
       {
         text: 'Đăng xuất',
         onPress: () => {
           signOut();
-          // Xử lý đăng xuất tại đây
         },
         style: 'destructive',
       },
@@ -134,7 +135,7 @@ const UserPage = () => {
         >
           <View style={styles.avatarWrapper}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>MT</Text>
+              <Text style={styles.avatarText}>{(user?.name || 'U').charAt(0).toUpperCase()}</Text>
             </View>
             <TouchableOpacity style={styles.editAvatarBtn}>
               <Ionicons name='camera' size={16} color='#fff' />
@@ -142,15 +143,15 @@ const UserPage = () => {
           </View>
 
           <Text style={[styles.profileName, { color: colors.text }]}>
-            Minh Tuấn
+            {user?.name || 'Người dùng'}
           </Text>
           <Text
             style={[styles.profileUsername, { color: colors.textTertiary }]}
           >
-            @minhtuan_pb
+            {user?.email || 'Chưa cập nhật email'}
           </Text>
           <Text style={[styles.profileBio, { color: colors.textSecondary }]}>
-            🏓 Pickleball enthusiast | 🏆 Level 4.5 | 📍 TP.HCM
+            Role: {user?.role_type || 'User'} | Status: {user?.status || 'Active'}
           </Text>
 
           <TouchableOpacity style={styles.editBtn} onPress={handleEditProfile}>

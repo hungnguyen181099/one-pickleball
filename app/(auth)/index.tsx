@@ -42,9 +42,18 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     try {
-      signIn();
       setLoading(true);
-      router.replace('/(tabs)');
+      const response = await signIn({
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (!response.success) {
+        alert(response.error || 'Đăng nhập thất bại');
+      }
+      
+    } catch (error) {
+      alert('Có lỗi xảy ra');
     } finally {
       setLoading(false);
     }

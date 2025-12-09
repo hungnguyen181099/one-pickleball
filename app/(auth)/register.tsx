@@ -1,20 +1,22 @@
 import { styles } from '@/constants/styles/register.styles';
+import { useSession } from '@/contexts/AuthProvider';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { RegisterFormData } from '@/types';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { RegisterFormData } from '@/types';
 
 import {
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 export default function RegisterScreen() {
@@ -25,10 +27,13 @@ export default function RegisterScreen() {
     email: '',
     phone: '',
     password: '',
+    confirmPassword: '',
     agreeTerms: false,
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { signUp } = useSession();
 
   const handleInputChange = (field: keyof RegisterFormData, value: string | boolean) => {
     setFormData(prev => ({
@@ -39,13 +44,33 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!formData.agreeTerms) {
-      alert('Vui lòng đồng ý với Điều khoản sử dụng và Chính sách bảo mật');
+      Alert.alert('Thông báo', 'Vui lòng đồng ý với Điều khoản sử dụng và Chính sách bảo mật');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      Alert.alert('Lỗi', 'Mật khẩu xác nhận không khớp');
       return;
     }
 
     setLoading(true);
+    setLoading(true);
     try {
-      console.log('Register attempt:', formData);
+      const response = await signUp({
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        password_confirmation: formData.confirmPassword,
+        role_type: 'user'
+      });
+
+      if (!response.success) {
+        Alert.alert('Lỗi đăng ký', response.error || 'Có lỗi xảy ra, vui lòng thử lại');
+      }
+      // If success, AuthProvider sets session -> Redirects to Home automatically
+    } catch (error) {
+      Alert.alert('Lỗi', 'Không thể kết nối đến máy chủ');
     } finally {
       setLoading(false);
     }
@@ -142,6 +167,30 @@ export default function RegisterScreen() {
                 >
                   <Ionicons
                     name={showPassword ? 'eye' : 'eye-off'}
+                    size={20}
+                    color={colors.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.formGroup}>
+              <Text style={[styles.label, { color: colors.text }]}>Xác nhận mật khẩu</Text>
+              <View style={[styles.passwordContainer, { backgroundColor: colors.input, borderColor: colors.border }]}>
+                <TextInput
+                  style={[styles.passwordInput, { color: colors.text }]}
+                  placeholder="Nhập lại mật khẩu"
+                  placeholderTextColor={colors.textTertiary}
+                  secureTextEntry={!showConfirmPassword}
+                  value={formData.confirmPassword}
+                  onChangeText={(text) => handleInputChange('confirmPassword', text)}
+                />
+                <TouchableOpacity
+                  style={styles.eyeButton}
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  <Ionicons
+                    name={showConfirmPassword ? 'eye' : 'eye-off'}
                     size={20}
                     color={colors.icon}
                   />

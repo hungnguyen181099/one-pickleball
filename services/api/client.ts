@@ -5,10 +5,13 @@
 
 import AppConfig from '@/config/app.config';
 import { ApiResponse } from '@/types';
+import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 class ApiClient {
     private baseUrl: string;
     private timeout: number;
+    private onLogoutCallback: (() => void) | null = null;
 
     constructor() {
         this.baseUrl = AppConfig.api.baseUrl;
@@ -16,11 +19,25 @@ class ApiClient {
     }
 
     /**
+     * Set callback to handle logout (e.g. on 401)
+     */
+    setLogoutCallback(callback: () => void) {
+        this.onLogoutCallback = callback;
+    }
+
+    /**
      * Get authentication token from storage
      */
     private async getAuthToken(): Promise<string | null> {
-        // TODO: Implement token retrieval from AsyncStorage
-        return null;
+        try {
+            if (Platform.OS === 'web') {
+                return localStorage.getItem('session');
+            }
+            return await SecureStore.getItemAsync('session');
+        } catch (error) {
+            console.error('Error getting auth token:', error);
+            return null;
+        }
     }
 
     /**
@@ -116,7 +133,28 @@ class ApiClient {
      * Handle API response
      */
     private async handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
-        const data = await response.json();
+        if (response.status === 401) {
+            if (this.onLogoutCallback) {
+                this.onLogoutCallback();
+            }
+            return {
+                success: false,
+                error: 'Unauthorized',
+            };
+        }
+
+        const text = await response.text();
+        let data: any;
+
+        try {
+            data = JSON.parse(text);
+        } catch (error) {
+            console.error('API Error: Failed to parse JSON response:', text);
+            return {
+                success: false,
+                error: 'Invalid response from server'
+            };
+        }
 
         if (response.ok) {
             return {

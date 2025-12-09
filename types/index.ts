@@ -5,14 +5,24 @@
 
 // User Types
 export interface User {
-    id: string;
-    email: string;
+    id: number; // id might be missing in the provided example, keeping optional or assuming it might come
     name: string;
+    email: string;
     phone?: string;
-    avatar?: string;
-    role: 'player' | 'organizer' | 'admin';
-    createdAt: string;
-    updatedAt: string;
+    role_type: string;
+    status: string;
+    elo_rating: number;
+    elo_rank: string;
+    total_ocr_matches: number;
+    ocr_wins: number;
+    ocr_losses: number;
+    challenge_score: string;
+    community_score: string;
+    total_oprs: string;
+    opr_level: string;
+    avatar?: string; // Keeping for UI compatibility if needed
+    created_at: string;
+    updated_at: string;
 }
 
 // Tournament Types
@@ -465,6 +475,7 @@ export interface RegisterFormData {
     email: string;
     phone: string;
     password: string;
+    confirmPassword: string;
     agreeTerms: boolean;
 }
 
