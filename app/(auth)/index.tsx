@@ -1,12 +1,12 @@
 import { styles } from '@/constants/styles/login.styles';
+import { useSession } from '@/contexts/AuthProvider';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
-import { LoginFormData } from '@/types';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-
-import { useSession } from '@/contexts/AuthProvider';
+import { Controller, useForm } from 'react-hook-form';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -17,47 +17,52 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { z } from 'zod';
+
+const loginSchema = z.object({
+  username: z
+    .string()
+    .email('Vui lòng nhập đúng định dạng email')
+    .min(2, 'Email không được để trống'),
+  password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+});
 
 export default function LoginScreen() {
-  const { theme } = useTheme();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const colors = useThemedColors();
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
-    rememberMe: false,
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { signIn } = useSession();
+  const { theme } = useTheme();
 
-  const handleInputChange = (
-    field: keyof LoginFormData,
-    value: string | boolean
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
 
-  const handleLogin = async () => {
+  const onSubmit = handleSubmit(async (data) => {
     try {
       setLoading(true);
       const response = await signIn({
-        email: formData.email,
-        password: formData.password
+        email: data.username,
+        password: data.password,
       });
 
       if (!response.success) {
         alert(response.error || 'Đăng nhập thất bại');
       }
-      
-    } catch (error) {
+    } catch {
       alert('Có lỗi xảy ra');
     } finally {
       setLoading(false);
     }
-  };
+  });
 
   const handleSocialLogin = (provider: string) => {
     console.log('Login with:', provider);
@@ -99,22 +104,38 @@ export default function LoginScreen() {
               <Text style={[styles.label, { color: colors.text }]}>
                 Email hoặc số điện thoại
               </Text>
-              <TextInput
-                style={[
-                  styles.input,
-                  {
-                    backgroundColor: colors.input,
-                    color: colors.text,
-                    borderColor: colors.border,
-                  },
-                ]}
-                placeholder='Nhập email hoặc số điện thoại'
-                placeholderTextColor={colors.textTertiary}
-                value={formData.email}
-                onChangeText={(text) => handleInputChange('email', text)}
-                keyboardType='email-address'
-                autoCapitalize='none'
+
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    style={[
+                      styles.input,
+                      {
+                        backgroundColor: colors.input,
+                        color: colors.text,
+                        borderColor: colors.border,
+                      },
+                    ]}
+                    placeholder='Nhập email hoặc số điện thoại'
+                    placeholderTextColor={colors.textTertiary}
+                    keyboardType='email-address'
+                    autoCapitalize='none'
+                  />
+                )}
+                name='username'
               />
+              {errors.username && (
+                <Text style={{ color: colors.error, marginTop: 8 }}>
+                  {errors.username.message}
+                </Text>
+              )}
             </View>
 
             <View style={styles.formGroup}>
@@ -127,13 +148,23 @@ export default function LoginScreen() {
                   { backgroundColor: colors.input, borderColor: colors.border },
                 ]}
               >
-                <TextInput
-                  style={[styles.passwordInput, { color: colors.text }]}
-                  placeholder='Nhập mật khẩu'
-                  placeholderTextColor={colors.textTertiary}
-                  secureTextEntry={!showPassword}
-                  value={formData.password}
-                  onChangeText={(text) => handleInputChange('password', text)}
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      style={[styles.passwordInput, { color: colors.text }]}
+                      placeholder='Nhập mật khẩu'
+                      placeholderTextColor={colors.textTertiary}
+                      secureTextEntry={!showPassword}
+                    />
+                  )}
+                  name='password'
                 />
                 <TouchableOpacity
                   style={styles.eyeButton}
@@ -146,6 +177,11 @@ export default function LoginScreen() {
                   />
                 </TouchableOpacity>
               </View>
+              {errors.password && (
+                <Text style={{ color: colors.error, marginTop: 8 }}>
+                  {errors.password.message}
+                </Text>
+              )}
             </View>
 
             <View style={styles.rowBetween}>
@@ -171,7 +207,8 @@ export default function LoginScreen() {
 
             <TouchableOpacity
               style={[styles.buttonPrimary, loading && styles.buttonDisabled]}
-              onPress={handleLogin}
+              // onPress={handleLogin}
+              onPress={onSubmit}
               disabled={loading}
             >
               <Text style={styles.buttonText}>
