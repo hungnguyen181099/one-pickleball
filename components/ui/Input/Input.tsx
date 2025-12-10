@@ -1,7 +1,10 @@
-import { ThemeColor } from '@/constants/theme';
-import { useThemedColors } from '@/hooks/use-theme';
 import React, { useState } from 'react';
+
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
+
+import { ThemeColor } from '@/constants/theme';
+
+import { useThemedColors } from '@/hooks/use-theme';
 
 type InputVariant = 'default' | 'filled' | 'unstyled';
 type InputRadius = 'sm' | 'md' | 'lg';
@@ -47,24 +50,20 @@ const Input = ({
   return (
     <View style={styles.container}>
       {startIcon && <View style={styles.startIcon}>{startIcon}</View>}
-      <TextInput
-        value={finalValue}
-        onChangeText={handleChange}
-        {...props}
-        style={styles.input}
-      />
+      <TextInput value={finalValue} onChangeText={handleChange} {...props} style={styles.input} />
       {endIcon && <View style={styles.endIcon}>{endIcon}</View>}
     </View>
   );
 };
 
+/* eslint-disable react-native/no-unused-styles */
 const getStyles = ({ variant, color, radius }: StyleProps) =>
   StyleSheet.create({
     container: {
-      display: 'flex',
-      flexDirection: 'row',
       alignItems: 'center',
       borderRadius: radius === 'sm' ? 4 : radius === 'md' ? 8 : 16,
+      flex: 1,
+      flexDirection: 'row',
       ...(variant === 'default' && {
         borderWidth: 1,
         borderColor: color.inputBorder,
@@ -72,6 +71,12 @@ const getStyles = ({ variant, color, radius }: StyleProps) =>
       ...(variant === 'filled' && {
         backgroundColor: color.input,
         borderColor: color.inputBorder,
+      }),
+    },
+    endIcon: {
+      paddingRight: 16,
+      ...(variant === 'unstyled' && {
+        paddingLeft: 4,
       }),
     },
     input: {
@@ -85,12 +90,6 @@ const getStyles = ({ variant, color, radius }: StyleProps) =>
       paddingLeft: 16,
       ...(variant === 'unstyled' && {
         paddingRight: 4,
-      }),
-    },
-    endIcon: {
-      paddingRight: 16,
-      ...(variant === 'unstyled' && {
-        paddingLeft: 4,
       }),
     },
   });

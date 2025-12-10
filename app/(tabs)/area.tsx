@@ -1,19 +1,13 @@
+import React, { useState } from 'react';
 
-import { styles } from '@/constants/styles/area.styles';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { AreaFilterType, CourtDetailed } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { CourtDetailed, AreaFilterType } from '@/types';
+import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { styles } from '@/constants/styles/area.styles';
+
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
 
 export const courts: CourtDetailed[] = [
   {
@@ -30,7 +24,8 @@ export const courts: CourtDetailed[] = [
     statusText: 'Đang mở • Đóng cửa lúc 23:00',
     isFavorite: false,
     isPremium: true,
-    image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    image:
+      'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
   },
   {
     id: '2',
@@ -46,7 +41,8 @@ export const courts: CourtDetailed[] = [
     statusText: 'Đang mở • Đóng cửa lúc 22:00',
     isFavorite: false,
     isPremium: false,
-    image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    image:
+      'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
   },
   {
     id: '3',
@@ -62,7 +58,8 @@ export const courts: CourtDetailed[] = [
     statusText: 'Gần hết chỗ • Còn 2 sân trống',
     isFavorite: false,
     isPremium: false,
-    image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    image:
+      'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
   },
   {
     id: '4',
@@ -78,7 +75,8 @@ export const courts: CourtDetailed[] = [
     statusText: 'Đã đóng cửa • Mở lại lúc 06:00',
     isFavorite: false,
     isPremium: false,
-    image: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+    image:
+      'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
   },
 ];
 
@@ -98,7 +96,7 @@ const AreaPage = () => {
 
   const toggleFavorite = (courtId: string) => {
     if (favorites.includes(courtId)) {
-      setFavorites(favorites.filter(id => id !== courtId));
+      setFavorites(favorites.filter((id) => id !== courtId));
     } else {
       setFavorites([...favorites, courtId]);
     }
@@ -107,7 +105,7 @@ const AreaPage = () => {
   const handleBookCourt = (courtId: string) => {
     router.push({
       pathname: '/(details)/courtDetail/[id]',
-      params: { id: courtId }
+      params: { id: courtId },
     });
   };
 
@@ -125,9 +123,7 @@ const AreaPage = () => {
   };
 
   const CourtCard = ({ item }: { item: CourtDetailed }) => (
-    <View
-      style={[styles.courtCard, { backgroundColor: colors.card }]}
-    >
+    <View style={[styles.courtCard, { backgroundColor: colors.card }]}>
       {item.isPremium && (
         <View style={styles.premiumBadge}>
           <Text style={styles.premiumBadgeText}>Premium</Text>
@@ -137,11 +133,7 @@ const AreaPage = () => {
       {/* <View style={[styles.courtImage, { backgroundColor: item.image as any }]} /> */}
       <Image source={{ uri: item.image }} style={styles.courtImage} />
 
-      <TouchableOpacity
-        style={styles.favoriteBtn}
-        onPress={() => toggleFavorite(item.id)}
-        activeOpacity={0.5}
-      >
+      <TouchableOpacity style={styles.favoriteBtn} onPress={() => toggleFavorite(item.id)} activeOpacity={0.5}>
         <Ionicons
           name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
           size={24}
@@ -150,7 +142,6 @@ const AreaPage = () => {
       </TouchableOpacity>
 
       <View style={styles.courtContent}>
-
         <View style={styles.courtHeader}>
           <View style={styles.courtInfo}>
             <Text style={[styles.courtName, { color: colors.text }]}>{item.name}</Text>
@@ -186,28 +177,22 @@ const AreaPage = () => {
         </View>
 
         <View style={styles.status}>
-          <View
-            style={[
-              styles.statusIndicator,
-              { backgroundColor: getStatusColor(item.status) },
-            ]}
-          />
+          <View style={[styles.statusIndicator, { backgroundColor: getStatusColor(item.status) }]} />
           <Text style={[styles.statusText, { color: colors.textSecondary }]}>{item.statusText}</Text>
         </View>
 
         <TouchableOpacity
           style={[
             styles.bookBtn,
-            item.status === 'closed' && { ...styles.bookBtnOutline, backgroundColor: colors.card, borderColor: '#00D9B5' },
+            item.status === 'closed' && {
+              ...styles.bookBtnOutline,
+              backgroundColor: colors.card,
+              borderColor: '#00D9B5',
+            },
           ]}
           onPress={() => handleBookCourt(item.id)}
         >
-          <Text
-            style={[
-              styles.bookBtnText,
-              item.status === 'closed' && styles.bookBtnTextOutline,
-            ]}
-          >
+          <Text style={[styles.bookBtnText, item.status === 'closed' && styles.bookBtnTextOutline]}>
             {item.status === 'closed' ? 'Xem chi tiết' : 'Đặt sân ngay'}
           </Text>
         </TouchableOpacity>
@@ -219,7 +204,7 @@ const AreaPage = () => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.pageHeader}>
         <Text style={[styles.pageTitle, { color: colors.text }]}>Sân thi đấu</Text>
-        <TouchableOpacity onPress={()=> router.navigate('/search')}>
+        <TouchableOpacity onPress={() => router.navigate('/search')}>
           <Ionicons name="search" size={24} color={colors.icon} />
         </TouchableOpacity>
       </View>
@@ -238,21 +223,17 @@ const AreaPage = () => {
               activeFilter === filter.id && styles.filterChipActive,
               {
                 backgroundColor: activeFilter === filter.id ? '#00D9B5' : colors.backgroundTertiary,
-                borderColor: activeFilter === filter.id ? '#00D9B5' : colors.border
-              }
+                borderColor: activeFilter === filter.id ? '#00D9B5' : colors.border,
+              },
             ]}
             onPress={() => setActiveFilter(filter.id)}
           >
-            <Ionicons
-              name={filter.icon as any}
-              size={16}
-              color={activeFilter === filter.id ? '#fff' : colors.icon}
-            />
+            <Ionicons name={filter.icon as any} size={16} color={activeFilter === filter.id ? '#fff' : colors.icon} />
             <Text
               style={[
                 styles.filterLabel,
                 activeFilter === filter.id && styles.filterLabelActive,
-                { color: activeFilter === filter.id ? '#fff' : colors.text }
+                { color: activeFilter === filter.id ? '#fff' : colors.text },
               ]}
             >
               {filter.label}
@@ -267,29 +248,21 @@ const AreaPage = () => {
             style={[
               styles.toggleBtn,
               viewMode === 'list' && styles.toggleBtnActive,
-              { backgroundColor: colors.backgroundTertiary }
+              { backgroundColor: colors.backgroundTertiary },
             ]}
             onPress={() => setViewMode('list')}
           >
-            <Ionicons
-              name="list"
-              size={20}
-              color={viewMode === 'list' ? '#00D9B5' : colors.textTertiary}
-            />
+            <Ionicons name="list" size={20} color={viewMode === 'list' ? '#00D9B5' : colors.textTertiary} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[
               styles.toggleBtn,
               viewMode === 'map' && styles.toggleBtnActive,
-              { backgroundColor: colors.backgroundTertiary }
+              { backgroundColor: colors.backgroundTertiary },
             ]}
             onPress={() => setViewMode('map')}
           >
-            <MaterialCommunityIcons
-              name="map"
-              size={20}
-              color={viewMode === 'map' ? '#00D9B5' : colors.textTertiary}
-            />
+            <MaterialCommunityIcons name="map" size={20} color={viewMode === 'map' ? '#00D9B5' : colors.textTertiary} />
           </TouchableOpacity>
         </View>
         <Text style={[styles.resultCount, { color: colors.textSecondary }]}>
@@ -306,6 +279,6 @@ const AreaPage = () => {
       />
     </View>
   );
-}
+};
 
 export default AreaPage;

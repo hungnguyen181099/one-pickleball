@@ -1,8 +1,10 @@
-import { styles } from "@/constants/styles/home.styles";
-import { useThemedColors } from "@/hooks/use-theme";
-import { HomeNewsItem } from "@/types";
-import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { HomeNewsItem } from '@/types';
+import { Ionicons } from '@expo/vector-icons';
+import { Text, TouchableOpacity, View } from 'react-native';
+
+import { styles } from '@/constants/styles/home.styles';
+
+import { useThemedColors } from '@/hooks/use-theme';
 
 export const NewsItemComponent = ({ item }: { item: HomeNewsItem }) => {
   const colors = useThemedColors();
@@ -10,14 +12,10 @@ export const NewsItemComponent = ({ item }: { item: HomeNewsItem }) => {
   return (
     <TouchableOpacity style={[styles.newsItem, { borderBottomColor: colors.border }]}>
       <View style={[styles.newsThumbnail, { backgroundColor: item.image as any }]}>
-        <Text style={{ color: item.categoryColor, fontSize: 12, fontWeight: '600' }}>
-          News
-        </Text>
+        <Text style={{ color: item.categoryColor, fontSize: 12, fontWeight: '600' }}>News</Text>
       </View>
       <View style={styles.newsContent}>
-        <Text style={[styles.newsCategory, { color: item.categoryColor }]}>
-          {item.category}
-        </Text>
+        <Text style={[styles.newsCategory, { color: item.categoryColor }]}>{item.category}</Text>
         <Text style={[styles.newsTitle, { color: colors.text }]}>{item.title}</Text>
         <View style={styles.newsMeta}>
           <Text style={[styles.newsMetaText, { color: colors.textTertiary }]}>{item.time}</Text>

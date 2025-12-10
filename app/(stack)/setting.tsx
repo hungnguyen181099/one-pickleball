@@ -1,15 +1,12 @@
-import { styles } from '@/constants/styles/setting.styles';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import React, { useState } from 'react';
+
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import {
-  ScrollView,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
+
+import { styles } from '@/constants/styles/setting.styles';
+
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
 
 export default function SettingScreen() {
   const { theme, toggleTheme, themeMode, setThemeMode } = useTheme();
@@ -19,13 +16,7 @@ export default function SettingScreen() {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [smsReminders, setSmsReminders] = useState(false);
 
-  const renderSettingsItem = (
-    icon: string,
-    label: string,
-    onPress?: () => void,
-    value?: string,
-    isLast?: boolean
-  ) => (
+  const renderSettingsItem = (icon: string, label: string, onPress?: () => void, value?: string, isLast?: boolean) => (
     <TouchableOpacity
       style={[
         styles.settingsItem,
@@ -80,8 +71,6 @@ export default function SettingScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-
-
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color={colors.icon} />
@@ -91,15 +80,19 @@ export default function SettingScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-
         <View style={styles.settingsSection}>
           <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>Tài khoản</Text>
           <View style={styles.settingsMenu}>
             {renderSettingsItem('person-outline', 'Thông tin cá nhân', () => console.log('Profile'))}
-            {renderSettingsItem('lock-closed-outline', 'Đổi mật khẩu', () => console.log('Change password'), undefined, true)}
+            {renderSettingsItem(
+              'lock-closed-outline',
+              'Đổi mật khẩu',
+              () => console.log('Change password'),
+              undefined,
+              true
+            )}
           </View>
         </View>
-
 
         <View style={styles.settingsSection}>
           <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>Thông báo</Text>
@@ -129,16 +122,10 @@ export default function SettingScreen() {
           </View>
         </View>
 
-
         <View style={styles.settingsSection}>
           <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>Hiển thị</Text>
           <View style={styles.settingsMenu}>
-            <View
-              style={[
-                styles.toggleItem,
-                { backgroundColor: colors.card, borderBottomColor: colors.border },
-              ]}
-            >
+            <View style={[styles.toggleItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
               <View style={styles.settingsItemLeft}>
                 <Ionicons name="contrast-outline" size={22} color={colors.icon} style={styles.settingsIcon} />
                 <View style={styles.toggleContent}>
@@ -152,7 +139,13 @@ export default function SettingScreen() {
                   onPress={() => setThemeMode('light')}
                   style={[
                     styles.themeOption,
-                    themeMode === 'light' && { backgroundColor: colors.card, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 2, elevation: 2 }
+                    themeMode === 'light' && {
+                      backgroundColor: colors.card,
+                      shadowColor: '#000',
+                      shadowOpacity: 0.1,
+                      shadowRadius: 2,
+                      elevation: 2,
+                    },
                   ]}
                 >
                   <Ionicons name="sunny" size={18} color={themeMode === 'light' ? '#FDB813' : colors.textTertiary} />
@@ -162,17 +155,36 @@ export default function SettingScreen() {
                   onPress={() => setThemeMode('auto')}
                   style={[
                     styles.themeOption,
-                    themeMode === 'auto' && { backgroundColor: colors.card, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 2, elevation: 2 }
+                    themeMode === 'auto' && {
+                      backgroundColor: colors.card,
+                      shadowColor: '#000',
+                      shadowOpacity: 0.1,
+                      shadowRadius: 2,
+                      elevation: 2,
+                    },
                   ]}
                 >
-                  <Text style={[styles.themeOptionText, { color: themeMode === 'auto' ? colors.text : colors.textTertiary }]}>Auto</Text>
+                  <Text
+                    style={[
+                      styles.themeOptionText,
+                      { color: themeMode === 'auto' ? colors.text : colors.textTertiary },
+                    ]}
+                  >
+                    Auto
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   onPress={() => setThemeMode('dark')}
                   style={[
                     styles.themeOption,
-                    themeMode === 'dark' && { backgroundColor: colors.card, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 2, elevation: 2 }
+                    themeMode === 'dark' && {
+                      backgroundColor: colors.card,
+                      shadowColor: '#000',
+                      shadowOpacity: 0.1,
+                      shadowRadius: 2,
+                      elevation: 2,
+                    },
                   ]}
                 >
                   <Ionicons name="moon" size={16} color={themeMode === 'dark' ? '#9BA1A6' : colors.textTertiary} />
@@ -183,13 +195,18 @@ export default function SettingScreen() {
           </View>
         </View>
 
-
         <View style={styles.settingsSection}>
           <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>Khác</Text>
           <View style={styles.settingsMenu}>
             {renderSettingsItem('information-circle-outline', 'Về onePickleball', () => console.log('About'), 'v1.0.0')}
             {renderSettingsItem('document-text-outline', 'Điều khoản sử dụng', () => console.log('Terms'))}
-            {renderSettingsItem('shield-checkmark-outline', 'Chính sách bảo mật', () => console.log('Privacy'), undefined, true)}
+            {renderSettingsItem(
+              'shield-checkmark-outline',
+              'Chính sách bảo mật',
+              () => console.log('Privacy'),
+              undefined,
+              true
+            )}
           </View>
         </View>
       </ScrollView>

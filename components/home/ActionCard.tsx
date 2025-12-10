@@ -1,7 +1,9 @@
-import { styles } from '@/constants/styles/home.styles';
-import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';
 import { Text, TouchableOpacity, View } from 'react-native';
+
+import { styles } from '@/constants/styles/home.styles';
+
+import { useThemedColors } from '@/hooks/use-theme';
 
 export const ActionCard = ({
   icon,
@@ -29,7 +31,7 @@ export const ActionCard = ({
       onPress={onPress}
     >
       <View style={[styles.actionIcon, { backgroundColor: color }]}>
-        <Ionicons name={icon as any} size={24} color='#fff' />
+        <Ionicons name={icon as any} size={24} color="#fff" />
       </View>
       <Text style={[styles.actionLabel, { color: colors.text }]}>{label}</Text>
     </TouchableOpacity>

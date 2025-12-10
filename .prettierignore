@@ -1,0 +1,57 @@
+# Build outputs
+android/
+ios/
+build/
+dist/
+bin/
+out/
+
+# Expo folders
+.expo/
+.expo-shared/
+
+# Dependencies
+node_modules/
+
+# Package managers
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Environment files
+.env
+.env.*
+
+# TypeScript build
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+
+# Coverage
+coverage/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Assets binaries
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.mp4
+*.mov
+*.mp3
+*.ttf
+*.otf
+
+# Generated JSON or meta files
+metro-cache/

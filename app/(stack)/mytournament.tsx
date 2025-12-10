@@ -1,17 +1,13 @@
-import { styles } from '@/constants/styles/tournament.styles';
-import { useThemedColors } from '@/hooks/use-theme';
+import React, { useState } from 'react';
+
+import { MyTournamentFilterType, MyTournamentItem } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { MyTournamentItem, MyTournamentFilterType } from '@/types';
+import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-import {
-  FlatList,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { styles } from '@/constants/styles/tournament.styles';
+
+import { useThemedColors } from '@/hooks/use-theme';
 
 export default function MyTournamentScreen() {
   const colors = useThemedColors();
@@ -50,17 +46,21 @@ export default function MyTournamentScreen() {
     },
   ];
 
-  const filteredTournaments = activeFilter === 'all'
-    ? myTournaments
-    : myTournaments.filter(t => t.type === activeFilter);
+  const filteredTournaments =
+    activeFilter === 'all' ? myTournaments : myTournaments.filter((t) => t.type === activeFilter);
 
   const getFilterLabel = (filter: MyTournamentFilterType) => {
     switch (filter) {
-      case 'all': return 'Tất cả';
-      case 'registered': return 'Đã đăng ký';
-      case 'completed': return 'Đã tham gia';
-      case 'cancelled': return 'Đã hủy';
-      default: return '';
+      case 'all':
+        return 'Tất cả';
+      case 'registered':
+        return 'Đã đăng ký';
+      case 'completed':
+        return 'Đã tham gia';
+      case 'cancelled':
+        return 'Đã hủy';
+      default:
+        return '';
     }
   };
 
@@ -93,28 +93,18 @@ export default function MyTournamentScreen() {
             },
           ]}
         >
-          <Ionicons
-            name={iconName}
-            size={24}
-            color={iconColor}
-          />
+          <Ionicons name={iconName} size={24} color={iconColor} />
         </View>
         <View style={styles.myTournamentInfo}>
-          <Text style={[styles.myTournamentTitle, { color: colors.text }]}>
-            {tournament.title}
-          </Text>
-          <Text style={[styles.myTournamentStatus, { color: colors.textSecondary }]}>
-            {tournament.status}
-          </Text>
+          <Text style={[styles.myTournamentTitle, { color: colors.text }]}>{tournament.title}</Text>
+          <Text style={[styles.myTournamentStatus, { color: colors.textSecondary }]}>{tournament.status}</Text>
           {tournament.result && (
             <Text style={{ color: colors.tint, fontSize: 12, fontWeight: '600', marginTop: 2 }}>
               {tournament.result}
             </Text>
           )}
         </View>
-        <Text style={[styles.myTournamentDate, { color: colors.textTertiary }]}>
-          {tournament.date}
-        </Text>
+        <Text style={[styles.myTournamentDate, { color: colors.textTertiary }]}>{tournament.date}</Text>
       </TouchableOpacity>
     );
   };
@@ -132,11 +122,7 @@ export default function MyTournamentScreen() {
 
       {/* Filter Tabs */}
       <View style={[styles.filterBar, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.filterContent}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterContent}>
           {(['all', 'registered', 'completed', 'cancelled'] as MyTournamentFilterType[]).map((filter) => (
             <TouchableOpacity
               key={filter}
@@ -149,12 +135,7 @@ export default function MyTournamentScreen() {
               ]}
               onPress={() => setActiveFilter(filter)}
             >
-              <Text
-                style={[
-                  styles.filterChipText,
-                  { color: activeFilter === filter ? '#fff' : colors.text },
-                ]}
-              >
+              <Text style={[styles.filterChipText, { color: activeFilter === filter ? '#fff' : colors.text }]}>
                 {getFilterLabel(filter)}
               </Text>
             </TouchableOpacity>
@@ -171,9 +152,7 @@ export default function MyTournamentScreen() {
         ListEmptyComponent={
           <View style={{ alignItems: 'center', marginTop: 40 }}>
             <Ionicons name="documents-outline" size={48} color={colors.textTertiary} />
-            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>
-              Không tìm thấy giải đấu nào
-            </Text>
+            <Text style={[styles.emptyText, { color: colors.textSecondary }]}>Không tìm thấy giải đấu nào</Text>
           </View>
         }
       />

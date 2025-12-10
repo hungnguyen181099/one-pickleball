@@ -1,19 +1,14 @@
-import { styles } from "@/constants/styles/news.styles";
-import { useTheme, useThemedColors } from "@/hooks/use-theme";
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { ImageBackground } from "expo-image";
-import { router } from "expo-router";
 import React, { useState } from 'react';
-import { NewsCategory, NewsItemDetailed } from '@/types';
 
-import {
-  FlatList,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { NewsCategory, NewsItemDetailed } from '@/types';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { ImageBackground } from 'expo-image';
+import { router } from 'expo-router';
+import { FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+import { styles } from '@/constants/styles/news.styles';
+
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
 
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,7 +31,8 @@ const NewsPage = () => {
       category: 'Kỹ thuật',
       categoryColor: '#FF9800',
       title: '5 Tips nâng cao kỹ thuật serve trong Pickleball',
-      description: 'Khám phá những tips thiết thực để cải thiện kỹ thuật serve của bạn. Từ cách cầm vợt đến thời gian release, bài viết này sẽ giúp bạn hiểu rõ hơn...',
+      description:
+        'Khám phá những tips thiết thực để cải thiện kỹ thuật serve của bạn. Từ cách cầm vợt đến thời gian release, bài viết này sẽ giúp bạn hiểu rõ hơn...',
       author: 'Trần Minh Tuấn',
       time: '2 giờ trước',
       readTime: '3 phút đọc',
@@ -50,7 +46,8 @@ const NewsPage = () => {
       category: 'Cộng đồng',
       categoryColor: '#2196F3',
       title: 'Chuyện của các tay vợt huyền thoại Pickleball Việt Nam',
-      description: 'Gặp gỡ những VĐV tiêu biểu đã góp phần xây dựng cộng đồng Pickleball tại Việt Nam. Những câu chuyện truyền cảm hứng từ những người anh chị...',
+      description:
+        'Gặp gỡ những VĐV tiêu biểu đã góp phần xây dựng cộng đồng Pickleball tại Việt Nam. Những câu chuyện truyền cảm hứng từ những người anh chị...',
       author: 'Lê Thanh Hùng',
       time: '5 giờ trước',
       readTime: '5 phút đọc',
@@ -64,7 +61,8 @@ const NewsPage = () => {
       category: 'Giải đấu',
       categoryColor: '#E91E63',
       title: 'Kết quả Vietnam Open Championship 2024',
-      description: 'Nhìn lại những trận đấu hấp dẫn tại VN Open Championship 2024. Các tay vợt xuất sắc nhất năm đã tranh tài với những kỹ năng ấn tượng...',
+      description:
+        'Nhìn lại những trận đấu hấp dẫn tại VN Open Championship 2024. Các tay vợt xuất sắc nhất năm đã tranh tài với những kỹ năng ấn tượng...',
       author: 'Nguyễn Hoàng Nam',
       time: '1 ngày trước',
       readTime: '4 phút đọc',
@@ -78,7 +76,8 @@ const NewsPage = () => {
       category: 'Lối sống',
       categoryColor: '#9C27B0',
       title: 'Pickleball: Tuyệt vời cho sức khỏe và xã hội',
-      description: 'Tại sao Pickleball được xem là một trong những môn thể thao tốt nhất cho sức khỏe thể chất và tinh thần. Khám phá lợi ích tuyệt vời...',
+      description:
+        'Tại sao Pickleball được xem là một trong những môn thể thao tốt nhất cho sức khỏe thể chất và tinh thần. Khám phá lợi ích tuyệt vời...',
       author: 'Dương Thị Hương',
       time: '3 ngày trước',
       readTime: '6 phút đọc',
@@ -92,7 +91,8 @@ const NewsPage = () => {
       category: 'Kỹ thuật',
       categoryColor: '#FF9800',
       title: 'Phân tích chiến thuật: Doubles vs Singles',
-      description: 'Hiểu rõ sự khác biệt trong chiến thuật giữa Doubles và Singles. Bài viết này sẽ giúp bạn điều chỉnh lối chơi phù hợp với từng loại hình...',
+      description:
+        'Hiểu rõ sự khác biệt trong chiến thuật giữa Doubles và Singles. Bài viết này sẽ giúp bạn điều chỉnh lối chơi phù hợp với từng loại hình...',
       author: 'Phạm Quốc Khánh',
       time: '4 ngày trước',
       readTime: '5 phút đọc',
@@ -105,38 +105,39 @@ const NewsPage = () => {
 
   const toggleLike = (newsId: string) => {
     if (likedNews.includes(newsId)) {
-      setLikedNews(likedNews.filter(id => id !== newsId));
+      setLikedNews(likedNews.filter((id) => id !== newsId));
     } else {
       setLikedNews([...likedNews, newsId]);
     }
   };
 
-  const filteredNews = activeCategory === 'all'
-    ? newsItems
-    : newsItems.filter(news => news.category.toLowerCase().includes(
-      categories.find(c => c.id === activeCategory)?.name.toLowerCase() || ''
-    ));
+  const filteredNews =
+    activeCategory === 'all'
+      ? newsItems
+      : newsItems.filter((news) =>
+          news.category
+            .toLowerCase()
+            .includes(categories.find((c) => c.id === activeCategory)?.name.toLowerCase() || '')
+        );
 
   const NewsCard = ({ item }: { item: NewsItemDetailed }) => (
     <TouchableOpacity
       style={styles.newsCard}
-      onPress={() => router.push({
-        pathname: '/(details)/newDetail/[id]',
-        params: { id: item.id }
-      })}
+      onPress={() =>
+        router.push({
+          pathname: '/(details)/newDetail/[id]',
+          params: { id: item.id },
+        })
+      }
     >
       <View style={[styles.newsCardInner, { backgroundColor: colors.card }]}>
         <View style={[styles.newsThumbnail, { backgroundColor: item.image as any }]}>
-          <Text style={{ color: item.categoryColor, fontSize: 12, fontWeight: '600' }}>
-            News
-          </Text>
+          <Text style={{ color: item.categoryColor, fontSize: 12, fontWeight: '600' }}>News</Text>
         </View>
 
         <View style={styles.newsContent}>
           <View style={[styles.categoryBadge, { backgroundColor: `${item.categoryColor}20` }]}>
-            <Text style={[styles.categoryBadgeText, { color: item.categoryColor }]}>
-              {item.category}
-            </Text>
+            <Text style={[styles.categoryBadgeText, { color: item.categoryColor }]}>{item.category}</Text>
           </View>
 
           <Text style={[styles.newsTitle, { color: colors.text }]} numberOfLines={2}>
@@ -159,10 +160,7 @@ const NewsPage = () => {
               <Text style={[styles.statText, { color: colors.textTertiary }]}>{item.views}</Text>
             </View>
             <View style={styles.statItem}>
-              <TouchableOpacity
-                onPress={() => toggleLike(item.id)}
-                style={styles.likeBtn}
-              >
+              <TouchableOpacity onPress={() => toggleLike(item.id)} style={styles.likeBtn}>
                 <Ionicons
                   name={likedNews.includes(item.id) ? 'heart' : 'heart-outline'}
                   size={14}
@@ -190,8 +188,8 @@ const NewsPage = () => {
         {
           backgroundColor: activeCategory === item.id ? item.color : colors.backgroundTertiary,
           borderColor: activeCategory === item.id ? item.color : colors.border,
-          borderWidth: 1
-        }
+          borderWidth: 1,
+        },
       ]}
       onPress={() => setActiveCategory(item.id)}
     >
@@ -204,7 +202,7 @@ const NewsPage = () => {
         style={[
           styles.categoryChipText,
           activeCategory === item.id && styles.categoryChipTextActive,
-          { color: activeCategory === item.id ? '#fff' : colors.text }
+          { color: activeCategory === item.id ? '#fff' : colors.text },
         ]}
       >
         {item.name}
@@ -216,7 +214,10 @@ const NewsPage = () => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>Tin tức & Sự kiện</Text>
-        <TouchableOpacity  onPress={()=> router.navigate('/notification')} style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}>
+        <TouchableOpacity
+          onPress={() => router.navigate('/notification')}
+          style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}
+        >
           <Ionicons name="notifications-outline" size={24} color={colors.icon} />
           <View style={styles.badge}>
             <Text style={styles.badgeText}>3</Text>
@@ -238,11 +239,7 @@ const NewsPage = () => {
       </View>
 
       <View style={styles.categoriesWrapper}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoriesContent}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoriesContent}>
           {categories.map((category) => (
             <CategoryChip key={category.id} item={category} />
           ))}
@@ -251,21 +248,26 @@ const NewsPage = () => {
       <FlatList
         data={filteredNews}
         renderItem={({ item }) => <NewsCard item={item} />}
-        ListHeaderComponent={   <View style={styles.featuredSection}>
-        <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin nổi bật</Text>
-        <TouchableOpacity style={[styles.featuredCard, { backgroundColor: colors.cardSecondary }]}>
-          <ImageBackground style={styles.featuredImage} source={{ uri: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png' }}>
-            <View style={styles.featuredOverlay}>
-              <View style={[styles.featuredBadge, { backgroundColor: '#FF4444' }]}>
-                <Text style={styles.featuredBadgeText}>HOT</Text>
-              </View>
-              <Text style={styles.featuredTitle}>
-                HCM Open 2025: Những tiêu điểm không thể bỏ lỡ
-              </Text>
-            </View>
-          </ImageBackground>
-        </TouchableOpacity>
-      </View>}
+        ListHeaderComponent={
+          <View style={styles.featuredSection}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin nổi bật</Text>
+            <TouchableOpacity style={[styles.featuredCard, { backgroundColor: colors.cardSecondary }]}>
+              <ImageBackground
+                style={styles.featuredImage}
+                source={{
+                  uri: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+                }}
+              >
+                <View style={styles.featuredOverlay}>
+                  <View style={[styles.featuredBadge, { backgroundColor: '#FF4444' }]}>
+                    <Text style={styles.featuredBadgeText}>HOT</Text>
+                  </View>
+                  <Text style={styles.featuredTitle}>HCM Open 2025: Những tiêu điểm không thể bỏ lỡ</Text>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
+          </View>
+        }
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.flatListContent}
         scrollEnabled={true}
@@ -273,6 +275,6 @@ const NewsPage = () => {
       />
     </View>
   );
-}
+};
 
 export default NewsPage;

@@ -1,11 +1,15 @@
-import { IconSymbol } from '@/components/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useThemedColors } from '@/hooks/use-theme';
+import React from 'react';
+
 import { Feather } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { IconSymbol } from '@/components/icon-symbol';
+
+import { Colors } from '@/constants/theme';
+
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useThemedColors } from '@/hooks/use-theme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -28,48 +32,38 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name='index'
+        name="index"
         options={{
           title: 'Trang chủ',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name='house.fill' color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name='area'
+        name="area"
         options={{
           title: 'Sân',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name='mappin.and.ellipse' color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="mappin.and.ellipse" color={color} />,
         }}
       />
       <Tabs.Screen
-        name='tournament'
+        name="tournament"
         options={{
           title: 'Giải đấu',
-          tabBarIcon: ({ color }) => (
-            <Feather name='star' size={24} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Feather name="star" size={24} color={color} />,
         }}
       />
       <Tabs.Screen
-        name='news'
+        name="news"
         options={{
           title: 'Tin tức',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name='bookmark.fill' color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="bookmark.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name='user'
+        name="user"
         options={{
           title: 'Tôi',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={24} name='person.fill' color={color} />
-          ),
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="person.fill" color={color} />,
         }}
       />
     </Tabs>

@@ -89,25 +89,30 @@
 ## 🛠️ Công nghệ & Stack
 
 ### Frontend
+
 - **React Native**: 0.81.5
 - **Expo SDK**: 54.0.24
 - **React**: 19.1.0
 - **TypeScript**: 5.9.2
 
 ### Navigation & Routing
+
 - **Expo Router**: 6.0.15 (File-based routing)
 - **React Navigation**: 7.1.8
   - Bottom Tabs Navigation: 7.4.0
   - Navigation Elements: 2.6.3
 
 ### State Management & Data Fetching
+
 - **TanStack React Query**: 5.90.11 (Server state management, caching, synchronization)
 - **React Context**: ThemeContext (Client state)
 
 ### Storage & Persistence
+
 - **AsyncStorage**: 2.2.0 (Persistent local storage)
 
 ### UI & Animation
+
 - **Expo Vector Icons**: 15.0.3
 - **Expo Linear Gradient**: 15.0.7
 - **React Native Reanimated**: 4.1.1 (Advanced animations)
@@ -117,11 +122,13 @@
 - **React Native Screens**: 4.16.0 (Native screen management)
 
 ### Media & Image
+
 - **Expo Image**: 3.0.10 (Fast image loading)
 - **Expo Image Picker**: 17.0.8 (Image selection)
 - **Expo Web Browser**: 15.0.9 (Web browser integration)
 
 ### Utilities
+
 - **Expo Font**: 14.0.9 (Custom fonts)
 - **Expo Haptics**: 15.0.7 (Haptic feedback)
 - **Expo Symbols**: 1.0.7 (Symbol icons)
@@ -132,11 +139,13 @@
 - **Expo Splash Screen**: 31.0.11 (Splash screen)
 
 ### Development
+
 - **ESLint**: 9.25.0
 - **ESLint Config Expo**: 10.0.0
 - **@types/react**: 19.1.0
 
 ### Platform Support
+
 - **React DOM**: 19.1.0 (Web support)
 - **React Native Web**: 0.21.0 (Web compatibility layer)
 
@@ -145,16 +154,19 @@
 ## 📋 Yêu cầu hệ thống
 
 ### Tối thiểu
+
 - **Node.js**: 16.x hoặc cao hơn (khuyến nghị 18.x+)
 - **npm**: 8.x hoặc cao hơn (hoặc yarn 1.22.x+)
 - **Git**: 2.0+
 
 ### Cài đặt Expo
+
 - **Expo CLI**: Cài đặt global (`npm install -g expo-cli`)
 
 ### Hệ điều hành cụ thể
 
 #### iOS
+
 - **macOS**: 12.0 hoặc cao hơn
 - **Xcode**: 13.0 hoặc cao hơn
 - **CocoaPods**: 1.11.0 hoặc cao hơn
@@ -162,12 +174,14 @@
 - **iOS SDK**: iOS 14.0 trở lên
 
 #### Android
+
 - **Android Studio**: 4.0 hoặc cao hơn
 - **Android SDK**: 21 (API 21) trở lên
 - **Java**: JDK 11.0 hoặc cao hơn
 - **Gradle**: 6.7 hoặc cao hơn
 
 #### Web
+
 - Bất kỳ trình duyệt hiện đại nào (Chrome, Firefox, Safari, Edge)
 
 ---
@@ -184,11 +198,13 @@ cd one-pickleball
 ### 2. Cài đặt Dependencies
 
 Sử dụng npm:
+
 ```bash
 npm install
 ```
 
 Hoặc sử dụng yarn:
+
 ```bash
 yarn install
 ```
@@ -208,7 +224,8 @@ EXPO_PUBLIC_ENABLE_ANALYTICS=false
 EXPO_PUBLIC_ENABLE_CRASH_REPORTING=false
 ```
 
-**Ghi chú**: 
+**Ghi chú**:
+
 - Các biến bắt đầu với `EXPO_PUBLIC_` có thể truy cập từ client-side
 - Tạo file `.env.local` (không commit) để lưu các giá trị cục bộ
 - Xem `config/app.config.ts` để hiểu các biến cấu hình
@@ -291,6 +308,7 @@ expo start --web
 ### Debug & Development
 
 Sử dụng Expo DevTools:
+
 ```bash
 npm start
 
@@ -433,13 +451,13 @@ one-pickleball/
 
 ## 💻 Script sẵn có
 
-| Script | Mô tả | Lệnh |
-|--------|-------|------|
-| `start` | Bắt đầu development server | `npm start` |
-| `ios` | Chạy trên iOS Simulator | `npm run ios` |
+| Script    | Mô tả                      | Lệnh              |
+| --------- | -------------------------- | ----------------- |
+| `start`   | Bắt đầu development server | `npm start`       |
+| `ios`     | Chạy trên iOS Simulator    | `npm run ios`     |
 | `android` | Chạy trên Android Emulator | `npm run android` |
-| `web` | Chạy trên Web browser | `npm run web` |
-| `lint` | Kiểm tra lỗi code | `npm run lint` |
+| `web`     | Chạy trên Web browser      | `npm run web`     |
+| `lint`    | Kiểm tra lỗi code          | `npm run lint`    |
 
 ### Ví dụ sử dụng
 
@@ -492,40 +510,40 @@ Cấu hình centralized cho toàn bộ ứng dụng:
 
 ```typescript
 export const AppConfig = {
-    // API Configuration
-    api: {
-        baseUrl: process.env.EXPO_PUBLIC_API_URL || 'https://api.onepickleball.com',
-        timeout: 30000,
-        retryAttempts: 3,
-    },
+  // API Configuration
+  api: {
+    baseUrl: process.env.EXPO_PUBLIC_API_URL || 'https://api.onepickleball.com',
+    timeout: 30000,
+    retryAttempts: 3,
+  },
 
-    // App Information
-    app: {
-        name: 'onePickleball',
-        version: '1.0.0',
-        bundleId: 'com.onepickleball.app',
-    },
+  // App Information
+  app: {
+    name: 'onePickleball',
+    version: '1.0.0',
+    bundleId: 'com.onepickleball.app',
+  },
 
-    // Feature Flags
-    features: {
-        enableNotifications: true,
-        enableAnalytics: false,
-        enableCrashReporting: false,
-    },
+  // Feature Flags
+  features: {
+    enableNotifications: true,
+    enableAnalytics: false,
+    enableCrashReporting: false,
+  },
 
-    // Storage Keys
-    storageKeys: {
-        theme: '@app_theme_mode',
-        user: '@user_data',
-        token: '@auth_token',
-        language: '@app_language',
-    },
+  // Storage Keys
+  storageKeys: {
+    theme: '@app_theme_mode',
+    user: '@user_data',
+    token: '@auth_token',
+    language: '@app_language',
+  },
 
-    // Pagination
-    pagination: {
-        defaultPageSize: 10,
-        maxPageSize: 50,
-    },
+  // Pagination
+  pagination: {
+    defaultPageSize: 10,
+    maxPageSize: 50,
+  },
 };
 ```
 
@@ -537,16 +555,17 @@ export const AppConfig = {
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": ["./*"]  // Path alias untuk imports
+      "@/*": ["./*"] // Path alias untuk imports
     }
   }
 }
 ```
 
 Path aliases cho imports sạch:
+
 ```typescript
 // Thay vì: import Component from '../../../components/MyComponent'
-import Component from '@/components/MyComponent'
+import Component from '@/components/MyComponent';
 ```
 
 ---
@@ -558,6 +577,7 @@ import Component from '@/components/MyComponent'
 **Nguyên nhân**: Dependencies chưa được cài đặt đầy đủ
 
 **Giải pháp**:
+
 ```bash
 # Xóa node_modules và cài đặt lại
 rm -rf node_modules package-lock.json
@@ -569,6 +589,7 @@ npm install
 **Nguyên nhân**: Cache bundler bị lỗi
 
 **Giải pháp**:
+
 ```bash
 npm start -- --reset-cache
 # hoặc
@@ -578,6 +599,7 @@ expo start -c
 ### Lỗi: Port 8081 đã được sử dụng
 
 **Windows**:
+
 ```powershell
 # Tìm process sử dụng port 8081
 netstat -ano | findstr :8081
@@ -587,6 +609,7 @@ taskkill /PID <PID> /F
 ```
 
 **macOS/Linux**:
+
 ```bash
 # Tìm process
 lsof -i :8081
@@ -613,6 +636,7 @@ cd ..
 ### Lỗi: ANDROID_HOME not set
 
 **macOS**:
+
 ```bash
 # Thêm vào ~/.zshrc hoặc ~/.bash_profile
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -626,6 +650,7 @@ source ~/.zshrc
 ```
 
 **Windows** (PowerShell):
+
 ```powershell
 [Environment]::SetEnvironmentVariable("ANDROID_HOME", "C:\Users\<YourUsername>\AppData\Local\Android\sdk", "User")
 ```
@@ -643,6 +668,7 @@ rm -rf .next
 ### Ứng dụng chạy chậm hoặc bị lag
 
 1. **Kiểm tra Memory Usage**:
+
    ```bash
    npm start
    # Nhấn 'j' để mở DevTools
@@ -650,6 +676,7 @@ rm -rf .next
    ```
 
 2. **Optimize Bundle Size**:
+
    ```bash
    npm run lint
    ```
@@ -666,6 +693,7 @@ rm -rf .next
    - Đảm bảo `EXPO_PUBLIC_API_URL` được set đúng
 
 2. **Kiểm tra Network**:
+
    ```bash
    # Test API endpoint
    curl https://api.onepickleball.com/health
@@ -679,12 +707,14 @@ rm -rf .next
 ## 📚 Tài liệu tham khảo
 
 ### Official Documentation
+
 - [React Native Documentation](https://reactnative.dev/)
 - [Expo Documentation](https://docs.expo.dev/)
 - [Expo Router Documentation](https://docs.expo.dev/routing/introduction/)
 - [React Navigation Documentation](https://reactnavigation.org/)
 
 ### Libraries Documentation
+
 - [TanStack React Query](https://tanstack.com/query/latest)
 - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
 - [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/)
@@ -692,11 +722,13 @@ rm -rf .next
 - [Expo Icons](https://icons.expo.fyi/)
 
 ### Development Tools
+
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [ESLint Configuration](https://eslint.org/docs/rules/)
 - [Expo EAS Build](https://docs.expo.dev/build/introduction/)
 
 ### Community Resources
+
 - [Expo Community Slack](https://expo.io/slack)
 - [React Native Community Discord](https://discord.gg/react-native)
 - [Stack Overflow: react-native](https://stackoverflow.com/questions/tagged/react-native)
@@ -710,17 +742,20 @@ Chúng tôi rất hoan nghênh mọi đóng góp từ cộng đồng!
 ### Các bước đóng góp
 
 1. **Fork Repository**
+
    ```bash
    # Trên GitHub, click nút "Fork"
    ```
 
 2. **Clone Fork của bạn**
+
    ```bash
    git clone https://github.com/<your-username>/one-pickleball.git
    cd one-pickleball
    ```
 
 3. **Tạo Feature Branch**
+
    ```bash
    git checkout -b feature/AmazingFeature
    # hoặc
@@ -728,6 +763,7 @@ Chúng tôi rất hoan nghênh mọi đóng góp từ cộng đồng!
    ```
 
 4. **Commit Changes**
+
    ```bash
    git add .
    git commit -m "Add some AmazingFeature"
@@ -735,6 +771,7 @@ Chúng tôi rất hoan nghênh mọi đóng góp từ cộng đồng!
    ```
 
 5. **Push to Branch**
+
    ```bash
    git push origin feature/AmazingFeature
    ```
@@ -766,6 +803,7 @@ Chúng tôi rất hoan nghênh mọi đóng góp từ cộng đồng!
 **Types**: feat, fix, docs, style, refactor, perf, test, chore
 
 **Ví dụ**:
+
 ```
 feat: Add search functionality for fields
 
@@ -790,6 +828,7 @@ Xem file `LICENSE` để biết chi tiết đầy đủ.
 ## 👤 Tác giả
 
 **Hùng Siêu Huy**
+
 - GitHub: [@hungsieuhay](https://github.com/hungsieuhay)
 - Repository: [one-pickleball](https://github.com/hungsieuhay/one-pickleball)
 

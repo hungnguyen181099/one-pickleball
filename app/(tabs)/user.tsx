@@ -1,17 +1,18 @@
-import { Grid, GridItem } from '@/components/ui/Grid';
-import {
-  AchievementCard,
-  SettingItemComponent,
-  StatCard,
-} from '@/components/user';
-import { styles } from '@/constants/styles/user.styles';
-import { useSession } from '@/contexts/AuthProvider';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import React, { useState } from 'react';
+
 import { UserAchievement, UserSettingsItem, UserStatCardProps } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Href, router } from 'expo-router';
-import React, { useState } from 'react';
 import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+import { Grid, GridItem } from '@/components/ui/Grid';
+import { AchievementCard, SettingItemComponent, StatCard } from '@/components/user';
+
+import { styles } from '@/constants/styles/user.styles';
+
+import { useSession } from '@/contexts/AuthProvider';
+
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
 
 const UserPage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -40,17 +41,17 @@ const UserPage = () => {
 
   const quickActions = [
     {
-      icon: <MaterialCommunityIcons name='star' size={20} color='#00D9B5' />,
+      icon: <MaterialCommunityIcons name="star" size={20} color="#00D9B5" />,
       name: 'Giải đấu của tôi',
       href: '/mytournament',
     },
     {
-      icon: <Ionicons name='calendar' size={20} color='#FF9800' />,
+      icon: <Ionicons name="calendar" size={20} color="#FF9800" />,
       name: 'Lịch sử đặt sân',
       href: '/historybooking',
     },
     {
-      icon: <Ionicons name='heart' size={20} color='#E91E63' />,
+      icon: <Ionicons name="heart" size={20} color="#E91E63" />,
       name: 'Sân yêu thích',
       href: '/favoritefield',
     },
@@ -125,39 +126,27 @@ const UserPage = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.coverSection}>
           <View style={styles.cover} />
         </View>
 
-        <View
-          style={[styles.profileInfoSection, { backgroundColor: colors.card }]}
-        >
+        <View style={[styles.profileInfoSection, { backgroundColor: colors.card }]}>
           <View style={styles.avatarWrapper}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>
-                {(user?.name || 'U').charAt(0).toUpperCase()}
-              </Text>
+              <Text style={styles.avatarText}>{(user?.name || 'U').charAt(0).toUpperCase()}</Text>
             </View>
             <TouchableOpacity style={styles.editAvatarBtn}>
-              <Ionicons name='camera' size={16} color='#fff' />
+              <Ionicons name="camera" size={16} color="#fff" />
             </TouchableOpacity>
           </View>
 
-          <Text style={[styles.profileName, { color: colors.text }]}>
-            {user?.name || 'Người dùng'}
-          </Text>
-          <Text
-            style={[styles.profileUsername, { color: colors.textTertiary }]}
-          >
+          <Text style={[styles.profileName, { color: colors.text }]}>{user?.name || 'Người dùng'}</Text>
+          <Text style={[styles.profileUsername, { color: colors.textTertiary }]}>
             {user?.email || 'Chưa cập nhật email'}
           </Text>
           <Text style={[styles.profileBio, { color: colors.textSecondary }]}>
-            Role: {user?.role_type || 'User'} | Status:{' '}
-            {user?.status || 'Active'}
+            Role: {user?.role_type || 'User'} | Status: {user?.status || 'Active'}
           </Text>
 
           <TouchableOpacity style={styles.editBtn} onPress={handleEditProfile}>
@@ -178,29 +167,18 @@ const UserPage = () => {
             <GridItem key={idx}>
               <TouchableOpacity
                 onPress={() => router.push(action.href as Href)}
-                style={[
-                  styles.quickActionItem,
-                  { backgroundColor: colors.cardSecondary },
-                ]}
+                style={[styles.quickActionItem, { backgroundColor: colors.cardSecondary }]}
               >
                 {action.icon}
-                <Text style={[styles.quickActionLabel, { color: colors.text }]}>
-                  {action.name}
-                </Text>
-                <Ionicons
-                  name='chevron-forward'
-                  size={20}
-                  color={colors.textTertiary}
-                />
+                <Text style={[styles.quickActionLabel, { color: colors.text }]}>{action.name}</Text>
+                <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
               </TouchableOpacity>
             </GridItem>
           ))}
         </Grid>
 
         <View style={styles.section}>
-          <Text style={[styles.sectionHeading, { color: colors.text }]}>
-            Thành tích
-          </Text>
+          <Text style={[styles.sectionHeading, { color: colors.text }]}>Thành tích</Text>
           <Grid columns={2} gap={8}>
             {achievements.map((achievement) => (
               <GridItem key={achievement.id}>
@@ -212,9 +190,7 @@ const UserPage = () => {
 
         {/* Settings */}
         <View style={[styles.section, styles.lastSection]}>
-          <Text style={[styles.sectionHeading, { color: colors.text }]}>
-            Cài đặt
-          </Text>
+          <Text style={[styles.sectionHeading, { color: colors.text }]}>Cài đặt</Text>
           <View style={[styles.settingsMenu, { backgroundColor: colors.card }]}>
             {settingsItems.map((item) => (
               <SettingItemComponent key={item.id} item={item} />

@@ -1,6 +1,8 @@
-import { useThemedColors } from '@/hooks/use-theme';
 import React from 'react';
+
 import { Text } from 'react-native';
+
+import { useThemedColors } from '@/hooks/use-theme';
 
 type FormDescriptionProps = {
   children: React.ReactNode;

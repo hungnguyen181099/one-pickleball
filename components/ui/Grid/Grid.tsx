@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+
 import { DimensionValue, StyleProp, View, ViewStyle } from 'react-native';
 
 type GridContextType = {

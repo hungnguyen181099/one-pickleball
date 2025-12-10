@@ -1,17 +1,13 @@
-import { styles } from '@/constants/styles/notification.styles';
-import { useThemedColors } from '@/hooks/use-theme';
+import React, { useState } from 'react';
+
+import { NotificationItem } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { NotificationItem } from '@/types';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { styles } from '@/constants/styles/notification.styles';
 
+import { useThemedColors } from '@/hooks/use-theme';
 
 export default function NotificationScreen() {
   const colors = useThemedColors();
@@ -95,11 +91,9 @@ export default function NotificationScreen() {
     },
   ];
 
-  const filteredNotifications = activeTab === 'unread'
-    ? notifications.filter(n => !n.isRead)
-    : notifications;
+  const filteredNotifications = activeTab === 'unread' ? notifications.filter((n) => !n.isRead) : notifications;
 
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const renderNotificationItem = ({ item }: { item: NotificationItem }) => (
     <TouchableOpacity
@@ -116,38 +110,24 @@ export default function NotificationScreen() {
 
       <View style={styles.notificationContent}>
         <View style={styles.notificationHeader}>
-          <Text style={[styles.notificationTitle, { color: colors.text }]}>
-            {item.title}
-          </Text>
+          <Text style={[styles.notificationTitle, { color: colors.text }]}>{item.title}</Text>
           {!item.isRead && <View style={styles.unreadBadge} />}
         </View>
 
-        <Text style={[styles.notificationMessage, { color: colors.textSecondary }]}>
-          {item.message}
-        </Text>
+        <Text style={[styles.notificationMessage, { color: colors.textSecondary }]}>{item.message}</Text>
 
-        <Text style={[styles.notificationTime, { color: colors.textTertiary }]}>
-          {item.time}
-        </Text>
+        <Text style={[styles.notificationTime, { color: colors.textTertiary }]}>{item.time}</Text>
 
         {item.actions && item.actions.length > 0 && (
           <View style={styles.notificationActions}>
             {item.actions.map((action, index) => (
               <TouchableOpacity
                 key={index}
-                style={[
-                  styles.actionBtn,
-                  { borderColor: colors.border },
-                  action.primary && styles.actionBtnPrimary,
-                ]}
+                style={[styles.actionBtn, { borderColor: colors.border }, action.primary && styles.actionBtnPrimary]}
                 onPress={action.onPress}
               >
                 <Text
-                  style={[
-                    styles.actionBtnText,
-                    { color: colors.text },
-                    action.primary && styles.actionBtnTextPrimary,
-                  ]}
+                  style={[styles.actionBtnText, { color: colors.text }, action.primary && styles.actionBtnTextPrimary]}
                 >
                   {action.label}
                 </Text>
@@ -164,20 +144,15 @@ export default function NotificationScreen() {
       <View style={[styles.emptyIcon, { backgroundColor: colors.backgroundTertiary }]}>
         <Ionicons name="notifications-off-outline" size={40} color={colors.textTertiary} />
       </View>
-      <Text style={[styles.emptyTitle, { color: colors.text }]}>
-        Không có thông báo
-      </Text>
+      <Text style={[styles.emptyTitle, { color: colors.text }]}>Không có thông báo</Text>
       <Text style={[styles.emptyMessage, { color: colors.textSecondary }]}>
-        {activeTab === 'unread'
-          ? 'Bạn đã đọc tất cả thông báo'
-          : 'Bạn chưa có thông báo nào'}
+        {activeTab === 'unread' ? 'Bạn đã đọc tất cả thông báo' : 'Bạn chưa có thông báo nào'}
       </Text>
     </View>
   );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-
       <View style={styles.header}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View>
@@ -196,39 +171,19 @@ export default function NotificationScreen() {
 
       <View style={styles.tabsContainer}>
         <TouchableOpacity
-          style={[
-            styles.tabBtn,
-            { borderColor: colors.border },
-            activeTab === 'all' && styles.tabBtnActive,
-          ]}
+          style={[styles.tabBtn, { borderColor: colors.border }, activeTab === 'all' && styles.tabBtnActive]}
           onPress={() => setActiveTab('all')}
         >
-          <Text
-            style={[
-              styles.tabLabel,
-              { color: colors.text },
-              activeTab === 'all' && styles.tabLabelActive,
-            ]}
-          >
+          <Text style={[styles.tabLabel, { color: colors.text }, activeTab === 'all' && styles.tabLabelActive]}>
             Tất cả
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[
-            styles.tabBtn,
-            { borderColor: colors.border },
-            activeTab === 'unread' && styles.tabBtnActive,
-          ]}
+          style={[styles.tabBtn, { borderColor: colors.border }, activeTab === 'unread' && styles.tabBtnActive]}
           onPress={() => setActiveTab('unread')}
         >
-          <Text
-            style={[
-              styles.tabLabel,
-              { color: colors.text },
-              activeTab === 'unread' && styles.tabLabelActive,
-            ]}
-          >
+          <Text style={[styles.tabLabel, { color: colors.text }, activeTab === 'unread' && styles.tabLabelActive]}>
             Chưa đọc {unreadCount > 0 && `(${unreadCount})`}
           </Text>
         </TouchableOpacity>

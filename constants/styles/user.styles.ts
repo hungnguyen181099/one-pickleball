@@ -1,5 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
-
+import { Dimensions, StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
@@ -110,10 +109,9 @@ export const styles = StyleSheet.create({
   },
   statsGrid: {
     marginTop: 16,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   statCard: {
-   
     paddingVertical: 16,
     backgroundColor: '#f9f9f9',
     borderRadius: 12,

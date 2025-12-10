@@ -1,12 +1,8 @@
 import React from 'react';
-import {
-  Control,
-  Controller,
-  ControllerRenderProps,
-  FieldValues,
-  Path,
-} from 'react-hook-form';
+
+import { Control, Controller, ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 import { View, ViewProps } from 'react-native';
+
 import { FormDescription } from '../FormDescription';
 import { FormLabel } from '../FormLabel';
 import { FormMessage } from '../FormMessage';
@@ -36,11 +32,7 @@ const FormWrapper = <T extends FieldValues>({
   return (
     <View {...container}>
       <FormLabel>{label}</FormLabel>
-      <Controller
-        control={control}
-        render={({ field }) => children(field)}
-        name={name}
-      />
+      <Controller control={control} render={({ field }) => children(field)} name={name} />
       <FormDescription>{description}</FormDescription>
       <FormMessage>{message}</FormMessage>
     </View>

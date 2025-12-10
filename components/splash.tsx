@@ -1,5 +1,6 @@
-import { useSession } from '@/contexts/AuthProvider';
 import { SplashScreen } from 'expo-router';
+
+import { useSession } from '@/contexts/AuthProvider';
 
 SplashScreen.preventAutoHideAsync();
 

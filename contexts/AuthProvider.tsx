@@ -1,8 +1,11 @@
-import { useStorageState } from '@/hooks/use-storage-state';
-import { authService, LoginRequest, RegisterRequest } from '@/services/api/auth.service';
-import ApiClient from '@/services/api/client';
+import { type PropsWithChildren, createContext, use, useEffect, useState } from 'react';
+
 import { ApiResponse, User } from '@/types';
-import { createContext, use, useEffect, useState, type PropsWithChildren } from 'react';
+
+import { useStorageState } from '@/hooks/use-storage-state';
+
+import { LoginRequest, RegisterRequest, authService } from '@/services/api/auth.service';
+import ApiClient from '@/services/api/client';
 
 interface AuthContextType {
   signIn: (data: LoginRequest) => Promise<ApiResponse<string>>;
@@ -14,7 +17,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
 
 // Use this hook to access the user info.
 export function useSession(): AuthContextType {
@@ -40,13 +42,16 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (session) {
-      authService.getProfile().then(response => {
-        if (response.success && response.data) {
-          // Handle nested user object if present (api/auth/me returns {success: true, user: {...}})
-          const userData = (response.data as any).user || response.data;
-          setUser(userData);
-        }
-      }).catch(err => console.error('Failed to fetch profile:', err));
+      authService
+        .getProfile()
+        .then((response) => {
+          if (response.success && response.data) {
+            // Handle nested user object if present (api/auth/me returns {success: true, user: {...}})
+            const userData = (response.data as any).user || response.data;
+            setUser(userData);
+          }
+        })
+        .catch((err) => console.error('Failed to fetch profile:', err));
     } else {
       setUser(null);
     }
@@ -61,7 +66,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
             console.log('Login Response Debug:', JSON.stringify(response, null, 2));
 
             // Check for token in different common places
-            const token = response.data?.token || response.data?.access_token || (typeof response.data === 'string' ? response.data : null);
+            const token =
+              response.data?.token ||
+              response.data?.access_token ||
+              (typeof response.data === 'string' ? response.data : null);
 
             if (response.success && token) {
               console.log('Setting session token:', token);
@@ -83,17 +91,23 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
             if (response.success) {
               // 1. Try to get token from register response
-              let token = response.data?.token || response.data?.access_token || (typeof response.data === 'string' ? response.data : null);
+              let token =
+                response.data?.token ||
+                response.data?.access_token ||
+                (typeof response.data === 'string' ? response.data : null);
 
               // 2. If no token, try to login automatically
               if (!token) {
                 console.log('Register successful but no token, attempting auto-login...');
                 const loginResp = await authService.login({
                   email: data.email,
-                  password: data.password
+                  password: data.password,
                 });
                 if (loginResp.success) {
-                  token = loginResp.data?.token || loginResp.data?.access_token || (typeof loginResp.data === 'string' ? loginResp.data : null);
+                  token =
+                    loginResp.data?.token ||
+                    loginResp.data?.access_token ||
+                    (typeof loginResp.data === 'string' ? loginResp.data : null);
                 }
               }
 

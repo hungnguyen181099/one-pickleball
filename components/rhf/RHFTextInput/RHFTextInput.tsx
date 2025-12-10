@@ -1,7 +1,10 @@
-import { Input } from '@/components/ui/Input';
 import React from 'react';
+
 import { FieldValues } from 'react-hook-form';
 import { TextInputProps } from 'react-native';
+
+import { Input } from '@/components/ui/Input';
+
 import { FormWrapper } from '../FormWrapper';
 import { FormWrapperProps } from '../FormWrapper/FormWrapper';
 
@@ -12,20 +15,10 @@ type RHFTextInputProps<T extends FieldValues> = FormWrapperProps<T> & {
   };
 };
 
-const RHFTextInput = <T extends FieldValues>({
-  input,
-  ...props
-}: RHFTextInputProps<T>) => {
+const RHFTextInput = <T extends FieldValues>({ input, ...props }: RHFTextInputProps<T>) => {
   return (
     <FormWrapper {...props}>
-      {({ onChange, onBlur, value }) => (
-        <Input
-          onBlur={onBlur}
-          onChangeText={onChange}
-          value={value}
-          {...input}
-        />
-      )}
+      {({ onChange, onBlur, value }) => <Input onBlur={onBlur} onChangeText={onChange} value={value} {...input} />}
     </FormWrapper>
   );
 };

@@ -1,176 +1,112 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
+  buttonDisabled: {
+    opacity: 0.6,
+  },
+  buttonPrimary: {
+    alignItems: 'center',
+    backgroundColor: '#00D9B5',
+    borderRadius: 8,
+    justifyContent: 'center',
+    paddingVertical: 14,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   container: {
     flex: 1,
   },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 20,
+  divider: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: 24,
+  },
+  dividerLine: {
+    backgroundColor: '#e0e0e0',
+    flex: 1,
+    height: 1,
+  },
+  dividerText: {
+    color: '#999',
+    fontSize: 14,
+    marginHorizontal: 12,
+  },
+  footer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  footerText: {
+    fontSize: 14,
   },
   header: {
     alignItems: 'center',
     marginBottom: 40,
     marginTop: 20,
   },
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+  linkText: {
+    color: '#00D9B5',
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'right',
+  },
+  linkTextBold: {
+    color: '#00D9B5',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  logo: {
+    alignItems: 'center',
+    backgroundColor: '#00D9B5',
+    borderColor: '#fff',
+    borderRadius: 40,
+    borderWidth: 4,
+    height: 80,
+    justifyContent: 'center',
+    width: 80,
+  },
   logoContainer: {
     marginBottom: 16,
   },
-  logo: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#00D9B5',
-    justifyContent: 'center',
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+  },
+  socialButton: {
     alignItems: 'center',
-    borderWidth: 4,
-    borderColor: '#fff',
+    borderColor: '#e0e0e0',
+    borderRadius: 8,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    paddingVertical: 12,
   },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-  },
-  formContainer: {
-    marginBottom: 32,
-    flexDirection: 'column',
-    gap: 16,
-  },
-  formGroup: {
-    marginBottom: 20,
-  },
-  label: {
+  socialButtonText: {
     fontSize: 14,
     fontWeight: '500',
-    marginBottom: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 14,
-  },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    paddingRight: 12,
-  },
-  passwordInput: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 14,
-  },
-  eyeButton: {
-    padding: 8,
-  },
-  rowBetween: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 2,
-    borderColor: '#e0e0e0',
-    borderRadius: 4,
-    marginRight: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  checkboxChecked: {
-    borderColor: '#00D9B5',
-  },
-  checkboxLabel: {
-    fontSize: 14,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#00D9B5',
-    fontWeight: '500',
-  },
-  buttonPrimary: {
-    backgroundColor: '#00D9B5',
-    paddingVertical: 14,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e0e0e0',
-  },
-  dividerText: {
-    marginHorizontal: 12,
-    fontSize: 14,
-    color: '#999',
   },
   socialContainer: {
     flexDirection: 'row',
     gap: 12,
     marginBottom: 32,
   },
-  socialButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    paddingVertical: 12,
-    borderRadius: 8,
-    gap: 8,
-  },
-  socialButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  footerText: {
+  subtitle: {
     fontSize: 14,
   },
-  linkTextBold: {
-    fontSize: 14,
-    color: '#00D9B5',
-    fontWeight: '600',
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 8,
   },
 });

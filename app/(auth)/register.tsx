@@ -1,12 +1,9 @@
-import { styles } from '@/constants/styles/register.styles';
-import { useSession } from '@/contexts/AuthProvider';
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import React, { useState } from 'react';
+
 import { RegisterFormData } from '@/types';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-
 import {
   Alert,
   KeyboardAvoidingView,
@@ -16,8 +13,14 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
+
+import { styles } from '@/constants/styles/register.styles';
+
+import { useSession } from '@/contexts/AuthProvider';
+
+import { useTheme, useThemedColors } from '@/hooks/use-theme';
 
 export default function RegisterScreen() {
   const { theme } = useTheme();
@@ -36,7 +39,7 @@ export default function RegisterScreen() {
   const { signUp } = useSession();
 
   const handleInputChange = (field: keyof RegisterFormData, value: string | boolean) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -62,14 +65,13 @@ export default function RegisterScreen() {
         phone: formData.phone,
         password: formData.password,
         password_confirmation: formData.confirmPassword,
-        role_type: 'user'
+        role_type: 'user',
       });
 
       if (!response.success) {
         Alert.alert('Lỗi đăng ký', response.error || 'Có lỗi xảy ra, vui lòng thử lại');
       }
-      // If success, AuthProvider sets session -> Redirects to Home automatically
-    } catch (error) {
+    } catch {
       Alert.alert('Lỗi', 'Không thể kết nối đến máy chủ');
     } finally {
       setLoading(false);
@@ -85,10 +87,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} />
         <View style={styles.header}>
@@ -97,27 +96,27 @@ export default function RegisterScreen() {
           </TouchableOpacity>
         </View>
 
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
-
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           <View style={styles.titleSection}>
             <View style={styles.logo}>
               {/* <AntDesign name="check" size={40} color="#fff" /> */}
               <Image style={styles.image} source={require('@/assets/images/logo.png')} />
             </View>
             <Text style={[styles.title, { color: colors.text }]}>Tạo tài khoản</Text>
-            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Tham gia cộng đồng Pickleball ngay hôm nay</Text>
+            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+              Tham gia cộng đồng Pickleball ngay hôm nay
+            </Text>
           </View>
 
           {/* Form */}
           <View style={styles.formContainer}>
-
             <View style={styles.formGroup}>
               <Text style={[styles.label, { color: colors.text }]}>Họ và tên</Text>
               <TextInput
-                style={[styles.input, { backgroundColor: colors.input, color: colors.text, borderColor: colors.border }]}
+                style={[
+                  styles.input,
+                  { backgroundColor: colors.input, color: colors.text, borderColor: colors.border },
+                ]}
                 placeholder="Nhập họ và tên"
                 placeholderTextColor={colors.textTertiary}
                 value={formData.fullName}
@@ -128,7 +127,10 @@ export default function RegisterScreen() {
             <View style={styles.formGroup}>
               <Text style={[styles.label, { color: colors.text }]}>Email</Text>
               <TextInput
-                style={[styles.input, { backgroundColor: colors.input, color: colors.text, borderColor: colors.border }]}
+                style={[
+                  styles.input,
+                  { backgroundColor: colors.input, color: colors.text, borderColor: colors.border },
+                ]}
                 placeholder="Nhập email"
                 placeholderTextColor={colors.textTertiary}
                 value={formData.email}
@@ -141,7 +143,10 @@ export default function RegisterScreen() {
             <View style={styles.formGroup}>
               <Text style={[styles.label, { color: colors.text }]}>Số điện thoại</Text>
               <TextInput
-                style={[styles.input, { backgroundColor: colors.input, color: colors.text, borderColor: colors.border }]}
+                style={[
+                  styles.input,
+                  { backgroundColor: colors.input, color: colors.text, borderColor: colors.border },
+                ]}
                 placeholder="Nhập số điện thoại"
                 placeholderTextColor={colors.textTertiary}
                 value={formData.phone}
@@ -161,15 +166,8 @@ export default function RegisterScreen() {
                   value={formData.password}
                   onChangeText={(text) => handleInputChange('password', text)}
                 />
-                <TouchableOpacity
-                  style={styles.eyeButton}
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Ionicons
-                    name={showPassword ? 'eye' : 'eye-off'}
-                    size={20}
-                    color={colors.icon}
-                  />
+                <TouchableOpacity style={styles.eyeButton} onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={20} color={colors.icon} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -185,36 +183,21 @@ export default function RegisterScreen() {
                   value={formData.confirmPassword}
                   onChangeText={(text) => handleInputChange('confirmPassword', text)}
                 />
-                <TouchableOpacity
-                  style={styles.eyeButton}
-                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  <Ionicons
-                    name={showConfirmPassword ? 'eye' : 'eye-off'}
-                    size={20}
-                    color={colors.icon}
-                  />
+                <TouchableOpacity style={styles.eyeButton} onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  <Ionicons name={showConfirmPassword ? 'eye' : 'eye-off'} size={20} color={colors.icon} />
                 </TouchableOpacity>
               </View>
             </View>
 
             <View style={styles.termsContainer}>
               <TouchableOpacity
-                style={[
-                  styles.checkbox,
-                  { borderColor: colors.border },
-                  formData.agreeTerms && styles.checkboxChecked,
-                ]}
+                style={[styles.checkbox, { borderColor: colors.border }, formData.agreeTerms && styles.checkboxChecked]}
                 onPress={() => handleInputChange('agreeTerms', !formData.agreeTerms)}
               >
-                {formData.agreeTerms && (
-                  <Ionicons name="checkmark" size={14} color="#00D9B5" />
-                )}
+                {formData.agreeTerms && <Ionicons name="checkmark" size={14} color="#00D9B5" />}
               </TouchableOpacity>
               <View style={styles.termsText}>
-                <Text style={[styles.termsLabel, { color: colors.text }]}>
-                  Tôi đồng ý với{' '}
-                </Text>
+                <Text style={[styles.termsLabel, { color: colors.text }]}>Tôi đồng ý với </Text>
                 <TouchableOpacity>
                   <Text style={styles.linkText}>Điều khoản sử dụng</Text>
                 </TouchableOpacity>
@@ -230,9 +213,7 @@ export default function RegisterScreen() {
               onPress={handleRegister}
               disabled={loading}
             >
-              <Text style={styles.buttonText}>
-                {loading ? 'Đang đăng ký...' : 'Đăng ký'}
-              </Text>
+              <Text style={styles.buttonText}>{loading ? 'Đang đăng ký...' : 'Đăng ký'}</Text>
             </TouchableOpacity>
           </View>
 
@@ -272,4 +253,3 @@ export default function RegisterScreen() {
     </KeyboardAvoidingView>
   );
 }
-
