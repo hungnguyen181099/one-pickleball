@@ -1,4 +1,4 @@
-import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { ConfirmModal } from '@/components/ConfirmModal';
 import { styles } from '@/constants/styles/booking.styles';
 import { AppColors } from '@/constants/theme';
 import { useThemedColors } from '@/hooks/use-theme';

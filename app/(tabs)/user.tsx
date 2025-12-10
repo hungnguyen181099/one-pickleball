@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@/components/Grid';
+import { Grid, GridItem } from '@/components/ui/Grid';
 import {
   AchievementCard,
   SettingItemComponent,
@@ -23,7 +23,10 @@ const UserPage = () => {
 
   const stats: UserStatCardProps[] = [
     { number: (user?.total_ocr_matches || 0).toString(), label: 'Trận đấu' },
-    { number: user?.elo_rating ? user.elo_rating.toString() : 'N/A', label: 'ELO' },
+    {
+      number: user?.elo_rating ? user.elo_rating.toString() : 'N/A',
+      label: 'ELO',
+    },
     { number: user?.elo_rank || 'N/A', label: 'Rank' },
     { number: user?.opr_level || 'N/A', label: 'OPR' },
   ];
@@ -105,7 +108,7 @@ const UserPage = () => {
 
   const handleLogout = () => {
     Alert.alert('Đăng xuất', 'Bạn có chắc chắn muốn đăng xuất?', [
-      { text: 'Hủy', onPress: () => { }, style: 'cancel' },
+      { text: 'Hủy', onPress: () => {}, style: 'cancel' },
       {
         text: 'Đăng xuất',
         onPress: () => {
@@ -135,7 +138,9 @@ const UserPage = () => {
         >
           <View style={styles.avatarWrapper}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>{(user?.name || 'U').charAt(0).toUpperCase()}</Text>
+              <Text style={styles.avatarText}>
+                {(user?.name || 'U').charAt(0).toUpperCase()}
+              </Text>
             </View>
             <TouchableOpacity style={styles.editAvatarBtn}>
               <Ionicons name='camera' size={16} color='#fff' />
@@ -151,7 +156,8 @@ const UserPage = () => {
             {user?.email || 'Chưa cập nhật email'}
           </Text>
           <Text style={[styles.profileBio, { color: colors.textSecondary }]}>
-            Role: {user?.role_type || 'User'} | Status: {user?.status || 'Active'}
+            Role: {user?.role_type || 'User'} | Status:{' '}
+            {user?.status || 'Active'}
           </Text>
 
           <TouchableOpacity style={styles.editBtn} onPress={handleEditProfile}>

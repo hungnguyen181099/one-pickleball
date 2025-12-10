@@ -1,10 +1,10 @@
-import { Grid, GridItem } from '@/components/Grid';
 import {
   ActionCard,
   EventCardComponent,
   NewsItemComponent,
   StatCard,
 } from '@/components/home';
+import { Grid, GridItem } from '@/components/ui/Grid';
 import { styles } from '@/constants/styles/home.styles';
 import { useThemedColors } from '@/hooks/use-theme';
 import { HomeEventCard, HomeNewsItem, HomeStatCardProps } from '@/types';
