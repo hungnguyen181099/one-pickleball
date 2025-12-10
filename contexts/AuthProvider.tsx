@@ -5,25 +5,19 @@ import { ApiResponse, User } from '@/types';
 import { createContext, use, useEffect, useState, type PropsWithChildren } from 'react';
 
 interface AuthContextType {
-  signIn: (data: LoginRequest) => Promise<ApiResponse<any>>;
-  signUp: (data: RegisterRequest) => Promise<ApiResponse<any>>;
-  signOut: () => void;
-  session?: string | null;
+  signIn: (data: LoginRequest) => Promise<ApiResponse<string>>;
+  signUp: (data: RegisterRequest) => Promise<ApiResponse<string>>;
+  signOut: () => Promise<void>;
+  session: string | null;
   isLoading: boolean;
-  user?: User | null;
+  user: User | null;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  signIn: async () => ({ success: false, error: 'Not implemented' }),
-  signUp: async () => ({ success: false, error: 'Not implemented' }),
-  signOut: () => null,
-  session: null,
-  isLoading: false,
-  user: null,
-});
+const AuthContext = createContext<AuthContextType | null>(null);
+
 
 // Use this hook to access the user info.
-export function useSession() {
+export function useSession(): AuthContextType {
   const value = use(AuthContext);
   if (!value) {
     throw new Error('useSession must be wrapped in a <SessionProvider />');
@@ -127,9 +121,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
             setUser(null);
           }
         },
-        session,
+        session: session || null,
         isLoading,
-        user,
+        user: user || null,
       }}
     >
       {children}
