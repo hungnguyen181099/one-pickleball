@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
@@ -42,6 +42,8 @@ export const styles = StyleSheet.create({
   },
   formContainer: {
     marginBottom: 32,
+    flexDirection: 'column',
+    gap: 16,
   },
   formGroup: {
     marginBottom: 20,

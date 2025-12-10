@@ -1,3 +1,4 @@
+import { RHFTextInput } from '@/components/rhf/RHFTextInput';
 import { styles } from '@/constants/styles/login.styles';
 import { useSession } from '@/contexts/AuthProvider';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
@@ -20,10 +21,16 @@ import {
 import { z } from 'zod';
 
 const loginSchema = z.object({
-  username: z
-    .string()
-    .email('Vui lòng nhập đúng định dạng email')
-    .min(2, 'Email không được để trống'),
+  username: z.union([
+    z.email('Vui lòng nhập đúng định dạng').min(1, 'Không được để trống'),
+    z
+      .string()
+      .min(1, 'Không được để trống')
+      .regex(
+        /(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g,
+        'Vui lòng nhập đúng định dạng'
+      ),
+  ]),
   password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 });
 
@@ -100,43 +107,25 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.formContainer}>
-            <View style={styles.formGroup}>
-              <Text style={[styles.label, { color: colors.text }]}>
-                Email hoặc số điện thoại
-              </Text>
-
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    style={[
-                      styles.input,
-                      {
-                        backgroundColor: colors.input,
-                        color: colors.text,
-                        borderColor: colors.border,
-                      },
-                    ]}
-                    placeholder='Nhập email hoặc số điện thoại'
-                    placeholderTextColor={colors.textTertiary}
-                    keyboardType='email-address'
-                    autoCapitalize='none'
-                  />
-                )}
-                name='username'
-              />
-              {errors.username && (
-                <Text style={{ color: colors.error, marginTop: 8 }}>
-                  {errors.username.message}
-                </Text>
-              )}
-            </View>
+            <RHFTextInput
+              controller={{
+                control: control,
+                name: 'username',
+                message: errors.username?.message,
+              }}
+              label='Email hoặc số điện thoại'
+              input={{
+                style: [
+                  styles.input,
+                  {
+                    backgroundColor: colors.input,
+                    color: colors.text,
+                    borderColor: colors.border,
+                  },
+                ],
+                placeholder: 'op@gmail.com',
+              }}
+            />
 
             <View style={styles.formGroup}>
               <Text style={[styles.label, { color: colors.text }]}>
@@ -185,21 +174,6 @@ export default function LoginScreen() {
             </View>
 
             <View style={styles.rowBetween}>
-              <View style={styles.checkboxContainer}>
-                {/* <TouchableOpacity
-                style={[
-                  styles.checkbox,
-                  { borderColor: colors.border },
-                  formData.rememberMe && styles.checkboxChecked,
-                ]}
-                onPress={() => handleInputChange('rememberMe', !formData.rememberMe)}
-              >
-                {formData.rememberMe && (
-                  <Ionicons name="checkmark" size={14} color="#00D9B5" />
-                )}
-              </TouchableOpacity>
-              <Text style={[styles.checkboxLabel, { color: colors.text }]}>Ghi nhớ đăng nhập</Text> */}
-              </View>
               <TouchableOpacity>
                 <Text style={styles.linkText}>Quên mật khẩu?</Text>
               </TouchableOpacity>
