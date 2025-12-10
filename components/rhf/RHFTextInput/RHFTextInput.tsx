@@ -1,51 +1,32 @@
 import { Input } from '@/components/ui/Input';
 import React from 'react';
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-import { TextInputProps, View, ViewProps } from 'react-native';
-import { FormDescription } from '../FormDescription';
-import { FormLabel } from '../FormLabel';
-import { FormMessage } from '../FormMessage';
+import { FieldValues } from 'react-hook-form';
+import { TextInputProps } from 'react-native';
+import { FormWrapper } from '../FormWrapper';
+import { FormWrapperProps } from '../FormWrapper/FormWrapper';
 
-type RHFTextInputProps<T extends FieldValues> = {
-  controller: {
-    control: Control<T>;
-    name: Path<T>;
-    message?: string;
-  };
+type RHFTextInputProps<T extends FieldValues> = FormWrapperProps<T> & {
   input?: TextInputProps & {
     startIcon?: React.ReactNode;
     endIcon?: React.ReactNode;
   };
-  container?: ViewProps;
-  label?: string;
-  description?: string;
 };
 
 const RHFTextInput = <T extends FieldValues>({
-  controller: { control, name, message },
   input,
-  label,
-  description,
-  container,
+  ...props
 }: RHFTextInputProps<T>) => {
   return (
-    <View {...container}>
-      <FormLabel>{label}</FormLabel>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            {...input}
-          />
-        )}
-        name={name}
-      />
-      <FormDescription>{description}</FormDescription>
-      <FormMessage>{message}</FormMessage>
-    </View>
+    <FormWrapper {...props}>
+      {({ onChange, onBlur, value }) => (
+        <Input
+          onBlur={onBlur}
+          onChangeText={onChange}
+          value={value}
+          {...input}
+        />
+      )}
+    </FormWrapper>
   );
 };
 

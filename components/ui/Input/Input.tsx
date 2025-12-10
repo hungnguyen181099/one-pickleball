@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 
 type InputVariant = 'default' | 'filled' | 'unstyled';
+type InputRadius = 'sm' | 'md' | 'lg';
 
 export type InputProps = TextInputProps & {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   variant?: InputVariant;
+  radius?: InputRadius;
   value?: string;
   onChangeText?: (text: string) => void;
 };
@@ -16,10 +18,12 @@ export type InputProps = TextInputProps & {
 type StyleProps = {
   variant: InputVariant;
   color: ThemeColor;
+  radius: InputRadius;
 };
 
 const Input = ({
   variant = 'filled',
+  radius = 'md',
   startIcon,
   endIcon,
   value,
@@ -29,7 +33,7 @@ const Input = ({
   const [internalValue, setInternalValue] = useState<string>('');
   const colors = useThemedColors();
 
-  const styles = getStyles({ variant, color: colors });
+  const styles = getStyles({ variant, color: colors, radius });
   const isControlled = value !== undefined;
   const finalValue = isControlled ? value : internalValue;
 
@@ -54,12 +58,13 @@ const Input = ({
   );
 };
 
-const getStyles = ({ variant, color }: StyleProps) =>
+const getStyles = ({ variant, color, radius }: StyleProps) =>
   StyleSheet.create({
     container: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
+      borderRadius: radius === 'sm' ? 4 : radius === 'md' ? 8 : 16,
       ...(variant === 'default' && {
         borderWidth: 1,
         borderColor: color.inputBorder,

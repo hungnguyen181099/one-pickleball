@@ -91,7 +91,6 @@ export default function LoginScreen() {
           <View style={styles.header}>
             <View style={styles.logoContainer}>
               <View style={styles.logo}>
-                {/* <AntDesign name="check" size={40} color="#fff" /> */}
                 <Image
                   style={styles.image}
                   source={require('@/assets/images/logo.png')}

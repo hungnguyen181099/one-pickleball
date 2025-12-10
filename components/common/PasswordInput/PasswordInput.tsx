@@ -13,15 +13,15 @@ const PasswordInput = (props: PasswordInputProps) => {
   return (
     <Input
       secureTextEntry={!isShow}
-      {...props}
       endIcon={
         <Ionicons
           name={isShow ? 'eye' : 'eye-off'}
-          size={20}
+          size={16}
           color={colors.icon}
           onPress={() => setIsShow((prev) => !prev)}
         />
       }
+      {...props}
     />
   );
 };
