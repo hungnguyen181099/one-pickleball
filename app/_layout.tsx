@@ -14,8 +14,7 @@ export default function Root() {
 
 function RootNavigator() {
   const edgeInsets = useSafeAreaInsets();
-  // const { session } = useSession();
-  const session = null;
+  const { session } = useSession();
 
   return (
     <View style={{ marginTop: edgeInsets.top, flex: 1 }}>
