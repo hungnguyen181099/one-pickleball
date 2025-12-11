@@ -82,17 +82,13 @@ export const styles = StyleSheet.create({
     color: '#999',
   },
   infoCardsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    rowGap: 12,
+    paddingHorizontal: 16
   },
   infoCard: {
-    width: '48%',
-    backgroundColor: '#f8f8f8',
     borderRadius: 12,
     alignItems: 'center',
     padding: 12,
+    flex: 1
   },
   infoLabel: {
     fontSize: 12,

@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { styles } from '@/constants/styles/tournament.styles';
 import { useThemedColors } from '@/hooks/use-theme';
+import { formatDate } from '@/utils/date.utils';
 
 export default function TournamentScreen() {
     const colors = useThemedColors();
@@ -26,96 +27,80 @@ export default function TournamentScreen() {
         queryFn: () => tournamentService.getTournaments()
     })
 
-    console.log(data?.data);
-
     if (isPending) return <Text>loading...</Text>
 
 
-  const featuredTournament: TournamentDetailed = {
-    id: 'featured-1',
-    title: 'HCM Pickleball Open 2025',
-    date: '15-17 Tháng 12, 2025',
-    location: 'Sân Rạch Chiếc, Q2',
-    prize: '500tr',
-    registered: 128,
-    maxParticipants: 256,
-    status: 'open',
-    image:
-      'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
-    gradient: ['#00D9B5', '#0099CC'],
-  };
+    const tournaments: TournamentDetailed[] = [
+        {
+            id: '1',
+            title: 'Vietnam Open Championship',
+            date: '20-22 Th12',
+            location: 'Landmark 81',
+            prize: '300 triệu',
+            registered: 64,
+            maxParticipants: 128,
+            status: 'open',
+            image:
+                'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+            gradient: ['#667eea', '#764ba2'],
+        },
+        {
+            id: '2',
+            title: 'Hanoi Master Series',
+            date: '28-30 Th12',
+            location: 'Mỹ Đình, Hà Nội',
+            prize: '200 triệu',
+            registered: 48,
+            maxParticipants: 96,
+            status: 'open',
+            image:
+                'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+            gradient: ['#f093fb', '#f5576c'],
+        },
+        {
+            id: '3',
+            title: 'Danang Coastal Cup',
+            date: '05-07 Th01/2026',
+            location: 'Đà Nẵng',
+            prize: '150 triệu',
+            registered: 32,
+            maxParticipants: 64,
+            status: 'upcoming',
+            image:
+                'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+            gradient: ['#4facfe', '#00f2fe'],
+        },
+        {
+            id: '4',
+            title: 'Vung Tau Beach Open',
+            date: '12-14 Th01/2026',
+            location: 'Vũng Tàu',
+            prize: '100 triệu',
+            registered: 24,
+            maxParticipants: 48,
+            status: 'upcoming',
+            image:
+                'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+            gradient: ['#fa709a', '#fee140'],
+        },
+    ];
 
-  const tournaments: TournamentDetailed[] = [
-    {
-      id: '1',
-      title: 'Vietnam Open Championship',
-      date: '20-22 Th12',
-      location: 'Landmark 81',
-      prize: '300 triệu',
-      registered: 64,
-      maxParticipants: 128,
-      status: 'open',
-      image:
-        'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
-      gradient: ['#667eea', '#764ba2'],
-    },
-    {
-      id: '2',
-      title: 'Hanoi Master Series',
-      date: '28-30 Th12',
-      location: 'Mỹ Đình, Hà Nội',
-      prize: '200 triệu',
-      registered: 48,
-      maxParticipants: 96,
-      status: 'open',
-      image:
-        'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
-      gradient: ['#f093fb', '#f5576c'],
-    },
-    {
-      id: '3',
-      title: 'Danang Coastal Cup',
-      date: '05-07 Th01/2026',
-      location: 'Đà Nẵng',
-      prize: '150 triệu',
-      registered: 32,
-      maxParticipants: 64,
-      status: 'upcoming',
-      image:
-        'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
-      gradient: ['#4facfe', '#00f2fe'],
-    },
-    {
-      id: '4',
-      title: 'Vung Tau Beach Open',
-      date: '12-14 Th01/2026',
-      location: 'Vũng Tàu',
-      prize: '100 triệu',
-      registered: 24,
-      maxParticipants: 48,
-      status: 'upcoming',
-      image:
-        'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
-      gradient: ['#fa709a', '#fee140'],
-    },
-  ];
-
-  const myTournaments: MyTournamentItem[] = [
-    {
-      id: '1',
-      title: 'HCM Open 2025',
-      status: 'Đã đăng ký • Nam Đơn',
-      date: '15 Th12',
-      type: 'registered',
-    },
-    {
-      id: '2',
-      title: 'Vietnam Cup 2024',
-      status: 'Hạng 3 • Đôi Nam',
-      date: '20 Th10',
-      type: 'completed',
-    },
-  ];
+    const myTournaments: MyTournamentItem[] = [
+        {
+            id: '1',
+            title: 'HCM Open 2025',
+            status: 'Đã đăng ký • Nam Đơn',
+            date: '15 Th12',
+            type: 'registered',
+        },
+        {
+            id: '2',
+            title: 'Vietnam Cup 2024',
+            status: 'Hạng 3 • Đôi Nam',
+            date: '20 Th10',
+            type: 'completed',
+        },
+    ];
 
     const getStatusText = (status: boolean) => {
         return status ? 'Mở' : 'Đã đóng'
@@ -125,31 +110,31 @@ export default function TournamentScreen() {
         return status ? '#00D9B5' : '#999'
     };
 
-  const handle = (id: string) => {
-    router.push({
-      pathname: '/(details)/eventDetail/[id]',
-      params: { id: id },
-    });
-  };
+    const handle = (id: string) => {
+        router.push({
+            pathname: '/(details)/eventDetail/[id]',
+            params: { id: id },
+        });
+    };
 
-  const filteredTournaments =
-    activeFilter === 'all' ? tournaments : tournaments.filter((t) => t.status === activeFilter);
+    const filteredTournaments =
+        activeFilter === 'all' ? tournaments : tournaments.filter((t) => t.status === activeFilter);
 
-  const FilterChip = ({ label, value, icon }: { label: string; value: TournamentFilterType; icon: string }) => (
-    <TouchableOpacity
-      style={[
-        styles.filterChip,
-        {
-          backgroundColor: activeFilter === value ? colors.tint : colors.backgroundTertiary,
-          borderColor: activeFilter === value ? colors.tint : colors.border,
-        },
-      ]}
-      onPress={() => setActiveFilter(value)}
-    >
-      <Ionicons name={icon as any} size={16} color={activeFilter === value ? '#fff' : colors.icon} />
-      <Text style={[styles.filterChipText, { color: activeFilter === value ? '#fff' : colors.text }]}>{label}</Text>
-    </TouchableOpacity>
-  );
+    const FilterChip = ({ label, value, icon }: { label: string; value: TournamentFilterType; icon: string }) => (
+        <TouchableOpacity
+            style={[
+                styles.filterChip,
+                {
+                    backgroundColor: activeFilter === value ? colors.tint : colors.backgroundTertiary,
+                    borderColor: activeFilter === value ? colors.tint : colors.border,
+                },
+            ]}
+            onPress={() => setActiveFilter(value)}
+        >
+            <Ionicons name={icon as any} size={16} color={activeFilter === value ? '#fff' : colors.icon} />
+            <Text style={[styles.filterChipText, { color: activeFilter === value ? '#fff' : colors.text }]}>{label}</Text>
+        </TouchableOpacity>
+    );
 
     const FeaturedTournamentCard = ({ tournament }: { tournament: Tournament }) => (
         <View style={styles.featuredCard}>
@@ -242,7 +227,7 @@ export default function TournamentScreen() {
                 <View style={styles.compactMeta}>
                     <Ionicons name="calendar-outline" size={14} color={colors.icon} />
                     <Text style={[styles.compactMetaText, { color: colors.textSecondary }]}>
-                        {tournament.start_date}
+                        {formatDate(tournament.start_date)}
                     </Text>
                 </View>
                 <View style={styles.compactMeta}>
@@ -256,51 +241,51 @@ export default function TournamentScreen() {
                 </View>
             </View>
 
-      <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
-    </TouchableOpacity>
-  );
-
-  const MyTournamentCard = ({ tournament }: { tournament: MyTournamentItem }) => (
-    <TouchableOpacity style={[styles.myTournamentCard, { backgroundColor: colors.card }]}>
-      <View
-        style={[
-          styles.myTournamentIcon,
-          {
-            backgroundColor: tournament.type === 'registered' ? `${colors.tint}20` : '#FFD70020',
-          },
-        ]}
-      >
-        <Ionicons
-          name={tournament.type === 'registered' ? 'checkmark-circle' : 'star'}
-          size={24}
-          color={tournament.type === 'registered' ? colors.tint : '#FFD700'}
-        />
-      </View>
-      <View style={styles.myTournamentInfo}>
-        <Text style={[styles.myTournamentTitle, { color: colors.text }]}>{tournament.title}</Text>
-        <Text style={[styles.myTournamentStatus, { color: colors.textSecondary }]}>{tournament.status}</Text>
-      </View>
-      <Text style={[styles.myTournamentDate, { color: colors.textTertiary }]}>{tournament.date}</Text>
-    </TouchableOpacity>
-  );
-
-  return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Giải đấu</Text>
-        <TouchableOpacity onPress={() => router.push('/search')} style={styles.searchBtn}>
-          <Ionicons name="search" size={24} color={colors.icon} />
+            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
         </TouchableOpacity>
-      </View>
+    );
 
-      <View style={[styles.filterBar, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterContent}>
-          <FilterChip label="Đang mở" value="open" icon="time-outline" />
-          <FilterChip label="Sắp diễn ra" value="upcoming" icon="calendar-outline" />
-          <FilterChip label="Đã kết thúc" value="closed" icon="checkmark-circle-outline" />
-          <FilterChip label="Bộ lọc" value="all" icon="options-outline" />
-        </ScrollView>
-      </View>
+    const MyTournamentCard = ({ tournament }: { tournament: MyTournamentItem }) => (
+        <TouchableOpacity style={[styles.myTournamentCard, { backgroundColor: colors.card }]}>
+            <View
+                style={[
+                    styles.myTournamentIcon,
+                    {
+                        backgroundColor: tournament.type === 'registered' ? `${colors.tint}20` : '#FFD70020',
+                    },
+                ]}
+            >
+                <Ionicons
+                    name={tournament.type === 'registered' ? 'checkmark-circle' : 'star'}
+                    size={24}
+                    color={tournament.type === 'registered' ? colors.tint : '#FFD700'}
+                />
+            </View>
+            <View style={styles.myTournamentInfo}>
+                <Text style={[styles.myTournamentTitle, { color: colors.text }]}>{tournament.title}</Text>
+                <Text style={[styles.myTournamentStatus, { color: colors.textSecondary }]}>{tournament.status}</Text>
+            </View>
+            <Text style={[styles.myTournamentDate, { color: colors.textTertiary }]}>{tournament.date}</Text>
+        </TouchableOpacity>
+    );
+
+    return (
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
+                <Text style={[styles.headerTitle, { color: colors.text }]}>Giải đấu</Text>
+                <TouchableOpacity onPress={() => router.push('/search')} style={styles.searchBtn}>
+                    <Ionicons name="search" size={24} color={colors.icon} />
+                </TouchableOpacity>
+            </View>
+
+            <View style={[styles.filterBar, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterContent}>
+                    <FilterChip label="Đang mở" value="open" icon="time-outline" />
+                    <FilterChip label="Sắp diễn ra" value="upcoming" icon="calendar-outline" />
+                    <FilterChip label="Đã kết thúc" value="closed" icon="checkmark-circle-outline" />
+                    <FilterChip label="Bộ lọc" value="all" icon="options-outline" />
+                </ScrollView>
+            </View>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -313,11 +298,11 @@ export default function TournamentScreen() {
                     {/* <FeaturedTournamentCard tournament={featuredTournament} /> */}
                 </View>
 
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Sắp diễn ra</Text>
-            <Text style={styles.resultsBadgeText}>{filteredTournaments.length} giải đấu</Text>
-          </View>
+                <View style={styles.section}>
+                    <View style={styles.sectionHeader}>
+                        <Text style={[styles.sectionTitle, { color: colors.text }]}>Sắp diễn ra</Text>
+                        <Text style={styles.resultsBadgeText}>{filteredTournaments.length} giải đấu</Text>
+                    </View>
 
                     <FlatList
                         data={data?.data || []}
@@ -329,23 +314,23 @@ export default function TournamentScreen() {
                     />
                 </View>
 
-        <View style={[styles.section, styles.lastSection]}>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Giải đấu của tôi</Text>
-            <TouchableOpacity onPress={() => router.push('/mytournament')}>
-              <Text style={styles.seeAll}>Xem tất cả</Text>
-            </TouchableOpacity>
-          </View>
+                <View style={[styles.section, styles.lastSection]}>
+                    <View style={styles.sectionHeader}>
+                        <Text style={[styles.sectionTitle, { color: colors.text }]}>Giải đấu của tôi</Text>
+                        <TouchableOpacity onPress={() => router.push('/mytournament')}>
+                            <Text style={styles.seeAll}>Xem tất cả</Text>
+                        </TouchableOpacity>
+                    </View>
 
-          <FlatList
-            data={myTournaments}
-            renderItem={({ item }) => <MyTournamentCard tournament={item} />}
-            keyExtractor={(item) => item.id}
-            scrollEnabled={false}
-            contentContainerStyle={styles.tournamentsList}
-          />
+                    <FlatList
+                        data={myTournaments}
+                        renderItem={({ item }) => <MyTournamentCard tournament={item} />}
+                        keyExtractor={(item) => item.id}
+                        scrollEnabled={false}
+                        contentContainerStyle={styles.tournamentsList}
+                    />
+                </View>
+            </ScrollView>
         </View>
-      </ScrollView>
-    </View>
-  );
+    );
 }
