@@ -21,10 +21,15 @@ import { formatDate } from '@/utils/date.utils';
 
 export default function TournamentScreen() {
     const colors = useThemedColors();
-    const [activeFilter, setActiveFilter] = useState<TournamentFilterType>('open');
+    const [activeFilter, setActiveFilter] = useState<TournamentFilterType>('true');
+    const [filters, setFilters] = useState({
+        page: 1,
+        status: '1',
+        search: '',
+    });
     const { isPending, error, data } = useQuery({
         queryKey: ['getTournaments'],
-        queryFn: () => tournamentService.getTournaments()
+        queryFn: () => tournamentService.getTournaments(filters)
     })
 
     if (isPending) return <Text>loading...</Text>
@@ -117,8 +122,14 @@ export default function TournamentScreen() {
         });
     };
 
-    const filteredTournaments =
-        activeFilter === 'all' ? tournaments : tournaments.filter((t) => t.status === activeFilter);
+    
+
+const filteredTournaments = 
+    activeFilter === 'all' 
+        ? data?.data || []
+        : (data?.data || []).filter((t) => 
+            activeFilter === 'true' ? t.status : !t.status
+        );
 
     const FilterChip = ({ label, value, icon }: { label: string; value: TournamentFilterType; icon: string }) => (
         <TouchableOpacity
@@ -208,10 +219,10 @@ export default function TournamentScreen() {
     );
 
     const TournamentCompactCard = ({ tournament }: { tournament: Tournament }) => (
-        <TouchableOpacity onPress={() => handle(tournament.id.toString())} style={[styles.compactCardInner, { backgroundColor: colors.card }]}>
+        <TouchableOpacity onPress={() => handle(tournament.id.toString())} style={[styles.compactCardInner, { backgroundColor: colors.card, borderColor: colors.border }]}>
             <View style={styles.compactImageContainer}>
                 <Image
-                    source={{ uri: tournament.imageUrl }}
+                    source={{ uri: tournament.imageUrl? tournament.imageUrl :'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHqgofysjHdgAUpsjEPcJlPdDmodG5SRaLIA&s' }}
                     style={styles.compactImage}
                     resizeMode="cover"
                 />
@@ -240,8 +251,6 @@ export default function TournamentScreen() {
                     <Text style={styles.compactPrizeText}>{tournament.prizes && formatCurrency(tournament.prizes)}</Text>
                 </View>
             </View>
-
-            <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
         </TouchableOpacity>
     );
 
@@ -280,9 +289,9 @@ export default function TournamentScreen() {
 
             <View style={[styles.filterBar, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterContent}>
-                    <FilterChip label="Đang mở" value="open" icon="time-outline" />
-                    <FilterChip label="Sắp diễn ra" value="upcoming" icon="calendar-outline" />
-                    <FilterChip label="Đã kết thúc" value="closed" icon="checkmark-circle-outline" />
+                    <FilterChip label="Đang mở" value="true" icon="time-outline" />
+                    {/* <FilterChip label="Sắp diễn ra" value="upcoming" icon="calendar-outline" /> */}
+                    <FilterChip label="Đã kết thúc" value="fasle" icon="checkmark-circle-outline" />
                     <FilterChip label="Bộ lọc" value="all" icon="options-outline" />
                 </ScrollView>
             </View>
@@ -305,7 +314,7 @@ export default function TournamentScreen() {
                     </View>
 
                     <FlatList
-                        data={data?.data || []}
+                        data={filteredTournaments}
                         renderItem={({ item }) => <TournamentCompactCard tournament={item} />}
                         keyExtractor={(item) => item.id.toString()}
                         scrollEnabled={false}
@@ -314,7 +323,7 @@ export default function TournamentScreen() {
                     />
                 </View>
 
-                <View style={[styles.section, styles.lastSection]}>
+                <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                         <Text style={[styles.sectionTitle, { color: colors.text }]}>Giải đấu của tôi</Text>
                         <TouchableOpacity onPress={() => router.push('/mytournament')}>
