@@ -175,7 +175,6 @@ const NewsPage = () => {
           </View>
         </View>
 
-        <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
       </View>
     </TouchableOpacity>
   );

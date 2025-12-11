@@ -31,6 +31,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 44,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 14,
+  },
 
   // Filter Bar
   filterBar: {
@@ -55,7 +67,9 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  scrollContent: {},
+  scrollContent: {
+    marginBottom: 24,
+  },
 
   section: {
     paddingHorizontal: 16,
@@ -218,11 +232,16 @@ export const styles = StyleSheet.create({
   compactCardInner: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
     gap: 12,
-    ...Shadows.sm,
     borderRadius: Radius.md,
     overflow: 'hidden',
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+    borderWidth: 1
   },
   compactImageContainer: {
     width: 80,
@@ -264,6 +283,7 @@ export const styles = StyleSheet.create({
   },
   compactMetaText: {
     fontSize: 13,
+    flex: 1
   },
   compactPrize: {
     marginTop: 4,

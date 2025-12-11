@@ -13,11 +13,10 @@ class TournamentService {
      */
     async getTournaments(params?: {
         page?: number;
-        pageSize?: number;
         status?: string;
         search?: string;
     }): Promise<PaginatedResponse<Tournament>> {
-        const url = `${BASE_API_URL}tournaments`;
+        const url = `${BASE_API_URL}tournaments?${params}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);

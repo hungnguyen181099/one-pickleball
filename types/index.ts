@@ -485,7 +485,7 @@ export interface RegisterFormData {
 // ============================================
 // Filter & Sort Types
 // ============================================
-export type TournamentFilterType = 'open' | 'upcoming' | 'closed' | 'all';
+export type TournamentFilterType = 'true' | 'fasle' | 'all';
 export type AreaFilterType = 'nearby' | 'open' | 'rated' | 'filter';
 export type MyTournamentFilterType = 'all' | 'registered' | 'completed' | 'cancelled';
 export type BookingFilterType = 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
