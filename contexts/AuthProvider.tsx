@@ -32,26 +32,30 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    // Register the logout callback with the API client
-    ApiClient.setLogoutCallback(() => {
-      setSession(null);
-      setUser(null);
-    });
-  }, [setSession]);
+  console.log("user", user);
+
+  const logout = () => {
+    setSession(null);
+    setUser(null);
+  }
 
   useEffect(() => {
     if (session) {
       authService
         .getProfile()
         .then((response) => {
+
+          console.log("response", response);
+
           if (response.success && response.data) {
-            // Handle nested user object if present (api/auth/me returns {success: true, user: {...}})
-            const userData = (response.data as any).user || response.data;
+            const userData = response.data.user ;
             setUser(userData);
           }
+          else {
+            logout()
+          }
         })
-        .catch((err) => console.error('Failed to fetch profile:', err));
+        .catch((err) => logout());
     } else {
       setUser(null);
     }

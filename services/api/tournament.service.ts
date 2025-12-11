@@ -5,6 +5,7 @@
 import { ApiResponse, PaginatedResponse, Tournament } from '@/types';
 
 import apiClient from './client';
+import qs from 'qs'
 
 const BASE_API_URL = 'https://onepickleball.vn/api/'
 class TournamentService {
@@ -16,7 +17,8 @@ class TournamentService {
         status?: string;
         search?: string;
     }): Promise<PaginatedResponse<Tournament>> {
-        const url = `${BASE_API_URL}tournaments?${params}`;
+        const queryString = qs.stringify(params)
+        const url = `${BASE_API_URL}tournaments?${queryString}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);

@@ -29,7 +29,7 @@ export const authService = {
     return ApiClient.post('auth/logout');
   },
 
-  async getProfile(): Promise<ApiResponse<User>> {
+  async getProfile(): Promise<ApiResponse<{ user: User }>> {
     return ApiClient.get('auth/me');
   },
 };

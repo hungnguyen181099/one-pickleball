@@ -117,6 +117,9 @@ const TournamentList = ({ status }: { status: TournamentStatus }) => {
       }),
   });
 
+  console.log(status);
+  
+
   if (queryStatus === 'pending') {
     return <Text>Loading...</Text>;
   }
