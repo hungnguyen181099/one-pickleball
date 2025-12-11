@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
-
 import { EventCategory, EventFeeItem, EventInfoCard } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
 
+import tournamentService from '@/services/api/tournament.service';
+import { useQuery } from '@tanstack/react-query';
+import {
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
+import { useThemedColors } from '@/hooks/use-theme';
 import { styles } from '@/constants/styles/eventdeatil.styles';
 
-import { useThemedColors } from '@/hooks/use-theme';
-
 export default function EventDetailScreen() {
-  const [activeTab, setActiveTab] = useState<string>('overview');
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
-  const { id } = useLocalSearchParams();
-  const colors = useThemedColors();
+    const [activeTab, setActiveTab] = useState<string>('overview');
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    const { id } = useLocalSearchParams<{id: string}>();
+    const colors = useThemedColors();
+    const { status, data } = useQuery({
+        queryKey: ['getTournamentById'],
+        queryFn: () => tournamentService.getTournamentById(id )
+    })
+
+
+    if(status=== 'pending') return <Text>Loading...</Text>
+
+    if(status === 'error') return;
 
   const infoCards: EventInfoCard[] = [
     { icon: 'calendar', label: 'Thời gian', value: '15-17/12/2025' },
@@ -63,14 +77,16 @@ export default function EventDetailScreen() {
           </View>
         </View>
 
-        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
-          <View style={styles.statusBadge}>
-            <View style={styles.statusDot} />
-            <Text style={styles.statusText}>Đang mở đăng ký</Text>
-          </View>
-          <Text style={[styles.title, { color: colors.text }]}>HCM Pickleball Open 2025</Text>
-          <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Giải đấu mở rộng quy mô lớn nhất năm</Text>
-        </View>
+                <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+                    <View style={styles.statusBadge}>
+                        <View style={styles.statusDot} />
+                        <Text style={styles.statusText}>Đang mở đăng ký</Text>
+                    </View>
+                    <Text style={[styles.title, { color: colors.text }]}>{data?.name}</Text>
+                    <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+                        Giải đấu mở rộng quy mô lớn nhất năm
+                    </Text>
+                </View>
 
         <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
           <View style={styles.infoCardsGrid}>

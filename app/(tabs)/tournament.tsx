@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
-
-import { MyTournamentItem, TournamentDetailed, TournamentFilterType } from '@/types';
+import { MyTournamentItem, Tournament, TournamentDetailed, TournamentFilterType } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
 
+import tournamentService from '@/services/api/tournament.service';
+import { formatCurrency } from '@/utils/format.utils';
+import { useQuery } from '@tanstack/react-query';
+import {
+    FlatList,
+    Image,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import { styles } from '@/constants/styles/tournament.styles';
-
 import { useThemedColors } from '@/hooks/use-theme';
 
 export default function TournamentScreen() {
-  const colors = useThemedColors();
-  const [activeFilter, setActiveFilter] = useState<TournamentFilterType>('open');
+    const colors = useThemedColors();
+    const [activeFilter, setActiveFilter] = useState<TournamentFilterType>('open');
+    const { isPending, error, data } = useQuery({
+        queryKey: ['getTournaments'],
+        queryFn: () => tournamentService.getTournaments()
+    })
+
+    console.log(data?.data);
+
+    if (isPending) return <Text>loading...</Text>
+
 
   const featuredTournament: TournamentDetailed = {
     id: 'featured-1',
@@ -100,31 +117,13 @@ export default function TournamentScreen() {
     },
   ];
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'open':
-        return 'Mở';
-      case 'upcoming':
-        return 'Sắp mở';
-      case 'closed':
-        return 'Đã đóng';
-      default:
-        return status;
-    }
-  };
+    const getStatusText = (status: boolean) => {
+        return status ? 'Mở' : 'Đã đóng'
+    };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'open':
-        return '#00D9B5';
-      case 'upcoming':
-        return '#FF9800';
-      case 'closed':
-        return '#999';
-      default:
-        return '#999';
-    }
-  };
+    const getStatusColor = (status: boolean) => {
+        return status ? '#00D9B5' : '#999'
+    };
 
   const handle = (id: string) => {
     router.push({
@@ -152,90 +151,110 @@ export default function TournamentScreen() {
     </TouchableOpacity>
   );
 
-  const FeaturedTournamentCard = ({ tournament }: { tournament: TournamentDetailed }) => (
-    <View style={styles.featuredCard}>
-      <View style={[styles.featuredCardInner, { backgroundColor: colors.card }]}>
-        <View style={styles.featuredImageContainer}>
-          <Image source={{ uri: tournament.image }} style={styles.featuredImage} resizeMode="cover" />
-          <LinearGradient colors={['transparent', 'rgba(0,0,0,0.7)']} style={styles.featuredGradient} />
-          <View style={styles.featuredBadge}>
-            <Text style={styles.featuredBadgeText}>🏆 Giải lớn nhất năm</Text>
-          </View>
-          <TouchableOpacity style={styles.favoriteBtn}>
-            <Ionicons name="heart-outline" size={24} color="#fff" />
-          </TouchableOpacity>
-        </View>
+    const FeaturedTournamentCard = ({ tournament }: { tournament: Tournament }) => (
+        <View style={styles.featuredCard}>
+            <View style={[styles.featuredCardInner, { backgroundColor: colors.card }]}>
+                <View style={styles.featuredImageContainer}>
+                    <Image
+                        source={{ uri: tournament.imageUrl }}
+                        style={styles.featuredImage}
+                        resizeMode="cover"
+                    />
+                    <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.7)']}
+                        style={styles.featuredGradient}
+                    />
+                    <View style={styles.featuredBadge}>
+                        <Text style={styles.featuredBadgeText}>🏆 Giải lớn nhất năm</Text>
+                    </View>
+                    <TouchableOpacity style={styles.favoriteBtn}>
+                        <Ionicons name="heart-outline" size={24} color="#fff" />
+                    </TouchableOpacity>
+                </View>
 
-        <View style={styles.featuredContent}>
-          <View style={[styles.statusBadge, { backgroundColor: `${getStatusColor(tournament.status)}20` }]}>
-            <Text style={[styles.statusBadgeText, { color: getStatusColor(tournament.status) }]}>Đang mở đăng ký</Text>
-          </View>
+                <View style={styles.featuredContent}>
+                    <View style={[styles.statusBadge, { backgroundColor: `${getStatusColor(tournament.status)}` }]}>
+                        <Text style={[styles.statusBadgeText, { color: getStatusColor(tournament.status) }]}>
+                            Đang mở đăng ký
+                        </Text>
+                    </View>
 
-          <Text style={[styles.featuredTitle, { color: colors.text }]}>{tournament.title}</Text>
-          <Text style={[styles.featuredDesc, { color: colors.textSecondary }]}>
-            Giải đấu mở rộng quy mô lớn nhất năm với tổng giá trị giải thưởng 500 triệu đồng
-          </Text>
+                    <Text style={[styles.featuredTitle, { color: colors.text }]}>
+                        {tournament.name}
+                    </Text>
+                    <Text style={[styles.featuredDesc, { color: colors.textSecondary }]}>
+                        Giải đấu mở rộng quy mô lớn nhất năm với tổng giá trị giải thưởng 500 triệu đồng
+                    </Text>
 
-          <View style={styles.featuredMeta}>
-            <View style={styles.metaItem}>
-              <Ionicons name="calendar-outline" size={16} color={colors.icon} />
-              <Text style={[styles.metaText, { color: colors.textSecondary }]}>{tournament.date}</Text>
+                    <View style={styles.featuredMeta}>
+                        <View style={styles.metaItem}>
+                            <Ionicons name="calendar-outline" size={16} color={colors.icon} />
+                            <Text style={[styles.metaText, { color: colors.textSecondary }]}>
+                                {tournament.start_date}
+                            </Text>
+                        </View>
+                        <View style={styles.metaItem}>
+                            <Ionicons name="location-outline" size={16} color={colors.icon} />
+                            <Text style={[styles.metaText, { color: colors.textSecondary }]}>
+                                {tournament.location}
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.featuredStats}>
+                        <View style={styles.statItem}>
+                            <Text style={[styles.statLabel, { color: colors.textTertiary }]}>Đã đăng ký</Text>
+                            <Text style={[styles.statValue, { color: colors.text }]}>
+                                {/* {tournament.registered}/{tournament.maxParticipants} */}
+                            </Text>
+                        </View>
+                        <View style={styles.statItem}>
+                            <Text style={[styles.statLabel, { color: colors.textTertiary }]}>Giải thưởng</Text>
+                            <Text style={[styles.statValue, styles.prizeValue]}>{tournament.prizes && formatCurrency(tournament.prizes)}</Text>
+                        </View>
+                    </View>
+
+                    <TouchableOpacity onPress={() => handle(tournament.id.toString())} style={styles.registerBtn}>
+                        <Text style={styles.registerBtnText}>Đăng ký ngay</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.metaItem}>
-              <Ionicons name="location-outline" size={16} color={colors.icon} />
-              <Text style={[styles.metaText, { color: colors.textSecondary }]}>{tournament.location}</Text>
+        </View>
+    );
+
+    const TournamentCompactCard = ({ tournament }: { tournament: Tournament }) => (
+        <TouchableOpacity onPress={() => handle(tournament.id.toString())} style={[styles.compactCardInner, { backgroundColor: colors.card }]}>
+            <View style={styles.compactImageContainer}>
+                <Image
+                    source={{ uri: tournament.imageUrl }}
+                    style={styles.compactImage}
+                    resizeMode="cover"
+                />
+                <View style={[styles.compactStatus, { backgroundColor: getStatusColor(tournament.status) }]}>
+                    <Text style={styles.compactStatusText}>{getStatusText(tournament.status)}</Text>
+                </View>
             </View>
-          </View>
 
-          <View style={styles.featuredStats}>
-            <View style={styles.statItem}>
-              <Text style={[styles.statLabel, { color: colors.textTertiary }]}>Đã đăng ký</Text>
-              <Text style={[styles.statValue, { color: colors.text }]}>
-                {tournament.registered}/{tournament.maxParticipants}
-              </Text>
+            <View style={styles.compactContent}>
+                <Text style={[styles.compactTitle, { color: colors.text }]} numberOfLines={2}>
+                    {tournament.name}
+                </Text>
+                <View style={styles.compactMeta}>
+                    <Ionicons name="calendar-outline" size={14} color={colors.icon} />
+                    <Text style={[styles.compactMetaText, { color: colors.textSecondary }]}>
+                        {tournament.start_date}
+                    </Text>
+                </View>
+                <View style={styles.compactMeta}>
+                    <Ionicons name="location-outline" size={14} color={colors.icon} />
+                    <Text style={[styles.compactMetaText, { color: colors.textSecondary }]}>
+                        {tournament.location}
+                    </Text>
+                </View>
+                <View style={styles.compactPrize}>
+                    <Text style={styles.compactPrizeText}>{tournament.prizes && formatCurrency(tournament.prizes)}</Text>
+                </View>
             </View>
-            <View style={styles.statItem}>
-              <Text style={[styles.statLabel, { color: colors.textTertiary }]}>Giải thưởng</Text>
-              <Text style={[styles.statValue, styles.prizeValue]}>{tournament.prize}</Text>
-            </View>
-          </View>
-
-          <TouchableOpacity onPress={() => handle(tournament.id)} style={styles.registerBtn}>
-            <Text style={styles.registerBtnText}>Đăng ký ngay</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-
-  const TournamentCompactCard = ({ tournament }: { tournament: TournamentDetailed }) => (
-    <TouchableOpacity
-      onPress={() => handle(tournament.id)}
-      style={[styles.compactCardInner, { backgroundColor: colors.card }]}
-    >
-      <View style={styles.compactImageContainer}>
-        <Image source={{ uri: tournament.image }} style={styles.compactImage} resizeMode="cover" />
-        <View style={[styles.compactStatus, { backgroundColor: getStatusColor(tournament.status) }]}>
-          <Text style={styles.compactStatusText}>{getStatusText(tournament.status)}</Text>
-        </View>
-      </View>
-
-      <View style={styles.compactContent}>
-        <Text style={[styles.compactTitle, { color: colors.text }]} numberOfLines={2}>
-          {tournament.title}
-        </Text>
-        <View style={styles.compactMeta}>
-          <Ionicons name="calendar-outline" size={14} color={colors.icon} />
-          <Text style={[styles.compactMetaText, { color: colors.textSecondary }]}>{tournament.date}</Text>
-        </View>
-        <View style={styles.compactMeta}>
-          <Ionicons name="location-outline" size={14} color={colors.icon} />
-          <Text style={[styles.compactMetaText, { color: colors.textSecondary }]}>{tournament.location}</Text>
-        </View>
-        <View style={styles.compactPrize}>
-          <Text style={styles.compactPrizeText}>{tournament.prize}</Text>
-        </View>
-      </View>
 
       <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
     </TouchableOpacity>
@@ -283,11 +302,16 @@ export default function TournamentScreen() {
         </ScrollView>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Giải đấu nổi bật</Text>
-          <FeaturedTournamentCard tournament={featuredTournament} />
-        </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
+                <View style={styles.section}>
+                    <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                        Giải đấu nổi bật
+                    </Text>
+                    {/* <FeaturedTournamentCard tournament={featuredTournament} /> */}
+                </View>
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
@@ -295,15 +319,15 @@ export default function TournamentScreen() {
             <Text style={styles.resultsBadgeText}>{filteredTournaments.length} giải đấu</Text>
           </View>
 
-          <FlatList
-            data={filteredTournaments}
-            renderItem={({ item }) => <TournamentCompactCard tournament={item} />}
-            keyExtractor={(item) => item.id}
-            scrollEnabled={false}
-            contentContainerStyle={styles.tournamentsList}
-            ListEmptyComponent={<Text style={styles.emptyText}>Không có giải đấu</Text>}
-          />
-        </View>
+                    <FlatList
+                        data={data?.data || []}
+                        renderItem={({ item }) => <TournamentCompactCard tournament={item} />}
+                        keyExtractor={(item) => item.id.toString()}
+                        scrollEnabled={false}
+                        contentContainerStyle={styles.tournamentsList}
+                        ListEmptyComponent={<Text style={styles.emptyText}>Không có giải đấu</Text>}
+                    />
+                </View>
 
         <View style={[styles.section, styles.lastSection]}>
           <View style={styles.sectionHeader}>

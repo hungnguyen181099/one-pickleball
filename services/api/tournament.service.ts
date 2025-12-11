@@ -6,25 +6,35 @@ import { ApiResponse, PaginatedResponse, Tournament } from '@/types';
 
 import apiClient from './client';
 
+const BASE_API_URL = 'https://onepickleball.vn/api/'
 class TournamentService {
-  /**
-   * Get all tournaments
-   */
-  async getTournaments(params?: {
-    page?: number;
-    pageSize?: number;
-    status?: string;
-    search?: string;
-  }): Promise<ApiResponse<PaginatedResponse<Tournament>>> {
-    return apiClient.get<PaginatedResponse<Tournament>>('/tournaments', params);
-  }
+    /**
+     * Get all tournaments
+     */
+    async getTournaments(params?: {
+        page?: number;
+        pageSize?: number;
+        status?: string;
+        search?: string;
+    }): Promise<PaginatedResponse<Tournament>> {
+        const url = `${BASE_API_URL}tournaments`;
 
-  /**
-   * Get tournament by ID
-   */
-  async getTournamentById(id: string): Promise<ApiResponse<Tournament>> {
-    return apiClient.get<Tournament>(`/tournaments/${id}`);
-  }
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
+
+        return response.json();
+    }
+
+    /**
+     * Get tournament by ID
+     */
+    async getTournamentById(id: string): Promise<Tournament> {
+        const response = await fetch(`${BASE_API_URL}tournaments/${id}`);
+        if (!response.ok) {
+            throw new Error('Không thể tải chi tiết research');
+        }
+        return response.json();
+    }
 
   /**
    * Create a new tournament

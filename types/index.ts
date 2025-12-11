@@ -27,20 +27,23 @@ export interface User {
 
 // Tournament Types
 export interface Tournament {
-  id: string;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  location: string;
-  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
-  registrationDeadline: string;
-  maxParticipants: number;
-  currentParticipants: number;
-  entryFee: number;
-  imageUrl?: string;
-  organizerId: string;
-  categories: TournamentCategory[];
+    id: number;
+    name: string;
+    description: string | null;
+    start_date: string;
+    end_date: string;
+    registration_deadline: string;
+    location: string;
+    organizer: string | null;
+    price: number;
+    prizes: number | null;
+    max_participants: number;
+    participants_count: number;
+    status: boolean;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
+    imageUrl?: string;
 }
 
 export interface TournamentCategory {
