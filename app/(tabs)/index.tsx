@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { HomeEventCard, HomeNewsItem, HomeStatCardProps } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Link, router } from 'expo-router';
+import { FlatList, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { ActionCard, EventCardComponent, NewsItemComponent, StatCard } from '@/components/home';
 import { Grid, GridItem } from '@/components/ui/Grid';
@@ -135,6 +135,12 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
         </View>
+
+        <Link href="/ranking" asChild>
+          <Pressable>
+            <Text>Ranking</Text>
+          </Pressable>
+        </Link>
 
         <Grid columns={3} gap={8} style={styles.statsContainer}>
           {statCards.map((item) => (

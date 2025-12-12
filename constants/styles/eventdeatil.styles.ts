@@ -82,13 +82,14 @@ export const styles = StyleSheet.create({
     color: '#999',
   },
   infoCardsGrid: {
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   infoCard: {
     borderRadius: 12,
     alignItems: 'center',
     padding: 12,
-    flex: 1
+    flex: 1,
+    justifyContent: 'center',
   },
   infoLabel: {
     fontSize: 12,
@@ -100,6 +101,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000',
     marginTop: 4,
+    textAlign: 'center',
   },
   tabsContainer: {
     paddingHorizontal: 16,
