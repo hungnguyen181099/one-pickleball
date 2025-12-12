@@ -46,6 +46,7 @@ class ApiClient {
   private async buildHeaders(): Promise<HeadersInit> {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
+      Accept: 'application/json',
     };
 
     const token = await this.getAuthToken();
@@ -131,40 +132,43 @@ class ApiClient {
    * Handle API response
    */
   private async handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
+    // 1. Unauthorized - logout
     if (response.status === 401) {
-      if (this.onLogoutCallback) {
-        this.onLogoutCallback();
+      this.onLogoutCallback?.();
+      return { success: false, error: 'Unauthorized' };
+    }
+
+    // 2. Check if response has body
+    const contentType = response.headers.get('content-type');
+    let parsedBody: any = null;
+
+    if (contentType?.includes('application/json')) {
+      try {
+        parsedBody = await response.json();
+      } catch (e) {
+        console.error('Failed to parse JSON response');
+        return { success: false, error: 'Invalid JSON response' };
       }
-      return {
-        success: false,
-        error: 'Unauthorized',
-      };
+    } else {
+      // For non-JSON bodies (text, html…)
+      parsedBody = await response.text().catch(() => null);
     }
 
-    const text = await response.text();
-    let data: any;
-
-    try {
-      data = JSON.parse(text);
-    } catch (error) {
-      console.error('API Error: Failed to parse JSON response:', text);
-      return {
-        success: false,
-        error: 'Invalid response from server',
-      };
-    }
-
+    // 3. Handle 200-299
     if (response.ok) {
       return {
         success: true,
-        data: data,
-      };
-    } else {
-      return {
-        success: false,
-        error: data.message || 'An error occurred',
+        data: parsedBody as T,
       };
     }
+
+    // 4. Handle errors
+    const errorMessage = parsedBody?.message || parsedBody?.error || response.statusText || 'Something went wrong';
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
   }
 
   /**

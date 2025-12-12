@@ -136,9 +136,9 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <Link href="/ranking" asChild>
+        <Link href="/(stack)/leaderboard/ocr" asChild>
           <Pressable>
-            <Text>Ranking</Text>
+            <Text>Ranking OCR</Text>
           </Pressable>
         </Link>
 
