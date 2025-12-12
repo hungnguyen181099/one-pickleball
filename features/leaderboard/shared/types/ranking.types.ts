@@ -18,3 +18,8 @@ export type OCRLeaderboardUser = {
   losses: number;
   win_rate: number;
 };
+
+export type OCRLeaderboardResponse = {
+  data: OCRLeaderboardUser[];
+  success: boolean;
+};

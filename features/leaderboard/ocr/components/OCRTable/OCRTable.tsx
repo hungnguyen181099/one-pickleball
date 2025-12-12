@@ -12,15 +12,14 @@ const OCRTable = () => {
 
   if (status === 'error') return;
 
-  const tableData: Ranking[] =
-    data.data?.data.map((item) => ({
-      avatar: item.name,
-      rank: item.rank,
-      name: item.name,
-      elo: item.elo_rating,
-      tier: item.elo_rank,
-      winRate: item.win_rate,
-    })) || [];
+  const tableData: Ranking[] = data.data.map((item) => ({
+    avatar: item.name,
+    rank: item.rank,
+    name: item.name,
+    elo: item.elo_rating,
+    tier: item.elo_rank,
+    winRate: item.win_rate,
+  }));
 
   return <RankingTable data={tableData} />;
 };

@@ -22,7 +22,6 @@ const RankingHeader = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
     paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',

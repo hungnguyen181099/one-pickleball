@@ -1,10 +1,10 @@
-import APIClient from '@/services/api/client';
+import { fetchWrapper } from '@/utils/fetch.utils';
 
-import { OCRLeaderboardUser } from '../../shared/types';
+import { OCRLeaderboardResponse } from '../../shared/types';
 
 const OCRLeaderboardAPI = {
   getAll: (filter: string) => {
-    return APIClient.get<{ data: OCRLeaderboardUser[] }>(`ocr/leaderboard?${filter}`);
+    return fetchWrapper<OCRLeaderboardResponse>(`/ocr/leaderboard?${filter}`);
   },
 };
 

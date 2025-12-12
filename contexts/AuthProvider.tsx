@@ -5,7 +5,6 @@ import { ApiResponse, User } from '@/types';
 import { useStorageState } from '@/hooks/use-storage-state';
 
 import { LoginRequest, RegisterRequest, authService } from '@/services/api/auth.service';
-import ApiClient from '@/services/api/client';
 
 interface AuthContextType {
   signIn: (data: LoginRequest) => Promise<ApiResponse<string>>;
@@ -32,27 +31,21 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState('session');
   const [user, setUser] = useState<User | null>(null);
 
-  console.log("user", user);
-
   const logout = () => {
     setSession(null);
     setUser(null);
-  }
+  };
 
   useEffect(() => {
     if (session) {
       authService
         .getProfile()
         .then((response) => {
-
-          console.log("response", response);
-
           if (response.success && response.data) {
-            const userData = response.data.user ;
+            const userData = response.data.user;
             setUser(userData);
-          }
-          else {
-            logout()
+          } else {
+            logout();
           }
         })
         .catch((err) => logout());

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Avatar } from '@/components/ui/Avatar';
 import { Grid, GridItem } from '@/components/ui/Grid';
 
 import { AppColors } from '@/constants/theme';
@@ -18,7 +18,7 @@ const TopRankingItem = ({ avatar, rank, name, elo }: Ranking) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatar}>
-        <Image source={avatar} style={styles.image} />
+        <Avatar src={avatar} style={styles.image} />
         <View style={styles.rank}>
           <Text style={styles.rankText}>{rank}</Text>
         </View>
@@ -34,7 +34,7 @@ const TopRankingItemCenter = ({ avatar, rank, name, elo }: Ranking) => {
     <View style={centerStyles.container}>
       <MaterialCommunityIcons name="crown-outline" style={centerStyles.crown} />
       <View style={centerStyles.avatar}>
-        <Image source={avatar} style={centerStyles.image} />
+        <Avatar src={avatar} style={styles.image} />
         <View style={centerStyles.rank}>
           <Text style={centerStyles.rankText}>{rank}</Text>
         </View>
