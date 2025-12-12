@@ -61,6 +61,7 @@ export const styles = StyleSheet.create({
   featuredImage: {
     width: '100%',
     height: '100%',
+    borderRadius: 8
   },
   featuredOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -132,6 +133,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 12,
     gap: 12,
+    borderWidth: 1
   },
   newsThumbnail: {
     width: 80,
