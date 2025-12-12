@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
 
-import { NewsCategory, NewsItemDetailed } from '@/types';
+import { NewsArticle, NewsCategory, NewsItemDetailed } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { ImageBackground } from 'expo-image';
+import { Image, ImageBackground } from 'expo-image';
 import { router } from 'expo-router';
 import { FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { styles } from '@/constants/styles/news.styles';
 
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
+import { useQuery } from '@tanstack/react-query';
+import newService from '@/services/api/new.service';
+import { formatDate } from '@/utils/date.utils';
 
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [likedNews, setLikedNews] = useState<string[]>([]);
-  const { theme } = useTheme();
   const colors = useThemedColors();
+
+  const { data, isPending } = useQuery({
+    queryKey: ['getTournaments'],
+    queryFn: () => newService.getNews()
+  })
+
+  console.log(data?.data);
+
 
   const categories: NewsCategory[] = [
     { id: 'all', name: 'Tất cả', icon: 'home', color: '#00D9B5' },
@@ -115,66 +125,50 @@ const NewsPage = () => {
     activeCategory === 'all'
       ? newsItems
       : newsItems.filter((news) =>
-          news.category
-            .toLowerCase()
-            .includes(categories.find((c) => c.id === activeCategory)?.name.toLowerCase() || '')
-        );
+        news.category
+          .toLowerCase()
+          .includes(categories.find((c) => c.id === activeCategory)?.name.toLowerCase() || '')
+      );
 
-  const NewsCard = ({ item }: { item: NewsItemDetailed }) => (
+  const NewsCard = (NewsArticle: NewsArticle) => (
     <TouchableOpacity
       style={styles.newsCard}
       onPress={() =>
         router.push({
           pathname: '/(details)/newDetail/[id]',
-          params: { id: item.id },
+          params: { id: NewsArticle.id },
         })
       }
     >
-      <View style={[styles.newsCardInner, { backgroundColor: colors.card }]}>
-        <View style={[styles.newsThumbnail, { backgroundColor: item.image as any }]}>
-          <Text style={{ color: item.categoryColor, fontSize: 12, fontWeight: '600' }}>News</Text>
+      <View style={[styles.newsCardInner, { backgroundColor: colors.backgroundSecondary, borderColor: colors.border }]}>
+        <View style={[styles.newsThumbnail]}>
+          <Image style={styles.featuredImage} source={{ uri: NewsArticle.image }} />
         </View>
 
         <View style={styles.newsContent}>
-          <View style={[styles.categoryBadge, { backgroundColor: `${item.categoryColor}20` }]}>
-            <Text style={[styles.categoryBadgeText, { color: item.categoryColor }]}>{item.category}</Text>
-          </View>
+          {/* <View style={[styles.categoryBadge,{backgroundColor: '#2196F3'}]}>
+            <Text style={[styles.categoryBadgeText]}>a</Text>
+          </View> */}
 
           <Text style={[styles.newsTitle, { color: colors.text }]} numberOfLines={2}>
-            {item.title}
-          </Text>
-
-          <Text style={[styles.newsDescription, { color: colors.textSecondary }]} numberOfLines={2}>
-            {item.description}
+            {NewsArticle.title}
           </Text>
 
           <View style={styles.metaInfo}>
-            <Text style={[styles.author, { color: colors.textSecondary }]}>{item.author}</Text>
+            <Text style={[styles.author, { color: colors.textSecondary }]}>{NewsArticle.author}</Text>
             <Text style={[styles.dot, { color: colors.textTertiary }]}>•</Text>
-            <Text style={[styles.time, { color: colors.textTertiary }]}>{item.time}</Text>
+            <Text style={[styles.time, { color: colors.textTertiary }]}>{formatDate(NewsArticle.created_at)}</Text>
           </View>
 
           <View style={styles.stats}>
             <View style={styles.statItem}>
               <Ionicons name="eye" size={14} color={colors.textTertiary} />
-              <Text style={[styles.statText, { color: colors.textTertiary }]}>{item.views}</Text>
+              <Text style={[styles.statText, { color: colors.textTertiary }]}>{NewsArticle.views}</Text>
             </View>
             <View style={styles.statItem}>
-              <TouchableOpacity onPress={() => toggleLike(item.id)} style={styles.likeBtn}>
-                <Ionicons
-                  name={likedNews.includes(item.id) ? 'heart' : 'heart-outline'}
-                  size={14}
-                  color={likedNews.includes(item.id) ? '#FF4444' : colors.textTertiary}
-                />
-              </TouchableOpacity>
-              <Text style={[styles.statText, { color: colors.textTertiary }]}>
-                {item.likes + (likedNews.includes(item.id) ? 1 : 0)}
-              </Text>
             </View>
-            <Text style={[styles.readTime, { color: colors.textTertiary }]}>{item.readTime}</Text>
           </View>
         </View>
-
       </View>
     </TouchableOpacity>
   );
@@ -245,8 +239,8 @@ const NewsPage = () => {
         </ScrollView>
       </View>
       <FlatList
-        data={filteredNews}
-        renderItem={({ item }) => <NewsCard item={item} />}
+        data={data?.data}
+        renderItem={({ item }) => <NewsCard {...item} />}
         ListHeaderComponent={
           <View style={styles.featuredSection}>
             <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin nổi bật</Text>
@@ -267,10 +261,22 @@ const NewsPage = () => {
             </TouchableOpacity>
           </View>
         }
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.flatListContent}
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View >
+            <Ionicons
+              name="cube-outline"
+              size={60}
+            />
+            <Text >Không có sản phẩm</Text>
+            <Text >
+              Hiện tại chưa có sản phẩm nào, vui lòng quay lại sau!
+            </Text>
+          </View>
+        }
       />
     </View>
   );

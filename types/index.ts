@@ -228,6 +228,23 @@ export interface NewsItemDetailed {
   isLiked: boolean;
 }
 
+export interface NewsArticle {
+  id: number;
+  title: string;
+  slug: string;
+  content: string;
+  category: string | null;
+  category_id: number | null;
+  status: string | null;
+  author: string;
+  image: string;
+  is_featured: boolean;
+  views: number;
+  user_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface NewsCategory {
   id: string;
   name: string;

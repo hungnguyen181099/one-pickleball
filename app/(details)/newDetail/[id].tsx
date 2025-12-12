@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { NewsComment, RelatedNewsItem } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import {
-  Dimensions,
+  ActivityIndicator,
   FlatList,
   KeyboardAvoidingView,
   Platform,
@@ -18,14 +18,157 @@ import {
 import { styles } from '@/constants/styles/newdetail.styles';
 
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
-
-const { width } = Dimensions.get('window');
+import { useQuery } from '@tanstack/react-query';
+import newService from '@/services/api/new.service';
+import { formatDate } from '@/utils/date.utils';
+import { WebView } from 'react-native-webview';
 
 export default function NewsDetailScreen() {
   const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(342);
-  const { theme } = useTheme();
+  const [likes, setLikes] = useState(0);
   const colors = useThemedColors();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const webViewRef = useRef<WebView>(null);
+  const [webViewHeight, setWebViewHeight] = useState(0);
+
+  const { status, data, isPending } = useQuery({
+    queryKey: ['getNewById', id],
+    queryFn: () => newService.getNewById(id),
+  });
+
+  const createHtmlContent = (htmlContent: string) => {
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+          <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+              font-size: 16px;
+              line-height: 1.8;
+              color: #333;
+              padding: 16px;
+              background-color: ${colors.card};
+              word-wrap: break-word;
+              overflow-wrap: break-word;
+            }
+            
+            div {
+              margin-bottom: 16px;
+            }
+            
+            h1, h2, h3, h4, h5, h6 {
+              margin-bottom: 12px;
+              margin-top: 20px;
+              font-weight: bold;
+              color: ${colors.text};
+              line-height: 1.4;
+            }
+            
+            h1 { font-size: 24px; }
+            h2 { font-size: 22px; }
+            h3 { font-size: 20px; }
+            h4 { font-size: 18px; }
+            
+            p {
+              margin-bottom: 16px;
+              line-height: 1.8;
+            }
+            
+            strong, b {
+              font-weight: bold;
+              color: ${colors.text};
+            }
+            
+            ul, ol {
+              margin-left: 20px;
+              margin-bottom: 16px;
+            }
+            
+            li {
+              margin-bottom: 8px;
+              line-height: 1.6;
+            }
+            
+            a {
+              color: #00D9B5;
+              text-decoration: none;
+            }
+            
+            img {
+              max-width: 100%;
+              height: auto;
+              border-radius: 8px;
+              margin: 16px 0;
+            }
+            
+            blockquote {
+              border-left: 4px solid #00D9B5;
+              padding-left: 16px;
+              margin: 16px 0;
+              font-style: italic;
+              color: #666;
+            }
+            
+            /* Cho phép select text */
+            body {
+              -webkit-user-select: text;
+              user-select: text;
+            }
+            
+            /* Remove các class không cần thiết từ Facebook */
+            .xdj266r, .x14z9mp, .xat24cr, .x1lziwak, .x1vvkbs, .x126k92a, .xtlvy1s {
+              /* Reset các style này */
+            }
+          </style>
+          
+          <script>
+            // Gửi height của content về React Native
+            function sendHeight() {
+              const height = Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.clientHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight
+              );
+              
+              window.ReactNativeWebView.postMessage(JSON.stringify({ 
+                type: 'height', 
+                height: height + 20 // Thêm padding
+              }));
+            }
+            
+            // Gọi khi document load xong
+            window.addEventListener('load', function() {
+              sendHeight();
+              // Gọi lại sau một thời gian ngắn để chắc chắn
+              setTimeout(sendHeight, 100);
+              setTimeout(sendHeight, 300);
+              setTimeout(sendHeight, 500);
+            });
+            
+            // Theo dõi thay đổi kích thước
+            if (window.ResizeObserver) {
+              const resizeObserver = new ResizeObserver(sendHeight);
+              resizeObserver.observe(document.body);
+            }
+          </script>
+        </head>
+        <body>
+          ${htmlContent}
+        </body>
+      </html>
+    `;
+  };
+
   const [comments, setComments] = useState<NewsComment[]>([
     {
       id: '1',
@@ -76,6 +219,10 @@ export default function NewsDetailScreen() {
     },
   ];
 
+  if (status === 'pending') return <Text>Loading...</Text>;
+
+  if (status === 'error') return;
+
   const handleLike = () => {
     if (isLiked) {
       setLikes(likes - 1);
@@ -83,6 +230,17 @@ export default function NewsDetailScreen() {
       setLikes(likes + 1);
     }
     setIsLiked(!isLiked);
+  };
+
+  const handleMessage = (event: any) => {
+    try {
+      const data = JSON.parse(event.nativeEvent.data);
+      if (data.type === 'height' && data.height) {
+        setWebViewHeight(data.height);
+      }
+    } catch (error) {
+      console.error('Error parsing WebView message:', error);
+    }
   };
 
   const CommentItem = ({ item }: { item: NewsComment }) => (
@@ -165,7 +323,7 @@ export default function NewsDetailScreen() {
                 </View>
 
                 <Text style={[styles.title, { color: colors.text }]}>
-                  5 Tips nâng cao kỹ thuật serve trong Pickleball
+                  {data?.title}
                 </Text>
 
                 <View style={styles.metaInfo}>
@@ -174,8 +332,8 @@ export default function NewsDetailScreen() {
                       <Text style={styles.authorAvatarText}>TT</Text>
                     </View>
                     <View>
-                      <Text style={[styles.authorName, { color: colors.text }]}>Trần Minh Tuấn</Text>
-                      <Text style={[styles.publishTime, { color: colors.textTertiary }]}>2 giờ trước</Text>
+                      <Text style={[styles.authorName, { color: colors.text }]}>{data?.author}</Text>
+                      <Text style={[styles.publishTime, { color: colors.textTertiary }]}>{formatDate(data?.created_at || '')}</Text>
                     </View>
                   </View>
                   <TouchableOpacity>
@@ -186,7 +344,7 @@ export default function NewsDetailScreen() {
                 <View style={styles.stats}>
                   <View style={styles.statItem}>
                     <Ionicons name="eye" size={16} color={colors.textTertiary} />
-                    <Text style={[styles.statText, { color: colors.textTertiary }]}>1.2K</Text>
+                    <Text style={[styles.statText, { color: colors.textTertiary }]}>{data?.views}</Text>
                   </View>
                   <View style={styles.statItem}>
                     <MaterialCommunityIcons name="comment-outline" size={16} color={colors.textTertiary} />
@@ -200,7 +358,7 @@ export default function NewsDetailScreen() {
               </View>
 
               {/* Article Content */}
-              <View style={[styles.articleContent, { backgroundColor: colors.card }]}>
+              {/* <View style={[styles.articleContent, { backgroundColor: colors.card }]}>
                 <Text style={[styles.articleText, { color: colors.textSecondary }]}>
                   Serve là một trong những kỹ thuật quan trọng nhất trong Pickleball. Một cú serve tốt không chỉ giúp
                   bạn bắt đầu điểm số với lợi thế mà còn tạo áp lực cho đối phương.
@@ -236,7 +394,32 @@ export default function NewsDetailScreen() {
                   Điều quan trọng nhất là luyện tập thường xuyên. Hãy dành ít nhất 15-20 phút mỗi ngày để luyện tập
                   serve. Khi bạn luyện tập đủ nhiều, serve sẽ trở thành phản xạ tự nhiên.
                 </Text>
-              </View>
+              </View> */}
+
+              <WebView
+                ref={webViewRef}
+                source={{ html: createHtmlContent(data?.content || '') }}
+                style={{ 
+                    height: webViewHeight || 500, 
+                    backgroundColor: colors.card,
+                    flex: 1
+                  }}
+                  onMessage={handleMessage}
+                  scrollEnabled={false}
+                  showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}
+                  originWhitelist={['*']}
+                  javaScriptEnabled={true}
+                  domStorageEnabled={true}
+                  startInLoadingState={true}
+                  renderLoading={() => (
+                    <View style={{ padding: 20, alignItems: 'center' }}>
+                      <ActivityIndicator size="small" color="#00D9B5" />
+                      <Text style={{ marginTop: 8, color: colors.textTertiary }}>Đang tải nội dung...</Text>
+                    </View>
+                  )}
+
+              />
 
               <View style={[styles.engagementSection, { backgroundColor: colors.card }]}>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
