@@ -10,13 +10,13 @@ import { AppColors, Radius, Shadows, ThemeColor } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
-import { Ranking } from '../../types';
+import { LeaderboardItem } from '../../types';
 
 type OtherRankingProps = {
-  data: Ranking[];
+  data: LeaderboardItem[];
 };
 
-const OtherRankingItem = ({ avatar, rank, name, tier, elo }: Ranking) => {
+const OtherRankingItem = ({ avatar, rank, name, tier, point }: LeaderboardItem) => {
   const styles = getStyles({ colors: useThemedColors() });
 
   return (
@@ -25,7 +25,7 @@ const OtherRankingItem = ({ avatar, rank, name, tier, elo }: Ranking) => {
       <View style={styles.left}>
         <Text style={styles.rank}>{rank}</Text>
         <View style={styles.avatar}>
-          <Avatar src={avatar} style={styles.image} />
+          <Avatar src={avatar} size={48} />
           <View>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.tier}>{tier}</Text>
@@ -35,7 +35,7 @@ const OtherRankingItem = ({ avatar, rank, name, tier, elo }: Ranking) => {
 
       {/* Right */}
       <View style={styles.right}>
-        <Text style={styles.elo}>⭐ {elo}</Text>
+        <Text style={styles.elo}>⭐ {point}</Text>
       </View>
     </View>
   );
@@ -45,7 +45,7 @@ const OtherRanking = ({ data }: OtherRankingProps) => {
   const styles = getStyles({ colors: useThemedColors() });
 
   return (
-    <Grid columns={1} gap={4} style={styles.container}>
+    <Grid columns={1} gap={8} style={styles.container}>
       {data.map((ranking) => (
         <GridItem key={ranking.rank}>
           <OtherRankingItem {...ranking} />
@@ -89,11 +89,6 @@ const getStyles = ({ colors }: { colors: ThemeColor }) =>
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,
-    },
-    image: {
-      width: 48,
-      height: 48,
-      objectFit: 'cover',
     },
     name: {
       fontSize: 16,

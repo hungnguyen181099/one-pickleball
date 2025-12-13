@@ -1,11 +1,45 @@
 import React from 'react';
 
-import { OCRTableFilter } from '../OCRTableFilter';
-import { OCRTierFilter } from '../OCRTierFilter';
+import { RankingTable } from '@/features/leaderboard/shared/components/RankingTable';
+import { LeaderboardItem, OCRFilterTier } from '@/features/leaderboard/shared/types';
 
-// Use function as children component to pass props
-const OCRTable = () => {
-  return <OCRTierFilter>{(tier) => <OCRTableFilter tier={tier} />}</OCRTierFilter>;
+import useGetOCRLeaderboard from '../../hooks/useGetOCRLeaderboard';
+
+type OCRTableFilterProps = {
+  tier: OCRFilterTier;
+};
+
+const OCRTable = ({ tier }: OCRTableFilterProps) => {
+  const { data, status } = useGetOCRLeaderboard({
+    rank: tier,
+  });
+
+  if (status === 'pending') return;
+
+  if (status === 'error') return;
+
+  // Parse data
+  const tableData: LeaderboardItem[] = data.data.map((item) => {
+    if ('rank_in_tier' in item) {
+      return {
+        point: item.elo_rating,
+        tier: item.elo_rank,
+        avatar: item.name,
+        name: item.name,
+        rank: item.rank_in_tier,
+      };
+    }
+
+    return {
+      point: item.elo_rating,
+      tier: item.elo_rank,
+      avatar: item.name,
+      name: item.name,
+      rank: item.rank,
+    };
+  });
+
+  return <RankingTable data={tableData} />;
 };
 
 export default OCRTable;

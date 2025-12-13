@@ -4,23 +4,23 @@ import { FlatList, Pressable, StyleSheet, Text } from 'react-native';
 
 import { Radius } from '@/constants/theme';
 
-import { OCRTiers } from '@/features/leaderboard/shared/constants';
-import { AllTier } from '@/features/leaderboard/shared/types';
+import { LeaderboardFilter, OCRFilterTier } from '@/features/leaderboard/shared/types';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
-type OCRTierFilterProps = {
-  children: (tier: AllTier) => React.ReactNode;
+type RankingTierFilterProps = {
+  data: LeaderboardFilter[];
+  children: (tier: OCRFilterTier) => React.ReactNode;
 };
 
-const OCRTierFilter = ({ children }: OCRTierFilterProps) => {
-  const [tier, setTier] = useState<AllTier>('');
+const RankingTierFilter = ({ data, children }: RankingTierFilterProps) => {
+  const [tier, setTier] = useState<OCRFilterTier>('');
   const colors = useThemedColors();
 
   return (
     <>
       <FlatList
-        data={OCRTiers}
+        data={data}
         renderItem={({ item }) => {
           const isActive = item.value === tier;
           return (
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OCRTierFilter;
+export default RankingTierFilter;

@@ -16,11 +16,15 @@ const OCRLeaderboardQueries = {
         }
       },
     }),
-
-  user: () => ['ocr-user'],
+  distribution: () =>
+    queryOptions({
+      queryKey: [...OCRLeaderboardQueries.all(), 'distribution'],
+      queryFn: OCRLeaderboardAPI.getDistribution,
+    }),
+  elo: () => [...OCRLeaderboardQueries.all(), 'user-elo'],
   userElo: (id?: number) =>
     queryOptions({
-      queryKey: [...OCRLeaderboardQueries.all(), 'elo', id],
+      queryKey: [...OCRLeaderboardQueries.elo(), id],
       queryFn: () => OCRLeaderboardAPI.getUserElo(id!),
       enabled: !!id,
     }),

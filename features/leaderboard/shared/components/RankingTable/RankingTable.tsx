@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Text, View } from 'react-native';
 
-import { Ranking } from '../../types';
+import { LeaderboardItem } from '../../types';
 import { OtherRanking } from '../OtherRanking';
 import { TopRanking } from '../TopRanking';
 
 type RankingTableProps = {
-  data: Ranking[];
+  data: LeaderboardItem[];
 };
 
 const RankingTable = ({ data }: RankingTableProps) => {

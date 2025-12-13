@@ -27,23 +27,23 @@ export interface User {
 
 // Tournament Types
 export interface Tournament {
-    id: number;
-    name: string;
-    description: string | null;
-    start_date: string;
-    end_date: string;
-    registration_deadline: string;
-    location: string;
-    organizer: string | null;
-    price: number;
-    prizes: number | null;
-    max_participants: number;
-    participants_count: number;
-    status: boolean;
-    user_id: number;
-    created_at: string;
-    updated_at: string;
-    imageUrl?: string;
+  id: number;
+  name: string;
+  description: string | null;
+  start_date: string;
+  end_date: string;
+  registration_deadline: string;
+  location: string;
+  organizer: string | null;
+  price: number;
+  prizes: number | null;
+  max_participants: number;
+  participants_count: number;
+  status: boolean;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+  imageUrl?: string;
 }
 
 export interface TournamentCategory {
@@ -507,3 +507,8 @@ export type AreaFilterType = 'nearby' | 'open' | 'rated' | 'filter';
 export type MyTournamentFilterType = 'all' | 'registered' | 'completed' | 'cancelled';
 export type BookingFilterType = 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
 export type FavoriteCourtSortType = 'recent' | 'rating' | 'distance' | 'price';
+
+export type StandardAPIResponse<T> = {
+  success: boolean;
+  data: T;
+};

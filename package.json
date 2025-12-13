@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@tanstack/react-table": "^8.21.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",

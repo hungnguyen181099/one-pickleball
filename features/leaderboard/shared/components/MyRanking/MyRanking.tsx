@@ -9,9 +9,9 @@ import { AppColors, Radius, Shadows, ThemeColor } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
-import { Ranking } from '../../types';
+import { LeaderboardItem } from '../../types';
 
-const MyRanking = ({ avatar, elo, name, rank, tier }: Ranking) => {
+const MyRanking = ({ avatar, point, name, tier }: LeaderboardItem) => {
   const styles = getStyles({ colors: useThemedColors() });
 
   return (
@@ -19,9 +19,9 @@ const MyRanking = ({ avatar, elo, name, rank, tier }: Ranking) => {
       <View style={styles.item}>
         {/* Left */}
         <View style={styles.left}>
-          <Text style={styles.rank}>{rank}</Text>
+          {/* <Text style={styles.rank}>{rank}</Text> */}
           <View style={styles.avatar}>
-            <Avatar src={avatar} style={styles.image} />
+            <Avatar src={avatar} size={48} />
             <View>
               <Text style={styles.name}>{name}</Text>
               <Text style={styles.tier}>{tier}</Text>
@@ -31,7 +31,7 @@ const MyRanking = ({ avatar, elo, name, rank, tier }: Ranking) => {
 
         {/* Right */}
         <View style={styles.right}>
-          <Text style={styles.elo}>⭐ {elo}</Text>
+          <Text style={styles.point}>⭐ {point}</Text>
         </View>
       </View>
     </View>
@@ -69,11 +69,6 @@ const getStyles = ({ colors }: { colors: ThemeColor }) =>
       alignItems: 'center',
       gap: 8,
     },
-    image: {
-      width: 48,
-      height: 48,
-      objectFit: 'cover',
-    },
     name: {
       fontSize: 16,
       fontWeight: 500,
@@ -87,7 +82,7 @@ const getStyles = ({ colors }: { colors: ThemeColor }) =>
       backgroundColor: colors.card,
       ...Shadows['xs'],
     },
-    elo: {
+    point: {
       paddingHorizontal: 8,
       paddingVertical: 4,
     },

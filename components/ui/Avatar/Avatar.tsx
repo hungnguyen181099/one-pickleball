@@ -24,7 +24,7 @@ const Avatar = ({ src, size = 48, style }: AvatarProps) => {
   if (isError || !src) {
     return (
       <View style={[fallbackStyles.container, style]}>
-        <FontAwesome6 name="user" size={size / 2} color={AppColors.primaryLight} />
+        <FontAwesome6 name="user" size={size / 3} color={AppColors.primaryLight} />
       </View>
     );
   }

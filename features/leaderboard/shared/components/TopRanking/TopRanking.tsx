@@ -8,41 +8,41 @@ import { Grid, GridItem } from '@/components/ui/Grid';
 
 import { AppColors } from '@/constants/theme';
 
-import { Ranking } from '../../types';
+import { LeaderboardItem } from '../../types';
 
 type TopRankingProps = {
-  data: Ranking[];
+  data: LeaderboardItem[];
 };
 
-const TopRankingItem = ({ avatar, rank, name, elo, tier }: Ranking) => {
+const TopRankingItem = ({ avatar, rank, name, point, tier }: LeaderboardItem) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatar}>
-        <Avatar src={avatar} style={styles.image} />
+        <Avatar src={avatar} size={80} style={styles.image} />
         <View style={styles.rank}>
           <Text style={styles.rankText}>{rank}</Text>
         </View>
       </View>
       <Text style={styles.name}>{name}</Text>
       <Text>{tier}</Text>
-      <Text>⭐ {elo}</Text>
+      <Text>⭐ {point}</Text>
     </View>
   );
 };
 
-const TopRankingItemCenter = ({ avatar, rank, name, elo, tier }: Ranking) => {
+const TopRankingItemCenter = ({ avatar, rank, name, point, tier }: LeaderboardItem) => {
   return (
     <View style={centerStyles.container}>
       <MaterialCommunityIcons name="crown-outline" style={centerStyles.crown} />
       <View style={centerStyles.avatar}>
-        <Avatar src={avatar} style={styles.image} />
+        <Avatar src={avatar} size={96} style={centerStyles.image} />
         <View style={centerStyles.rank}>
           <Text style={centerStyles.rankText}>{rank}</Text>
         </View>
       </View>
       <Text style={centerStyles.name}>{name}</Text>
       <Text>{tier}</Text>
-      <Text>⭐ {elo}</Text>
+      <Text>⭐ {point}</Text>
     </View>
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import { useSession } from '@/contexts/AuthProvider';
 
 import { MyRanking } from '@/features/leaderboard/shared/components/MyRanking';
-import { Ranking } from '@/features/leaderboard/shared/types';
+import { LeaderboardItem } from '@/features/leaderboard/shared/types';
 
 import useGetOCRUserElo from '../../hooks/useGetOCRUserElo';
 
@@ -15,13 +15,12 @@ const OCRUserElo = () => {
 
   if (status === 'error') return;
 
-  const rankingData: Ranking = {
+  const rankingData: LeaderboardItem = {
     avatar: data.data.name,
     rank: 0,
     name: data.data.name,
-    elo: data.data.elo_rating,
+    point: data.data.elo_rating,
     tier: data.data.elo_rank,
-    winRate: data.data.win_rate,
   };
 
   return <MyRanking {...rankingData} />;

@@ -9,7 +9,8 @@ import { RankingHeader } from '@/features/leaderboard/shared/components/RankingH
 
 import { useThemedColors } from '@/hooks/use-theme';
 
-import { OCRTable } from '../OCRTable';
+import { OCRDistribution } from '../OCRDistribution';
+import { OCRTableFilter } from '../OCRTableFilter';
 import { OCRUserElo } from '../OCRUserElo';
 
 const OCRLeaderboard = () => {
@@ -19,7 +20,8 @@ const OCRLeaderboard = () => {
     <View style={styles.container}>
       <RankingHeader />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <OCRTable />
+        <OCRTableFilter />
+        <OCRDistribution />
       </ScrollView>
       <OCRUserElo />
     </View>
