@@ -26,8 +26,10 @@ const OtherRankingItem = ({ avatar, rank, name, tier, point }: LeaderboardItem) 
         <Text style={styles.rank}>{rank}</Text>
         <View style={styles.avatar}>
           <Avatar src={avatar} size={48} />
-          <View>
-            <Text style={styles.name}>{name}</Text>
+          <View style={styles.info}>
+            <Text ellipsizeMode="tail" numberOfLines={1} style={styles.name}>
+              {name}
+            </Text>
             <Text style={styles.tier}>{tier}</Text>
           </View>
         </View>
@@ -58,29 +60,28 @@ const OtherRanking = ({ data }: OtherRankingProps) => {
 const getStyles = ({ colors }: { colors: ThemeColor }) =>
   StyleSheet.create({
     container: {
-      padding: 8,
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: 32,
-      ...Shadows['xs'],
       backgroundColor: colors.card,
     },
     item: {
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: 24,
       padding: 16,
       ...Shadows['2xs'],
       backgroundColor: colors.card,
+      gap: 16,
     },
     left: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 16,
+      flex: 1,
+    },
+    info: {
+      flex: 1,
     },
     rank: {
       fontWeight: 500,
@@ -89,6 +90,7 @@ const getStyles = ({ colors }: { colors: ThemeColor }) =>
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,
+      flex: 1,
     },
     name: {
       fontSize: 16,

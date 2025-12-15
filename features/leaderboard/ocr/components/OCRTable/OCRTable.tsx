@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { RankingTable } from '@/features/leaderboard/shared/components/RankingTable';
-import { LeaderboardItem, OCRFilterTier } from '@/features/leaderboard/shared/types';
+import { LeaderboardItem } from '@/features/leaderboard/shared/types';
 
 import useGetOCRLeaderboard from '../../hooks/useGetOCRLeaderboard';
 
 type OCRTableFilterProps = {
-  tier: OCRFilterTier;
+  tier: string;
 };
 
 const OCRTable = ({ tier }: OCRTableFilterProps) => {
@@ -22,7 +22,7 @@ const OCRTable = ({ tier }: OCRTableFilterProps) => {
   const tableData: LeaderboardItem[] = data.data.map((item) => {
     if ('rank_in_tier' in item) {
       return {
-        point: item.elo_rating,
+        point: String(item.elo_rating),
         tier: item.elo_rank,
         avatar: item.name,
         name: item.name,
@@ -31,7 +31,7 @@ const OCRTable = ({ tier }: OCRTableFilterProps) => {
     }
 
     return {
-      point: item.elo_rating,
+      point: String(item.elo_rating),
       tier: item.elo_rank,
       avatar: item.name,
       name: item.name,

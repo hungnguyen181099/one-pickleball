@@ -4,17 +4,17 @@ import { FlatList, Pressable, StyleSheet, Text } from 'react-native';
 
 import { Radius } from '@/constants/theme';
 
-import { LeaderboardFilter, OCRFilterTier } from '@/features/leaderboard/shared/types';
+import { LeaderboardFilter } from '@/features/leaderboard/shared/types';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
 type RankingTierFilterProps = {
   data: LeaderboardFilter[];
-  children: (tier: OCRFilterTier) => React.ReactNode;
+  children: (tier: string) => React.ReactNode;
 };
 
 const RankingTierFilter = ({ data, children }: RankingTierFilterProps) => {
-  const [tier, setTier] = useState<OCRFilterTier>('');
+  const [tier, setTier] = useState<string>('');
   const colors = useThemedColors();
 
   return (

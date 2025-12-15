@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { HomeEventCard, HomeNewsItem, HomeStatCardProps } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { Link, router } from 'expo-router';
-import { FlatList, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
+import { FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { ActionCard, EventCardComponent, NewsItemComponent, StatCard } from '@/components/home';
 import { Grid, GridItem } from '@/components/ui/Grid';
@@ -136,12 +136,6 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <Link href="/(stack)/leaderboard/ocr" asChild>
-          <Pressable>
-            <Text>Ranking OCR</Text>
-          </Pressable>
-        </Link>
-
         <Grid columns={3} gap={8} style={styles.statsContainer}>
           {statCards.map((item) => (
             <GridItem key={item.id}>
@@ -155,6 +149,22 @@ export default function HomeScreen() {
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Hành động nhanh</Text>
 
           <Grid columns={2} gap={8}>
+            <GridItem>
+              <ActionCard
+                icon="grid"
+                label="Bảng xếp hạng OCR"
+                color="#00D9B5"
+                onPress={() => router.push('/leaderboard/ocr')}
+              />
+            </GridItem>
+            <GridItem>
+              <ActionCard
+                icon="grid"
+                label="Bảng xếp hạng OPRS"
+                color="#00D9B5"
+                onPress={() => router.push('/leaderboard/oprs')}
+              />
+            </GridItem>
             <GridItem>
               <ActionCard icon="grid" label="Tìm sân" color="#00D9B5" onPress={() => handleActionPress('find-court')} />
             </GridItem>

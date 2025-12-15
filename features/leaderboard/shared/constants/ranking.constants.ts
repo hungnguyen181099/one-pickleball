@@ -1,6 +1,8 @@
-import { LeaderboardDistribution, LeaderboardDistributionStatLabels, LeaderboardFilter } from '../types';
+import { OCRLeaderboardFilter } from '../../ocr/types';
+import { OPRSLeaderboardFilter } from '../../oprs/types';
+import { LeaderboardDistributionStatLabels } from '../types';
 
-export const OCRTiers: LeaderboardFilter[] = [
+export const OCRTiers: OCRLeaderboardFilter[] = [
   { label: 'Tất cả', value: '' },
   { label: 'Bronze', value: 'Bronze' },
   { label: 'Silver', value: 'Silver' },
@@ -11,49 +13,15 @@ export const OCRTiers: LeaderboardFilter[] = [
   { label: 'Grandmaster', value: 'Grandmaster' },
 ];
 
-export const OCRDistributions: LeaderboardDistribution[] = [
-  {
-    rank: 'Bronze',
-    minPoint: 0,
-    maxPoint: 1099,
-    playerCount: 2,
-  },
-  {
-    rank: 'Silver',
-    minPoint: 1100,
-    maxPoint: 1299,
-    playerCount: 0,
-  },
-  {
-    rank: 'Gold',
-    minPoint: 1300,
-    maxPoint: 1499,
-    playerCount: 0,
-  },
-  {
-    rank: 'Platinum',
-    minPoint: 1500,
-    maxPoint: 1699,
-    playerCount: 0,
-  },
-  {
-    rank: 'Diamond',
-    minPoint: 1700,
-    maxPoint: 1899,
-    playerCount: 0,
-  },
-  {
-    rank: 'Master',
-    minPoint: 1900,
-    maxPoint: 2099,
-    playerCount: 0,
-  },
-  {
-    rank: 'Grandmaster',
-    minPoint: 2100,
-    maxPoint: null,
-    playerCount: 0,
-  },
+export const OPRSTiers: OPRSLeaderboardFilter[] = [
+  { label: 'Tất cả', value: '' },
+  { label: 'Beginner', value: '1.0' },
+  { label: 'Novice', value: '2.0' },
+  { label: 'Intermediate', value: '3.0' },
+  { label: 'Upper Intermediate', value: '3.5' },
+  { label: 'Advanced', value: '4.0' },
+  { label: 'Pro', value: '4.5' },
+  { label: 'Elite', value: '5.0+' },
 ];
 
 export const leaderboardDistributionStatLabels: LeaderboardDistributionStatLabels = {

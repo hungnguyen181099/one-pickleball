@@ -23,7 +23,9 @@ const TopRankingItem = ({ avatar, rank, name, point, tier }: LeaderboardItem) =>
           <Text style={styles.rankText}>{rank}</Text>
         </View>
       </View>
-      <Text style={styles.name}>{name}</Text>
+      <Text ellipsizeMode="tail" numberOfLines={1} style={styles.name}>
+        {name}
+      </Text>
       <Text>{tier}</Text>
       <Text>⭐ {point}</Text>
     </View>
@@ -40,7 +42,9 @@ const TopRankingItemCenter = ({ avatar, rank, name, point, tier }: LeaderboardIt
           <Text style={centerStyles.rankText}>{rank}</Text>
         </View>
       </View>
-      <Text style={centerStyles.name}>{name}</Text>
+      <Text ellipsizeMode="tail" numberOfLines={1} style={centerStyles.name}>
+        {name}
+      </Text>
       <Text>{tier}</Text>
       <Text>⭐ {point}</Text>
     </View>

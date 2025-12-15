@@ -35,12 +35,12 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
                 <Text>{item.playerCount}</Text>
               </View>
               <View style={styles.text}>
-                <Text style={styles.muted}>{leaderboardDistributionStatLabels.minPoint}</Text>
-                <Text>{item.minPoint}</Text>
-              </View>
-              <View style={styles.text}>
                 <Text style={styles.muted}>{leaderboardDistributionStatLabels.maxPoint}</Text>
                 <Text>{item.maxPoint}</Text>
+              </View>
+              <View style={styles.text}>
+                <Text style={styles.muted}>{leaderboardDistributionStatLabels.minPoint}</Text>
+                <Text>{item.minPoint}</Text>
               </View>
             </View>
           </GridItem>

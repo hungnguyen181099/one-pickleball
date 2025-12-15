@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { LeaderboardItem } from '../../types';
 import { OtherRanking } from '../OtherRanking';
@@ -19,7 +19,7 @@ const RankingTable = ({ data }: RankingTableProps) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={{ marginBottom: 64 }}></View>
       <TopRanking data={topRankings} />
       {otherRankings.length > 0 && (
@@ -31,5 +31,11 @@ const RankingTable = ({ data }: RankingTableProps) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 64,
+  },
+});
 
 export default RankingTable;

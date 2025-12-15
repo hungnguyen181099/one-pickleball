@@ -15,13 +15,15 @@ type AvatarProps = {
   style?: ImageStyle;
 };
 
+const isValidImageUri = (src?: string) => typeof src === 'string' && /^(https?|file):\/\//.test(src);
+
 const Avatar = ({ src, size = 48, style }: AvatarProps) => {
   const [isError, setIsError] = useState<boolean>(false);
   const colors = useThemedColors();
 
   const fallbackStyles = getStyles({ size, colors });
 
-  if (isError || !src) {
+  if (isError || !src || !isValidImageUri(src)) {
     return (
       <View style={[fallbackStyles.container, style]}>
         <FontAwesome6 name="user" size={size / 3} color={AppColors.primaryLight} />
