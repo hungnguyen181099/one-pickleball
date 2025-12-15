@@ -118,7 +118,7 @@ const TournamentList = ({ status }: { status: TournamentStatus }) => {
   });
 
   console.log(status);
-  
+
 
   if (queryStatus === 'pending') {
     return <Text>Loading...</Text>;
@@ -199,8 +199,11 @@ export default function TournamentScreen() {
                   },
                 ]}
               >
-                <MaterialIcons name={item.iconName} size={16} />
-                <Text>{item.label}</Text>
+                <MaterialIcons color={isActive ? "#fff" : ""} name={item.iconName} size={16} />
+                <Text
+                  style={
+                    isActive ? styles.IsCategoryChipText : styles.categoryChipText
+                  }>{item.label}</Text>
               </Pressable>
             );
           })}

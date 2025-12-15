@@ -507,6 +507,7 @@ export type AreaFilterType = 'nearby' | 'open' | 'rated' | 'filter';
 export type MyTournamentFilterType = 'all' | 'registered' | 'completed' | 'cancelled';
 export type BookingFilterType = 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
 export type FavoriteCourtSortType = 'recent' | 'rating' | 'distance' | 'price';
+export type NewFilerType = ""
 
 export type StandardAPIResponse<T> = {
   success: boolean;

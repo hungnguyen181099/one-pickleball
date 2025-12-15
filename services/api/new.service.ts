@@ -13,7 +13,7 @@ class NewService {
         search?: string;
     }): Promise<PaginatedResponse<NewsArticle>> {
         const queryString = qs.stringify(params)
-        const url = `${BASE_API_URL}news?${queryString}`;
+        const url = `${BASE_API_URL}/news?${queryString}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
@@ -25,7 +25,7 @@ class NewService {
      * Get NewsArticle by ID
      */
     async getNewById(id: string): Promise<NewsArticle> {
-        const response = await fetch(`${BASE_API_URL}news/${id}`);
+        const response = await fetch(`${BASE_API_URL}/news/${id}`);
         if (!response.ok) {
             throw new Error('Không thể tải chi tiết news');
         }

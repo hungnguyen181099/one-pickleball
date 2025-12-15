@@ -18,6 +18,7 @@ const NewsPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [likedNews, setLikedNews] = useState<string[]>([]);
   const colors = useThemedColors();
+  
 
   const { data, isPending } = useQuery({
     queryKey: ['getTournaments'],
@@ -142,7 +143,7 @@ const NewsPage = () => {
     >
       <View style={[styles.newsCardInner, { backgroundColor: colors.backgroundSecondary, borderColor: colors.border }]}>
         <View style={[styles.newsThumbnail]}>
-          <Image style={styles.featuredImage} source={{ uri: NewsArticle.image }} />
+          <Image style={styles.featuredImage} source={{ uri: 'https://onepickleball.vn/storage/'+NewsArticle.image }} />
         </View>
 
         <View style={styles.newsContent}>

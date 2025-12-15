@@ -18,18 +18,18 @@ export interface LoginRequest {
 
 export const authService = {
   async login(data: LoginRequest): Promise<ApiResponse<any>> {
-    return ApiClient.post('auth/login', data);
+    return ApiClient.post('/auth/login', data);
   },
 
   async register(data: RegisterRequest): Promise<ApiResponse<any>> {
-    return ApiClient.post('auth/register', data);
+    return ApiClient.post('/auth/register', data);
   },
 
   async logout(): Promise<ApiResponse<any>> {
-    return ApiClient.post('auth/logout');
+    return ApiClient.post('/auth/logout');
   },
 
   async getProfile(): Promise<ApiResponse<{ user: User }>> {
-    return ApiClient.get('auth/me');
+    return ApiClient.get('/auth/me');
   },
 };

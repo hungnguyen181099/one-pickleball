@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 
 import { NewsComment, RelatedNewsItem } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
@@ -17,10 +16,11 @@ import {
 
 import { styles } from '@/constants/styles/newdetail.styles';
 
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
-import { useQuery } from '@tanstack/react-query';
+import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
 import { formatDate } from '@/utils/date.utils';
+import { useQuery } from '@tanstack/react-query';
+import { Image } from 'expo-image';
 import { WebView } from 'react-native-webview';
 
 export default function NewsDetailScreen() {
@@ -132,17 +132,11 @@ export default function NewsDetailScreen() {
           <script>
             // Gửi height của content về React Native
             function sendHeight() {
-              const height = Math.max(
-                document.body.scrollHeight,
-                document.body.offsetHeight,
-                document.documentElement.clientHeight,
-                document.documentElement.scrollHeight,
-                document.documentElement.offsetHeight
-              );
+              const height = document.body.scrollHeight;
               
               window.ReactNativeWebView.postMessage(JSON.stringify({ 
                 type: 'height', 
-                height: height + 20 // Thêm padding
+                height: height + 24 // Thêm padding để tránh bị cắt content
               }));
             }
             
@@ -297,12 +291,7 @@ export default function NewsDetailScreen() {
           ListHeaderComponent={
             <>
               <View style={styles.gallerySection}>
-                <LinearGradient
-                  colors={['#00D9B5', '#0099CC']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.featuredImage}
-                />
+                <Image style={styles.featuredImage} source={{ uri: 'https://onepickleball.vn/storage/' + data.image }} />
                 <View style={styles.galleryOverlay}>
                   <TouchableOpacity style={styles.backBtnLight} onPress={() => router.back()}>
                     <Ionicons name="chevron-back" size={28} color="#fff" />
@@ -356,68 +345,29 @@ export default function NewsDetailScreen() {
                   </View>
                 </View>
               </View>
-
-              {/* Article Content */}
-              {/* <View style={[styles.articleContent, { backgroundColor: colors.card }]}>
-                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                  Serve là một trong những kỹ thuật quan trọng nhất trong Pickleball. Một cú serve tốt không chỉ giúp
-                  bạn bắt đầu điểm số với lợi thế mà còn tạo áp lực cho đối phương.
-                </Text>
-
-                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>1. Kiểm tra lại cách cầm gậy</Text>
-                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                  Cách cầm gậy là nền tảng của tất cả các cú đánh. Hãy chắc chắn rằng bạn đang cầm gậy ở vị trí
-                  continental grip hoặc eastern grip. Tránh cầm quá chặt vì điều này sẽ giới hạn độ linh hoạt của cổ
-                  tay.
-                </Text>
-
-                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>2. Điều chỉnh vị trí đứng</Text>
-                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                  Đứng cách net khoảng 6-8 feet, chân rộng bằng vai. Bước chân trước nên hơi bước vào một chút để tạo
-                  momentum. Vị trí đứng đúng sẽ giúp bạn dễ dàng thực hiện các cú serve khác nhau.
-                </Text>
-
-                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>3. Sử dụng động tác tay tự nhiên</Text>
-                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                  Động tác serve trong Pickleball khác với Tennis. Hãy sử dụng động tác underhand hoặc waist-high serve.
-                  Tránh swing quá mạnh vì điều này sẽ khiến bạn mất kiểm soát.
-                </Text>
-
-                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>4. Tập trung vào độ chính xác</Text>
-                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                  Thay vì cố serve mạnh nhất, hãy tập trung vào độ chính xác. Hãy luyện tập để serve về các góc khác
-                  nhau của sân. Khi bạn thành thạo độ chính xác, việc tăng tốc độ sẽ dễ hơn.
-                </Text>
-
-                <Text style={[styles.sectionSubtitle, { color: colors.text }]}>5. Luyện tập thường xuyên</Text>
-                <Text style={[styles.articleText, { color: colors.textSecondary }]}>
-                  Điều quan trọng nhất là luyện tập thường xuyên. Hãy dành ít nhất 15-20 phút mỗi ngày để luyện tập
-                  serve. Khi bạn luyện tập đủ nhiều, serve sẽ trở thành phản xạ tự nhiên.
-                </Text>
-              </View> */}
-
+              
               <WebView
                 ref={webViewRef}
                 source={{ html: createHtmlContent(data?.content || '') }}
-                style={{ 
-                    height: webViewHeight || 500, 
-                    backgroundColor: colors.card,
-                    flex: 1
-                  }}
-                  onMessage={handleMessage}
-                  scrollEnabled={false}
-                  showsVerticalScrollIndicator={false}
-                  showsHorizontalScrollIndicator={false}
-                  originWhitelist={['*']}
-                  javaScriptEnabled={true}
-                  domStorageEnabled={true}
-                  startInLoadingState={true}
-                  renderLoading={() => (
-                    <View style={{ padding: 20, alignItems: 'center' }}>
-                      <ActivityIndicator size="small" color="#00D9B5" />
-                      <Text style={{ marginTop: 8, color: colors.textTertiary }}>Đang tải nội dung...</Text>
-                    </View>
-                  )}
+                style={{
+                  height: webViewHeight || 500,
+                  backgroundColor: colors.card,
+                  flex: 1
+                }}
+                onMessage={handleMessage}
+                scrollEnabled={false}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                originWhitelist={['*']}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                startInLoadingState={true}
+                renderLoading={() => (
+                  <View style={{ padding: 20, alignItems: 'center' }}>
+                    <ActivityIndicator size="small" color="#00D9B5" />
+                    <Text style={{ marginTop: 8, color: colors.textTertiary }}>Đang tải nội dung...</Text>
+                  </View>
+                )}
 
               />
 
