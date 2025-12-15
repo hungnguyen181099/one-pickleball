@@ -16,13 +16,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerGradient: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#00D9B5',
+    width:'100%',
+    height: '100%'
   },
   headerTitle: {
     fontSize: 32,
     fontWeight: 'bold',
     color: 'white',
+    textAlign: 'center',
   },
   headerSubtitle: {
     fontSize: 20,
@@ -36,6 +37,9 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   headerActions: {
     position: 'absolute',
@@ -47,6 +51,8 @@ export const styles = StyleSheet.create({
   iconBtn: {
     width: 40,
     height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
   },

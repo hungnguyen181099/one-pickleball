@@ -15,12 +15,10 @@ import { useSession } from '@/contexts/AuthProvider';
 import { useTheme, useThemedColors } from '@/hooks/use-theme';
 
 const UserPage = () => {
-  const [isFollowing, setIsFollowing] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const colors = useThemedColors();
   const { signOut, user } = useSession();
 
-  console.log(user);
 
   const stats: UserStatCardProps[] = [
     { number: (user?.total_ocr_matches || 0).toString(), label: 'Trận đấu' },
