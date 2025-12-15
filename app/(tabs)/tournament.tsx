@@ -4,7 +4,7 @@ import { MyTournamentItem, Tournament } from '@/types';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
-import { FlatList, Image, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { styles } from '@/constants/styles/tournament.styles';
 
@@ -14,6 +14,7 @@ import tournamentService from '@/services/api/tournament.service';
 
 import { formatDate } from '@/utils/date.utils';
 import { formatCurrency } from '@/utils/format.utils';
+import { Image } from 'expo-image';
 
 const myTournaments: MyTournamentItem[] = [
   {
@@ -73,13 +74,11 @@ const TournamentCompactCard = (tournament: Tournament) => {
     >
       <View style={styles.compactImageContainer}>
         <Image
-          source={{
-            uri: tournament.imageUrl
-              ? tournament.imageUrl
-              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHqgofysjHdgAUpsjEPcJlPdDmodG5SRaLIA&s',
-          }}
+          source={tournament.image_url
+            || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHqgofysjHdgAUpsjEPcJlPdDmodG5SRaLIA&s'
+          }
           style={styles.compactImage}
-          resizeMode="cover"
+          contentFit='cover'
         />
         <View style={[styles.compactStatus, { backgroundColor: tournament.status ? '#00D9B5' : '#999' }]}>
           <Text style={styles.compactStatusText}>{tournament.status ? 'Mở' : 'Đã đóng'}</Text>
@@ -117,7 +116,6 @@ const TournamentList = ({ status }: { status: TournamentStatus }) => {
       }),
   });
 
-  console.log(status);
 
 
   if (queryStatus === 'pending') {

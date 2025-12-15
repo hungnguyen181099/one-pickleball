@@ -10,11 +10,22 @@ import { Grid, GridItem } from '@/components/ui/Grid';
 
 import { styles } from '@/constants/styles/home.styles';
 
+import { useSession } from '@/contexts/AuthProvider';
 import { useThemedColors } from '@/hooks/use-theme';
+
+
+const getInitials = (name?: string) => {
+  if (!name) return 'MT';
+  const names = name.trim().split(' ');
+  if (names.length === 0) return 'MT';
+  if (names.length === 1) return names[0].substring(0, 2).toUpperCase();
+  return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+};
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const colors = useThemedColors();
+  const { user } = useSession();
 
   const statCards: HomeStatCardProps[] = [
     {
@@ -90,9 +101,9 @@ export default function HomeScreen() {
     },
   ];
 
-  const handleSearch = () => {};
+  const handleSearch = () => { };
 
-  const handleActionPress = (action: string) => {};
+  const handleActionPress = (action: string) => { };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -100,7 +111,7 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <View>
             <Text style={[styles.greetingText, { color: colors.textTertiary }]}>Xin chào,</Text>
-            <Text style={[styles.userName, { color: colors.text }]}>Minh Tuấn</Text>
+            <Text style={[styles.userName, { color: colors.text }]}>{user?.name}</Text>
           </View>
           <View style={styles.headerRight}>
             <TouchableOpacity
@@ -114,7 +125,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
             <TouchableOpacity style={styles.avatarBtn}>
               <View style={styles.avatar}>
-                <Text style={styles.avatarText}>MT</Text>
+                <Text style={styles.avatarText}>{getInitials(user?.name)}</Text>
               </View>
             </TouchableOpacity>
           </View>

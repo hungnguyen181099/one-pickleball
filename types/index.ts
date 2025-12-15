@@ -43,7 +43,7 @@ export interface Tournament {
   user_id: number;
   created_at: string;
   updated_at: string;
-  imageUrl?: string;
+  image_url: string;
 }
 
 export interface TournamentCategory {

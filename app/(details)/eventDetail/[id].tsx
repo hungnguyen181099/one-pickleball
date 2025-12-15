@@ -4,7 +4,7 @@ import { EventCategory, EventFeeItem, EventInfoCard } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { Grid, GridItem } from '@/components/ui/Grid';
 
@@ -13,16 +13,20 @@ import { styles } from '@/constants/styles/eventdeatil.styles';
 import { useThemedColors } from '@/hooks/use-theme';
 
 import tournamentService from '@/services/api/tournament.service';
+import { Image } from 'expo-image';
+import ImageView from 'react-native-image-viewing';
 
 export default function EventDetailScreen() {
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [isImageViewVisible, setIsImageViewVisible] = useState(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const colors = useThemedColors();
   const { status, data, isPending } = useQuery({
     queryKey: ['getTournamentById', id],
     queryFn: () => tournamentService.getTournamentById(id),
   });
+
 
   if (status === 'pending') return <Text>Loading...</Text>;
 
@@ -32,6 +36,7 @@ export default function EventDetailScreen() {
     const date = new Date(dateString);
     return date.toLocaleDateString('vi-VN', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
+  console.log(data?.image_url);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -63,11 +68,12 @@ export default function EventDetailScreen() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
-          <View style={styles.headerImage}>
-            <View style={styles.headerGradient} />
-            <Text style={styles.headerTitle}>HCM OPEN</Text>
-            <Text style={styles.headerSubtitle}>2025</Text>
-          </View>
+          <Pressable
+            style={styles.headerImage}
+            onPress={() => setIsImageViewVisible(true)}
+          >
+            <Image style={styles.headerGradient} source={data.image_url} />
+          </Pressable>
           <TouchableOpacity onPress={() => router.back()} activeOpacity={0.8} style={styles.backBtn}>
             <Ionicons name="chevron-back" size={28} color="white" />
           </TouchableOpacity>
@@ -243,6 +249,13 @@ export default function EventDetailScreen() {
           <Text style={styles.registerBtnText}>Đăng ký ngay</Text>
         </TouchableOpacity>
       </View>
+
+      <ImageView
+        images={[{ uri: data?.image_url }]}
+        imageIndex={0}
+        visible={isImageViewVisible}
+        onRequestClose={() => setIsImageViewVisible(false)}
+      />
     </View>
   );
 }

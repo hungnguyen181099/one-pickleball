@@ -26,8 +26,6 @@ const NewsPage = () => {
     })
   })
 
-  console.log(data?.data);
-
 
   const categories: NewsCategory[] = [
     { id: 'all', name: 'Tất cả', icon: 'home', color: '#00D9B5' },
