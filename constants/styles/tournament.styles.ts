@@ -168,4 +168,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
   },
+   categoryChipText: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#666',
+  },
+  IsCategoryChipText: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#fff',
+  },
 });

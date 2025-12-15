@@ -4,14 +4,14 @@ import { NewsArticle, NewsCategory, NewsItemDetailed } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image, ImageBackground } from 'expo-image';
 import { router } from 'expo-router';
-import { FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { styles } from '@/constants/styles/news.styles';
 
-import { useTheme, useThemedColors } from '@/hooks/use-theme';
-import { useQuery } from '@tanstack/react-query';
+import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
 import { formatDate } from '@/utils/date.utils';
+import { useQuery } from '@tanstack/react-query';
 
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,9 +19,11 @@ const NewsPage = () => {
   const [likedNews, setLikedNews] = useState<string[]>([]);
   const colors = useThemedColors();
 
-  const { data, isPending } = useQuery({
-    queryKey: ['getTournaments'],
-    queryFn: () => newService.getNews()
+
+  const { data, isPending, refetch, isRefetching } = useQuery({
+    queryKey: ['getNews', searchQuery],
+    queryFn: () => newService.getNews({
+    })
   })
 
   console.log(data?.data);
@@ -142,7 +144,7 @@ const NewsPage = () => {
     >
       <View style={[styles.newsCardInner, { backgroundColor: colors.backgroundSecondary, borderColor: colors.border }]}>
         <View style={[styles.newsThumbnail]}>
-          <Image style={styles.featuredImage} source={{ uri: NewsArticle.image }} />
+          <Image style={styles.featuredImage} source={{ uri: 'https://onepickleball.vn/storage/' + NewsArticle.image }} />
         </View>
 
         <View style={styles.newsContent}>
@@ -240,27 +242,30 @@ const NewsPage = () => {
       </View>
       <FlatList
         data={data?.data}
-        renderItem={({ item }) => <NewsCard {...item} />}
-        ListHeaderComponent={
-          <View style={styles.featuredSection}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin nổi bật</Text>
-            <TouchableOpacity style={[styles.featuredCard, { backgroundColor: colors.cardSecondary }]}>
-              <ImageBackground
-                style={styles.featuredImage}
-                source={{
-                  uri: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
-                }}
-              >
-                <View style={styles.featuredOverlay}>
-                  <View style={[styles.featuredBadge, { backgroundColor: '#FF4444' }]}>
-                    <Text style={styles.featuredBadgeText}>HOT</Text>
-                  </View>
-                  <Text style={styles.featuredTitle}>HCM Open 2025: Những tiêu điểm không thể bỏ lỡ</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
+        refreshControl={
+          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
         }
+        renderItem={({ item }) => <NewsCard {...item} />}
+        // ListHeaderComponent={
+        //   <View style={styles.featuredSection}>
+        //     <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin nổi bật</Text>
+        //     <TouchableOpacity style={[styles.featuredCard, { backgroundColor: colors.cardSecondary }]}>
+        //       <ImageBackground
+        //         style={styles.featuredImage}
+        //         source={{
+        //           uri: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/482752AXp/anh-mo-ta.png',
+        //         }}
+        //       >
+        //         <View style={styles.featuredOverlay}>
+        //           <View style={[styles.featuredBadge, { backgroundColor: '#FF4444' }]}>
+        //             <Text style={styles.featuredBadgeText}>HOT</Text>
+        //           </View>
+        //           <Text style={styles.featuredTitle}>HCM Open 2025: Những tiêu điểm không thể bỏ lỡ</Text>
+        //         </View>
+        //       </ImageBackground>
+        //     </TouchableOpacity>
+        //   </View>
+        // }
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.flatListContent}
         scrollEnabled={true}

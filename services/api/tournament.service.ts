@@ -6,8 +6,9 @@ import { ApiResponse, PaginatedResponse, Tournament } from '@/types';
 
 import apiClient from './client';
 import qs from 'qs'
+import AppConfig from '@/config/app.config';
 
-const BASE_API_URL = 'https://onepickleball.vn/api/'
+const BASE_API_URL = AppConfig.api.baseUrl
 class TournamentService {
     /**
      * Get all tournaments
@@ -18,7 +19,7 @@ class TournamentService {
         search?: string;
     }): Promise<PaginatedResponse<Tournament>> {
         const queryString = qs.stringify(params)
-        const url = `${BASE_API_URL}tournaments?${queryString}`;
+        const url = `${BASE_API_URL}/tournaments?${queryString}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
@@ -30,7 +31,7 @@ class TournamentService {
      * Get tournament by ID
      */
     async getTournamentById(id: string): Promise<Tournament> {
-        const response = await fetch(`${BASE_API_URL}tournaments/${id}`);
+        const response = await fetch(`${BASE_API_URL}/tournaments/${id}`);
         if (!response.ok) {
             throw new Error('Không thể tải chi tiết tournaments');
         }

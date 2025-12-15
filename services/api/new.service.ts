@@ -1,6 +1,6 @@
 import AppConfig from '@/config/app.config';
 import { NewsArticle, PaginatedResponse } from '@/types';
-import qs from 'qs'
+import qs from 'qs';
 
 const BASE_API_URL = AppConfig.api.baseUrl
 class NewService {
@@ -11,9 +11,10 @@ class NewService {
         page?: number;
         status?: string;
         search?: string;
+        per_page?: number;
     }): Promise<PaginatedResponse<NewsArticle>> {
         const queryString = qs.stringify(params)
-        const url = `${BASE_API_URL}news?${queryString}`;
+        const url = `${BASE_API_URL}/news?${queryString}`;
 
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
@@ -25,7 +26,7 @@ class NewService {
      * Get NewsArticle by ID
      */
     async getNewById(id: string): Promise<NewsArticle> {
-        const response = await fetch(`${BASE_API_URL}news/${id}`);
+        const response = await fetch(`${BASE_API_URL}/news/${id}`);
         if (!response.ok) {
             throw new Error('Không thể tải chi tiết news');
         }

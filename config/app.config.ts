@@ -6,7 +6,7 @@
 export const AppConfig = {
   // API Configuration
   api: {
-    baseUrl: process.env.EXPO_PUBLIC_API_URL || 'https://onepickleball.vn/api/',
+    baseUrl: process.env.EXPO_PUBLIC_API_URL || 'https://onepickleball.vn/api',
     timeout: 30000,
     retryAttempts: 3,
     standardBaseUrl: 'https://onepickleball.vn/api',
