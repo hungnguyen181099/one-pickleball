@@ -3,10 +3,13 @@ import React from 'react';
 
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Grid, GridItem } from '@/components/ui/Grid';
+
 import { AppColors, Shadows, ThemeColor } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
+import { leaderboardDistributionStatLabels } from '../../constants';
 import { LeaderboardDistribution } from '../../types';
 
 type RankingDistributionProps = {
@@ -19,35 +22,30 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Thống kê</Text>
-      <View style={styles.content}>
+      <Grid columns={1} gap={4}>
         {data.map((item) => (
-          <View key={item.rank} style={styles.item}>
-            {/* Left */}
-            <View style={styles.half}>
+          <GridItem key={item.rank}>
+            <View style={styles.item}>
               <View style={styles.text}>
-                <Text style={styles.muted}>Hạng:</Text>
+                <Text style={styles.muted}>{leaderboardDistributionStatLabels.rank}</Text>
                 <Text>{item.rank}</Text>
               </View>
               <View style={styles.text}>
-                <Text style={styles.muted}>Người chơi:</Text>
+                <Text style={styles.muted}>{leaderboardDistributionStatLabels.playerCount}</Text>
                 <Text>{item.playerCount}</Text>
               </View>
-            </View>
-
-            {/* Right */}
-            <View style={styles.half}>
               <View style={styles.text}>
-                <Text style={styles.muted}>Điểm thấp:</Text>
+                <Text style={styles.muted}>{leaderboardDistributionStatLabels.minPoint}</Text>
                 <Text>{item.minPoint}</Text>
               </View>
               <View style={styles.text}>
-                <Text style={styles.muted}>Điểm cao:</Text>
+                <Text style={styles.muted}>{leaderboardDistributionStatLabels.maxPoint}</Text>
                 <Text>{item.maxPoint}</Text>
               </View>
             </View>
-          </View>
+          </GridItem>
         ))}
-      </View>
+      </Grid>
     </View>
   );
 };
@@ -64,20 +62,8 @@ const getStyles = ({ colors }: { colors: ThemeColor }) =>
       color: AppColors.primary,
       textAlign: 'center',
     },
-    content: {
-      padding: 8,
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: 32,
-      ...Shadows['xs'],
-      backgroundColor: colors.card,
-      gap: 8,
-    },
     item: {
       flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: 24,
@@ -90,10 +76,9 @@ const getStyles = ({ colors }: { colors: ThemeColor }) =>
     },
     text: {
       flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
       gap: 8,
-    },
-    half: {
-      width: '50%',
     },
   });
 

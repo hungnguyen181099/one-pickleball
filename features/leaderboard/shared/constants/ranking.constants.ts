@@ -1,4 +1,4 @@
-import { LeaderboardDistribution, LeaderboardFilter } from '../types';
+import { LeaderboardDistribution, LeaderboardDistributionStatLabels, LeaderboardFilter } from '../types';
 
 export const OCRTiers: LeaderboardFilter[] = [
   { label: 'Tất cả', value: '' },
@@ -55,3 +55,10 @@ export const OCRDistributions: LeaderboardDistribution[] = [
     playerCount: 0,
   },
 ];
+
+export const leaderboardDistributionStatLabels: LeaderboardDistributionStatLabels = {
+  rank: 'Hạng',
+  playerCount: 'Số người',
+  minPoint: 'Điểm thấp',
+  maxPoint: 'Điểm cao',
+};

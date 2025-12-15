@@ -82,3 +82,7 @@ export type OCRLeaderboardDistributionResponse = StandardAPIResponse<
     player_count: number;
   }[]
 >;
+
+export type LeaderboardDistributionStatLabels = {
+  [K in keyof LeaderboardDistribution]: string;
+};
