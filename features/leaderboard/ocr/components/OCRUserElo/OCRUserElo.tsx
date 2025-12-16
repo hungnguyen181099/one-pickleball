@@ -19,7 +19,7 @@ const OCRUserElo = () => {
     avatar: data.data.name,
     rank: 0,
     name: data.data.name,
-    point: data.data.elo_rating,
+    point: String(data.data.elo_rating),
     tier: data.data.elo_rank,
   };
 
