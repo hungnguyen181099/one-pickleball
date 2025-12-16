@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
+import { Platform, StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 
 import { ThemeColor } from '@/constants/theme';
 
@@ -62,7 +62,6 @@ const getStyles = ({ variant, color, radius }: StyleProps) =>
     container: {
       alignItems: 'center',
       borderRadius: radius === 'sm' ? 4 : radius === 'md' ? 8 : 16,
-      flex: 1,
       flexDirection: 'row',
       ...(variant === 'default' && {
         borderWidth: 1,
@@ -81,6 +80,7 @@ const getStyles = ({ variant, color, radius }: StyleProps) =>
     },
     input: {
       flex: 1,
+      paddingVertical: Platform.OS === 'ios' ? 16 : 0,
       paddingHorizontal: 16,
       ...(variant === 'unstyled' && {
         paddingHorizontal: 0,
