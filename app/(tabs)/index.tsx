@@ -11,8 +11,8 @@ import { Grid, GridItem } from '@/components/ui/Grid';
 import { styles } from '@/constants/styles/home.styles';
 
 import { useSession } from '@/contexts/AuthProvider';
-import { useThemedColors } from '@/hooks/use-theme';
 
+import { useThemedColors } from '@/hooks/use-theme';
 
 const getInitials = (name?: string) => {
   if (!name) return 'MT';
@@ -101,9 +101,9 @@ export default function HomeScreen() {
     },
   ];
 
-  const handleSearch = () => { };
+  const handleSearch = () => {};
 
-  const handleActionPress = (action: string) => { };
+  const handleActionPress = (action: string) => {};
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -175,6 +175,9 @@ export default function HomeScreen() {
                 color="#00D9B5"
                 onPress={() => router.push('/leaderboard/oprs')}
               />
+            </GridItem>
+            <GridItem>
+              <ActionCard icon="grid" label="Test page" color="#00D9B5" onPress={() => router.push('/test')} />
             </GridItem>
             <GridItem>
               <ActionCard icon="grid" label="Tìm sân" color="#00D9B5" onPress={() => handleActionPress('find-court')} />
