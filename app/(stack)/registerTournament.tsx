@@ -1,22 +1,43 @@
+import { RHFProvider } from '@/components/rhf/RHFProvider'
+import { RHFTextInput } from '@/components/rhf/RHFTextInput'
 import { useSession } from '@/contexts/AuthProvider'
 import { useThemedColors } from '@/hooks/use-theme'
 import { fetchWrapper } from '@/utils/fetch.utils'
 import { formatCurrency } from '@/utils/format.utils'
 import { Ionicons } from '@expo/vector-icons'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import z from 'zod'
 
 type JoinTournamentBody = {
   athlete_name: string;
   email: string;
   phone: string;
-  category_id: number;
+  category_id: string;
 }
 
+type SearchPamram = {
+  tournamentId: string,
+  categoryId: string,
+  categoryName: string,
+  ageGroup: string,
+  price: string,
+}
+
+const registerTournamentSchema = z.object({
+  athleteName: z.string().min(1, 'Tên phải có ít nhất 1 ký tự'),
+  phone: z.string()
+    .min(1, 'Không được để trống')
+    .regex(/(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g, 'Vui lòng nhập đúng định dạng'),
+  email: z.email('Vui lòng nhập đúng định dạng')
+});
+
 export default function RegisterTournament() {
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<SearchPamram>();
   const router = useRouter();
   const { user } = useSession();
   const colors = useThemedColors();
@@ -24,31 +45,25 @@ export default function RegisterTournament() {
 
   const { tournamentId, categoryId, categoryName, ageGroup, price } = params;
 
-  const [athleteName, setAthleteName] = useState(user?.name || '');
-  const [phone, setPhone] = useState(user?.phone || '');
-  const [email, setEmail] = useState(user?.email || '');
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerTournamentSchema),
+    defaultValues: {
+      athleteName: user?.name || '',
+      phone: user?.phone || '',
+      email: user?.email || '',
+    },
+  });
 
-  const { mutate: joinTournament, isPending } = useMutation({
-    mutationFn: (data: JoinTournamentBody) => fetchWrapper(`/tournaments/${tournamentId}/register`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["getUserTournament"] })
-    }
-  })
-
-  const handleConfirm = () => {
-    if (!athleteName || !phone || !email) {
-      Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin");
-      return;
-    }
-
+  const onSubmit = handleSubmit((data) => {
     const body = {
-      athlete_name: athleteName,
-      email: email,
-      phone: phone,
-      category_id: Number(categoryId)
+      athlete_name: data.athleteName,
+      email: data.email,
+      phone: data.phone,
+      category_id: categoryId
     }
 
     joinTournament(body, {
@@ -67,7 +82,17 @@ export default function RegisterTournament() {
         Alert.alert("Thất bại", "Đăng ký thất bại. Vui lòng thử lại.");
       }
     })
-  }
+  });
+
+  const { mutate: joinTournament, isPending } = useMutation({
+    mutationFn: (data: JoinTournamentBody) => fetchWrapper(`/tournaments/${tournamentId}/register`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["getUserTournament"] })
+    }
+  })
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -98,48 +123,55 @@ export default function RegisterTournament() {
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Thông tin vận động viên</Text>
 
-          <View style={styles.inputGroup}>
-            <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>Họ và tên</Text>
-            <TextInput
-              style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.backgroundTertiary }]}
-              value={athleteName}
-              onChangeText={setAthleteName}
-              placeholder="Nhập họ tên"
-              placeholderTextColor={colors.textSecondary}
-            />
-          </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>Số điện thoại</Text>
-            <TextInput
-              style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.backgroundTertiary }]}
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-              placeholder="Nhập số điện thoại"
-              placeholderTextColor={colors.textSecondary}
-            />
-          </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>Email</Text>
-            <TextInput
-              style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.backgroundTertiary }]}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              placeholder="Nhập email"
-              placeholderTextColor={colors.textSecondary}
+
+          <RHFProvider>
+            <RHFTextInput
+              controller={{
+                control: control,
+                name: 'athleteName',
+                message: errors.athleteName?.message,
+              }}
+              label="Tên vận động viên"
+              input={{
+                placeholder: 'Nguyễn Phạm Thảo',
+              }}
             />
-          </View>
+
+            <RHFTextInput
+              controller={{
+                control: control,
+                name: 'phone',
+                message: errors.phone?.message,
+              }}
+              label="Số điện thoại"
+              input={{
+                placeholder: '0987654321',
+              }}
+            />
+
+            <RHFTextInput
+              controller={{
+                control: control,
+                name: 'email',
+                message: errors.email?.message,
+              }}
+              label="Email"
+              input={{
+                placeholder: 'onepickleball@gmail.com',
+              }}
+            />
+
+          </RHFProvider>
         </View>
-
       </ScrollView>
 
       <View style={[styles.footer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
         <TouchableOpacity
-          onPress={handleConfirm}
+
+
+          onPress={onSubmit}
           disabled={isPending}
           style={[styles.confirmBtn, { opacity: isPending ? 0.7 : 1 }]}
         >
