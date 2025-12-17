@@ -5,11 +5,11 @@ import { useSession } from '@/contexts/AuthProvider';
 import { MyRanking } from '@/features/leaderboard/shared/components/MyRanking';
 import { LeaderboardItem } from '@/features/leaderboard/shared/types';
 
-import useGetOPRSUserElo from '../../hooks/useGetOPRSUserElo';
+import { useOPRSUserElo } from '../../hooks/useOPRSUserElo';
 
 const OPRSUserElo = () => {
   const { user } = useSession();
-  const { data, status } = useGetOPRSUserElo(user?.id);
+  const { data, status } = useOPRSUserElo(user?.id);
 
   if (status === 'pending') return;
 

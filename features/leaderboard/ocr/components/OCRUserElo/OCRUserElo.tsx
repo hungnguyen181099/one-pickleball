@@ -5,11 +5,11 @@ import { useSession } from '@/contexts/AuthProvider';
 import { MyRanking } from '@/features/leaderboard/shared/components/MyRanking';
 import { LeaderboardItem } from '@/features/leaderboard/shared/types';
 
-import useGetOCRUserElo from '../../hooks/useGetOCRUserElo';
+import { useOCRUserElo } from '../../hooks/useOCRUserElo';
 
 const OCRUserElo = () => {
   const { user } = useSession();
-  const { data, status } = useGetOCRUserElo(user?.id);
+  const { data, status } = useOCRUserElo(user?.id);
 
   if (status === 'pending') return;
 

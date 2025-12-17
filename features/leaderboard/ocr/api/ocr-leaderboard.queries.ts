@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import OCRLeaderboardAPI from './ocr-leaderboard.api';
+import { OCRLeaderboardAPI } from './ocr-leaderboard.api';
 
-const OCRLeaderboardQueries = {
+export const OCRLeaderboardQueries = {
   all: () => ['ocr-leaderboard'],
   lists: () => [...OCRLeaderboardQueries.all(), 'list'],
   list: (rank: string, filters: string) =>
@@ -29,5 +29,3 @@ const OCRLeaderboardQueries = {
       enabled: !!id,
     }),
 };
-
-export default OCRLeaderboardQueries;

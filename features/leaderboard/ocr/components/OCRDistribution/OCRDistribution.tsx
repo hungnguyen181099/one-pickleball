@@ -3,10 +3,10 @@ import React from 'react';
 import { RankingDistribution } from '@/features/leaderboard/shared/components/RankingDistribution';
 import { LeaderboardDistribution } from '@/features/leaderboard/shared/types';
 
-import useGetOCRLeaderboardDistribution from '../../hooks/useGetOCRLeaderboardDIstribution';
+import { useOCRLeaderboardDistribution } from '../../hooks/useOCRLeaderboardDistribution';
 
 const OCRDistribution = () => {
-  const { data, status } = useGetOCRLeaderboardDistribution();
+  const { data, status } = useOCRLeaderboardDistribution();
 
   if (status === 'pending') return;
 

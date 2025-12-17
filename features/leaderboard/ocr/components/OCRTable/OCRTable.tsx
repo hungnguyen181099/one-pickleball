@@ -2,15 +2,14 @@ import React from 'react';
 
 import { RankingTable } from '@/features/leaderboard/shared/components/RankingTable';
 import { LeaderboardItem } from '@/features/leaderboard/shared/types';
-
-import useGetOCRLeaderboard from '../../hooks/useGetOCRLeaderboard';
+import { useOCRLeaderboard } from '../../hooks/useOCRLeaderboard';
 
 type OCRTableFilterProps = {
   tier: string;
 };
 
 const OCRTable = ({ tier }: OCRTableFilterProps) => {
-  const { data, status } = useGetOCRLeaderboard({
+  const { data, status } = useOCRLeaderboard({
     rank: tier,
   });
 

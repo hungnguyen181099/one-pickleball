@@ -3,14 +3,14 @@ import React from 'react';
 import { RankingTable } from '@/features/leaderboard/shared/components/RankingTable';
 import { LeaderboardItem } from '@/features/leaderboard/shared/types';
 
-import useGetOPRSLeaderboard from '../../hooks/useGetOPRSLeaderboard';
+import { useOPRSLeaderboard } from '../../hooks/useOPRSLeaderboard';
 
 type OPRSTableFilterProps = {
   tier: string;
 };
 
 const OPRSTable = ({ tier }: OPRSTableFilterProps) => {
-  const { data, status } = useGetOPRSLeaderboard({
+  const { data, status } = useOPRSLeaderboard({
     rank: tier,
   });
 

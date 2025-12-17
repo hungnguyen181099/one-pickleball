@@ -1,9 +1,13 @@
 import { fetchWrapper } from '@/utils/fetch.utils';
-import { OCRLeaderboardByRankResponse, OCRLeaderboardDistributionResponse, OCRLeaderboardResponse, OCRUserEloResponse } from '../types';
 
+import {
+  OCRLeaderboardByRankResponse,
+  OCRLeaderboardDistributionResponse,
+  OCRLeaderboardResponse,
+  OCRUserEloResponse,
+} from '../types';
 
-
-const OCRLeaderboardAPI = {
+export const OCRLeaderboardAPI = {
   getAll: (filter: string) => {
     return fetchWrapper<OCRLeaderboardResponse>(`/ocr/leaderboard?${filter}`);
   },
@@ -17,5 +21,3 @@ const OCRLeaderboardAPI = {
     return fetchWrapper<OCRUserEloResponse>(`/ocr/users/${id}/elo`);
   },
 };
-
-export default OCRLeaderboardAPI;

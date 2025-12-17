@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import OPRSLeaderboardAPI from './oprs-leaderboard.api';
+import { OPRSLeaderboardAPI } from './oprs-leaderboard.api';
 
-const OPRSLeaderboardQueries = {
+export const OPRSLeaderboardQueries = {
   all: () => ['oprs-leaderboard'],
   lists: () => [...OPRSLeaderboardQueries.all(), 'list'],
   list: (rank: string, filters: string) =>
@@ -29,5 +29,3 @@ const OPRSLeaderboardQueries = {
       enabled: !!id,
     }),
 };
-
-export default OPRSLeaderboardQueries;

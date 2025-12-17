@@ -7,7 +7,7 @@ import {
   OPRSUserEloResponse,
 } from '../types';
 
-const OPRSLeaderboardAPI = {
+export const OPRSLeaderboardAPI = {
   getAll: (filter: string) => {
     return fetchWrapper<OPRSLeaderboardResponse>(`/oprs/leaderboard?${filter}`);
   },
@@ -21,5 +21,3 @@ const OPRSLeaderboardAPI = {
     return fetchWrapper<OPRSUserEloResponse>(`/oprs/users/${id}`);
   },
 };
-
-export default OPRSLeaderboardAPI;
