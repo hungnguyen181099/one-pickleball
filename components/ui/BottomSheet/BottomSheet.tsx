@@ -127,6 +127,10 @@ const getStyles = ({ colors, fullSize }: StyleProps) =>
       left: 0,
       right: 0,
       bottom: 0,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      overflow: 'hidden',
+      backgroundColor: colors.card,
       ...(fullSize && { top: 0 }),
     },
     pull: {
@@ -135,12 +139,6 @@ const getStyles = ({ colors, fullSize }: StyleProps) =>
       justifyContent: 'center',
       paddingTop: 16,
       paddingBottom: 24,
-      borderTopLeftRadius: Radius.full,
-      borderTopRightRadius: Radius.full,
-      backgroundColor: colors.card,
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderBottomColor: colors.card,
     },
     pullIcon: {
       width: 64,
