@@ -50,7 +50,6 @@ export default function NewsDetailScreen() {
             }
             
             body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
               font-size: 16px;
               line-height: 1.8;
               color: #333;
@@ -291,7 +290,7 @@ export default function NewsDetailScreen() {
           ListHeaderComponent={
             <>
               <View style={styles.gallerySection}>
-                <Image style={styles.featuredImage} source={{ uri: 'https://onepickleball.vn/storage/' + data.image }} />
+                <Image style={styles.featuredImage} source={data.image } />
                 <View style={styles.galleryOverlay}>
                   <TouchableOpacity style={styles.backBtnLight} onPress={() => router.back()}>
                     <Ionicons name="chevron-back" size={28} color="#fff" />

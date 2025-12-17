@@ -44,6 +44,8 @@ export interface Tournament {
   created_at: string;
   updated_at: string;
   image_url: string;
+  organizer_email: string;
+  organizer_hotline: string;
 }
 
 export interface TournamentCategory {
@@ -545,3 +547,23 @@ export interface GetUserTournamentResponse {
     };
   }>;
 }
+
+export const isStartDateAfterDeadline = (
+  startDate: string,
+  registrationDeadline: string
+): boolean => {
+  try {
+    const start = new Date(startDate);
+    const deadline = new Date(registrationDeadline);
+
+    // Kiểm tra ngày có hợp lệ không
+    if (isNaN(start.getTime()) || isNaN(deadline.getTime())) {
+      return false;
+    }
+
+    return start > deadline;
+  } catch (error) {
+    console.error('Error comparing dates:', error);
+    return false;
+  }
+};

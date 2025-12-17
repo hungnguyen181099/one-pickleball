@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { MyTournamentItem, Tournament } from '@/types';
+import { isStartDateAfterDeadline, MyTournamentItem, Tournament } from '@/types';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
@@ -60,6 +60,7 @@ const statuses: Status[] = [
 ];
 
 const TournamentCompactCard = (tournament: Tournament) => {
+  const checkStatus = isStartDateAfterDeadline(tournament.start_date, tournament.registration_deadline)
   const colors = useThemedColors();
 
   return (
@@ -80,8 +81,8 @@ const TournamentCompactCard = (tournament: Tournament) => {
           style={styles.compactImage}
           contentFit='cover'
         />
-        <View style={[styles.compactStatus, { backgroundColor: tournament.status ? '#00D9B5' : '#999' }]}>
-          <Text style={styles.compactStatusText}>{tournament.status ? 'Mở' : 'Đã đóng'}</Text>
+        <View style={[styles.compactStatus, { backgroundColor: checkStatus ? '#999' : '#00D9B5' }]}>
+          <Text style={styles.compactStatusText}>{checkStatus ? 'Đã đóng' : 'Mở'}</Text>
         </View>
       </View>
 

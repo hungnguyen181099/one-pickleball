@@ -142,7 +142,7 @@ const NewsPage = () => {
     >
       <View style={[styles.newsCardInner, { backgroundColor: colors.backgroundSecondary, borderColor: colors.border }]}>
         <View style={[styles.newsThumbnail]}>
-          <Image style={styles.featuredImage} source={{ uri: 'https://onepickleball.vn/storage/' + NewsArticle.image }} />
+          <Image style={styles.featuredImage} source={NewsArticle.image} />
         </View>
 
         <View style={styles.newsContent}>

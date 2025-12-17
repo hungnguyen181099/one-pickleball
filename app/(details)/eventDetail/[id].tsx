@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { EventCategory, EventInfoCard } from '@/types';
+import { EventInfoCard, isStartDateAfterDeadline } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, Alert, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { Grid, GridItem } from '@/components/ui/Grid';
 
@@ -12,13 +12,13 @@ import { styles } from '@/constants/styles/eventdeatil.styles';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
+import { useSession } from '@/contexts/AuthProvider';
 import tournamentService from '@/services/api/tournament.service';
+import { formatDate } from '@/utils/date.utils';
+import { fetchWrapper } from '@/utils/fetch.utils';
+import { formatCurrency } from '@/utils/format.utils';
 import { Image } from 'expo-image';
 import ImageView from 'react-native-image-viewing';
-import { formatCurrency } from '@/utils/format.utils';
-import { formatDate } from '@/utils/date.utils';
-import { useSession } from '@/contexts/AuthProvider';
-import { fetchWrapper } from '@/utils/fetch.utils';
 
 type JoinTournamentBody = {
   athlete_name: string;
@@ -60,10 +60,12 @@ export default function EventDetailScreen() {
       queryClient.invalidateQueries({ queryKey: ["getUserTournament"] })
     }
   })
+
   if (status === 'pending') return <Text>Loading...</Text>;
 
   if (status === 'error') return;
 
+  const checkStatus = isStartDateAfterDeadline(data?.start_date, data?.registration_deadline)
 
   const infoCards: EventInfoCard[] = [
     { icon: 'calendar', label: 'Thời gian', value: formatDate(data?.start_date) },
@@ -72,33 +74,26 @@ export default function EventDetailScreen() {
     { icon: 'star', label: 'Giải thưởng', value: formatCurrency(data?.prizes || 0) },
   ];
 
-  console.log(userTournament?.data);
   const joined = userTournament?.data.some(item => String(item.tournament.id) === id)
 
-  console.log(joined);
-
   const handleSumbit = () => {
-    if (!selectedCategory) return Alert.alert("Vui long chon hang dau")
+    if (!selectedCategory) return Alert.alert("Vui lòng chọn hạng đấu")
+
+    const category = Categories?.categories.find(c => c.id === selectedCategory);
 
     if (user) {
-
-      const body = {
-        athlete_name: user.name,
-        email: user.email,
-        phone: user.phone,
-        category_id: selectedCategory
-      }
-
-      joinTournament(body, {
-        onSuccess: () => {
-          Alert.alert("dang ky thanh cong")
-        },
-        onError: (error) => {
-          console.log(error);
-
-          Alert.alert("dang ky that bai")
+      router.push({
+        pathname: "/(stack)/registerTournament",
+        params: {
+          tournamentId: id,
+          categoryId: selectedCategory,
+          categoryName: category?.category_name,
+          ageGroup: category?.age_group,
+          price: data?.price
         }
       })
+    } else {
+      Alert.alert("Bạn cần đăng nhập để đăng ký")
     }
   }
 
@@ -131,8 +126,8 @@ export default function EventDetailScreen() {
 
         <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
           <View style={styles.statusBadge}>
-            <View style={styles.statusDot} />
-            <Text style={styles.statusText}>{data?.status ? 'Đang mở đăng ký' : 'Đã đóng đăng ký'}</Text>
+            <View style={[styles.statusDot, { backgroundColor: !checkStatus ? '#00D9B5' : '#FF6B6B' }]} />
+            <Text style={[styles.statusText, { color: !checkStatus ? '#00D9B5' : '#FF6B6B' }]}>{!checkStatus ? 'Đang mở đăng ký' : 'Đã đóng đăng ký'}</Text>
           </View>
           <Text style={[styles.title, { color: colors.text }]}>{data?.name}</Text>
         </View>
@@ -246,11 +241,11 @@ export default function EventDetailScreen() {
                   </Text>
                   <TouchableOpacity style={styles.contactLink}>
                     <Ionicons name="call" size={18} color="#00D9B5" />
-                    <Text style={styles.contactText}>0901 234 567</Text>
+                    <Text style={styles.contactText}>{data.organizer_hotline}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.contactLink}>
                     <Ionicons name="mail" size={18} color="#00D9B5" />
-                    <Text style={styles.contactText}>info@onepickleball.vn</Text>
+                    <Text style={styles.contactText}>{data.organizer_email}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -270,7 +265,7 @@ export default function EventDetailScreen() {
         )}
       </ScrollView>
 
-      <View style={[styles.footer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
+      {checkStatus ? null : <View style={[styles.footer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
         <View style={styles.footerInfo}>
           <View>
             <Text style={[styles.priceLabel, { color: colors.textSecondary }]}>Từ</Text>
@@ -285,12 +280,13 @@ export default function EventDetailScreen() {
         </View>
         <TouchableOpacity disabled={joined} onPress={handleSumbit} style={[styles.registerBtn, { opacity: joined ? 0.5 : 1 }]}>
           {joined ? (
-            <Text style={styles.registerBtnText}>Đã Đăng ký ngay</Text>
+            <Text style={styles.registerBtnText}>Đã Đăng ký</Text>
           ) : (
             <Text style={styles.registerBtnText}>Đăng ký ngay</Text>
           )}
         </TouchableOpacity>
-      </View>
+      </View>}
+
 
       <ImageView
         images={[{ uri: data?.image_url }]}
