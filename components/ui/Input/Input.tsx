@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Platform, StyleSheet, TextInput, TextInputProps, View } from 'react-native';
+import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 
 import { ThemeColor } from '@/constants/theme';
 
@@ -56,7 +56,6 @@ const Input = ({
   );
 };
 
-/* eslint-disable react-native/no-unused-styles */
 const getStyles = ({ variant, color, radius }: StyleProps) =>
   StyleSheet.create({
     container: {
@@ -68,6 +67,7 @@ const getStyles = ({ variant, color, radius }: StyleProps) =>
         borderColor: color.inputBorder,
       }),
       ...(variant === 'filled' && {
+        borderWidth: 1,
         backgroundColor: color.input,
         borderColor: color.inputBorder,
       }),

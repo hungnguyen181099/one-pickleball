@@ -2,6 +2,7 @@
  * Type Definitions
  * Centralized type definitions for the application
  */
+import { ThemeColor } from '@/constants/theme';
 
 // User Types
 export interface User {
@@ -125,7 +126,7 @@ export interface PaginatedResponse<T> {
 
 export interface CategoriesResponse<T> {
   categories: T[];
-  success: string
+  success: string;
 }
 
 // Form Types
@@ -518,17 +519,16 @@ export type AreaFilterType = 'nearby' | 'open' | 'rated' | 'filter';
 export type MyTournamentFilterType = 'all' | 'registered' | 'completed' | 'cancelled';
 export type BookingFilterType = 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
 export type FavoriteCourtSortType = 'recent' | 'rating' | 'distance' | 'price';
-export type NewFilerType = ""
+export type NewFilerType = '';
 
 export type StandardAPIResponse<T> = {
   success: boolean;
   data: T;
 };
 
-
 export interface GetUserTournamentResponse {
   success: boolean;
-  data: Array<{
+  data: {
     registration_id: number;
     status: string;
     payment_status: string;
@@ -545,8 +545,13 @@ export interface GetUserTournamentResponse {
       location: string;
       status: boolean;
     };
-  }>;
+  }[];
 }
+
+export type StyleColorsProps = {
+  colors: ThemeColor;
+};
+
 
 export const isStartDateAfterDeadline = (
   startDate: string,

@@ -22,6 +22,7 @@ module.exports = defineConfig([
       'react-native/split-platform-components': 0,
       'react-native/no-raw-text': 0,
       'react-native/sort-styles': 0,
+      'react-native/no-unused-styles': 0,
     },
   },
   eslintConfigPrettier,
