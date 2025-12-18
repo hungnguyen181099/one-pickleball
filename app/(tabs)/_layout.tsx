@@ -39,7 +39,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="area"
+        name="stadiums"
         options={{
           title: 'Sân',
           tabBarIcon: ({ color }) => <IconSymbol size={24} name="mappin.and.ellipse" color={color} />,

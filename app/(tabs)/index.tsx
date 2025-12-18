@@ -177,12 +177,7 @@ export default function HomeScreen() {
               />
             </GridItem>
             <GridItem>
-              <ActionCard
-                icon="grid"
-                label="Stadiums"
-                color="#00D9B5"
-                onPress={() => router.push('/stadiums')}
-              />
+              <ActionCard icon="grid" label="Stadiums" color="#00D9B5" onPress={() => router.push('/stadiums')} />
             </GridItem>
             <GridItem>
               <ActionCard icon="grid" label="Test page" color="#00D9B5" onPress={() => router.push('/test')} />

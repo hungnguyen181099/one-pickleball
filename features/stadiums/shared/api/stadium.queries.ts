@@ -9,7 +9,6 @@ export const stadiumQueries = {
     queryOptions({
       queryKey: [...stadiumQueries.lists(), filters],
       queryFn: () => stadiumAPI.getAll(filters),
-      enabled: false,
     }),
   details: () => [...stadiumQueries.all(), 'detail'],
   detail: (id: number) =>
