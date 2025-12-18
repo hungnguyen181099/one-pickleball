@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 
 import { View } from 'react-native';
 
-import { Pagination } from '@/components/ui/Pagination';
+import { DebouncedSearch } from '@/components/common/DebouncedSearch';
 
 const TestScreen = () => {
-  const [page, setPage] = useState<number>(1);
+  const [value, setValue] = useState<string>('');
+
+  console.log('🚀 ~ value: ', value);
 
   return (
     <View>
-      <Pagination currentPage={page} totalPages={10} onPageChange={setPage} />
+      <DebouncedSearch onDebouncedChange={setValue} />
     </View>
   );
 };
