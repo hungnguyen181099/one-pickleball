@@ -1,6 +1,6 @@
 import { StyleColorsProps } from '@/types';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import { AppColors, Radius } from '@/constants/theme';
 
@@ -15,6 +15,7 @@ type PaginationProps = {
   showControls?: boolean;
   align?: PaginationAlign;
   onPageChange?: (page: number) => void;
+  style: ViewStyle;
 };
 
 const DOT_VALUE = '...';
@@ -59,19 +60,20 @@ const Pagination = ({
   siblingCount = 1,
   showControls = true,
   align = 'center',
+  style,
   onPageChange,
 }: PaginationProps) => {
   const paginationWithSiblings = getPaginationRange(currentPage, totalPages, siblingCount);
   const styles = getStyles({ colors: useThemedColors(), align });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.content}>
         {showControls && (
           <Pressable
-            disabled={currentPage === 1}
+            disabled={currentPage <= 1}
             onPress={() => onPageChange?.(currentPage - 1)}
-            style={[styles.item, currentPage === 1 && styles.disabled]}
+            style={[styles.item, currentPage <= 1 && styles.disabled]}
           >
             <MaterialIcons name="chevron-left" />
           </Pressable>
@@ -102,9 +104,9 @@ const Pagination = ({
 
         {showControls && (
           <Pressable
-            disabled={currentPage === totalPages}
+            disabled={currentPage >= totalPages}
             onPress={() => onPageChange?.(currentPage + 1)}
-            style={[styles.item, currentPage === totalPages && styles.disabled]}
+            style={[styles.item, currentPage >= totalPages && styles.disabled]}
           >
             <MaterialIcons name="chevron-right" />
           </Pressable>

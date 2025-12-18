@@ -9,6 +9,7 @@ type Params = {
   per_page?: number;
   search?: string;
   sort?: string;
+  page?: number;
 };
 
 export const useStadiums = (params: Params = {}) => {

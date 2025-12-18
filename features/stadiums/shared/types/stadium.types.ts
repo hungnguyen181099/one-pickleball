@@ -1,0 +1,111 @@
+export type StadiumListResponse = {
+  data: {
+    id: number;
+    name: string;
+    description: string | null;
+    address: string;
+    maps_address: string | null;
+    phone: string;
+    email: string;
+    website: string | null;
+    image: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    opening_hours: string;
+    amenities: string[];
+    utilities: string | null;
+    regulations: string | null;
+    court_surface: string | null;
+    rating: number;
+    rating_count: number;
+    status: 'active' | 'inactive';
+    is_featured: boolean;
+    is_premium: boolean;
+    is_verified: number;
+    verified: string | null;
+    province_id: number;
+    user_id: number;
+    province: {
+      id: number;
+      name: string;
+      code: number | null;
+      created_at: string;
+      updated_at: string;
+    };
+    created_at: string;
+    updated_at: string;
+  }[];
+  links: {
+    first: string;
+    last: string;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number;
+    last_page: number;
+    links: {
+      url: string | null;
+      label: string;
+      active: boolean;
+    }[];
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+  };
+};
+
+export type StadiumDetailResponse = {
+  data: {
+    id: number;
+    name: string;
+    description: string | null;
+    address: string;
+    maps_address: string;
+    phone: string;
+    email: string;
+    website: string | null;
+    image: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    opening_hours: string;
+    amenities: string[];
+    utilities: string | null;
+    regulations: string | null;
+    court_surface: string | null;
+    rating: number;
+    rating_count: number;
+    status: 'active' | 'inactive';
+    is_featured: boolean;
+    is_premium: boolean;
+    is_verified: number; // thường 0 | 1
+    verified: string | null;
+    province_id: number | null;
+    user_id: number;
+    province: unknown | null;
+    courts: {
+      id: number;
+      court_name: string;
+      court_number: string;
+      court_type: 'indoor' | 'outdoor' | string;
+      surface_type: string;
+      status: 'available' | 'unavailable' | string;
+      description: string | null;
+      amenities: string | null;
+      capacity: number;
+      size: string | null;
+      is_active: boolean;
+      daily_matches: number;
+      rental_price: number;
+      stadium_id: number;
+      tournament_id: number | null;
+      created_at: string;
+      updated_at: string;
+    }[];
+    reviews: unknown[];
+    created_at: string;
+    updated_at: string;
+  };
+};
