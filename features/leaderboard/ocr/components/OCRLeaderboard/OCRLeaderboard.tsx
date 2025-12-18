@@ -2,9 +2,9 @@ import React from 'react';
 
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { ThemeColor } from '@/constants/theme';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
 
-import { RankingHeader } from '@/features/leaderboard/shared/components/RankingHeader';
+import { ThemeColor } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -17,7 +17,7 @@ const OCRLeaderboard = () => {
 
   return (
     <View style={styles.container}>
-      <RankingHeader />
+      <ScreenHeader title="Bảng xếp hạng OCR" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <OCRTableFilter />
         <OCRDistribution />
@@ -32,7 +32,7 @@ const getStyles = ({ colors }: { colors: ThemeColor }) =>
     container: {
       flex: 1,
       paddingBottom: 96,
-      paddingHorizontal: 24,
+      paddingHorizontal: 16,
       backgroundColor: colors.background,
     },
   });

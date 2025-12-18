@@ -18,6 +18,8 @@ export type InputProps = TextInputProps & {
   styleFor?: {
     container?: ViewStyle;
     input?: TextStyle;
+    endIcon?: ViewStyle;
+    startIcon?: ViewStyle;
   };
   onChangeText?: (text: string) => void;
 };
@@ -54,9 +56,11 @@ const Input = ({
 
   return (
     <View style={[styles.container, styleFor.container]}>
-      {startIcon && <View style={styles.startIcon}>{startIcon}</View>}
+      {startIcon && <View style={[styles.startIcon, styleFor.startIcon]}>{startIcon}</View>}
+
       <TextInput value={finalValue} onChangeText={handleChange} {...props} style={[styles.input, styleFor.input]} />
-      {endIcon && <View style={styles.endIcon}>{endIcon}</View>}
+
+      {endIcon && <View style={[styles.endIcon, styleFor.endIcon]}>{endIcon}</View>}
     </View>
   );
 };

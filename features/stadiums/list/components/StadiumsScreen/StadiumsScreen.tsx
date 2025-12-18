@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { StyleColorsProps } from '@/types';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
+import { ScreenHeader } from '@/components/common/ScreenHeader';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -12,7 +14,7 @@ const StadiumsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text>StadiumsScreen</Text>
+      <ScreenHeader title="Sân thi đấu" showBack={false} />
       <StadiumsList />
     </View>
   );
@@ -22,7 +24,7 @@ const getStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      padding: 16,
+      paddingHorizontal: 16,
       backgroundColor: colors.background,
     },
   });
