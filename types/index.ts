@@ -241,16 +241,50 @@ export interface NewsArticle {
   title: string;
   slug: string;
   content: string;
-  category: string | null;
+  category: {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    icon: string | null;
+    status: boolean;
+    order: number;
+    created_at: string;
+    updated_at: string;
+  } | null;
   category_id: number | null;
-  status: string | null;
+  status?: string | null;
   author: string;
   image: string;
   is_featured: boolean;
-  views: number;
-  user_id: number | null;
+  views?: number;
+  user_id?: number | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface NewsApiResponse {
+  data: NewsArticle[];
+  links: {
+    first: string;
+    last: string;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number;
+    last_page: number;
+    links: Array<{
+      url: string | null;
+      label: string;
+      active: boolean;
+    }>;
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+  };
 }
 
 export interface NewsCategory {
@@ -571,4 +605,23 @@ export const isStartDateAfterDeadline = (
     console.error('Error comparing dates:', error);
     return false;
   }
+};
+
+export type registration = {
+  registration_id: number;
+  status: string;
+  payment_status: string;
+  registered_at: string | null;
+  category: {
+    id: number;
+    name: string | null;
+  };
+  tournament: {
+    id: number;
+    name: string;
+    start_date: string;
+    end_date: string;
+    location: string;
+    status: boolean;
+  };
 };

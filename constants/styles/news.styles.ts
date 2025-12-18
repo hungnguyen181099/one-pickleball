@@ -6,7 +6,9 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  flatListContent: {},
+  flatListContent: {
+    paddingBottom: 16
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',

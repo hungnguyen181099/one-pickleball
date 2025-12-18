@@ -1,5 +1,5 @@
 import AppConfig from '@/config/app.config';
-import { NewsArticle, PaginatedResponse } from '@/types';
+import {  NewsApiResponse, NewsArticle, PaginatedResponse } from '@/types';
 import qs from 'qs';
 
 const BASE_API_URL = AppConfig.api.baseUrl
@@ -12,7 +12,7 @@ class NewService {
         status?: string;
         search?: string;
         per_page?: number;
-    }): Promise<PaginatedResponse<NewsArticle>> {
+    }): Promise<NewsApiResponse> {
         const queryString = qs.stringify(params)
         const url = `${BASE_API_URL}/news?${queryString}`;
 

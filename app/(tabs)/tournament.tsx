@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { isStartDateAfterDeadline, MyTournamentItem, Tournament } from '@/types';
+import { isStartDateAfterDeadline, MyTournamentItem, registration, Tournament } from '@/types';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
@@ -15,6 +15,7 @@ import tournamentService from '@/services/api/tournament.service';
 import { formatDate } from '@/utils/date.utils';
 import { formatCurrency } from '@/utils/format.utils';
 import { Image } from 'expo-image';
+import MyTournamentCard from '@/components/MyTournamentCard';
 
 const myTournaments: MyTournamentItem[] = [
   {
@@ -117,19 +118,13 @@ const TournamentList = ({ status }: { status: TournamentStatus }) => {
       }),
   });
 
+  if (queryStatus === 'pending') return <Text>Loading...</Text>;
 
-
-  if (queryStatus === 'pending') {
-    return <Text>Loading...</Text>;
-  }
-
-  if (queryStatus === 'error') {
-    return;
-  }
+  if (queryStatus === 'error') return null;
 
   return (
     <FlatList
-      data={data.data}
+      data={data?.data || []}
       renderItem={({ item }) => <TournamentCompactCard {...item} />}
       keyExtractor={(item) => item.id.toString()}
       scrollEnabled={false}
@@ -139,31 +134,37 @@ const TournamentList = ({ status }: { status: TournamentStatus }) => {
   );
 };
 
-const MyTournamentCard = (tournament: MyTournamentItem) => {
+
+
+const MyTournamentList = () => {
   const colors = useThemedColors();
+  const { data, status: queryStatus } = useQuery({
+    queryKey: ['getUserTournament'],
+    queryFn: () => tournamentService.getUserTournament(),
+  });
+
+  if (queryStatus === 'pending') return <Text>Loading...</Text>;
+
+  if (queryStatus === 'error') return null;
 
   return (
-    <TouchableOpacity style={[styles.myTournamentCard, { backgroundColor: colors.card }]}>
-      <View
-        style={[
-          styles.myTournamentIcon,
-          {
-            backgroundColor: tournament.type === 'registered' ? `${colors.tint}20` : '#FFD70020',
-          },
-        ]}
-      >
-        <Ionicons
-          name={tournament.type === 'registered' ? 'checkmark-circle' : 'star'}
-          size={24}
-          color={tournament.type === 'registered' ? colors.tint : '#FFD700'}
-        />
+    <View style={styles.section}>
+      <View style={styles.sectionHeader}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Giải đấu của tôi</Text>
+        <TouchableOpacity onPress={() => router.push('/mytournament')}>
+          <Text style={styles.seeAll}>Xem tất cả</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.myTournamentInfo}>
-        <Text style={[styles.myTournamentTitle, { color: colors.text }]}>{tournament.title}</Text>
-        <Text style={[styles.myTournamentStatus, { color: colors.textSecondary }]}>{tournament.status}</Text>
-      </View>
-      <Text style={[styles.myTournamentDate, { color: colors.textTertiary }]}>{tournament.date}</Text>
-    </TouchableOpacity>
+
+      <FlatList
+        data={data?.data}
+        renderItem={({ item }) => <MyTournamentCard {...item} />}
+        keyExtractor={(item) => item.registration_id.toString()}
+        scrollEnabled={false}
+        contentContainerStyle={styles.tournamentsList}
+        ListEmptyComponent={<Text style={styles.emptyText}>Không có giải đấu đã đăng ký</Text>}
+      />
+    </View>
   );
 };
 
@@ -173,7 +174,6 @@ export default function TournamentScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Search */}
       <View style={[styles.header, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
         <Text style={[styles.headerTitle, { color: colors.text }]}>Giải đấu</Text>
         <TouchableOpacity onPress={() => router.push('/search')} style={styles.searchBtn}>
@@ -181,7 +181,6 @@ export default function TournamentScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Status */}
       <View style={[styles.filterBar, { backgroundColor: colors.background, borderBottomColor: colors.border }]}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterContent}>
           {statuses.map((item, index) => {
@@ -214,22 +213,7 @@ export default function TournamentScreen() {
           <TournamentList status={status} />
         </View>
 
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>Giải đấu của tôi</Text>
-            <TouchableOpacity onPress={() => router.push('/mytournament')}>
-              <Text style={styles.seeAll}>Xem tất cả</Text>
-            </TouchableOpacity>
-          </View>
-
-          <FlatList
-            data={myTournaments}
-            renderItem={({ item }) => <MyTournamentCard {...item} />}
-            keyExtractor={(item) => item.id}
-            scrollEnabled={false}
-            contentContainerStyle={styles.tournamentsList}
-          />
-        </View>
+        <MyTournamentList />
       </ScrollView>
     </View>
   );

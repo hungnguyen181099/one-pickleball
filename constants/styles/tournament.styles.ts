@@ -55,8 +55,8 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   tournamentsList: {
-    gap: 12,
-    marginBottom: 12,
+    gap: 8,
+    marginBottom: 8,
   },
   compactCardInner: {
     flexDirection: 'row',
@@ -123,33 +123,63 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
   },
   myTournamentCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: Radius.md,
-    gap: 12,
+    padding: 16,
+    borderRadius: Radius.lg,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: AppColors.gray100,
     ...Shadows.sm,
   },
-  myTournamentIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: Radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  myTournamentInfo: {
-    flex: 1,
+  myTournamentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 12,
   },
   myTournamentTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    marginBottom: 4,
+    fontSize: 16,
+    fontWeight: '700',
+    flex: 1,
+    marginRight: 8,
   },
-  myTournamentStatus: {
+  myTournamentStatusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: Radius.sm,
+  },
+  myTournamentStatusText: {
+    fontSize: 11,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+  },
+  myTournamentDetails: {
+    gap: 6,
+  },
+  myTournamentDetailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  myTournamentDetailText: {
     fontSize: 13,
+    flex: 1,
+  },
+  myTournamentFooter: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: AppColors.gray100,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  myTournamentCategory: {
+    fontSize: 12,
+    fontWeight: '500',
   },
   myTournamentDate: {
-    fontSize: 13,
+    fontSize: 12,
+    fontWeight: '600',
   },
   emptyText: {
     fontSize: 14,
@@ -168,7 +198,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
   },
-   categoryChipText: {
+  categoryChipText: {
     fontSize: 13,
     fontWeight: '500',
     color: '#666',
