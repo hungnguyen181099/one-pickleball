@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { StyleColorsProps } from '@/types';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
 import { StadiumsList } from '../StadiumsList';
+import { getStadiumsScreenStyles } from './StadiumsScreen.styles';
 
 const StadiumsScreen = () => {
-  const styles = getStyles({ colors: useThemedColors() });
+  const styles = getStadiumsScreenStyles({ colors: useThemedColors() });
 
   return (
     <View style={styles.container}>
@@ -19,14 +19,5 @@ const StadiumsScreen = () => {
     </View>
   );
 };
-
-const getStyles = ({ colors }: StyleColorsProps) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingHorizontal: 16,
-      backgroundColor: colors.background,
-    },
-  });
 
 export default StadiumsScreen;
