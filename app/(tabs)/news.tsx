@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 
-import { NewsArticle, NewsCategory, NewsItemDetailed } from '@/types';
+import { NewsCategory } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { ActivityIndicator, FlatList, RefreshControl, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { styles } from '@/constants/styles/news.styles';
 
+import NewsCard from '@/components/NewsCard';
 import { Pagination } from '@/components/ui/Pagination';
+import { AppColors } from '@/constants/theme';
+import { useDebounce } from '@/hooks/use-debounce';
 import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
-import { formatDate } from '@/utils/date.utils';
 import { useQuery } from '@tanstack/react-query';
-import { AppColors } from '@/constants/theme';
-import NewsCard from '@/components/NewsCard';
 
 const categories: NewsCategory[] = [
   { id: 'all', name: 'Tất cả', icon: 'home', color: '#00D9B5' },
@@ -29,11 +28,13 @@ const NewsPage = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const colors = useThemedColors();
   const [page, setPage] = useState<number>(1);
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const { data, isPending, refetch, isRefetching } = useQuery({
-    queryKey: ['getNews', page, searchQuery],
+    queryKey: ['getNews', page, debouncedSearchQuery],
     queryFn: () => newService.getNews({
-      page: page
+      page: page,
+      search: debouncedSearchQuery
     })
   })
 
@@ -90,7 +91,10 @@ const NewsPage = () => {
             placeholder="Tìm tin tức..."
             placeholderTextColor={colors.textTertiary}
             value={searchQuery}
-            onChangeText={setSearchQuery}
+            onChangeText={(text) => {
+              setSearchQuery(text);
+              setPage(1);
+            }}
           />
         </View>
       </View>
