@@ -41,7 +41,7 @@ const StadiumsList = () => {
             placeholder="Tìm theo tên ..."
             startIcon={<MaterialCommunityIcons name="magnify" size={20} color={colors.icon} />}
             maxLength={50}
-            styleFor={{ input: styles.input }}
+            size="sm"
           />
         </View>
         <Pressable style={styles.searchButton} onPress={handleSearch}>

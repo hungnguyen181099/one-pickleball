@@ -8,12 +8,14 @@ import { useThemedColors } from '@/hooks/use-theme';
 
 type InputVariant = 'default' | 'filled' | 'unstyled';
 type InputRadius = 'sm' | 'md' | 'lg';
+type InputSize = 'sm' | 'md' | 'lg';
 
 export type InputProps = TextInputProps & {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   variant?: InputVariant;
   radius?: InputRadius;
+  size?: InputSize;
   value?: string;
   styleFor?: {
     container?: ViewStyle;
@@ -26,24 +28,26 @@ export type InputProps = TextInputProps & {
 
 type StyleProps = {
   variant: InputVariant;
-  color: ThemeColor;
+  colors: ThemeColor;
   radius: InputRadius;
+  size: InputSize;
 };
 
 const Input = ({
-  variant = 'filled',
+  variant = 'default',
+  styleFor = {},
   radius = 'md',
+  size = 'md',
   startIcon,
   endIcon,
   value,
-  styleFor = {},
   onChangeText,
   ...props
 }: InputProps) => {
   const [internalValue, setInternalValue] = useState<string>('');
   const colors = useThemedColors();
 
-  const styles = getStyles({ variant, color: colors, radius });
+  const styles = getStyles({ variant, colors, radius, size });
   const isControlled = value !== undefined;
   const finalValue = isControlled ? value : internalValue;
 
@@ -65,39 +69,66 @@ const Input = ({
   );
 };
 
-const getStyles = ({ variant, color, radius }: StyleProps) =>
+const getStyles = ({ variant, colors, radius, size }: StyleProps) =>
   StyleSheet.create({
     container: {
-      alignItems: 'center',
-      borderRadius: radius === 'sm' ? 4 : radius === 'md' ? 8 : 16,
       flexDirection: 'row',
+      alignItems: 'center',
+      ...(radius === 'sm' && {
+        borderRadius: 8,
+      }),
+      ...(radius === 'md' && {
+        borderRadius: 12,
+      }),
+      ...(radius === 'lg' && {
+        borderRadius: 16,
+      }),
       ...(variant === 'default' && {
         borderWidth: 1,
-        borderColor: color.inputBorder,
+        backgroundColor: colors.card,
+        borderColor: colors.inputBorder,
       }),
       ...(variant === 'filled' && {
         borderWidth: 1,
-        backgroundColor: color.input,
-        borderColor: color.inputBorder,
+        backgroundColor: colors.input,
+        borderColor: colors.inputBorder,
       }),
     },
     endIcon: {
-      paddingRight: 16,
-      ...(variant === 'unstyled' && {
-        paddingLeft: 4,
+      ...(size === 'sm' && {
+        paddingRight: 12,
+      }),
+      ...(size === 'md' && {
+        paddingRight: 16,
+      }),
+      ...(size === 'lg' && {
+        paddingRight: 20,
+      }),
+    },
+    startIcon: {
+      ...(size === 'sm' && {
+        paddingLeft: 12,
+      }),
+      ...(size === 'md' && {
+        paddingLeft: 16,
+      }),
+      ...(size === 'lg' && {
+        paddingLeft: 20,
       }),
     },
     input: {
       flex: 1,
-      padding: 16,
-      ...(variant === 'unstyled' && {
-        paddingHorizontal: 0,
+      ...(size === 'sm' && {
+        paddingVertical: 12,
+        paddingHorizontal: 12,
       }),
-    },
-    startIcon: {
-      paddingLeft: 16,
-      ...(variant === 'unstyled' && {
-        paddingRight: 4,
+      ...(size === 'md' && {
+        paddingVertical: 16,
+        paddingHorizontal: 16,
+      }),
+      ...(size === 'lg' && {
+        paddingVertical: 20,
+        paddingHorizontal: 20,
       }),
     },
   });

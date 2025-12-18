@@ -27,10 +27,6 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       borderWidth: 1,
       borderColor: AppColors.primary,
     },
-    input: {
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-    },
     // List
     list: {
       paddingHorizontal: 4,
