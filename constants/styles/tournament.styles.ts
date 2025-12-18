@@ -24,6 +24,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  backBtn: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   filterBar: {
     paddingVertical: 12,
     borderBottomWidth: 1,
