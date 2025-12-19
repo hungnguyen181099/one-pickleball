@@ -9,19 +9,22 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 
 import { styles } from '@/constants/styles/newdetail.styles';
 
+import { createHtmlContent } from '@/components/createHtmlContent';
+import NewsCard from '@/components/NewsCard';
+import { Skeleton } from '@/components/ui/Skeleton/Skeleton';
 import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
 import { formatDate } from '@/utils/date.utils';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { WebView } from 'react-native-webview';
+import { DetailSkeleton } from '@/components/ui/Skeleton';
 
 export default function NewsDetailScreen() {
   const [isLiked, setIsLiked] = useState(false);
@@ -36,183 +39,15 @@ export default function NewsDetailScreen() {
     queryFn: () => newService.getNewById(id),
   });
 
-  const createHtmlContent = (htmlContent: string) => {
-    return `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-          <style>
-            * {
-              margin: 0;
-              padding: 0;
-              box-sizing: border-box;
-            }
-            
-            body {
-              font-size: 16px;
-              line-height: 1.8;
-              color: #333;
-              padding: 16px;
-              background-color: ${colors.card};
-              word-wrap: break-word;
-              overflow-wrap: break-word;
-            }
-            
-            div {
-              margin-bottom: 16px;
-            }
-            
-            h1, h2, h3, h4, h5, h6 {
-              margin-bottom: 12px;
-              margin-top: 20px;
-              font-weight: bold;
-              color: ${colors.text};
-              line-height: 1.4;
-            }
-            
-            h1 { font-size: 24px; }
-            h2 { font-size: 22px; }
-            h3 { font-size: 20px; }
-            h4 { font-size: 18px; }
-            
-            p {
-              margin-bottom: 16px;
-              line-height: 1.8;
-            }
-            
-            strong, b {
-              font-weight: bold;
-              color: ${colors.text};
-            }
-            
-            ul, ol {
-              margin-left: 20px;
-              margin-bottom: 16px;
-            }
-            
-            li {
-              margin-bottom: 8px;
-              line-height: 1.6;
-            }
-            
-            a {
-              color: #00D9B5;
-              text-decoration: none;
-            }
-            
-            img {
-              max-width: 100%;
-              height: auto;
-              border-radius: 8px;
-              margin: 16px 0;
-            }
-            
-            blockquote {
-              border-left: 4px solid #00D9B5;
-              padding-left: 16px;
-              margin: 16px 0;
-              font-style: italic;
-              color: #666;
-            }
-            
-            /* Cho phép select text */
-            body {
-              -webkit-user-select: text;
-              user-select: text;
-            }
-            
-            /* Remove các class không cần thiết từ Facebook */
-            .xdj266r, .x14z9mp, .xat24cr, .x1lziwak, .x1vvkbs, .x126k92a, .xtlvy1s {
-              /* Reset các style này */
-            }
-          </style>
-          
-          <script>
-            // Gửi height của content về React Native
-            function sendHeight() {
-              const height = document.body.scrollHeight;
-              
-              window.ReactNativeWebView.postMessage(JSON.stringify({ 
-                type: 'height', 
-                height: height + 24 // Thêm padding để tránh bị cắt content
-              }));
-            }
-            
-            // Gọi khi document load xong
-            window.addEventListener('load', function() {
-              sendHeight();
-              // Gọi lại sau một thời gian ngắn để chắc chắn
-              setTimeout(sendHeight, 100);
-              setTimeout(sendHeight, 300);
-              setTimeout(sendHeight, 500);
-            });
-            
-            // Theo dõi thay đổi kích thước
-            if (window.ResizeObserver) {
-              const resizeObserver = new ResizeObserver(sendHeight);
-              resizeObserver.observe(document.body);
-            }
-          </script>
-        </head>
-        <body>
-          ${htmlContent}
-        </body>
-      </html>
-    `;
-  };
+  const { data: news, } = useQuery({
+    queryKey: ['getNews',],
+    queryFn: () => newService.getNews({
+      page: 2,
+      per_page: 3
+    })
+  })
 
-  const [comments, setComments] = useState<NewsComment[]>([
-    {
-      id: '1',
-      userName: 'Trần Minh Tuấn',
-      userInitials: 'TT',
-      userColor: '#00D9B5',
-      time: '2 giờ trước',
-      text: 'Bài viết rất hữu ích! Mình sẽ áp dụng những tips này vào luyện tập của mình.',
-      likes: 24,
-      isLiked: false,
-    },
-    {
-      id: '2',
-      userName: 'Lê Thanh Hùng',
-      userInitials: 'LH',
-      userColor: '#2196F3',
-      time: '1 giờ trước',
-      text: 'Đầu gậy rất quan trọng! Mình đã cải thiện kỹ thuật serve sau khi chỉnh lại cách cầm.',
-      likes: 18,
-      isLiked: false,
-    },
-  ]);
-
-  const relatedNews: RelatedNewsItem[] = [
-    {
-      id: '1',
-      category: 'Kỹ thuật',
-      categoryColor: '#FF9800',
-      title: 'Phân tích chiến thuật: Doubles vs Singles',
-      image: '#E8F5E9',
-      time: '4 ngày trước',
-    },
-    {
-      id: '2',
-      category: 'Lối sống',
-      categoryColor: '#9C27B0',
-      title: 'Pickleball: Tuyệt vời cho sức khỏe và xã hội',
-      image: '#FCE4EC',
-      time: '3 ngày trước',
-    },
-    {
-      id: '3',
-      category: 'Cộng đồng',
-      categoryColor: '#2196F3',
-      title: 'Chuyện của các tay vợt huyền thoại Pickleball Việt Nam',
-      image: '#E3F2FD',
-      time: '5 giờ trước',
-    },
-  ];
-
-  if (status === 'pending') return <Text>Loading...</Text>;
+  if (status === 'pending') return <DetailSkeleton />
 
   if (status === 'error') return;
 
@@ -290,7 +125,7 @@ export default function NewsDetailScreen() {
           ListHeaderComponent={
             <>
               <View style={styles.gallerySection}>
-                <Image style={styles.featuredImage} source={data.image } />
+                <Image style={styles.featuredImage} source={data.image} />
                 <View style={styles.galleryOverlay}>
                   <TouchableOpacity style={styles.backBtnLight} onPress={() => router.back()}>
                     <Ionicons name="chevron-back" size={28} color="#fff" />
@@ -344,14 +179,14 @@ export default function NewsDetailScreen() {
                   </View>
                 </View>
               </View>
-              
+
               <WebView
                 ref={webViewRef}
-                source={{ html: createHtmlContent(data?.content || '') }}
+                source={{ html: createHtmlContent(data?.content || '', colors) }}
                 style={{
                   height: webViewHeight || 500,
                   backgroundColor: colors.card,
-                  flex: 1
+                  flex: 1,
                 }}
                 onMessage={handleMessage}
                 scrollEnabled={false}
@@ -391,17 +226,17 @@ export default function NewsDetailScreen() {
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.engagementItem}>
                     <MaterialCommunityIcons name="comment-outline" size={24} color={colors.textTertiary} />
-                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>24</Text>
+                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>0</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.engagementItem}>
                     <Ionicons name="share-social-outline" size={24} color={colors.textTertiary} />
-                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>18</Text>
+                    <Text style={[styles.engagementText, { color: colors.textTertiary }]}>0</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={[styles.divider, { backgroundColor: colors.border }]} />
               </View>
 
-              <View style={[styles.commentsSection, { backgroundColor: colors.card }]}>
+              {/* <View style={[styles.commentsSection, { backgroundColor: colors.card }]}>
                 <View style={styles.sectionHeader}>
                   <Text style={[styles.sectionTitle, { color: colors.text, backgroundColor: colors.card }]}>
                     Bình luận (24)
@@ -418,38 +253,19 @@ export default function NewsDetailScreen() {
                 <TouchableOpacity style={styles.viewAllComments}>
                   <Text style={styles.viewAllCommentsText}>Xem tất cả bình luận</Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               <View style={[styles.relatedSection, { backgroundColor: colors.card }]}>
                 <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin tức liên quan</Text>
-                {relatedNews.map((news) => (
-                  <RelatedNewsItem key={news.id} item={news} />
-                ))}
+
               </View>
             </>
           }
-          data={[]}
-          renderItem={() => null}
+          data={news?.data}
+          renderItem={({ item }) => <NewsCard {...item} />}
+          keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.flatListContent}
         />
-
-        <View style={[styles.commentInputFooter, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
-          <View style={[styles.commentInputAvatar, { backgroundColor: '#667eea' }]}>
-            <Text style={styles.commentInputAvatarText}>ML</Text>
-          </View>
-          {/* <TouchableOpacity style={[styles.commentInput, { backgroundColor: colors.input }]}>
-                    <Text style={[styles.commentInputPlaceholder, { color: colors.textTertiary }]}>Viết bình luận...</Text>
-                </TouchableOpacity> */}
-          <TextInput
-            style={[styles.commentInput, { backgroundColor: colors.input, color: colors.text }]}
-            placeholder="Viết bình luận..."
-            placeholderTextColor={colors.textTertiary}
-            autoCapitalize="none"
-          />
-          <TouchableOpacity style={styles.sendBtn}>
-            <Ionicons name="send" size={20} color="#00D9B5" />
-          </TouchableOpacity>
-        </View>
       </View>
     </KeyboardAvoidingView>
   );

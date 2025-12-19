@@ -15,6 +15,7 @@ import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
 import { useQuery } from '@tanstack/react-query';
 import { DebouncedSearch } from '@/components/common/DebouncedSearch';
+import { CardSkeleton } from '@/components/ui/Skeleton';
 
 const categories: NewsCategory[] = [
   { id: 'all', name: 'Tất cả', icon: 'home', color: '#00D9B5' },
@@ -112,11 +113,7 @@ const NewsPage = () => {
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <ActivityIndicator
-            // style={styles.footerLoader}
-            size="small"
-            color={AppColors.primary}
-          />
+          <CardSkeleton />
         }
         ListFooterComponent={
           data?.data ? <Pagination currentPage={Number(data?.meta.current_page)} totalPages={Number(data?.meta.last_page)} onPageChange={setPage} /> : null

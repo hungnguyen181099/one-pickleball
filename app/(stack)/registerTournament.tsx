@@ -30,13 +30,13 @@ type SearchPamram = {
   categoryType: string
 }
 
-const registerTournamentSchema = z.object({
+const getRegisterTournamentSchema = (isDouble: boolean) => z.object({
   athleteName: z.string().min(1, 'Tên phải có ít nhất 1 ký tự'),
   phone: z.string()
     .min(1, 'Không được để trống')
     .regex(/(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g, 'Vui lòng nhập đúng định dạng'),
   email: z.string().email('Vui lòng nhập đúng định dạng'),
-  partnerName: z.string().min(1, 'Tên phải có ít nhất 1 ký tự'),
+  partnerName: isDouble ? z.string().min(1, 'Tên phải có ít nhất 1 ký tự') : z.string().optional(),
   partnerEmail: z.string().optional(),
   partnerPhone: z.string().optional(),
 });
@@ -51,12 +51,14 @@ export default function RegisterTournament() {
   const { tournamentId, categoryId, categoryName, ageGroup, price, categoryType } = params;
   const isDouble = categoryType?.includes('double');
 
+  const schema = React.useMemo(() => getRegisterTournamentSchema(!!isDouble), [isDouble]);
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(registerTournamentSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       athleteName: user?.name || '',
       phone: user?.phone || '',
