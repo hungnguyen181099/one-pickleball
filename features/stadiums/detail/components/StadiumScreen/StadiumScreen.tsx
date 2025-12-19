@@ -18,6 +18,7 @@ import { getStadiumScreenStyles } from './StadiumScreen.styles';
 
 const StadiumScreen = () => {
   const { stadiumId } = useLocalSearchParams<{ stadiumId: string }>();
+
   const { data, status } = useStadium(stadiumId);
 
   const styles = getStadiumScreenStyles({ colors: useThemedColors() });
@@ -39,7 +40,7 @@ const StadiumScreen = () => {
           <StadiumHeader {...data.data} />
           <StadiumAmenities items={data.data.amenities} />
           <StadiumCourts items={data.data.courts} />
-          <StadiumMap lat={data.data.latitude} lng={data.data.longitude} />
+          <StadiumMap {...data.data} />
         </View>
       </ScrollView>
       <StadiumFooter courts={data.data.courts} />

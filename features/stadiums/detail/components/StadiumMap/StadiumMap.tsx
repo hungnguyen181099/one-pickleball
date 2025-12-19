@@ -1,40 +1,48 @@
 import React from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Linking, Platform, Pressable, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Linking, Pressable, View } from 'react-native';
 
-import { Flex } from '@/components/ui/Flex';
 import { Text } from '@/components/ui/Text';
+
+import { StadiumDetailResponse } from '@/features/stadiums/shared/types';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
+import { buildStadiumMapUrl } from '../../utils/buildStadiumMapUrl';
+import { extractLatLngStringFromGoogleMapEmbed } from '../../utils/extractLatLngStringFromGoogleMapEmbed';
 import { getStadiumMapStyles } from './StadiumMap.styles';
 
-type StadiumMapProps = {
-  lat: string | null;
-  lng: string | null;
-};
+type StadiumMapProps = StadiumDetailResponse['data'];
 
-const StadiumMap = ({ lat, lng }: StadiumMapProps) => {
+const StadiumMap = ({ latitude, longitude, maps_address }: StadiumMapProps) => {
   const styles = useGetStyles(getStadiumMapStyles);
 
-  const handleOpenMap = () => {
-    const url =
-      Platform.OS === 'ios' ? `http://maps.apple.com/?ll=${lat},${lng}` : `https://www.google.com/maps?q=${lat},${lng}`;
+  const extractedAddress = extractLatLngStringFromGoogleMapEmbed(maps_address);
 
+  const handleOpenMap = () => {
+    const finalLat = latitude ?? extractedAddress?.lat;
+    const finalLng = longitude ?? extractedAddress?.lng;
+
+    if (!finalLat || !finalLng) return;
+
+    const url = buildStadiumMapUrl(finalLat, finalLng);
     Linking.openURL(url);
   };
 
+  if (!extractedAddress && (!latitude || !longitude)) {
+    return;
+  }
+
   return (
     <View style={styles.container}>
-      <Flex justifyContent="center" style={styles.map}>
-        <Pressable onPress={handleOpenMap}>
-          <Flex style={styles.button}>
-            <MaterialCommunityIcons name="map" style={styles.buttonIcon} />
-            <Text fontWeight={500}>Xem bản đồ</Text>
-          </Flex>
-        </Pressable>
-      </Flex>
+      <Image source={require('@/assets/images/map.png')} style={styles.map} />
+
+      <Pressable onPress={handleOpenMap} style={styles.button}>
+        <MaterialCommunityIcons name="map" style={styles.buttonIcon} />
+        <Text fontWeight={500}>Xem bản đồ</Text>
+      </Pressable>
     </View>
   );
 };

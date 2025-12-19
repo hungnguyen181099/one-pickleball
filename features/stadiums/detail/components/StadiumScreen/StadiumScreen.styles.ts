@@ -9,5 +9,6 @@ export const getStadiumScreenStyles = ({ colors }: StyleColorsProps) =>
     },
     body: {
       paddingHorizontal: 16,
+      paddingBottom: 16,
     },
   });

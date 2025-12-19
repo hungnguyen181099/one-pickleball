@@ -6,20 +6,24 @@ import { AppColors, Radius } from '@/constants/theme';
 export const getStadiumMapStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
-      marginTop: 8,
+      marginTop: 16,
     },
     map: {
       height: 256,
-      backgroundColor: `${AppColors.primary}20`,
-      borderRadius: 32,
-      borderWidth: 1,
-      borderColor: AppColors.primary,
+      borderRadius: 24,
     },
     button: {
-      padding: 12,
-      paddingHorizontal: 24,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
       backgroundColor: colors.background,
       borderRadius: Radius.full,
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
+      flexDirection: 'row',
+      gap: 8,
+      alignItems: 'center',
     },
     buttonIcon: {
       fontSize: 24,
