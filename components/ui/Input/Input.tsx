@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { StyleSheet, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
-import { ThemeColor } from '@/constants/theme';
+import { ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -28,7 +28,7 @@ export type InputProps = TextInputProps & {
 
 type StyleProps = {
   variant: InputVariant;
-  colors: ThemeColor;
+  colors: ThemeColors;
   radius: InputRadius;
   size: InputSize;
 };

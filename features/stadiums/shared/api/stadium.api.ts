@@ -4,5 +4,5 @@ import { StadiumDetailResponse, StadiumListResponse } from '../types';
 
 export const stadiumAPI = {
   getAll: (filter: string) => fetchWrapper<StadiumListResponse>(`/stadiums?${filter}`),
-  getDetail: (id: number) => fetchWrapper<StadiumDetailResponse>(`/stadiums/${id}`),
+  getDetail: (id: string) => fetchWrapper<StadiumDetailResponse>(`/stadiums/${id}`),
 };

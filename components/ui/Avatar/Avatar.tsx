@@ -5,7 +5,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { Image, ImageStyle } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 
-import { AppColors, Radius, ThemeColor } from '@/constants/theme';
+import { AppColors, Radius, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -34,7 +34,7 @@ const Avatar = ({ src, size = 48, style }: AvatarProps) => {
   return <Image source={src} contentFit="cover" onError={() => setIsError(true)} style={style} />;
 };
 
-const getStyles = ({ size, colors }: { size: number; colors: ThemeColor }) =>
+const getStyles = ({ size, colors }: { size: number; colors: ThemeColors }) =>
   StyleSheet.create({
     container: {
       width: size,

@@ -28,6 +28,7 @@ export const Grid = ({ columns = 1, gap = 0, style, children }: GridProps) => {
         style={[
           {
             marginHorizontal: -gap,
+            marginVertical: -gap,
             flexDirection: 'row',
             flexWrap: 'wrap',
           },

@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 const tintColorLight = '#00D9B5';
 const tintColorDark = '#00D9B5';
 
-export type ThemeColor = {
+export type ThemeColors = {
   text: string;
   textSecondary: string;
   textTertiary: string;
@@ -29,12 +29,12 @@ export type ThemeColor = {
   error: string;
 };
 
-type ThemeColors = {
-  light: ThemeColor;
-  dark: ThemeColor;
+type ColorsType = {
+  light: ThemeColors;
+  dark: ThemeColors;
 };
 
-export const Colors: ThemeColors = {
+export const Colors: ColorsType = {
   light: {
     text: '#11181C',
     textSecondary: '#666',

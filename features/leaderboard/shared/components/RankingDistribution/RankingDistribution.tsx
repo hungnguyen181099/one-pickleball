@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Grid, GridItem } from '@/components/ui/Grid';
 
-import { AppColors, Shadows, ThemeColor } from '@/constants/theme';
+import { AppColors, Shadows, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -50,7 +50,7 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
   );
 };
 
-const getStyles = ({ colors }: { colors: ThemeColor }) =>
+const getStyles = ({ colors }: { colors: ThemeColors }) =>
   StyleSheet.create({
     container: {
       marginBottom: 16,

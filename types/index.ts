@@ -2,7 +2,7 @@
  * Type Definitions
  * Centralized type definitions for the application
  */
-import { ThemeColor } from '@/constants/theme';
+import { ThemeColors } from '@/constants/theme';
 
 // User Types
 export interface User {
@@ -583,7 +583,7 @@ export interface GetUserTournamentResponse {
 }
 
 export type StyleColorsProps = {
-  colors: ThemeColor;
+  colors: ThemeColors;
 };
 
 export type registration = {

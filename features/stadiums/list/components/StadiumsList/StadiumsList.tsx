@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import { FlatList, Keyboard, Pressable, Text, View } from 'react-native';
 
 import { Input } from '@/components/ui/Input';
@@ -101,8 +102,18 @@ const StadiumsList = () => {
                 </View>
 
                 {/* CTA */}
-                <Pressable style={styles.btn}>
-                  <Text style={styles.btnText}>Đặt sân</Text>
+                <Pressable
+                  style={styles.btn}
+                  onPress={() =>
+                    router.navigate({
+                      pathname: '/(details)/stadiums/[stadiumId]',
+                      params: {
+                        stadiumId: item.id,
+                      },
+                    })
+                  }
+                >
+                  <Text style={styles.btnText}>Chi tiết</Text>
                 </Pressable>
               </View>
             </View>

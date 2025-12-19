@@ -68,8 +68,8 @@ export type StadiumDetailResponse = {
     email: string;
     website: string | null;
     image: string | null;
-    latitude: number | null;
-    longitude: number | null;
+    latitude: string | null;
+    longitude: string | null;
     opening_hours: string;
     amenities: string[];
     utilities: string | null;
@@ -80,11 +80,17 @@ export type StadiumDetailResponse = {
     status: 'active' | 'inactive';
     is_featured: boolean;
     is_premium: boolean;
-    is_verified: number; // thường 0 | 1
+    is_verified: number;
     verified: string | null;
     province_id: number | null;
     user_id: number;
-    province: unknown | null;
+    province: {
+      id: number;
+      name: string;
+      code: number | null;
+      created_at: string;
+      updated_at: string;
+    } | null;
     courts: {
       id: number;
       court_name: string;

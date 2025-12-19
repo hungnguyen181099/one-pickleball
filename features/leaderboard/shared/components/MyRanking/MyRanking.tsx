@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Avatar } from '@/components/ui/Avatar';
 
-import { AppColors, Radius, Shadows, ThemeColor } from '@/constants/theme';
+import { AppColors, Radius, Shadows, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -38,7 +38,7 @@ const MyRanking = ({ avatar, point, name, tier }: LeaderboardItem) => {
   );
 };
 
-const getStyles = ({ colors }: { colors: ThemeColor }) =>
+const getStyles = ({ colors }: { colors: ThemeColors }) =>
   StyleSheet.create({
     container: {
       position: 'absolute',

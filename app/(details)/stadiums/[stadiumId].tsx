@@ -1,13 +1,3 @@
-import React from 'react';
-
-import { Text, View } from 'react-native';
-
-const StadiumScreen = () => {
-  return (
-    <View>
-      <Text>StadiumScreen</Text>
-    </View>
-  );
-};
+import { StadiumScreen } from '@/features/stadiums/detail/components/StadiumScreen';
 
 export default StadiumScreen;

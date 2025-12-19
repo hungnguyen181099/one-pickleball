@@ -11,7 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { AppColors, Radius, ThemeColor } from '@/constants/theme';
+import { AppColors, Radius, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -28,7 +28,7 @@ export type BottomSheetProps = {
   };
 };
 
-type StyleProps = { colors: ThemeColor; fullSize: boolean };
+type StyleProps = { colors: ThemeColors; fullSize: boolean };
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 

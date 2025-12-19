@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 
-import { ThemeColor } from '@/constants/theme';
+import { ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -27,7 +27,7 @@ const OPRSLeaderboard = () => {
   );
 };
 
-const getStyles = ({ colors }: { colors: ThemeColor }) =>
+const getStyles = ({ colors }: { colors: ThemeColors }) =>
   StyleSheet.create({
     container: {
       flex: 1,

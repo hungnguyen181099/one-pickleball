@@ -1,11 +1,13 @@
 import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
-export const getStadiumsScreenStyles = ({ colors }: StyleColorsProps) =>
+export const getStadiumScreenStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: colors.backgroundTertiary,
+    },
+    body: {
       paddingHorizontal: 16,
-      backgroundColor: colors.backgroundSecondary,
     },
   });

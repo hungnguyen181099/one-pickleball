@@ -96,15 +96,16 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       borderColor: colors.inputBorder,
     },
     btn: {
-      marginTop: 8,
-      padding: 12,
-      borderRadius: Radius.sm,
+      marginTop: 16,
+      padding: 16,
+      borderRadius: Radius.md,
       backgroundColor: AppColors.primary,
       alignItems: 'center',
     },
     btnText: {
       color: AppColors.white,
       fontWeight: 500,
+      fontSize: 16,
     },
     // Pagination
     pagination: {
