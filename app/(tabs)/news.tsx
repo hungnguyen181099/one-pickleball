@@ -14,6 +14,7 @@ import { useDebounce } from '@/hooks/use-debounce';
 import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
 import { useQuery } from '@tanstack/react-query';
+import { DebouncedSearch } from '@/components/common/DebouncedSearch';
 
 const categories: NewsCategory[] = [
   { id: 'all', name: 'Tất cả', icon: 'home', color: '#00D9B5' },
@@ -84,19 +85,13 @@ const NewsPage = () => {
       </View>
 
       <View style={styles.searchSection}>
-        <View style={[styles.searchBar, { backgroundColor: colors.input }]}>
-          <Ionicons name="search" size={20} color={colors.textTertiary} style={styles.searchIcon} />
-          <TextInput
-            style={[styles.searchInput, { color: colors.text }]}
-            placeholder="Tìm tin tức..."
-            placeholderTextColor={colors.textTertiary}
-            value={searchQuery}
-            onChangeText={(text) => {
-              setSearchQuery(text);
-              setPage(1);
-            }}
-          />
-        </View>
+        <DebouncedSearch onDebouncedChange={(text) => {
+          setSearchQuery(text);
+          setPage(1);
+        }} 
+        variant='filled'
+        placeholder='Tìm kiếm ...'
+        />
       </View>
 
       <View style={styles.categoriesWrapper}>
@@ -124,7 +119,7 @@ const NewsPage = () => {
           />
         }
         ListFooterComponent={
-          <Pagination currentPage={Number(data?.meta.current_page)} totalPages={Number(data?.meta.last_page)} onPageChange={setPage} />
+          data?.data ? <Pagination currentPage={Number(data?.meta.current_page)} totalPages={Number(data?.meta.last_page)} onPageChange={setPage} /> : null
         }
       />
     </View>

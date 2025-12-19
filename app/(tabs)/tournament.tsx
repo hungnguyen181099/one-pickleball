@@ -116,7 +116,7 @@ const TournamentList = ({ status }: { status: TournamentStatus }) => {
       scrollEnabled={false}
       contentContainerStyle={styles.tournamentsList}
       ListEmptyComponent={<Text style={styles.emptyText}>Không có giải đấu</Text>}
-      ListFooterComponent={<Pagination currentPage={data.meta.current_page} totalPages={data.meta.last_page} onPageChange={setPage}/>}
+      ListFooterComponent={data?.data ? <Pagination currentPage={data.meta.current_page} totalPages={data.meta.last_page} onPageChange={setPage} /> : null}
     />
   );
 };
