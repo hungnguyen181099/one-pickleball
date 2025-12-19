@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { FlatList, Keyboard, Pressable, View } from 'react-native';
+import { FlatList, Keyboard, Pressable, ScrollView, View } from 'react-native';
 
 import { Flex } from '@/components/ui/Flex';
 import { Input } from '@/components/ui/Input';
 import { Pagination } from '@/components/ui/Pagination';
+import { StadiumCardSkeleton } from '@/components/ui/Skeleton';
 import { Text } from '@/components/ui/Text';
 
 import { useStadiums } from '@/features/stadiums/shared/hooks/useStadiums';
@@ -56,7 +57,13 @@ const StadiumsList = () => {
       </View>
 
       {status === 'pending' ? (
-        <Text>Đang tải...</Text>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.list}>
+          {[1, 2].map((item) => (
+            <View key={item} style={{ marginBottom: 16 }}>
+              <StadiumCardSkeleton />
+            </View>
+          ))}
+        </ScrollView>
       ) : status === 'error' ? (
         <Text>Có lỗi xảy ra</Text>
       ) : (

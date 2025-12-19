@@ -7,6 +7,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Alert, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { Grid, GridItem } from '@/components/ui/Grid';
+import { EventDetailSkeleton } from '@/components/ui/Skeleton';
 
 import { styles } from '@/constants/styles/eventdeatil.styles';
 
@@ -61,11 +62,11 @@ export default function EventDetailScreen() {
     }
   })
 
-  if (status === 'pending') return <Text>Loading...</Text>;
+  if (status === 'pending') return <EventDetailSkeleton />;
 
   if (status === 'error') return;
 
-  const isExpired = isStartDateAfterDeadline( data?.registration_deadline)
+  const isExpired = isStartDateAfterDeadline(data?.registration_deadline)
 
   const infoCards: EventInfoCard[] = [
     { icon: 'calendar', label: 'Thời gian', value: formatDate(data?.start_date) },

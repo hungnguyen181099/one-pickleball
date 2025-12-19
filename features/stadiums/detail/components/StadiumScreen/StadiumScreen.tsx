@@ -15,6 +15,7 @@ import { StadiumHero } from '../StadiumHero';
 import { StadiumMap } from '../StadiumMap';
 import { StadiumRibbon } from '../StadiumRibbon';
 import { getStadiumScreenStyles } from './StadiumScreen.styles';
+import { StadiumSkeleton } from '@/components/ui/Skeleton';
 
 const StadiumScreen = () => {
   const { stadiumId } = useLocalSearchParams<{ stadiumId: string }>();
@@ -24,7 +25,7 @@ const StadiumScreen = () => {
   const styles = getStadiumScreenStyles({ colors: useThemedColors() });
 
   if (status === 'pending') {
-    return;
+    return <StadiumSkeleton />;
   }
 
   if (status === 'error') {

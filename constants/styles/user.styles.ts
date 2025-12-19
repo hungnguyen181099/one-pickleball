@@ -108,7 +108,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   statsGrid: {
-    marginTop: 16,
+    marginVertical: 16,
     paddingHorizontal: 16,
   },
   statCard: {

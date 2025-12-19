@@ -1,8 +1,10 @@
 import { styles } from '@/constants/styles/newdetail.styles';
 import { useThemedColors } from '@/hooks/use-theme';
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import Skeleton from './Skeleton';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 export default function DetailSkeleton() {
     const colors = useThemedColors();
@@ -10,9 +12,9 @@ export default function DetailSkeleton() {
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={{ height: 300, width: '100%', position: 'relative' }}>
                 <Skeleton width="100%" height="100%" borderRadius={0} />
-                <View style={{ position: 'absolute', top: 50, left: 16 }}>
-                    <Skeleton width={40} height={40} borderRadius={20} />
-                </View>
+                <TouchableOpacity style={[{ position: 'absolute', top: 20, left: 16 },styles.backBtnLight]} onPress={() => router.back()}>
+                    <Ionicons name="chevron-back" size={28} color="#fff" />
+                </TouchableOpacity>
             </View>
 
             <View style={[styles.contentSection, { backgroundColor: colors.card, marginTop: -20, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 16 }]}>

@@ -125,7 +125,6 @@ export const styles = StyleSheet.create({
   },
   newsCard: {
     marginBottom: 12,
-    paddingHorizontal: 16,
   },
   newsCardInner: {
     flexDirection: 'row',

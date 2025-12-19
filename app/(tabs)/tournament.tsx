@@ -185,7 +185,7 @@ export default function TournamentScreen() {
                   },
                 ]}
               >
-                <MaterialIcons color={isActive ? "#fff" : ""} name={item.iconName} size={16} />
+                <MaterialIcons color={isActive ? "#fff" : colors.icon} name={item.iconName} size={16} />
                 <Text
                   style={
                     isActive ? styles.IsCategoryChipText : styles.categoryChipText
