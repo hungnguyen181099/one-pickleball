@@ -2,7 +2,7 @@
  * Tournament Service
  * API service for tournament-related operations
  */
-import { ApiResponse, CategoriesResponse, EventFeeItem, GetUserTournamentResponse, PaginatedResponse, Tournament } from '@/types';
+import { ApiResponse, CategoriesResponse, EventFeeItem, GetUserTournamentResponse, PaginatedResponse, Tournament, TournamentApiResponse } from '@/types';
 
 import apiClient from './client';
 import qs from 'qs'
@@ -18,7 +18,7 @@ class TournamentService {
         page?: number;
         status?: string;
         search?: string;
-    }): Promise<PaginatedResponse<Tournament>> {
+    }): Promise<TournamentApiResponse> {
         const queryString = qs.stringify(params)
         const url = `${BASE_API_URL}/tournaments?${queryString}`;
 

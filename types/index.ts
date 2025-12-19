@@ -36,17 +36,17 @@ export interface Tournament {
   registration_deadline: string;
   location: string;
   organizer: string | null;
+  organizer_email: string | null;
+  organizer_hotline: string | null;
   price: number;
   prizes: number | null;
   max_participants: number;
   participants_count: number;
-  status: boolean;
+  image_url: string;
+  status: string;
   user_id: number;
   created_at: string;
   updated_at: string;
-  image_url: string;
-  organizer_email: string;
-  organizer_hotline: string;
 }
 
 export interface TournamentCategory {
@@ -586,27 +586,6 @@ export type StyleColorsProps = {
   colors: ThemeColor;
 };
 
-
-export const isStartDateAfterDeadline = (
-  startDate: string,
-  registrationDeadline: string
-): boolean => {
-  try {
-    const start = new Date(startDate);
-    const deadline = new Date(registrationDeadline);
-
-    // Kiểm tra ngày có hợp lệ không
-    if (isNaN(start.getTime()) || isNaN(deadline.getTime())) {
-      return false;
-    }
-
-    return start > deadline;
-  } catch (error) {
-    console.error('Error comparing dates:', error);
-    return false;
-  }
-};
-
 export type registration = {
   registration_id: number;
   status: string;
@@ -625,3 +604,47 @@ export type registration = {
     status: boolean;
   };
 };
+
+export interface TournamentApiResponse {
+  data: Array<{
+    id: number;
+    name: string;
+    description: string | null;
+    start_date: string;
+    end_date: string;
+    registration_deadline: string;
+    location: string;
+    organizer: string | null;
+    organizer_email: string | null;
+    organizer_hotline: string | null;
+    price: number;
+    prizes: number | null;
+    max_participants: number;
+    participants_count: number;
+    image_url: string;
+    status: string;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
+  }>;
+  links: {
+    first: string;
+    last: string;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number;
+    last_page: number;
+    links: Array<{
+      url: string | null;
+      label: string;
+      active: boolean;
+    }>;
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+  };
+}
