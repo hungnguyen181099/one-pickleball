@@ -27,6 +27,8 @@ export type ThemeColors = {
   shadow: string;
   overlay: string;
   error: string;
+  muted: string;
+  mutedForeground: string;
 };
 
 type ColorsType = {
@@ -55,6 +57,8 @@ export const Colors: ColorsType = {
     shadow: '#000',
     overlay: 'rgba(0, 0, 0, 0.5)',
     error: '#EF4444',
+    muted: '#E5E5EA',
+    mutedForeground: '#8E8E93',
   },
   dark: {
     text: '#ECEDEE',
@@ -76,6 +80,8 @@ export const Colors: ColorsType = {
     shadow: '#000',
     overlay: 'rgba(0, 0, 0, 0.7)',
     error: '#EF4444',
+    muted: '#2C2C2E',
+    mutedForeground: '#8E8E93',
   },
 };
 

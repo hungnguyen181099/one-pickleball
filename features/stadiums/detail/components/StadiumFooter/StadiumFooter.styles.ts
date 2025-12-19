@@ -22,4 +22,10 @@ export const getStadiumFooterStyles = ({ colors }: StyleColorsProps) =>
     buttonText: {
       color: AppColors.white,
     },
+    buttonDisabled: {
+      backgroundColor: colors.muted,
+    },
+    buttonTextDisabled: {
+      color: colors.mutedForeground,
+    },
   });

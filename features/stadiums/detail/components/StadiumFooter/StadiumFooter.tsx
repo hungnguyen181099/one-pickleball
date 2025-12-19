@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { Flex } from '@/components/ui/Flex';
 import { Text } from '@/components/ui/Text';
@@ -19,6 +19,8 @@ type StadiumFooterProps = {
 
 const StadiumFooter = ({ courts }: StadiumFooterProps) => {
   const styles = useGetStyles(getStadiumFooterStyles);
+
+  const isDisabled = useMemo(() => courts.length === 0, [courts]);
 
   const minimumPrice = useMemo(() => {
     let min = Infinity;
@@ -44,11 +46,11 @@ const StadiumFooter = ({ courts }: StadiumFooterProps) => {
         </Flex>
       </View>
 
-      <View style={styles.button}>
-        <Text size="lg" fontWeight={600} style={styles.buttonText}>
+      <Pressable disabled={isDisabled} style={[styles.button, isDisabled && styles.buttonDisabled]}>
+        <Text size="lg" fontWeight={600} style={[styles.buttonText, isDisabled && styles.buttonTextDisabled]}>
           Đặt sân ngay
         </Text>
-      </View>
+      </Pressable>
     </Flex>
   );
 };
