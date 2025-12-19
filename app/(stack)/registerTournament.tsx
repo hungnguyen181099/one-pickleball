@@ -8,9 +8,9 @@ import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import z from 'zod'
 
 type JoinTournamentBody = {
@@ -18,6 +18,7 @@ type JoinTournamentBody = {
   email: string;
   phone: string;
   category_id: string;
+  partner_name?: string;
 }
 
 type SearchPamram = {
@@ -26,6 +27,7 @@ type SearchPamram = {
   categoryName: string,
   ageGroup: string,
   price: string,
+  categoryType: string
 }
 
 const registerTournamentSchema = z.object({
@@ -33,7 +35,10 @@ const registerTournamentSchema = z.object({
   phone: z.string()
     .min(1, 'Không được để trống')
     .regex(/(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g, 'Vui lòng nhập đúng định dạng'),
-  email: z.email('Vui lòng nhập đúng định dạng')
+  email: z.string().email('Vui lòng nhập đúng định dạng'),
+  partnerName: z.string().min(1, 'Tên phải có ít nhất 1 ký tự'),
+  partnerEmail: z.string().optional(),
+  partnerPhone: z.string().optional(),
 });
 
 export default function RegisterTournament() {
@@ -43,7 +48,8 @@ export default function RegisterTournament() {
   const colors = useThemedColors();
   const queryClient = useQueryClient();
 
-  const { tournamentId, categoryId, categoryName, ageGroup, price } = params;
+  const { tournamentId, categoryId, categoryName, ageGroup, price, categoryType } = params;
+  const isDouble = categoryType?.includes('double');
 
   const {
     control,
@@ -55,15 +61,19 @@ export default function RegisterTournament() {
       athleteName: user?.name || '',
       phone: user?.phone || '',
       email: user?.email || '',
+      partnerName: '',
+      partnerEmail: '',
+      partnerPhone: '',
     },
   });
 
   const onSubmit = handleSubmit((data) => {
-    const body = {
+    const body: JoinTournamentBody = {
       athlete_name: data.athleteName,
       email: data.email,
       phone: data.phone,
-      category_id: categoryId
+      category_id: categoryId,
+      ...(isDouble && { partner_name: data.partnerName, partner_email: data.partnerEmail, partner_phone: data.partnerPhone })
     }
 
     joinTournament(body, {
@@ -123,9 +133,6 @@ export default function RegisterTournament() {
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Thông tin vận động viên</Text>
 
-
-
-
           <RHFProvider>
             <RHFTextInput
               controller={{
@@ -162,15 +169,56 @@ export default function RegisterTournament() {
                 placeholder: 'onepickleball@gmail.com',
               }}
             />
-
           </RHFProvider>
         </View>
+
+        {isDouble && (
+          <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Thông tin đồng đội</Text>
+
+            <RHFProvider>
+              <RHFTextInput
+                controller={{
+                  control: control,
+                  name: 'partnerName',
+                  message: errors.partnerName?.message,
+                }}
+                label="Tên đồng đội"
+                input={{
+                  placeholder: 'Nguyễn Phạm Thảo',
+                }}
+              />
+
+              <RHFTextInput
+                controller={{
+                  control: control,
+                  name: 'partnerPhone',
+                  message: errors.partnerPhone?.message,
+                }}
+                label="Số điện thoại đồng đội"
+                input={{
+                  placeholder: '0987654321 (Tùy chọn)',
+                }}
+              />
+
+              <RHFTextInput
+                controller={{
+                  control: control,
+                  name: 'partnerEmail',
+                  message: errors.partnerEmail?.message,
+                }}
+                label="Email đồng đội"
+                input={{
+                  placeholder: 'onepickleball@gmail.com (Tùy chọn)',
+                }}
+              />
+            </RHFProvider>
+          </View>
+        )}
       </ScrollView>
 
       <View style={[styles.footer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
         <TouchableOpacity
-
-
           onPress={onSubmit}
           disabled={isPending}
           style={[styles.confirmBtn, { opacity: isPending ? 0.7 : 1 }]}

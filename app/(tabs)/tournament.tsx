@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { isStartDateAfterDeadline, MyTournamentItem, registration, Tournament } from '@/types';
+import { Tournament } from '@/types';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
@@ -12,27 +12,11 @@ import { useThemedColors } from '@/hooks/use-theme';
 
 import tournamentService from '@/services/api/tournament.service';
 
-import { formatDate } from '@/utils/date.utils';
+import { formatDate, isStartDateAfterDeadline } from '@/utils/date.utils';
 import { formatCurrency } from '@/utils/format.utils';
 import { Image } from 'expo-image';
 import MyTournamentCard from '@/components/MyTournamentCard';
-
-const myTournaments: MyTournamentItem[] = [
-  {
-    id: '1',
-    title: 'HCM Open 2025',
-    status: 'Đã đăng ký • Nam Đơn',
-    date: '15 Th12',
-    type: 'registered',
-  },
-  {
-    id: '2',
-    title: 'Vietnam Cup 2024',
-    status: 'Hạng 3 • Đôi Nam',
-    date: '20 Th10',
-    type: 'completed',
-  },
-];
+import { Pagination } from '@/components/ui/Pagination';
 
 type TournamentStatus = 'ongoing' | 'upcoming' | 'completed';
 
@@ -61,7 +45,7 @@ const statuses: Status[] = [
 ];
 
 const TournamentCompactCard = (tournament: Tournament) => {
-  const checkStatus = isStartDateAfterDeadline(tournament.start_date, tournament.registration_deadline)
+  const isExpired = isStartDateAfterDeadline(tournament.registration_deadline)
   const colors = useThemedColors();
 
   return (
@@ -82,8 +66,8 @@ const TournamentCompactCard = (tournament: Tournament) => {
           style={styles.compactImage}
           contentFit='cover'
         />
-        <View style={[styles.compactStatus, { backgroundColor: checkStatus ? '#999' : '#00D9B5' }]}>
-          <Text style={styles.compactStatusText}>{checkStatus ? 'Đã đóng' : 'Mở'}</Text>
+        <View style={[styles.compactStatus, { backgroundColor: isExpired ? '#999' : '#00D9B5' }]}>
+          <Text style={styles.compactStatusText}>{isExpired ? 'Đã đóng' : 'Mở'}</Text>
         </View>
       </View>
 
@@ -94,7 +78,7 @@ const TournamentCompactCard = (tournament: Tournament) => {
         <View style={styles.compactMeta}>
           <Ionicons name="calendar-outline" size={14} color={colors.icon} />
           <Text style={[styles.compactMetaText, { color: colors.textSecondary }]}>
-            {formatDate(tournament.start_date)}
+            {formatDate(tournament.start_date)} - {formatDate(tournament.end_date)}
           </Text>
         </View>
         <View style={styles.compactMeta}>
@@ -110,11 +94,13 @@ const TournamentCompactCard = (tournament: Tournament) => {
 };
 
 const TournamentList = ({ status }: { status: TournamentStatus }) => {
+  const [page, setPage] = useState(1)
   const { data, status: queryStatus } = useQuery({
-    queryKey: ['getTournaments', status],
+    queryKey: ['getTournaments', status, page],
     queryFn: () =>
       tournamentService.getTournaments({
         status,
+        page: page
       }),
   });
 
@@ -130,6 +116,7 @@ const TournamentList = ({ status }: { status: TournamentStatus }) => {
       scrollEnabled={false}
       contentContainerStyle={styles.tournamentsList}
       ListEmptyComponent={<Text style={styles.emptyText}>Không có giải đấu</Text>}
+      ListFooterComponent={<Pagination currentPage={data.meta.current_page} totalPages={data.meta.last_page} onPageChange={setPage}/>}
     />
   );
 };

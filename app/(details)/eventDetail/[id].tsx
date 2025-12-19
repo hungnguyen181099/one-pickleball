@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { EventInfoCard, isStartDateAfterDeadline } from '@/types';
+import { EventInfoCard } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -14,7 +14,7 @@ import { useThemedColors } from '@/hooks/use-theme';
 
 import { useSession } from '@/contexts/AuthProvider';
 import tournamentService from '@/services/api/tournament.service';
-import { formatDate } from '@/utils/date.utils';
+import { formatDate, isStartDateAfterDeadline } from '@/utils/date.utils';
 import { fetchWrapper } from '@/utils/fetch.utils';
 import { formatCurrency } from '@/utils/format.utils';
 import { Image } from 'expo-image';
@@ -65,7 +65,7 @@ export default function EventDetailScreen() {
 
   if (status === 'error') return;
 
-  const checkStatus = isStartDateAfterDeadline(data?.start_date, data?.registration_deadline)
+  const isExpired = isStartDateAfterDeadline( data?.registration_deadline)
 
   const infoCards: EventInfoCard[] = [
     { icon: 'calendar', label: 'Thời gian', value: formatDate(data?.start_date) },
@@ -89,7 +89,8 @@ export default function EventDetailScreen() {
           categoryId: selectedCategory,
           categoryName: category?.category_name,
           ageGroup: category?.age_group,
-          price: data?.price
+          price: data?.price,
+          categoryType: category?.category_type
         }
       })
     } else {
@@ -126,8 +127,8 @@ export default function EventDetailScreen() {
 
         <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
           <View style={styles.statusBadge}>
-            <View style={[styles.statusDot, { backgroundColor: !checkStatus ? '#00D9B5' : '#FF6B6B' }]} />
-            <Text style={[styles.statusText, { color: !checkStatus ? '#00D9B5' : '#FF6B6B' }]}>{!checkStatus ? 'Đang mở đăng ký' : 'Đã đóng đăng ký'}</Text>
+            <View style={[styles.statusDot, { backgroundColor: !isExpired ? '#00D9B5' : '#FF6B6B' }]} />
+            <Text style={[styles.statusText, { color: !isExpired ? '#00D9B5' : '#FF6B6B' }]}>{!isExpired ? 'Đang mở đăng ký' : 'Đã đóng đăng ký'}</Text>
           </View>
           <Text style={[styles.title, { color: colors.text }]}>{data?.name}</Text>
         </View>
@@ -265,7 +266,7 @@ export default function EventDetailScreen() {
         )}
       </ScrollView>
 
-      {checkStatus ? null : <View style={[styles.footer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
+      {isExpired ? null : <View style={[styles.footer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
         <View style={styles.footerInfo}>
           <View>
             <Text style={[styles.priceLabel, { color: colors.textSecondary }]}>Từ</Text>

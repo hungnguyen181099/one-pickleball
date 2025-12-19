@@ -115,3 +115,22 @@ export const endOfDay = (date: Date | string): Date => {
   d.setHours(23, 59, 59, 999);
   return d;
 };
+
+export const isStartDateAfterDeadline = (
+  registrationDeadline: string
+): boolean => {
+  try {
+    const now = Date.now()
+    const deadline = new Date(registrationDeadline);
+
+    // Kiểm tra ngày có hợp lệ không
+    if (isNaN(deadline.getTime())) {
+      return false;
+    }
+
+    return now > deadline.getTime();
+  } catch (error) {
+    console.error('Error comparing dates:', error);
+    return false;
+  }
+};
