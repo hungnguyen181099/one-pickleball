@@ -58,7 +58,7 @@ const StadiumHeader = ({
         </Flex>
       </Flex>
 
-      <Text size="title">{name}</Text>
+      <Text size="h1">{name}</Text>
 
       <Flex>
         <MaterialCommunityIcons name="tennis" style={styles.courtsIcon} />
@@ -89,7 +89,7 @@ const StadiumHeader = ({
       <Flex justifyContent="space-between" style={styles.card}>
         <Flex direction="column" alignItems="flex-start" gap={4}>
           <Flex gap={4}>
-            <Text size="subtitle">{rating}</Text>
+            <Text size="h2">{rating}</Text>
             <MaterialCommunityIcons name="star" style={styles.ratingIcon} />
           </Flex>
           <Text color="secondary" size="sm">

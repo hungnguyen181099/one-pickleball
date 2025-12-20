@@ -9,7 +9,7 @@ import { useThemedColors } from '@/hooks/use-theme';
 
 type TextColors = 'default' | 'secondary' | 'primary' | 'link' | 'success' | 'error' | 'warning';
 
-type TextSizes = 'title' | 'subtitle' | 'sm' | 'md' | 'lg';
+type TextSizes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'sm' | 'md' | 'lg';
 
 type TextProps = {
   fontWeight?: TextStyle['fontWeight'];
@@ -49,8 +49,13 @@ const getStyles = ({ colors, color, size, fontWeight }: GetStylesProps) =>
       ...(color === 'default' && { color: colors.text }),
 
       // Sizes
-      ...(size === 'subtitle' && { fontSize: 20, fontWeight: 600 }),
-      ...(size === 'title' && { fontSize: 24, fontWeight: 700 }),
+      ...(size === 'h1' && { fontSize: 24, fontWeight: 700 }),
+      ...(size === 'h2' && { fontSize: 20, fontWeight: 600 }),
+      ...(size === 'h3' && { fontSize: 18, fontWeight: 600 }),
+      ...(size === 'h4' && { fontSize: 16, fontWeight: 500 }),
+      ...(size === 'h5' && { fontSize: 14, fontWeight: 500 }),
+      ...(size === 'h6' && { fontSize: 12, fontWeight: 500 }),
+
       ...(size === 'sm' && { fontSize: 14 }),
       ...(size === 'md' && { fontSize: 16 }),
       ...(size === 'lg' && { fontSize: 18 }),

@@ -1,11 +1,11 @@
-/* eslint-disable react-native/no-unused-styles */
 import React from 'react';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Grid, GridItem } from '@/components/ui/Grid';
+import { Text } from '@/components/ui/Text';
 
-import { AppColors, Shadows, ThemeColors } from '@/constants/theme';
+import { Shadows, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -21,7 +21,9 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Thống kê</Text>
+      <Text size="h2" color="primary" style={styles.title}>
+        Thống kê
+      </Text>
       <Grid columns={1} gap={4}>
         {data.map((item) => (
           <GridItem key={item.rank}>
@@ -56,10 +58,7 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
       marginBottom: 16,
     },
     title: {
-      fontSize: 20,
-      fontWeight: '600',
       marginBottom: 16,
-      color: AppColors.primary,
       textAlign: 'center',
     },
     item: {

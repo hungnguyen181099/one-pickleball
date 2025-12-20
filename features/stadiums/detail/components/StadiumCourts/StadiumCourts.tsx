@@ -28,7 +28,7 @@ const StadiumCourts = ({ items }: StadiumCourtsProps) => {
 
   return (
     <View style={styles.container}>
-      <Text size="subtitle">Danh sách sân</Text>
+      <Text size="h2">Danh sách sân</Text>
 
       {items.length === 0 && <Text color="secondary">Không có sân khả dụng</Text>}
 
@@ -39,7 +39,7 @@ const StadiumCourts = ({ items }: StadiumCourtsProps) => {
             <View style={styles.left}>
               {/* Name */}
               <Flex gap={8} wrap="wrap">
-                <Text size="subtitle">{item.court_name}</Text>
+                <Text size="h2">{item.court_name}</Text>
                 <View style={[styles.status, item.is_active ? styles.statusActive : styles.statusInactive]}>
                   <Text color={item.is_active ? 'success' : 'error'} size="sm" fontWeight={600}>
                     {item.is_active ? 'TRỐNG' : 'FULL'}
@@ -60,7 +60,7 @@ const StadiumCourts = ({ items }: StadiumCourtsProps) => {
 
             {/* Right */}
             <Text style={styles.price}>
-              <Text size="subtitle" color="primary">
+              <Text size="h2" color="primary">
                 {formatToK(item.rental_price)}
               </Text>
               <Text color="secondary">/giờ</Text>
