@@ -88,7 +88,7 @@ const StadiumsList = () => {
 
               <View style={styles.body}>
                 {/* Name */}
-                <Text size="subtitle">{item.name}</Text>
+                <Text size="h2">{item.name}</Text>
 
                 {/* Address */}
                 <Flex gap={8} alignItems="flex-start">

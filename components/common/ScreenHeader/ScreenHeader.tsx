@@ -25,7 +25,7 @@ const ScreenHeader = ({ title = '', showBack = true }: ScreenHeaderProps) => {
             <MaterialCommunityIcons name="arrow-left" style={styles.back} />
           </Pressable>
         )}
-        <Text size="title">{title}</Text>
+        <Text size="h2">{title}</Text>
       </View>
       {/* <FontAwesome6 name="ranking-star" size={24} /> */}
     </View>

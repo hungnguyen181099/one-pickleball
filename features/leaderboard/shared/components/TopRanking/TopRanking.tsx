@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Avatar } from '@/components/ui/Avatar';
 import { Grid, GridItem } from '@/components/ui/Grid';
+import { Text } from '@/components/ui/Text';
 
 import { AppColors } from '@/constants/theme';
 
@@ -23,10 +24,12 @@ const TopRankingItem = ({ avatar, rank, name, point, tier }: LeaderboardItem) =>
           <Text style={styles.rankText}>{rank}</Text>
         </View>
       </View>
-      <Text ellipsizeMode="tail" numberOfLines={1} style={styles.name}>
+      <Text ellipsizeMode="tail" numberOfLines={1} size="lg" fontWeight={500}>
         {name}
       </Text>
-      <Text>{tier}</Text>
+      <Text size="sm" color="secondary">
+        {tier}
+      </Text>
       <Text>⭐ {point}</Text>
     </View>
   );
@@ -42,10 +45,12 @@ const TopRankingItemCenter = ({ avatar, rank, name, point, tier }: LeaderboardIt
           <Text style={centerStyles.rankText}>{rank}</Text>
         </View>
       </View>
-      <Text ellipsizeMode="tail" numberOfLines={1} style={centerStyles.name}>
+      <Text ellipsizeMode="tail" numberOfLines={1} size="lg" fontWeight={500}>
         {name}
       </Text>
-      <Text>{tier}</Text>
+      <Text size="sm" color="secondary">
+        {tier}
+      </Text>
       <Text>⭐ {point}</Text>
     </View>
   );
@@ -99,10 +104,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 10,
     fontWeight: '600',
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 600,
   },
 });
 

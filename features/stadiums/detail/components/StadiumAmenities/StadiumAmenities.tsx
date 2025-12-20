@@ -16,7 +16,7 @@ const StadiumAmenities = ({ items }: StadiumAmenitiesProps) => {
 
   return (
     <Flex direction="column" alignItems="flex-start" style={styles.container}>
-      <Text size="subtitle">Tiện ích</Text>
+      <Text size="h2">Tiện ích</Text>
 
       {items.length === 0 && <Text color="secondary">Không có tiện ích khả dụng</Text>}
 

@@ -39,7 +39,7 @@ const StadiumFooter = ({ courts }: StadiumFooterProps) => {
           Giá thuê từ
         </Text>
         <Flex gap={4}>
-          <Text size="title" fontWeight={600}>
+          <Text size="h1" fontWeight={600}>
             {formatCurrencyWithoutUnit(minimumPrice)}
           </Text>
           <Text color="secondary">/giờ</Text>
