@@ -55,7 +55,7 @@ export const getStadiumHeaderStyles = ({ colors }: StyleColorsProps) =>
     cardIcon: {
       width: 48,
       height: 48,
-      backgroundColor: `${AppColors.primary}20`,
+      backgroundColor: AppColors.primaryAlpha20,
       borderRadius: Radius.full,
     },
     cardItemIcon: {

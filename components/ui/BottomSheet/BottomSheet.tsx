@@ -22,7 +22,7 @@ export type BottomSheetProps = {
   onVisibleChange: (visible: boolean) => void;
   children: React.ReactNode;
   fullSize?: boolean;
-  stylesFor?: {
+  styleOverrides?: {
     content?: ViewStyle;
     pullIcon?: ViewStyle;
   };
@@ -40,7 +40,13 @@ const timingConfig: WithTimingConfig = {
   duration: 300,
 };
 
-const BottomSheet = ({ visible, fullSize = false, stylesFor = {}, children, onVisibleChange }: BottomSheetProps) => {
+const BottomSheet = ({
+  visible,
+  fullSize = false,
+  styleOverrides = {},
+  children,
+  onVisibleChange,
+}: BottomSheetProps) => {
   const translateY = useSharedValue<number>(SCREEN_HEIGHT);
   const styles = getStyles({ colors: useThemedColors(), fullSize });
 
@@ -96,10 +102,10 @@ const BottomSheet = ({ visible, fullSize = false, stylesFor = {}, children, onVi
         <Animated.View exiting={SlideOutDown} style={[styles.modal, animatedStyle]}>
           <GestureDetector gesture={panGesture}>
             <View style={styles.pull}>
-              <View style={[styles.pullIcon, stylesFor.pullIcon]}></View>
+              <View style={[styles.pullIcon, styleOverrides.pullIcon]}></View>
             </View>
           </GestureDetector>
-          <View style={[styles.content, stylesFor.content]}>
+          <View style={[styles.content, styleOverrides.content]}>
             <ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>
           </View>
         </Animated.View>

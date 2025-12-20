@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-unused-styles */
 import React, { useState } from 'react';
 
 import { FontAwesome6 } from '@expo/vector-icons';

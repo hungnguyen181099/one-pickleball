@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     marginBottom: 12,
-    borderColor: `${AppColors.primary}20`,
+    borderColor: AppColors.primaryAlpha20,
   },
   image: {
     width: '100%',

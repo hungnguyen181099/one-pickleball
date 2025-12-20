@@ -110,7 +110,7 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
     elo: {
       paddingHorizontal: 8,
       paddingVertical: 4,
-      backgroundColor: `${AppColors.primary}20`,
+      backgroundColor: AppColors.primaryAlpha20,
     },
   });
 

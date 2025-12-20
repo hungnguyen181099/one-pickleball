@@ -1,7 +1,7 @@
 import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
-import { AppColors, Radius } from '@/constants/theme';
+import { AppColors, Radius, Rounded } from '@/constants/theme';
 
 export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
@@ -17,14 +17,9 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
     searchInput: {
       flex: 1,
     },
-    searchButton: {
-      backgroundColor: `${AppColors.primary}20`,
-      borderRadius: Radius.md,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 16,
-      borderWidth: 1,
-      borderColor: AppColors.primary,
+    searchButtonText: {
+      fontWeight: 500,
+      fontSize: 14,
     },
     // List
     list: {
@@ -72,18 +67,14 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       padding: 6,
       paddingHorizontal: 12,
       borderRadius: 8,
-      backgroundColor: `${AppColors.primary}20`,
+      backgroundColor: AppColors.primaryAlpha20,
     },
     btn: {
-      padding: 16,
-      borderRadius: Radius.full,
-      backgroundColor: AppColors.primary,
-      alignItems: 'center',
+      paddingVertical: 16,
+      borderRadius: Rounded.full,
     },
     btnText: {
-      color: AppColors.white,
       fontWeight: 500,
-      fontSize: 16,
     },
     // Pagination
     pagination: {

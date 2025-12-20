@@ -161,6 +161,10 @@ export default function HomeScreen() {
 
           <Grid columns={2} gap={8}>
             <GridItem>
+              <ActionCard icon="grid" label="Test" color="#00D9B5" onPress={() => router.push('/test')} />
+            </GridItem>
+
+            <GridItem>
               <ActionCard
                 icon="grid"
                 label="Bảng xếp hạng OCR"

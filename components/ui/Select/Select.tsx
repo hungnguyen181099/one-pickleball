@@ -21,7 +21,7 @@ export type SelectProps = {
   value?: string | null;
   onChangeValue?: (value: string | null) => void;
   renderLabel?: (label: string) => React.ReactNode;
-} & Pick<BottomSheetProps, 'stylesFor' | 'fullSize'>;
+} & Pick<BottomSheetProps, 'styleOverrides' | 'fullSize'>;
 
 const Select = ({
   value,

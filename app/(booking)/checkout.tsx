@@ -78,7 +78,7 @@ export default function CheckoutScreen() {
               width: 48,
               height: 48,
               borderRadius: 24,
-              backgroundColor: selectedPayment === method.id ? `${AppColors.primary}20` : colors.input,
+              backgroundColor: selectedPayment === method.id ? AppColors.primaryAlpha20 : colors.input,
               alignItems: 'center',
               justifyContent: 'center',
             }}

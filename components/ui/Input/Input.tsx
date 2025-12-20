@@ -17,7 +17,7 @@ export type InputProps = TextInputProps & {
   radius?: InputRadius;
   size?: InputSize;
   value?: string;
-  styleFor?: {
+  styleOverrides?: {
     container?: ViewStyle;
     input?: TextStyle;
     endIcon?: ViewStyle;
@@ -35,7 +35,7 @@ type StyleProps = {
 
 const Input = ({
   variant = 'default',
-  styleFor = {},
+  styleOverrides = {},
   radius = 'md',
   size = 'md',
   startIcon,
@@ -59,12 +59,18 @@ const Input = ({
   };
 
   return (
-    <View style={[styles.container, styleFor.container]}>
-      {startIcon && <View style={[styles.startIcon, styleFor.startIcon]}>{startIcon}</View>}
+    <View style={[styles.container, styleOverrides.container]}>
+      {startIcon && <View style={[styles.startIcon, styleOverrides.startIcon]}>{startIcon}</View>}
 
-      <TextInput value={finalValue} onChangeText={handleChange} {...props} style={[styles.input, styleFor.input]} />
+      <TextInput
+        value={finalValue}
+        onChangeText={handleChange}
+        placeholderTextColor={colors.textTertiary}
+        style={[styles.input, styleOverrides.input]}
+        {...props}
+      />
 
-      {endIcon && <View style={[styles.endIcon, styleFor.endIcon]}>{endIcon}</View>}
+      {endIcon && <View style={[styles.endIcon, styleOverrides.endIcon]}>{endIcon}</View>}
     </View>
   );
 };
@@ -118,6 +124,8 @@ const getStyles = ({ variant, colors, radius, size }: StyleProps) =>
     },
     input: {
       flex: 1,
+      color: colors.text,
+
       ...(size === 'sm' && {
         paddingVertical: 12,
         paddingHorizontal: 12,

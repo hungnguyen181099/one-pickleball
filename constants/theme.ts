@@ -87,6 +87,8 @@ export const Colors: ColorsType = {
 
 export const AppColors = {
   primary: '#00D9B5',
+  primaryForeground: '#ffffff',
+  primaryAlpha20: '#00D9B520',
   primaryDark: '#00B399',
   primaryLight: '#33E4C6',
   secondary: '#0099CC',
@@ -118,6 +120,13 @@ export const AppColors = {
   warning: '#F59E0B',
   error: '#EF4444',
   info: '#3B82F6',
+};
+
+export const Rounded = {
+  sm: 8,
+  md: 16,
+  lg: 24,
+  full: 9999,
 };
 
 export const Radius = {

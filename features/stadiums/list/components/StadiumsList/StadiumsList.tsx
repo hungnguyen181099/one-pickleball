@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { FlatList, Keyboard, Pressable, ScrollView, View } from 'react-native';
+import { FlatList, Keyboard, ScrollView, View } from 'react-native';
 
+import { Button } from '@/components/ui/Button';
 import { Flex } from '@/components/ui/Flex';
 import { Input } from '@/components/ui/Input';
 import { Pagination } from '@/components/ui/Pagination';
@@ -43,17 +44,22 @@ const StadiumsList = () => {
           <Input
             value={search}
             onChangeText={setSearch}
-            placeholder="Tìm theo tên ..."
+            placeholder="Nhập tên sân ..."
             startIcon={<MaterialCommunityIcons name="magnify" size={24} color={colors.icon} />}
             maxLength={50}
             size="sm"
           />
         </View>
-        <Pressable onPress={handleSearch} style={styles.searchButton}>
-          <Text color="primary" fontWeight={500}>
-            Tìm kiếm
-          </Text>
-        </Pressable>
+        <Button
+          size="sm"
+          variant="outline"
+          onPress={handleSearch}
+          styleOverrides={{
+            text: styles.searchButtonText,
+          }}
+        >
+          Tìm kiêm
+        </Button>
       </View>
 
       {status === 'pending' ? (
@@ -123,8 +129,7 @@ const StadiumsList = () => {
                 <View style={styles.cardSeparator}></View>
 
                 {/* CTA */}
-                <Pressable
-                  style={styles.btn}
+                <Button
                   onPress={() =>
                     router.navigate({
                       pathname: '/(details)/stadiums/[stadiumId]',
@@ -133,9 +138,10 @@ const StadiumsList = () => {
                       },
                     })
                   }
+                  styleOverrides={{ container: styles.btn, text: styles.btnText }}
                 >
-                  <Text style={styles.btnText}>Đặt sân</Text>
-                </Pressable>
+                  Đặt sân
+                </Button>
               </View>
             </View>
           )}
