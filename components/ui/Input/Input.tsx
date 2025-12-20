@@ -5,6 +5,7 @@ import { StyleSheet, TextInput, TextInputProps, TextStyle, View, ViewStyle } fro
 import { ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
+import { useControlled } from '@/hooks/useControlled';
 
 type InputVariant = 'default' | 'filled' | 'unstyled';
 type InputRadius = 'sm' | 'md' | 'lg';
@@ -40,20 +41,23 @@ const Input = ({
   size = 'md',
   startIcon,
   endIcon,
-  value,
+  value: controlledValue,
   onChangeText,
   ...props
 }: InputProps) => {
-  const [internalValue, setInternalValue] = useState<string>('');
+  const [uncontrolledValue, setUncontrolledValue] = useState<string>('');
   const colors = useThemedColors();
 
   const styles = getStyles({ variant, colors, radius, size });
-  const isControlled = value !== undefined;
-  const finalValue = isControlled ? value : internalValue;
+
+  const { isControlled, value } = useControlled({
+    uncontrolled: uncontrolledValue,
+    controlled: controlledValue,
+  });
 
   const handleChange = (text: string) => {
     if (!isControlled) {
-      setInternalValue(text);
+      setUncontrolledValue(text);
     }
     onChangeText?.(text);
   };
@@ -63,7 +67,7 @@ const Input = ({
       {startIcon && <View style={[styles.startIcon, styleOverrides.startIcon]}>{startIcon}</View>}
 
       <TextInput
-        value={finalValue}
+        value={value}
         onChangeText={handleChange}
         placeholderTextColor={colors.textTertiary}
         style={[styles.input, styleOverrides.input]}

@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
+import { Button } from '@/components/ui/Button';
 import { Flex } from '@/components/ui/Flex';
 import { Text } from '@/components/ui/Text';
 
@@ -46,11 +47,16 @@ const StadiumFooter = ({ courts }: StadiumFooterProps) => {
         </Flex>
       </View>
 
-      <Pressable disabled={isDisabled} style={[styles.button, isDisabled && styles.buttonDisabled]}>
-        <Text size="lg" fontWeight={600} style={[styles.buttonText, isDisabled && styles.buttonTextDisabled]}>
-          Đặt sân ngay
-        </Text>
-      </Pressable>
+      <Button
+        radius="full"
+        disabled={isDisabled}
+        styleOverrides={{
+          container: styles.button,
+          text: styles.buttonText,
+        }}
+      >
+        Đặt sân ngay
+      </Button>
     </Flex>
   );
 };

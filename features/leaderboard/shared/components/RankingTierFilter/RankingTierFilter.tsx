@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 
-import { FlatList, Pressable, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
-import { Radius } from '@/constants/theme';
-
-import { LeaderboardFilter } from '@/features/leaderboard/shared/types';
-
-import { useThemedColors } from '@/hooks/use-theme';
+import { Chip } from '@/components/ui/Chip';
 
 type RankingTierFilterProps = {
-  data: LeaderboardFilter[];
+  data: {
+    label: string;
+    value: string;
+  }[];
   children: (tier: string) => React.ReactNode;
 };
 
 const RankingTierFilter = ({ data, children }: RankingTierFilterProps) => {
   const [tier, setTier] = useState<string>('');
-  const colors = useThemedColors();
 
   return (
     <>
@@ -23,19 +21,19 @@ const RankingTierFilter = ({ data, children }: RankingTierFilterProps) => {
         data={data}
         renderItem={({ item }) => {
           const isActive = item.value === tier;
+
           return (
-            <Pressable
+            <Chip
+              size="sm"
+              variant="light"
+              checked={isActive}
               onPress={() => setTier(item.value)}
-              style={[
-                styles.item,
-                {
-                  backgroundColor: isActive ? colors.tint : colors.backgroundTertiary,
-                  borderColor: isActive ? colors.tint : colors.border,
-                },
-              ]}
+              styleOverrides={{
+                container: styles.chip,
+              }}
             >
-              <Text>{item.label}</Text>
-            </Pressable>
+              {item.label}
+            </Chip>
           );
         }}
         contentContainerStyle={styles.contentContainer}
@@ -56,16 +54,8 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     marginTop: 16,
   },
-  item: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: Radius.full,
-    borderWidth: 1,
+  chip: {
     minWidth: 100,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
   },
   contentContainer: {
     gap: 16,

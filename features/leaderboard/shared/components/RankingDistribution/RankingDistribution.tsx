@@ -21,7 +21,7 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
 
   return (
     <View style={styles.container}>
-      <Text size="h2" color="primary" style={styles.title}>
+      <Text size="h1" color="primary" style={styles.title}>
         Thống kê
       </Text>
       <Grid columns={1} gap={4}>
