@@ -5,6 +5,7 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { FlatList, Keyboard, ScrollView, View } from 'react-native';
 
+import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Flex } from '@/components/ui/Flex';
 import { Input } from '@/components/ui/Input';
@@ -118,11 +119,9 @@ const StadiumsList = () => {
                 {/* Amenities */}
                 <View style={styles.amenity}>
                   {item.amenities.map((amenity, index) => (
-                    <View key={index} style={styles.amenityItem}>
-                      <Text color="primary" size="sm">
-                        {amenity}
-                      </Text>
-                    </View>
+                    <Badge key={index} variant="light" radius="sm">
+                      {amenity}
+                    </Badge>
                   ))}
                 </View>
 

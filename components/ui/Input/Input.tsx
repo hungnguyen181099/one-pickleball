@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StyleSheet, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
-import { ThemeColors } from '@/constants/theme';
+import { Radius, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 import { useUncontrolled } from '@/hooks/useUncontrolled';
@@ -84,13 +84,13 @@ const getStyles = ({ variant, colors, radius, size }: StyleProps) =>
       flexDirection: 'row',
       alignItems: 'center',
       ...(radius === 'sm' && {
-        borderRadius: 8,
+        borderRadius: Radius.sm,
       }),
       ...(radius === 'md' && {
-        borderRadius: 12,
+        borderRadius: Radius.md,
       }),
       ...(radius === 'lg' && {
-        borderRadius: 16,
+        borderRadius: Radius.lg,
       }),
       ...(variant === 'default' && {
         borderWidth: 1,
