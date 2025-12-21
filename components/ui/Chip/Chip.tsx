@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { StyleColorsProps } from '@/types';
-import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { GestureResponderEvent, Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 import { AppColors, Radius } from '@/constants/theme';
 
-import { useControlled } from '@/hooks/useControlled';
 import { useGetStyles } from '@/hooks/useGetStyles';
+import { useUncontrolled } from '@/hooks/useUncontrolled';
 
 import { Text } from '../Text';
 
@@ -46,36 +46,34 @@ const Chip = ({
   size = 'md',
   styleOverrides = {},
   disabled,
-  defaultChecked = false,
-  checked: controlledChecked,
+  defaultChecked,
+  checked,
+  onPress,
   onCheckedChange,
   ...props
 }: ChipProps) => {
-  const [uncontrolledChecked, setUncontrolledChecked] = useState<boolean>(defaultChecked);
-
-  const { isControlled, value: checked } = useControlled({
-    uncontrolled: uncontrolledChecked,
-    controlled: controlledChecked,
+  const [value, setValue] = useUncontrolled({
+    defaultValue: defaultChecked,
+    value: checked,
+    finalValue: false,
+    onChange: onCheckedChange,
   });
 
   const styles = useGetStyles(getStyles, { variant, size, radius, disabled });
 
-  const handleChecked = () => {
-    if (!isControlled) {
-      setUncontrolledChecked(!checked);
-    }
-
-    onCheckedChange?.(!checked);
+  const handlePress = (event: GestureResponderEvent) => {
+    setValue(!value);
+    onPress?.(event);
   };
 
   return (
     <Pressable
-      style={[styles.container, checked && styles.containerChecked, styleOverrides.container]}
-      onPress={handleChecked}
+      style={[styles.container, value && styles.containerChecked, styleOverrides.container]}
+      onPress={handlePress}
       disabled={disabled}
       {...props}
     >
-      <Text style={[styles.text, checked && styles.textChecked, styleOverrides.text]}>{children}</Text>
+      <Text style={[styles.text, value && styles.textChecked, styleOverrides.text]}>{children}</Text>
     </Pressable>
   );
 };

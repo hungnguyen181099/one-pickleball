@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { StyleSheet, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
 import { ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
-import { useControlled } from '@/hooks/useControlled';
+import { useUncontrolled } from '@/hooks/useUncontrolled';
 
 type InputVariant = 'default' | 'filled' | 'unstyled';
 type InputRadius = 'sm' | 'md' | 'lg';
@@ -42,24 +42,23 @@ const Input = ({
   startIcon,
   endIcon,
   value: controlledValue,
+  defaultValue,
   onChangeText,
   ...props
 }: InputProps) => {
-  const [uncontrolledValue, setUncontrolledValue] = useState<string>('');
   const colors = useThemedColors();
+
+  const [value, setValue] = useUncontrolled({
+    defaultValue: defaultValue,
+    value: controlledValue,
+    finalValue: '',
+    onChange: onChangeText,
+  });
 
   const styles = getStyles({ variant, colors, radius, size });
 
-  const { isControlled, value } = useControlled({
-    uncontrolled: uncontrolledValue,
-    controlled: controlledValue,
-  });
-
   const handleChange = (text: string) => {
-    if (!isControlled) {
-      setUncontrolledValue(text);
-    }
-    onChangeText?.(text);
+    setValue(text);
   };
 
   return (
