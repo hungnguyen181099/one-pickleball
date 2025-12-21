@@ -1,7 +1,6 @@
+import { Radius } from '@/constants/theme';
 import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
-
-import { Radius } from '@/constants/theme';
 
 export const getStadiumAmenitiesStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({

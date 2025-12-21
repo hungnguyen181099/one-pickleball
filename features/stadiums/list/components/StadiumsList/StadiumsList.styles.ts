@@ -1,7 +1,7 @@
 import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
-import { AppColors, Radius, Rounded } from '@/constants/theme';
+import { AppColors, Radius } from '@/constants/theme';
 
 export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
@@ -71,7 +71,7 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
     },
     btn: {
       paddingVertical: 16,
-      borderRadius: Rounded.full,
+      borderRadius: Radius.full,
     },
     btnText: {
       fontWeight: 500,

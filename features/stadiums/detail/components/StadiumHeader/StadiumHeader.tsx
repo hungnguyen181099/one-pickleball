@@ -3,6 +3,7 @@ import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, Linking, Pressable, View } from 'react-native';
 
+import { Badge } from '@/components/ui/Badge';
 import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Text } from '@/components/ui/Text';
@@ -50,12 +51,17 @@ const StadiumHeader = ({
   return (
     <View style={styles.container}>
       <Flex>
-        <Flex style={styles.openState}>
-          <View style={styles.openStateDot}></View>
-          <Text size="sm" color="success" fontWeight={600}>
-            Đang mở cửa
-          </Text>
-        </Flex>
+        <Badge
+          withDot
+          variant="outline"
+          color="success"
+          styleOverrides={{
+            container: styles.badgeContainer,
+            text: styles.badgeText,
+          }}
+        >
+          Đang mở cửa
+        </Badge>
       </Flex>
 
       <Text size="h1">{name}</Text>

@@ -120,21 +120,33 @@ export const AppColors = {
   warning: '#F59E0B',
   error: '#EF4444',
   info: '#3B82F6',
-};
 
-export const Rounded = {
-  sm: 8,
-  md: 16,
-  lg: 24,
-  full: 9999,
+  successForeground: '#ffffff',
+  warningForeground: '#ffffff',
+  errorForeground: '#ffffff',
+  infoForeground: '#ffffff',
+
+  successAlpha20: '#10B98120',
+  warningAlpha20: '#F59E0B20',
+  errorAlpha20: '#EF444420',
+  infoAlpha20: '#3B82F620',
 };
 
 export const Radius = {
+  xs: 4,
   sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
+  md: 16,
+  lg: 24,
+  xl: 32,
   full: 9999,
+};
+
+export const fontSize = {
+  xs: 12,
+  sm: 14,
+  md: 16,
+  lg: 18,
+  xl: 20,
 };
 
 export const Shadows = {

@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleColorsProps } from '@/types';
 import { Text as NativeText, TextProps as NativeTextProps, StyleSheet, TextStyle } from 'react-native';
 
-import { AppColors } from '@/constants/theme';
+import { AppColors, fontSize } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -56,9 +56,9 @@ const getStyles = ({ colors, color, size, fontWeight }: GetStylesProps) =>
       ...(size === 'h5' && { fontSize: 14, fontWeight: 500 }),
       ...(size === 'h6' && { fontSize: 12, fontWeight: 500 }),
 
-      ...(size === 'sm' && { fontSize: 14 }),
-      ...(size === 'md' && { fontSize: 16 }),
-      ...(size === 'lg' && { fontSize: 18 }),
+      ...(size === 'sm' && { fontSize: fontSize.sm }),
+      ...(size === 'md' && { fontSize: fontSize.md }),
+      ...(size === 'lg' && { fontSize: fontSize.lg }),
     },
   });
 

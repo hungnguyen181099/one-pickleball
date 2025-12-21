@@ -8,25 +8,6 @@ export const getStadiumHeaderStyles = ({ colors }: StyleColorsProps) =>
     container: {
       gap: 16,
     },
-    openState: {
-      paddingHorizontal: 16,
-      paddingVertical: 4,
-      borderWidth: 1,
-      borderColor: AppColors.success,
-      backgroundColor: `${AppColors.success}20`,
-      borderRadius: Radius.full,
-      gap: 8,
-    },
-    openStateDot: {
-      width: 8,
-      height: 8,
-      borderRadius: Radius.full,
-      backgroundColor: AppColors.success,
-    },
-    openStateText: {
-      color: AppColors.success,
-      fontWeight: 600,
-    },
     courtsIcon: {
       color: colors.textSecondary,
       fontSize: 16,
@@ -79,5 +60,11 @@ export const getStadiumHeaderStyles = ({ colors }: StyleColorsProps) =>
       paddingHorizontal: 16,
       paddingVertical: 8,
       borderRadius: Radius.full,
+    },
+    badgeContainer: {
+      backgroundColor: AppColors.successAlpha20,
+    },
+    badgeText: {
+      fontWeight: 600,
     },
   });

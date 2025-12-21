@@ -6,7 +6,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Text } from '@/components/ui/Text';
 
-import { AppColors, Radius, Rounded, ThemeColors } from '@/constants/theme';
+import { AppColors, Radius, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -67,7 +67,7 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
       alignItems: 'center',
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: Rounded.lg,
+      borderRadius: Radius.lg,
       padding: 16,
       backgroundColor: colors.card,
       gap: 16,
