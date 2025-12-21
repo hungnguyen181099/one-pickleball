@@ -29,6 +29,8 @@ export type ThemeColors = {
   error: string;
   muted: string;
   mutedForeground: string;
+  secondary: string;
+  secondaryForeground: string;
 };
 
 type ColorsType = {
@@ -57,8 +59,12 @@ export const Colors: ColorsType = {
     shadow: '#000',
     overlay: 'rgba(0, 0, 0, 0.5)',
     error: '#EF4444',
+
+    // New
     muted: '#E5E5EA',
     mutedForeground: '#8E8E93',
+    secondary: '#f7f7f7',
+    secondaryForeground: '#64748b',
   },
   dark: {
     text: '#ECEDEE',
@@ -80,8 +86,12 @@ export const Colors: ColorsType = {
     shadow: '#000',
     overlay: 'rgba(0, 0, 0, 0.7)',
     error: '#EF4444',
+
+    // New
     muted: '#2C2C2E',
     mutedForeground: '#8E8E93',
+    secondary: '#2b2b2b',
+    secondaryForeground: '#94a3b8',
   },
 };
 
@@ -91,7 +101,7 @@ export const AppColors = {
   primaryAlpha20: '#00D9B520',
   primaryDark: '#00B399',
   primaryLight: '#33E4C6',
-  secondary: '#0099CC',
+
   accent: '#FF6B6B',
 
   // Gradient

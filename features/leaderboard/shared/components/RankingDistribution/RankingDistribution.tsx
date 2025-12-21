@@ -1,15 +1,18 @@
 import React from 'react';
 
+import { MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 
+import { Badge } from '@/components/ui/Badge';
+import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
+import { Icon } from '@/components/ui/Icon';
 import { Text } from '@/components/ui/Text';
 
-import { ThemeColors } from '@/constants/theme';
+import { Radius, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
-import { leaderboardDistributionStatLabels } from '../../constants';
 import { LeaderboardDistribution } from '../../types';
 
 type RankingDistributionProps = {
@@ -24,34 +27,57 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
       <Text size="h1" color="primary" style={styles.title}>
         Thống kê
       </Text>
-      <Grid columns={1} gap={4}>
-        {data.map((item) => (
+      <Grid columns={1} gap={8}>
+        {data.map((item, index) => (
           <GridItem key={item.rank}>
             <View style={styles.item}>
-              <View style={styles.text}>
-                <Text color="secondary" size="sm">
-                  {leaderboardDistributionStatLabels.rank}
-                </Text>
-                <Text>{item.rank}</Text>
-              </View>
-              <View style={styles.text}>
-                <Text color="secondary" size="sm">
-                  {leaderboardDistributionStatLabels.playerCount}
-                </Text>
-                <Text>{item.playerCount}</Text>
-              </View>
-              <View style={styles.text}>
-                <Text color="secondary" size="sm">
-                  {leaderboardDistributionStatLabels.maxPoint}
-                </Text>
-                <Text>{item.maxPoint}</Text>
-              </View>
-              <View style={styles.text}>
-                <Text color="secondary" size="sm">
-                  {leaderboardDistributionStatLabels.minPoint}
-                </Text>
-                <Text>{item.minPoint}</Text>
-              </View>
+              {/* Header */}
+              <Flex justifyContent="space-between">
+                <Flex>
+                  <Icon color="secondary">
+                    <MaterialIcons name="sports-tennis" size={20} />
+                  </Icon>
+                  <Text size="h3">{item.rank}</Text>
+                </Flex>
+                <Badge color="secondary">
+                  <Text size="sm" color="secondary" fontWeight={500}>
+                    Cấp {index + 1}
+                  </Text>
+                </Badge>
+              </Flex>
+
+              {/* Seperator */}
+              <View style={styles.seperator}></View>
+
+              {/* Info */}
+              <Flex style={styles.infoContainer}>
+                <Flex direction="column" style={styles.info}>
+                  <Text color="secondary" size="h6" style={styles.infoLabel}>
+                    Người chơi
+                  </Text>
+                  <Text size="h2">{item.playerCount}</Text>
+                </Flex>
+
+                <View style={styles.infoSeperator}></View>
+
+                <Flex direction="column" style={styles.info}>
+                  <Text color="secondary" size="h6" style={styles.infoLabel}>
+                    Thấp nhất
+                  </Text>
+                  <Text size="h2">{item.minPoint}</Text>
+                </Flex>
+
+                <View style={styles.infoSeperator}></View>
+
+                <Flex direction="column" style={styles.info}>
+                  <Text color="primary" size="h6" style={styles.infoLabel}>
+                    Cao nhất
+                  </Text>
+                  <Text size="h2" color="primary">
+                    {item.maxPoint}
+                  </Text>
+                </Flex>
+              </Flex>
             </View>
           </GridItem>
         ))}
@@ -70,18 +96,38 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
       textAlign: 'center',
     },
     item: {
-      flex: 1,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 24,
-      padding: 16,
+      borderRadius: Radius.lg,
+      padding: 24,
       backgroundColor: colors.card,
     },
-    text: {
-      flexDirection: 'row',
-      alignItems: 'flex-end',
-      justifyContent: 'space-between',
-      gap: 8,
+    icon: {
+      width: 48,
+      height: 48,
+      paddingVertical: 0,
+      paddingHorizontal: 0,
+    },
+    seperator: {
+      height: 1,
+      backgroundColor: colors.border,
+      marginVertical: 16,
+      opacity: 0.5,
+    },
+    infoContainer: {
+      flex: 1,
+    },
+    info: {
+      flex: 1,
+    },
+    infoLabel: {
+      textTransform: 'uppercase',
+    },
+    infoSeperator: {
+      width: 1,
+      backgroundColor: colors.border,
+      opacity: 0.5,
+      alignSelf: 'stretch',
     },
   });
 

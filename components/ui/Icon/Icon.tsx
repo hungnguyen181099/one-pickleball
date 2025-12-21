@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { StyleColorsProps } from '@/types';
-import { Pressable, PressableProps, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 import { AppColors, Radius, fontSize } from '@/constants/theme';
 
@@ -9,49 +9,46 @@ import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { Text } from '../Text';
 
-type BadgeVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent';
-type BadgeRadius = 'sm' | 'md' | 'lg' | 'full';
-type BadgeSize = 'sm' | 'md' | 'lg';
-type BadgeColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
+type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent';
+type IconRadius = 'sm' | 'md' | 'lg' | 'full';
+type IconSize = 'sm' | 'md' | 'lg';
+type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
 
 type GetStylesProps = StyleColorsProps & {
-  variant: BadgeVariant;
-  size: BadgeSize;
-  radius: BadgeRadius;
+  variant: IconVariant;
+  size: IconSize;
+  radius: IconRadius;
   disabled: PressableProps['disabled'];
-  color: BadgeColor;
+  color: IconColor;
 };
 
-type BadgeProps = {
+type IconProps = {
   children: React.ReactNode;
-  variant?: BadgeVariant;
-  size?: BadgeSize;
-  withDot?: boolean;
-  radius?: BadgeRadius;
-  color?: BadgeColor;
+  variant?: IconVariant;
+  size?: IconSize;
+  radius?: IconRadius;
+  color?: IconColor;
   styleOverrides?: {
     container?: ViewStyle;
-    text?: TextStyle;
+    icon?: TextStyle;
   };
 } & Omit<PressableProps, 'style'>;
 
-const Badge = ({
+const Icon = ({
   children,
   variant = 'filled',
   radius = 'full',
   size = 'md',
   color = 'primary',
-  withDot = false,
   styleOverrides = {},
   disabled,
   ...props
-}: BadgeProps) => {
+}: IconProps) => {
   const styles = useGetStyles(getStyles, { variant, size, radius, disabled, color });
 
   return (
     <Pressable style={[styles.container, styleOverrides.container]} {...props}>
-      {withDot && <View style={styles.dot}></View>}
-      <Text style={[styles.text, styleOverrides.text]}>{children}</Text>
+      <Text style={[styles.icon, styleOverrides.icon]}>{children}</Text>
     </Pressable>
   );
 };
@@ -80,19 +77,16 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
 
       // Sizes
       ...(size === 'sm' && {
-        paddingVertical: 2,
-        paddingHorizontal: 8,
-        gap: 6,
+        width: 40,
+        height: 40,
       }),
       ...(size === 'md' && {
-        paddingVertical: 4,
-        paddingHorizontal: 16,
-        gap: 8,
+        width: 44,
+        height: 44,
       }),
       ...(size === 'lg' && {
-        paddingVertical: 6,
-        paddingHorizontal: 24,
-        gap: 10,
+        width: 48,
+        height: 48,
       }),
 
       // Variants
@@ -128,8 +122,8 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         backgroundColor: AppColors.primaryAlpha20,
         borderColor: AppColors.primaryAlpha20,
         ...(color === 'secondary' && {
-          backgroundColor: `${colors.secondary}20`,
-          borderColor: `${colors.secondary}20`,
+          backgroundColor: colors.secondary,
+          borderColor: colors.secondary,
         }),
         ...(color === 'success' && {
           backgroundColor: AppColors.successAlpha20,
@@ -178,7 +172,7 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         borderColor: colors.muted,
       }),
     },
-    text: {
+    icon: {
       color: AppColors.primary,
 
       // Colors
@@ -237,61 +231,6 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         color: colors.mutedForeground,
       }),
     },
-    dot: {
-      borderRadius: Radius.full,
-      backgroundColor: AppColors.primary,
-
-      // Colors
-      ...(color === 'secondary' && {
-        backgroundColor: colors.secondary,
-      }),
-      ...(color === 'success' && {
-        backgroundColor: AppColors.success,
-      }),
-      ...(color === 'warning' && {
-        backgroundColor: AppColors.warning,
-      }),
-      ...(color === 'error' && {
-        backgroundColor: AppColors.error,
-      }),
-      ...(color === 'info' && {
-        backgroundColor: AppColors.info,
-      }),
-
-      // Sizes
-      ...(size === 'sm' && {
-        width: 6,
-        height: 6,
-      }),
-      ...(size === 'md' && {
-        width: 8,
-        height: 8,
-      }),
-      ...(size === 'lg' && {
-        width: 10,
-        height: 10,
-      }),
-
-      // Variants
-      ...(variant === 'filled' && {
-        backgroundColor: AppColors.primaryForeground,
-        ...(color === 'secondary' && {
-          color: colors.secondaryForeground,
-        }),
-        ...(color === 'success' && {
-          color: AppColors.successForeground,
-        }),
-        ...(color === 'warning' && {
-          color: AppColors.warningForeground,
-        }),
-        ...(color === 'error' && {
-          color: AppColors.errorForeground,
-        }),
-        ...(color === 'info' && {
-          color: AppColors.infoForeground,
-        }),
-      }),
-    },
   });
 
-export default Badge;
+export default Icon;

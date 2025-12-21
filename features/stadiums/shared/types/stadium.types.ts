@@ -25,6 +25,8 @@ export type StadiumListResponse = {
     verified: string | null;
     province_id: number;
     user_id: number;
+    opening_time: string;
+    closing_time: string;
     province: {
       id: number;
       name: string;
@@ -84,6 +86,8 @@ export type StadiumDetailResponse = {
     verified: string | null;
     province_id: number | null;
     user_id: number;
+    opening_time: string;
+    closing_time: string;
     province: {
       id: number;
       name: string;

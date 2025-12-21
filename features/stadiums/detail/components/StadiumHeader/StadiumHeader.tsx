@@ -12,6 +12,8 @@ import { StadiumDetailResponse } from '@/features/stadiums/shared/types';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
+import { isNowInOpeningTime } from '@/utils/isNowInOpeningTime';
+
 import { getStadiumHeaderStyles } from './StadiumHeader.styles';
 
 type StadiumHeaderProps = StadiumDetailResponse['data'];
@@ -22,9 +24,10 @@ const StadiumHeader = ({
   phone,
   email,
   address,
-  opening_hours,
   rating,
   rating_count,
+  opening_time,
+  closing_time,
 }: StadiumHeaderProps) => {
   const styles = useGetStyles(getStadiumHeaderStyles);
 
@@ -48,19 +51,21 @@ const StadiumHeader = ({
     Linking.openURL(url);
   };
 
+  const isOpen = isNowInOpeningTime(opening_time, closing_time);
+
   return (
     <View style={styles.container}>
       <Flex>
         <Badge
           withDot
           variant="outline"
-          color="success"
+          color={isOpen ? 'success' : 'error'}
           styleOverrides={{
-            container: styles.badgeContainer,
+            container: isOpen ? styles.badgeSuccess : styles.badgeError,
             text: styles.badgeText,
           }}
         >
-          Đang mở cửa
+          {isOpen ? 'Đang mở cửa' : 'Đã đóng cửa'}
         </Badge>
       </Flex>
 
@@ -119,7 +124,9 @@ const StadiumHeader = ({
           <Flex justifyContent="center" style={styles.cardIcon}>
             <MaterialCommunityIcons name="clock" style={styles.cardItemIcon} />
           </Flex>
-          <Text style={styles.cardItemText}>{opening_hours}</Text>
+          <Text style={styles.cardItemText}>
+            {opening_time} - {closing_time}
+          </Text>
         </Flex>
       </View>
     </View>

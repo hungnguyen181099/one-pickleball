@@ -3,10 +3,11 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Avatar } from '@/components/ui/Avatar';
+import { Badge } from '@/components/ui/Badge';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Text } from '@/components/ui/Text';
 
-import { AppColors, Radius, ThemeColors } from '@/constants/theme';
+import { Radius, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -38,11 +39,14 @@ const OtherRankingItem = ({ avatar, rank, name, tier, point }: LeaderboardItem) 
       </View>
 
       {/* Right */}
-      <View style={styles.right}>
-        <Text style={styles.elo} color="primary" size="sm">
-          ⭐ {point}
-        </Text>
-      </View>
+      <Badge
+        variant="light"
+        styleOverrides={{
+          container: styles.point,
+        }}
+      >
+        ⭐ {point}
+      </Badge>
     </View>
   );
 };
@@ -68,7 +72,7 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: Radius.lg,
-      padding: 16,
+      padding: 24,
       backgroundColor: colors.card,
       gap: 16,
     },
@@ -90,16 +94,9 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
       gap: 8,
       flex: 1,
     },
-    right: {
-      borderWidth: 1,
-      borderColor: AppColors.primary,
-      borderRadius: Radius.full,
-      overflow: 'hidden',
-    },
-    elo: {
+    point: {
       paddingHorizontal: 8,
       paddingVertical: 4,
-      backgroundColor: AppColors.primaryAlpha20,
     },
   });
 

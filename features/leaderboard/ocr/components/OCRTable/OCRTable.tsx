@@ -2,6 +2,7 @@ import React from 'react';
 
 import { RankingTable } from '@/features/leaderboard/shared/components/RankingTable';
 import { LeaderboardItem } from '@/features/leaderboard/shared/types';
+
 import { useOCRLeaderboard } from '../../hooks/useOCRLeaderboard';
 
 type OCRTableFilterProps = {
@@ -11,6 +12,7 @@ type OCRTableFilterProps = {
 const OCRTable = ({ tier }: OCRTableFilterProps) => {
   const { data, status } = useOCRLeaderboard({
     rank: tier,
+    limit: 20,
   });
 
   if (status === 'pending') return;

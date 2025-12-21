@@ -61,8 +61,11 @@ export const getStadiumHeaderStyles = ({ colors }: StyleColorsProps) =>
       paddingVertical: 8,
       borderRadius: Radius.full,
     },
-    badgeContainer: {
+    badgeSuccess: {
       backgroundColor: AppColors.successAlpha20,
+    },
+    badgeError: {
+      backgroundColor: AppColors.errorAlpha20,
     },
     badgeText: {
       fontWeight: 600,

@@ -5,7 +5,6 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { FlatList, Keyboard, ScrollView, View } from 'react-native';
 
-import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Flex } from '@/components/ui/Flex';
 import { Input } from '@/components/ui/Input';
@@ -53,7 +52,6 @@ const StadiumsList = () => {
         </View>
         <Button
           size="sm"
-          variant="outline"
           onPress={handleSearch}
           styleOverrides={{
             text: styles.searchButtonText,
@@ -112,23 +110,24 @@ const StadiumsList = () => {
                     style={[styles.iconSecondary, styles.iconTranslate]}
                   />
                   <Text color="secondary" style={styles.textItem}>
-                    {item.opening_hours}
+                    {item.opening_time} - {item.closing_time}
                   </Text>
                 </Flex>
 
                 {/* Amenities */}
-                <View style={styles.amenity}>
+                {/* <View style={styles.amenity}>
                   {item.amenities.map((amenity, index) => (
                     <Badge key={index} variant="light" radius="sm">
                       {amenity}
                     </Badge>
                   ))}
-                </View>
+                </View> */}
 
                 <View style={styles.cardSeparator}></View>
 
                 {/* CTA */}
                 <Button
+                  variant="light"
                   onPress={() =>
                     router.navigate({
                       pathname: '/(details)/stadiums/[stadiumId]',

@@ -12,6 +12,7 @@ type OPRSTableFilterProps = {
 const OPRSTable = ({ tier }: OPRSTableFilterProps) => {
   const { data, status } = useOPRSLeaderboard({
     rank: tier,
+    limit: 20,
   });
 
   if (status === 'pending') return;

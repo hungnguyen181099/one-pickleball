@@ -35,7 +35,7 @@ type ChipProps = {
   defaultChecked?: boolean;
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
-} & PressableProps;
+} & Omit<PressableProps, 'style'>;
 
 const Chip = ({
   children,

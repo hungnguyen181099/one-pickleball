@@ -31,7 +31,7 @@ type ButtonProps = {
     container?: ViewStyle;
     text?: TextStyle;
   };
-} & PressableProps;
+} & Omit<PressableProps, 'style'>;
 
 const Button = ({
   children,

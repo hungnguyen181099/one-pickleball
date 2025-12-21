@@ -34,7 +34,7 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       borderColor: colors.border,
     },
     image: {
-      aspectRatio: 1 / 1,
+      aspectRatio: 4 / 3,
       maxHeight: 512,
     },
     body: {
