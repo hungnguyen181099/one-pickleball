@@ -11,7 +11,7 @@ import { Text } from '../Text';
 
 type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent';
 type IconRadius = 'sm' | 'md' | 'lg' | 'full';
-type IconSize = 'sm' | 'md' | 'lg';
+type IconSize = 'sm' | 'md' | 'lg' | number;
 type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
 
 type GetStylesProps = StyleColorsProps & {
@@ -87,6 +87,10 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       ...(size === 'lg' && {
         width: 48,
         height: 48,
+      }),
+      ...(typeof size === 'number' && {
+        width: size,
+        height: size,
       }),
 
       // Variants
