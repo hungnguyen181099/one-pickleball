@@ -30,12 +30,6 @@ export const getStadiumCourtsStyles = ({ colors }: StyleColorsProps) =>
     price: {
       flexShrink: 0,
     },
-    status: {
-      paddingVertical: 2,
-      paddingHorizontal: 8,
-      textTransform: 'uppercase',
-      borderRadius: 8,
-    },
     statusActive: {
       backgroundColor: `${AppColors.success}20`,
       color: AppColors.success,

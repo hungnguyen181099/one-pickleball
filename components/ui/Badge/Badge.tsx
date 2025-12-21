@@ -9,7 +9,7 @@ import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { Text } from '../Text';
 
-type BadgeVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent';
+type BadgeVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent' | 'outline-light';
 type BadgeRadius = 'sm' | 'md' | 'lg' | 'full';
 type BadgeSize = 'sm' | 'md' | 'lg';
 type BadgeColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
@@ -164,6 +164,30 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
           borderColor: AppColors.error,
         }),
         ...(color === 'info' && {
+          borderColor: AppColors.info,
+        }),
+      }),
+      ...(variant === 'outline-light' && {
+        backgroundColor: AppColors.primaryAlpha20,
+        borderColor: AppColors.primary,
+        ...(color === 'secondary' && {
+          backgroundColor: `${colors.secondary}20`,
+          borderColor: colors.secondary,
+        }),
+        ...(color === 'success' && {
+          backgroundColor: AppColors.successAlpha20,
+          borderColor: AppColors.success,
+        }),
+        ...(color === 'warning' && {
+          backgroundColor: AppColors.warningAlpha20,
+          borderColor: AppColors.warning,
+        }),
+        ...(color === 'error' && {
+          backgroundColor: AppColors.errorAlpha20,
+          borderColor: AppColors.error,
+        }),
+        ...(color === 'info' && {
+          backgroundColor: AppColors.infoAlpha20,
           borderColor: AppColors.info,
         }),
       }),

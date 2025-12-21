@@ -3,6 +3,7 @@ import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View } from 'react-native';
 
+import { Badge } from '@/components/ui/Badge';
 import { Flex } from '@/components/ui/Flex';
 import { Text } from '@/components/ui/Text';
 
@@ -40,11 +41,11 @@ const StadiumCourts = ({ items }: StadiumCourtsProps) => {
               {/* Name */}
               <Flex gap={8} wrap="wrap">
                 <Text size="h2">{item.court_name}</Text>
-                <View style={[styles.status, item.is_active ? styles.statusActive : styles.statusInactive]}>
-                  <Text color={item.is_active ? 'success' : 'error'} size="sm" fontWeight={600}>
+                <Badge radius="sm" size="sm" variant="light" color={item.is_active ? 'success' : 'error'}>
+                  <Text color="inherit" size="inherit" fontWeight={600}>
                     {item.is_active ? 'TRỐNG' : 'FULL'}
                   </Text>
-                </View>
+                </Badge>
               </Flex>
 
               {/* Info */}

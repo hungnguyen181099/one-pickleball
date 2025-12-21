@@ -56,17 +56,14 @@ const StadiumHeader = ({
   return (
     <View style={styles.container}>
       <Flex>
-        <Badge
-          withDot
-          variant="outline"
-          color={isOpen ? 'success' : 'error'}
-          styleOverrides={{
-            container: isOpen ? styles.badgeSuccess : styles.badgeError,
-            text: styles.badgeText,
-          }}
-        >
-          {isOpen ? 'Đang mở cửa' : 'Đã đóng cửa'}
+        <Badge withDot variant="outline-light" color={isOpen ? 'success' : 'error'}>
+          <Text color="inherit" size="inherit" fontWeight={600}>
+            {isOpen ? 'Đang mở cửa' : 'Đã đóng cửa'}
+          </Text>
         </Badge>
+        <Text size="sm" color="muted">
+          Đóng cửa lúc {closing_time}
+        </Text>
       </Flex>
 
       <Text size="h1">{name}</Text>
@@ -124,9 +121,14 @@ const StadiumHeader = ({
           <Flex justifyContent="center" style={styles.cardIcon}>
             <MaterialCommunityIcons name="clock" style={styles.cardItemIcon} />
           </Flex>
-          <Text style={styles.cardItemText}>
-            {opening_time} - {closing_time}
-          </Text>
+          <View style={styles.cardItemText}>
+            <Text>
+              {opening_time} - {closing_time}
+            </Text>
+            <Text color={isOpen ? 'success' : 'error'} size="sm">
+              {isOpen ? 'Đang mở cửa' : 'Đã đóng cửa'}
+            </Text>
+          </View>
         </Flex>
       </View>
     </View>

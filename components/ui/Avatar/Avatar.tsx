@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FontAwesome6 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image, ImageStyle } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 
@@ -25,7 +25,7 @@ const Avatar = ({ src, size = 48, style }: AvatarProps) => {
   if (isError || !src || !isValidImageUri(src)) {
     return (
       <View style={[fallbackStyles.container, style]}>
-        <FontAwesome6 name="user" size={size / 3} color={AppColors.primaryLight} />
+        <MaterialCommunityIcons name="account" size={size / 3} color={AppColors.primaryLight} />
       </View>
     );
   }
