@@ -10,13 +10,13 @@ import { useThemedColors } from '@/hooks/use-theme';
 
 import { BottomSheet, BottomSheetProps } from '../BottomSheet';
 
-export type SelectOptions = {
+export type SelectOption = {
   label: string;
   value: string;
 };
 
 export type SelectProps = {
-  options: SelectOptions[];
+  options: SelectOption[];
   placeholder?: string;
   value?: string | null;
   onChangeValue?: (value: string | null) => void;

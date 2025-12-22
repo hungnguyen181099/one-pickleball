@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { router, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
@@ -19,6 +20,7 @@ type StadiumFooterProps = {
 };
 
 const StadiumFooter = ({ courts }: StadiumFooterProps) => {
+  const { stadiumId } = useLocalSearchParams<{ stadiumId: string }>();
   const styles = useGetStyles(getStadiumFooterStyles);
 
   const isDisabled = useMemo(() => courts.length === 0, [courts]);
@@ -54,6 +56,12 @@ const StadiumFooter = ({ courts }: StadiumFooterProps) => {
           container: styles.button,
           text: styles.buttonText,
         }}
+        onPress={() =>
+          router.navigate({
+            pathname: '/(stack)/bookings/[stadiumId]',
+            params: { stadiumId },
+          })
+        }
       >
         Đặt sân ngay
       </Button>
