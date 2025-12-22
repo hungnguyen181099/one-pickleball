@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   flatListContent: {
-    paddingBottom: 16
+    padding: 16
   },
   header: {
     flexDirection: 'row',

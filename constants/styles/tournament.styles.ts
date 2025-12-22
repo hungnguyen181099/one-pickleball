@@ -39,7 +39,8 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   scrollContent: {
-    marginBottom: 24,
+    padding: 16,
+    gap: 24
   },
   section: {
     paddingHorizontal: 16,
