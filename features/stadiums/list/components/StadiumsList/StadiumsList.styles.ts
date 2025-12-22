@@ -80,12 +80,6 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
     pagination: {
       paddingVertical: 16,
     },
-    cardSeparator: {
-      height: 1,
-      marginVertical: 8,
-      backgroundColor: colors.border,
-      opacity: 0.5,
-    },
     rating: {
       position: 'absolute',
       right: 16,

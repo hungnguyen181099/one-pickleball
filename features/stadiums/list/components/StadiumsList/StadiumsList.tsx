@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Flex } from '@/components/ui/Flex';
 import { Input } from '@/components/ui/Input';
 import { Pagination } from '@/components/ui/Pagination';
+import { Separator } from '@/components/ui/Separator';
 import { StadiumCardSkeleton } from '@/components/ui/Skeleton';
 import { Text } from '@/components/ui/Text';
 
@@ -123,7 +124,7 @@ const StadiumsList = () => {
                   ))}
                 </View> */}
 
-                <View style={styles.cardSeparator}></View>
+                <Separator marginVertical={8} />
 
                 {/* CTA */}
                 <Button

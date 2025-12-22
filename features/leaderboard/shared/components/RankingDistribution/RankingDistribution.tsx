@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Icon } from '@/components/ui/Icon';
+import { Separator } from '@/components/ui/Separator';
 import { Text } from '@/components/ui/Text';
 
 import { Radius, ThemeColors } from '@/constants/theme';
@@ -46,8 +47,8 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
                 </Badge>
               </Flex>
 
-              {/* Seperator */}
-              <View style={styles.seperator}></View>
+              {/* Separator */}
+              <Separator marginVertical={16} />
 
               {/* Info */}
               <Flex style={styles.infoContainer}>
@@ -58,7 +59,7 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
                   <Text size="h2">{item.playerCount}</Text>
                 </Flex>
 
-                <View style={styles.infoSeperator}></View>
+                <Separator orientation="vertical" />
 
                 <Flex direction="column" style={styles.info}>
                   <Text color="secondary" size="h6" style={styles.infoLabel}>
@@ -67,7 +68,7 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
                   <Text size="h2">{item.minPoint}</Text>
                 </Flex>
 
-                <View style={styles.infoSeperator}></View>
+                <Separator orientation="vertical" />
 
                 <Flex direction="column" style={styles.info}>
                   <Text color="primary" size="h6" style={styles.infoLabel}>
@@ -108,12 +109,6 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
       paddingVertical: 0,
       paddingHorizontal: 0,
     },
-    seperator: {
-      height: 1,
-      backgroundColor: colors.border,
-      marginVertical: 16,
-      opacity: 0.5,
-    },
     infoContainer: {
       flex: 1,
     },
@@ -122,12 +117,6 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
     },
     infoLabel: {
       textTransform: 'uppercase',
-    },
-    infoSeperator: {
-      width: 1,
-      backgroundColor: colors.border,
-      opacity: 0.5,
-      alignSelf: 'stretch',
     },
   });
 
