@@ -1,3 +1,4 @@
+import { dayjsExt } from '@/lib/days';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
@@ -7,7 +8,9 @@ export const useBookingForm = () => {
   return useForm({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      court_id: undefined,
+      courtId: undefined,
+      bookingDate: dayjsExt().toDate(),
+      durationHours: undefined,
     },
   });
 };

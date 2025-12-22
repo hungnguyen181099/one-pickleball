@@ -22,7 +22,7 @@ type GetStylesProps = StyleColorsProps & {
 };
 
 type ButtonProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   variant?: ButtonVariant;

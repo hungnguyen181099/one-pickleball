@@ -121,7 +121,7 @@ const getStyles = ({ colors, fullSize }: StyleProps) =>
       top: 0,
       left: 0,
       right: 0,
-      height: SCREEN_HEIGHT,
+      bottom: 0,
     },
     backdrop: {
       position: 'absolute',
@@ -152,10 +152,9 @@ const getStyles = ({ colors, fullSize }: StyleProps) =>
       borderRadius: Radius.full,
     },
     content: {
-      flex: 1,
       backgroundColor: colors.card,
-      ...(!fullSize && { maxHeight: 512 }),
       minHeight: 384,
+      ...(!fullSize && { maxHeight: 512 }),
       paddingBottom: 16,
     },
   });
