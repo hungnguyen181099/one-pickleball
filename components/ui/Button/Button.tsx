@@ -18,6 +18,7 @@ type GetStylesProps = StyleColorsProps & {
   size: ButtonSize;
   radius: ButtonRadius;
   disabled: PressableProps['disabled'];
+  fullWidth?: boolean;
 };
 
 type ButtonProps = {
@@ -27,6 +28,7 @@ type ButtonProps = {
   variant?: ButtonVariant;
   size?: ButtonSize;
   radius?: ButtonRadius;
+  fullWidth?: boolean;
   styleOverrides?: {
     container?: ViewStyle;
     text?: TextStyle;
@@ -42,12 +44,13 @@ const Button = ({
   size = 'md',
   styleOverrides = {},
   disabled,
+  fullWidth,
   ...props
 }: ButtonProps) => {
-  const styles = useGetStyles(getStyles, { variant, size, radius, disabled });
+  const styles = useGetStyles(getStyles, { variant, size, radius, disabled, fullWidth });
 
   return (
-    <Pressable style={[styles.container, styleOverrides.container]} {...props}>
+    <Pressable disabled={disabled} style={[styles.container, styleOverrides.container]} {...props}>
       {startIcon && <Text style={styles.icon}>{startIcon}</Text>}
       <Text style={[styles.text, styleOverrides.text]}>{children}</Text>
       {endIcon && <Text style={styles.icon}>{endIcon}</Text>}
@@ -55,13 +58,14 @@ const Button = ({
   );
 };
 
-const getStyles = ({ colors, variant, size, radius, disabled }: GetStylesProps) =>
+const getStyles = ({ colors, variant, size, radius, disabled, fullWidth }: GetStylesProps) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1,
+      ...(!fullWidth && { alignSelf: 'flex-start' }),
 
       // Radius
       ...(radius === 'sm' && {

@@ -62,6 +62,7 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+      alignSelf: 'flex-start', // Make width fit content
       borderWidth: 1,
 
       // Radius

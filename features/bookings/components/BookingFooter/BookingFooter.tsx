@@ -29,7 +29,7 @@ const BookingFooter = () => {
           150.000đ
         </Text>
       </Flex>
-      <Button radius="full" size="lg" onPress={onSubmit}>
+      <Button radius="full" size="lg" fullWidth onPress={onSubmit}>
         <Text color="inherit" size="h3">
           Tiếp tục
         </Text>

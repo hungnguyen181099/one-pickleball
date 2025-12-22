@@ -18,7 +18,7 @@ const TestScreen = () => {
       {/* Button */}
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Button</Text>
-        <Button variant="default" size="md">
+        <Button variant="default" size="md" fullWidth>
           Default
         </Button>
         <Button variant="filled">Filled</Button>

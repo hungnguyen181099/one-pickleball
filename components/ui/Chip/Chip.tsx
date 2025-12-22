@@ -86,6 +86,7 @@ const getStyles = ({ colors, disabled, radius, size, variant }: GetStylesProps) 
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+      alignSelf: 'flex-start', // Make width fit content
       borderWidth: 1,
       backgroundColor: colors.muted,
       borderColor: colors.muted,

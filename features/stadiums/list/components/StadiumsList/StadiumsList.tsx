@@ -128,6 +128,7 @@ const StadiumsList = () => {
 
                 {/* CTA */}
                 <Button
+                  fullWidth
                   variant="filled"
                   onPress={() =>
                     router.navigate({
