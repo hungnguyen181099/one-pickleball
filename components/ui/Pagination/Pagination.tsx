@@ -1,10 +1,12 @@
 import { StyleColorsProps } from '@/types';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { AppColors, Radius } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
+
+import { Text } from '../Text';
 
 type PaginationAlign = 'center' | 'left' | 'right';
 
