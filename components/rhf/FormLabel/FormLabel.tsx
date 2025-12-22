@@ -1,26 +1,26 @@
 import React from 'react';
 
-import { Text } from 'react-native';
+import { TextStyle } from 'react-native';
 
-import { useThemedColors } from '@/hooks/use-theme';
+import { Text } from '@/components/ui/Text';
 
 type FormLabelProps = {
   children: React.ReactNode;
+  style?: TextStyle;
 };
 
-const FormLabel = ({ children }: FormLabelProps) => {
-  const colors = useThemedColors();
-
+const FormLabel = ({ children, style }: FormLabelProps) => {
   if (!children) return;
 
   return (
     <Text
-      style={{
-        color: colors.text,
-        fontSize: 14,
-        fontWeight: '500',
-        marginBottom: 8,
-      }}
+      size="h5"
+      style={[
+        {
+          marginBottom: 8,
+        },
+        style,
+      ]}
     >
       {children}
     </Text>

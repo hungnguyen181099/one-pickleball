@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { Control, Controller, ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
-import { View, ViewProps } from 'react-native';
+import { TextStyle, View, ViewProps } from 'react-native';
+
+import { Text } from '@/components/ui/Text';
 
 import { FormDescription } from '../FormDescription';
 import { FormLabel } from '../FormLabel';
@@ -16,6 +18,12 @@ export type FormWrapperProps<T extends FieldValues> = {
   container?: ViewProps;
   label?: string;
   description?: string;
+  withAsterisk?: boolean;
+  styleOverrides?: {
+    label?: TextStyle;
+    description?: TextStyle;
+    message?: TextStyle;
+  };
 };
 
 type FormWrapperWithChildProps<T extends FieldValues> = {
@@ -27,14 +35,21 @@ const FormWrapper = <T extends FieldValues>({
   label,
   description,
   container,
+  withAsterisk = false,
+  styleOverrides = {},
   controller: { control, name, message },
 }: FormWrapperWithChildProps<T>) => {
   return (
     <View {...container}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel style={styleOverrides.label}>
+        {label} {withAsterisk && <Text color="error">*</Text>}
+      </FormLabel>
+
       <Controller control={control} render={({ field }) => children(field)} name={name} />
-      <FormDescription>{description}</FormDescription>
-      <FormMessage>{message}</FormMessage>
+
+      <FormDescription style={styleOverrides.description}>{description}</FormDescription>
+
+      <FormMessage style={styleOverrides.message}>{message}</FormMessage>
     </View>
   );
 };
