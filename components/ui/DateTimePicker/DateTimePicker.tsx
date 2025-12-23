@@ -4,7 +4,7 @@ import { dayjsExt } from '@/lib/days';
 import { StyleColorsProps } from '@/types';
 import { MaterialIcons } from '@expo/vector-icons';
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Pressable, PressableProps, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 
 import { Radius } from '@/constants/theme';
 
@@ -13,19 +13,28 @@ import { useUncontrolled } from '@/hooks/useUncontrolled';
 
 import { Text } from '../Text';
 
-type Mode = 'date' | 'time';
+type DateMode = {
+  mode?: 'date';
+  minimumDate?: Date;
+  maximumDate?: Date;
+};
 
-export type DateTimePickerProps = {
+type TimeMode = {
+  mode?: 'time';
+};
+
+type Mode = DateMode | TimeMode;
+
+export type DateTimePickerProps = Mode & {
   defaultValue?: Date;
   value?: Date;
-  mode?: Mode;
   disabled?: boolean;
   onDateChange?: (date: Date) => void;
   styleOverrides?: {
     container?: ViewStyle;
     text?: TextStyle;
   };
-} & Omit<PressableProps, 'style'>;
+};
 
 const DateTimePicker = ({
   mode = 'date',
@@ -59,7 +68,6 @@ const DateTimePicker = ({
       <Pressable
         onPress={disabled ? undefined : () => setShow(true)}
         style={[styles.container, disabled && styles.containerDisabled, styleOverrides.container]}
-        {...props}
       >
         {/* Trigger */}
         <View style={styles.textContainer}>
@@ -81,7 +89,7 @@ const DateTimePicker = ({
       </Pressable>
 
       {/* Picker */}
-      {show && <RNDateTimePicker value={date} mode={mode} is24Hour={true} onChange={onChange} />}
+      {show && <RNDateTimePicker value={date} mode={mode} is24Hour={true} onChange={onChange} {...props} />}
     </>
   );
 };

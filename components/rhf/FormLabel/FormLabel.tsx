@@ -14,7 +14,7 @@ const FormLabel = ({ children, style }: FormLabelProps) => {
 
   return (
     <Text
-      size="h5"
+      size="h4"
       style={[
         {
           marginBottom: 8,

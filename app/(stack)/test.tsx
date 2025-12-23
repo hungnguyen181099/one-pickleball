@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { dayjsExt } from '@/lib/days';
 import { View } from 'react-native';
 
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Chip } from '@/components/ui/Chip';
-import { DateTimePicker } from '@/components/ui/DateTimePicker';
 import { Flex } from '@/components/ui/Flex';
+import { Select } from '@/components/ui/Select';
 import { Text } from '@/components/ui/Text';
 
 import { useThemedColors } from '@/hooks/use-theme';
@@ -15,12 +14,22 @@ import { useThemedColors } from '@/hooks/use-theme';
 const TestScreen = () => {
   const styles = useThemedColors();
 
-  const [value, setValue] = useState<Date>(dayjsExt('2025-12-25').toDate());
-
   return (
     <View style={{ backgroundColor: styles.backgroundSecondary, padding: 16 }}>
       {/* Button */}
-      <DateTimePicker value={value} onDateChange={setValue} mode='time'/>
+      <Select
+        options={[
+          {
+            label: '1',
+            value: '1',
+          },
+          {
+            label: '2',
+            value: '2',
+            disabled: true,
+          },
+        ]}
+      />
 
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Button</Text>

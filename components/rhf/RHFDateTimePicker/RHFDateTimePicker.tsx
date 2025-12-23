@@ -8,8 +8,10 @@ import { DateTimePickerProps } from '@/components/ui/DateTimePicker/DateTimePick
 import { FormWrapper } from '../FormWrapper';
 import { FormWrapperProps } from '../FormWrapper/FormWrapper';
 
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
+
 type RHFDateTimePickerProps<T extends FieldValues> = FormWrapperProps<T> & {
-  dateTimePicker?: Omit<DateTimePickerProps, 'value' | 'onDateChange'>;
+  dateTimePicker?: DistributiveOmit<DateTimePickerProps, 'value' | 'onDateChange'>;
 };
 
 const RHFDateTimePicker = <T extends FieldValues>({ dateTimePicker, ...props }: RHFDateTimePickerProps<T>) => {

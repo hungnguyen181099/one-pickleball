@@ -15,9 +15,9 @@ const FormDescription = ({ children, style }: FormDescriptionProps) => {
   return (
     <Text
       color="muted"
+      size="sm"
       style={[
         {
-          fontSize: 13,
           marginTop: 4,
         },
         style,

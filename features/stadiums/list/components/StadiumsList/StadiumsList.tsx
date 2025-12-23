@@ -53,8 +53,10 @@ const StadiumsList = () => {
         </View>
         <Button
           size="sm"
+          variant="light"
           onPress={handleSearch}
           styleOverrides={{
+            container: styles.searchButtonContainer,
             text: styles.searchButtonText,
           }}
         >

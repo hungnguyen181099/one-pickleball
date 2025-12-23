@@ -15,6 +15,7 @@ import { Text } from '../Text';
 export type SelectOption = {
   label: string;
   value: string;
+  disabled?: boolean;
 };
 
 export type SelectProps = {
@@ -68,6 +69,22 @@ const Select = ({
       <BottomSheet visible={visible} onVisibleChange={setVisible} fullSize={fullSize} {...props}>
         {options.map((item, index) => {
           const isSelected = item.value === finalValue;
+          const isDisabled = item.disabled;
+
+          if (isDisabled) {
+            return (
+              <Fragment key={item.value}>
+                <Pressable style={[styles.item, styles.itemDisabled]}>
+                  <Text style={[styles.label, styles.labelDisabled]}>
+                    {renderLabel ? renderLabel(item.label) : item.label}
+                  </Text>
+                  <MaterialIcons name="check-circle" style={[styles.icon, styles.iconDisabled]} />
+                </Pressable>
+
+                {index < options.length - 1 && <Separator />}
+              </Fragment>
+            );
+          }
 
           return (
             <Fragment key={item.value}>
@@ -107,6 +124,16 @@ const getStyles = ({ colors }: StyleColorsProps) =>
       paddingVertical: 8,
       paddingHorizontal: 16,
       minHeight: 56,
+    },
+    itemDisabled: {
+      backgroundColor: colors.muted,
+      opacity: 0.5,
+    },
+    iconDisabled: {
+      color: colors.mutedForeground,
+    },
+    labelDisabled: {
+      color: colors.mutedForeground,
     },
     colorSecondary: {
       color: colors.secondaryForeground,

@@ -21,6 +21,9 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       fontWeight: 500,
       fontSize: 14,
     },
+    searchButtonContainer: {
+      alignSelf: 'stretch',
+    },
     // List
     list: {
       paddingHorizontal: 4,

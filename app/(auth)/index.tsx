@@ -21,6 +21,7 @@ import { RHFLayout } from '@/components/rhf/RHFLayout';
 import { RHFPassword } from '@/components/rhf/RHFPassword';
 import { RHFTextInput } from '@/components/rhf/RHFTextInput';
 
+import { phoneRegex } from '@/constants/global.constants';
 import { styles } from '@/constants/styles/login.styles';
 
 import { useSession } from '@/contexts/AuthProvider';
@@ -30,10 +31,7 @@ import { useTheme, useThemedColors } from '@/hooks/use-theme';
 const loginSchema = z.object({
   username: z.union([
     z.email('Vui lòng nhập đúng định dạng').min(1, 'Không được để trống'),
-    z
-      .string()
-      .min(1, 'Không được để trống')
-      .regex(/(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g, 'Vui lòng nhập đúng định dạng'),
+    z.string().min(1, 'Không được để trống').regex(phoneRegex, 'Vui lòng nhập đúng định dạng'),
   ]),
   password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 });

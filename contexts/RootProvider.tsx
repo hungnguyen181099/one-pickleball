@@ -15,7 +15,7 @@ type RootProviderProps = {
   children: React.ReactNode;
 };
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const RootProvider = ({ children }: RootProviderProps) => {
   return (

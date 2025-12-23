@@ -7,6 +7,6 @@ export const getBookingFooterStyles = ({ colors }: StyleColorsProps) =>
       padding: 16,
       borderTopWidth: 1,
       borderTopColor: colors.border,
-      gap: 16,
+      gap: 12,
     },
   });

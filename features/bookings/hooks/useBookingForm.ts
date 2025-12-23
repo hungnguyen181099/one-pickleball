@@ -8,9 +8,17 @@ export const useBookingForm = () => {
   return useForm({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
-      courtId: undefined,
+      courtId: null,
       bookingDate: dayjsExt().toDate(),
-      durationHours: undefined,
+      durationHours: null,
+      startTime: '',
+      customerName: '',
+      customerPhone: '',
+      customerEmail: '',
+      notes: '',
+      paymentMethod: '',
+      price: 0,
     },
+    mode: 'onChange',
   });
 };

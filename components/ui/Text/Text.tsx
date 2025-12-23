@@ -7,7 +7,17 @@ import { AppColors, fontSize as FONT_SIZE } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
-type TextColors = 'default' | 'secondary' | 'primary' | 'link' | 'success' | 'error' | 'warning' | 'muted' | 'inherit';
+type TextColors =
+  | 'default'
+  | 'secondary'
+  | 'primary'
+  | 'primaryForeground'
+  | 'link'
+  | 'success'
+  | 'error'
+  | 'warning'
+  | 'muted'
+  | 'inherit';
 
 type TextSizes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'inherit';
 
@@ -42,6 +52,7 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps
       // Variants
       ...(color !== 'inherit' && {
         ...(color === 'primary' && { color: AppColors.primary }),
+        ...(color === 'primaryForeground' && { color: AppColors.primaryForeground }),
         ...(color === 'secondary' && { color: colors.secondaryForeground }),
         ...(color === 'muted' && { color: colors.mutedForeground }),
         ...(color === 'warning' && { color: AppColors.warning }),
