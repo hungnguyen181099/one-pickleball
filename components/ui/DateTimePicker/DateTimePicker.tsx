@@ -73,7 +73,11 @@ const DateTimePicker = ({
           </Text>
         </View>
 
-        <MaterialIcons name="calendar-month" size={20} style={(styles.icon, disabled && styles.iconDisabled)} />
+        <MaterialIcons
+          name={mode === 'date' ? 'calendar-month' : 'access-time'}
+          size={20}
+          style={(styles.icon, disabled && styles.iconDisabled)}
+        />
       </Pressable>
 
       {/* Picker */}

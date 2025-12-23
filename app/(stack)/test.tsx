@@ -20,7 +20,7 @@ const TestScreen = () => {
   return (
     <View style={{ backgroundColor: styles.backgroundSecondary, padding: 16 }}>
       {/* Button */}
-      <DateTimePicker value={value} onDateChange={setValue} />
+      <DateTimePicker value={value} onDateChange={setValue} mode='time'/>
 
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Button</Text>
