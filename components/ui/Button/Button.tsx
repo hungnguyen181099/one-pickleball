@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
-import { AppColors, Radius, fontSize } from '@/constants/theme';
+import { AppColors, Radius, FontSize } from '@/constants/theme';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
@@ -151,13 +151,13 @@ const getStyles = ({ colors, variant, size, radius, disabled, fullWidth }: GetSt
 
       // Sizes
       ...(size === 'sm' && {
-        fontSize: fontSize.sm,
+        fontSize: FontSize.sm,
       }),
       ...(size === 'md' && {
-        fontSize: fontSize.md,
+        fontSize: FontSize.md,
       }),
       ...(size === 'lg' && {
-        fontSize: fontSize.lg,
+        fontSize: FontSize.lg,
       }),
 
       // Variants
@@ -194,13 +194,13 @@ const getStyles = ({ colors, variant, size, radius, disabled, fullWidth }: GetSt
 
       // Sizes
       ...(size === 'sm' && {
-        fontSize: fontSize.md,
+        fontSize: FontSize.md,
       }),
       ...(size === 'md' && {
-        fontSize: fontSize.lg,
+        fontSize: FontSize.lg,
       }),
       ...(size === 'lg' && {
-        fontSize: fontSize.xl,
+        fontSize: FontSize.xl,
       }),
 
       // Variants

@@ -80,7 +80,7 @@ const StadiumHeader = ({
           <Pressable onPress={handleCall}>
             <Flex justifyContent="center" style={styles.contact}>
               <MaterialCommunityIcons name="phone" style={styles.contactIcon} />
-              <Text fontWeight={500}>Gọi điện</Text>
+              <Text size="h4">Gọi điện</Text>
             </Flex>
           </Pressable>
         </GridItem>
@@ -88,7 +88,7 @@ const StadiumHeader = ({
           <Pressable onPress={handleEmail}>
             <Flex justifyContent="center" style={styles.contact}>
               <MaterialCommunityIcons name="message-text" style={styles.contactIcon} />
-              <Text fontWeight={500}>Nhắn tin</Text>
+              <Text size="h4">Nhắn tin</Text>
             </Flex>
           </Pressable>
         </GridItem>

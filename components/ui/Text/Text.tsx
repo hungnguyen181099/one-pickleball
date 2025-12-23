@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleColorsProps } from '@/types';
 import { Text as NativeText, TextProps as NativeTextProps, StyleSheet, TextStyle } from 'react-native';
 
-import { AppColors, fontSize as FONT_SIZE } from '@/constants/theme';
+import { AppColors, FontSize } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -22,7 +22,7 @@ type TextColors =
 type TextSizes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'inherit';
 
 type TextProps = {
-  fontWeight?: TextStyle['fontWeight'];
+  fontWeight?: number;
   fontSize?: TextStyle['fontSize'];
   color?: TextColors;
   size?: TextSizes;
@@ -30,7 +30,7 @@ type TextProps = {
 } & NativeTextProps;
 
 type GetStylesProps = {
-  fontWeight: TextStyle['fontWeight'];
+  fontWeight?: number;
   fontSize: TextStyle['fontSize'];
   color: TextColors;
   size: TextSizes;
@@ -108,17 +108,17 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps
       // Sizes
       ...(size !== 'inherit' && {
         ...(size === 'h1' && { fontSize: 24, fontWeight: 700, fontFamily: fontWeightMap['700'] }),
-        ...(size === 'h2' && { fontSize: 20, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
-        ...(size === 'h3' && { fontSize: 18, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
-        ...(size === 'h4' && { fontSize: 16, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
-        ...(size === 'h5' && { fontSize: 14, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
-        ...(size === 'h6' && { fontSize: 12, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
+        ...(size === 'h2' && { fontSize: FontSize.xl, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
+        ...(size === 'h3' && { fontSize: FontSize.lg, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
+        ...(size === 'h4' && { fontSize: FontSize.md, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
+        ...(size === 'h5' && { fontSize: FontSize.sm, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
+        ...(size === 'h6' && { fontSize: FontSize.xs, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
 
-        ...(size === 'xs' && { fontSize: FONT_SIZE.xs }),
-        ...(size === 'sm' && { fontSize: FONT_SIZE.sm }),
-        ...(size === 'md' && { fontSize: FONT_SIZE.md }),
-        ...(size === 'lg' && { fontSize: FONT_SIZE.lg }),
-        ...(size === 'xl' && { fontSize: FONT_SIZE.xl }),
+        ...(size === 'xl' && { fontSize: FontSize.xl }),
+        ...(size === 'lg' && { fontSize: FontSize.lg }),
+        ...(size === 'md' && { fontSize: FontSize.md }),
+        ...(size === 'sm' && { fontSize: FontSize.sm }),
+        ...(size === 'xs' && { fontSize: FontSize.xs }),
       }),
 
       // Font weight

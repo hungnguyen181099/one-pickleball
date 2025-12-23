@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleColorsProps } from '@/types';
 import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
-import { AppColors, Radius, fontSize } from '@/constants/theme';
+import { AppColors, FontSize, Radius } from '@/constants/theme';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
@@ -198,13 +198,13 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
 
       // Sizes
       ...(size === 'sm' && {
-        fontSize: fontSize.xs,
+        fontSize: FontSize.xs,
       }),
       ...(size === 'md' && {
-        fontSize: fontSize.sm,
+        fontSize: FontSize.sm,
       }),
       ...(size === 'lg' && {
-        fontSize: fontSize.md,
+        fontSize: FontSize.md,
       }),
 
       // Variants
