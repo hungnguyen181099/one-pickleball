@@ -107,12 +107,12 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps
 
       // Sizes
       ...(size !== 'inherit' && {
-        ...(size === 'h1' && { fontSize: 24, fontWeight: 700, fontFamily: fontFamilyImport.bold }),
-        ...(size === 'h2' && { fontSize: 20, fontWeight: 600, fontFamily: fontFamilyImport.semibold }),
-        ...(size === 'h3' && { fontSize: 18, fontWeight: 600, fontFamily: fontFamilyImport.semibold }),
-        ...(size === 'h4' && { fontSize: 16, fontWeight: 500, fontFamily: fontFamilyImport.medium }),
-        ...(size === 'h5' && { fontSize: 14, fontWeight: 500, fontFamily: fontFamilyImport.medium }),
-        ...(size === 'h6' && { fontSize: 12, fontWeight: 500, fontFamily: fontFamilyImport.medium }),
+        ...(size === 'h1' && { fontSize: 24, fontWeight: 700, fontFamily: fontWeightMap['700'] }),
+        ...(size === 'h2' && { fontSize: 20, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
+        ...(size === 'h3' && { fontSize: 18, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
+        ...(size === 'h4' && { fontSize: 16, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
+        ...(size === 'h5' && { fontSize: 14, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
+        ...(size === 'h6' && { fontSize: 12, fontWeight: 500, fontFamily: fontWeightMap['500'] }),
 
         ...(size === 'xs' && { fontSize: FONT_SIZE.xs }),
         ...(size === 'sm' && { fontSize: FONT_SIZE.sm }),
