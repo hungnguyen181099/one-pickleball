@@ -153,7 +153,7 @@ export const Radius = {
   full: 9999,
 };
 
-export const fontSize = {
+export const FontSize = {
   xs: 12,
   sm: 14,
   md: 16,
