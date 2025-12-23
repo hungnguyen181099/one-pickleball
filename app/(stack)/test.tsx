@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Chip } from '@/components/ui/Chip';
 import { Flex } from '@/components/ui/Flex';
-import { Select } from '@/components/ui/Select';
 import { Text } from '@/components/ui/Text';
 
 import { useThemedColors } from '@/hooks/use-theme';
@@ -14,22 +13,13 @@ import { useThemedColors } from '@/hooks/use-theme';
 const TestScreen = () => {
   const styles = useThemedColors();
 
+
   return (
     <View style={{ backgroundColor: styles.backgroundSecondary, padding: 16 }}>
       {/* Button */}
-      <Select
-        options={[
-          {
-            label: '1',
-            value: '1',
-          },
-          {
-            label: '2',
-            value: '2',
-            disabled: true,
-          },
-        ]}
-      />
+      <Text fontWeight={600}>123</Text>
+
+      <Button loading disabled variant='light' size='md'>123</Button>
 
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Button</Text>
@@ -41,7 +31,6 @@ const TestScreen = () => {
         <Button variant="outline">Outline</Button>
         <Button variant="transparent">Transparent</Button>
       </Flex>
-
       {/* Chip */}
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Chip</Text>
@@ -53,7 +42,6 @@ const TestScreen = () => {
           Light
         </Chip>
       </Flex>
-
       {/* Badge */}
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Badge</Text>

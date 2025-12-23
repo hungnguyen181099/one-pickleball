@@ -25,7 +25,7 @@ type BookingFooterProps = {
 };
 
 const BookingFooter = ({ step, setStep }: BookingFooterProps) => {
-  const { mutate: createBooking } = useCreateBooking();
+  const { mutate: createBooking, isPending } = useCreateBooking();
   const styles = useGetStyles(getBookingFooterStyles);
 
   const { control, trigger, handleSubmit } = useFormContext<BookingFormType>();
@@ -116,9 +116,9 @@ const BookingFooter = ({ step, setStep }: BookingFooterProps) => {
             </Button>
           </GridItem>
           <GridItem>
-            <Button radius="full" size="lg" fullWidth onPress={onSubmit}>
+            <Button loading={isPending} disabled={isPending} radius="full" size="lg" fullWidth onPress={onSubmit}>
               <Text color="inherit" size="h3">
-                Xác nhận
+                {isPending ? 'Đang tải' : 'Xác nhận'}
               </Text>
             </Button>
           </GridItem>

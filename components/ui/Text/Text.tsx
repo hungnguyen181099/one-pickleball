@@ -36,6 +36,47 @@ type GetStylesProps = {
   size: TextSizes;
 } & StyleColorsProps;
 
+export const fontWeightMap = {
+  100: 'BeVietnamPro-Thin',
+  200: 'BeVietnamPro-ExtraLight',
+  300: 'BeVietnamPro-Light',
+  400: 'BeVietnamPro-Regular',
+  500: 'BeVietnamPro-Medium',
+  600: 'BeVietnamPro-SemiBold',
+  700: 'BeVietnamPro-Bold',
+  800: 'BeVietnamPro-ExtraBold',
+  900: 'BeVietnamPro-Black',
+};
+
+const fontFamilyImport = {
+  thin: 'BeVietnamPro-Thin', // 100
+  thinItalic: 'BeVietnamPro-ThinItalic',
+
+  extralight: 'BeVietnamPro-ExtraLight', // 200
+  extralightItalic: 'BeVietnamPro-ExtraLightItalic',
+
+  light: 'BeVietnamPro-Light', // 300
+  lightItalic: 'BeVietnamPro-LightItalic',
+
+  regular: 'BeVietnamPro-Regular', // 400
+  italic: 'BeVietnamPro-Italic',
+
+  medium: 'BeVietnamPro-Medium', // 500
+  mediumItalic: 'BeVietnamPro-MediumItalic',
+
+  semibold: 'BeVietnamPro-SemiBold', // 600
+  semiboldItalic: 'BeVietnamPro-SemiBoldItalic',
+
+  bold: 'BeVietnamPro-Bold', // 700
+  boldItalic: 'BeVietnamPro-BoldItalic',
+
+  extrabold: 'BeVietnamPro-ExtraBold', // 800
+  extraboldItalic: 'BeVietnamPro-ExtraBoldItalic',
+
+  black: 'BeVietnamPro-Black', // 900
+  blackItalic: 'BeVietnamPro-BlackItalic',
+};
+
 const Text = ({ color = 'default', fontWeight, size = 'md', children, style, fontSize, ...props }: TextProps) => {
   const styles = getStyles({ colors: useThemedColors(), size, color, fontWeight, fontSize });
 
@@ -49,6 +90,8 @@ const Text = ({ color = 'default', fontWeight, size = 'md', children, style, fon
 const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps) =>
   StyleSheet.create({
     container: {
+      fontFamily: fontFamilyImport.regular,
+
       // Variants
       ...(color !== 'inherit' && {
         ...(color === 'primary' && { color: AppColors.primary }),
@@ -64,12 +107,12 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps
 
       // Sizes
       ...(size !== 'inherit' && {
-        ...(size === 'h1' && { fontSize: 24, fontWeight: 700 }),
-        ...(size === 'h2' && { fontSize: 20, fontWeight: 600 }),
-        ...(size === 'h3' && { fontSize: 18, fontWeight: 600 }),
-        ...(size === 'h4' && { fontSize: 16, fontWeight: 500 }),
-        ...(size === 'h5' && { fontSize: 14, fontWeight: 500 }),
-        ...(size === 'h6' && { fontSize: 12, fontWeight: 500 }),
+        ...(size === 'h1' && { fontSize: 24, fontWeight: 700, fontFamily: fontFamilyImport.bold }),
+        ...(size === 'h2' && { fontSize: 20, fontWeight: 600, fontFamily: fontFamilyImport.semibold }),
+        ...(size === 'h3' && { fontSize: 18, fontWeight: 600, fontFamily: fontFamilyImport.semibold }),
+        ...(size === 'h4' && { fontSize: 16, fontWeight: 500, fontFamily: fontFamilyImport.medium }),
+        ...(size === 'h5' && { fontSize: 14, fontWeight: 500, fontFamily: fontFamilyImport.medium }),
+        ...(size === 'h6' && { fontSize: 12, fontWeight: 500, fontFamily: fontFamilyImport.medium }),
 
         ...(size === 'xs' && { fontSize: FONT_SIZE.xs }),
         ...(size === 'sm' && { fontSize: FONT_SIZE.sm }),
@@ -80,7 +123,7 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps
 
       // Font weight
       ...(fontWeight && {
-        fontWeight,
+        fontFamily: fontWeightMap[fontWeight as keyof typeof fontWeightMap] ?? fontFamilyImport.regular,
       }),
 
       // Font size

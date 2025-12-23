@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { StyleColorsProps } from '@/types';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 import { AppColors, Radius, fontSize } from '@/constants/theme';
 
@@ -29,6 +31,7 @@ type ButtonProps = {
   size?: ButtonSize;
   radius?: ButtonRadius;
   fullWidth?: boolean;
+  loading?: boolean;
   styleOverrides?: {
     container?: ViewStyle;
     text?: TextStyle;
@@ -44,13 +47,30 @@ const Button = ({
   size = 'md',
   styleOverrides = {},
   disabled,
+  loading,
   fullWidth,
   ...props
 }: ButtonProps) => {
   const styles = useGetStyles(getStyles, { variant, size, radius, disabled, fullWidth });
 
+  const rotation = useSharedValue<number>(0);
+
+  useEffect(() => {
+    rotation.value = withRepeat(withTiming(360, { duration: 1000, easing: Easing.linear }), -1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadingIconStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
+
   return (
     <Pressable disabled={disabled} style={[styles.container, styleOverrides.container]} {...props}>
+      {loading && (
+        <Animated.Text style={loadingIconStyle}>
+          <MaterialCommunityIcons name="loading" style={styles.loadingIcon} />
+        </Animated.Text>
+      )}
       {startIcon && <Text style={styles.icon}>{startIcon}</Text>}
       <Text style={[styles.text, styleOverrides.text]}>{children}</Text>
       {endIcon && <Text style={styles.icon}>{endIcon}</Text>}
@@ -155,6 +175,33 @@ const getStyles = ({ colors, variant, size, radius, disabled, fullWidth }: GetSt
     },
     icon: {
       color: AppColors.primary,
+
+      // Variants
+      ...(variant === 'default' && {
+        color: colors.text,
+      }),
+      ...(variant === 'filled' && {
+        color: AppColors.primaryForeground,
+      }),
+
+      // Disabled
+      ...(disabled && {
+        color: colors.mutedForeground,
+      }),
+    },
+    loadingIcon: {
+      color: AppColors.primary,
+
+      // Sizes
+      ...(size === 'sm' && {
+        fontSize: fontSize.md,
+      }),
+      ...(size === 'md' && {
+        fontSize: fontSize.lg,
+      }),
+      ...(size === 'lg' && {
+        fontSize: fontSize.xl,
+      }),
 
       // Variants
       ...(variant === 'default' && {
