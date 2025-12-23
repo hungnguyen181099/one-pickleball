@@ -5,7 +5,7 @@ export const getStadiumsScreenStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      paddingHorizontal: 16,
+
       backgroundColor: colors.backgroundSecondary,
     },
   });

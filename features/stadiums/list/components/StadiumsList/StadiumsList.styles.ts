@@ -7,6 +7,7 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      paddingHorizontal: 16,
     },
     // Search
     searchContainer: {

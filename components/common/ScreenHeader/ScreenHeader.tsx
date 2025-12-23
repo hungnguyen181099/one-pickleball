@@ -2,51 +2,47 @@ import React from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View, ViewStyle } from 'react-native';
 
 import { Text } from '@/components/ui/Text';
+
+import { useGetStyles } from '@/hooks/useGetStyles';
+
+import { getScreenHeaderStyles } from './ScreenHeader.styles';
 
 type ScreenHeaderProps = {
   title?: string;
   showBack?: boolean;
+  withBorder?: boolean;
+  paddingHorizontal?: number;
+  styleOverrides?: {
+    container?: ViewStyle;
+  };
 };
 
-const ScreenHeader = ({ title = '', showBack = true }: ScreenHeaderProps) => {
+const ScreenHeader = ({
+  paddingHorizontal = 16,
+  styleOverrides = {},
+  withBorder = true,
+  showBack = true,
+  title = '',
+}: ScreenHeaderProps) => {
+  const styles = useGetStyles(getScreenHeaderStyles, { withBorder, paddingHorizontal });
+
   return (
-    <View style={styles.container}>
-      <View style={styles.left}>
-        {showBack && (
-          <Pressable
-            onPress={() => {
-              router.back();
-            }}
-          >
-            <MaterialCommunityIcons name="arrow-left" style={styles.back} />
-          </Pressable>
-        )}
-        <Text size="h2">{title}</Text>
-      </View>
-      {/* <FontAwesome6 name="ranking-star" size={24} /> */}
+    <View style={[styles.container, styleOverrides.container]}>
+      {showBack && (
+        <Pressable
+          onPress={() => {
+            router.back();
+          }}
+        >
+          <MaterialCommunityIcons name="arrow-left" style={styles.back} />
+        </Pressable>
+      )}
+      <Text size="h2">{title}</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 48,
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  back: {
-    transform: [{ translateY: 1 }],
-    fontSize: 20,
-    width: 32,
-  },
-});
 
 export default ScreenHeader;

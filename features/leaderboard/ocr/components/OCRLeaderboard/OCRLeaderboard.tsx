@@ -18,10 +18,12 @@ const OCRLeaderboard = () => {
   return (
     <View style={styles.container}>
       <ScreenHeader title="Bảng xếp hạng OCR" />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <OCRTableFilter />
-        <OCRDistribution />
-      </ScrollView>
+      <View style={styles.body}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <OCRTableFilter />
+          <OCRDistribution />
+        </ScrollView>
+      </View>
       <OCRUserElo />
     </View>
   );
@@ -31,9 +33,11 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      paddingBottom: 96,
-      paddingHorizontal: 16,
+      paddingBottom: 144,
       backgroundColor: colors.backgroundSecondary,
+    },
+    body: {
+      paddingHorizontal: 16,
     },
   });
 

@@ -95,6 +95,8 @@ export const Colors: ColorsType = {
   },
 };
 
+export const TOP_BAR_HEIGHT = 44;
+
 export const AppColors = {
   primary: '#00D9B5',
   primaryForeground: '#ffffff',
