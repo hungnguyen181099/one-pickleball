@@ -275,11 +275,11 @@ export interface NewsApiResponse {
     current_page: number;
     from: number;
     last_page: number;
-    links: Array<{
+    links: {
       url: string | null;
       label: string;
       active: boolean;
-    }>;
+    }[];
     path: string;
     per_page: number;
     to: number;
@@ -606,7 +606,7 @@ export type registration = {
 };
 
 export interface TournamentApiResponse {
-  data: Array<{
+  data: {
     id: number;
     name: string;
     description: string | null;
@@ -626,7 +626,7 @@ export interface TournamentApiResponse {
     user_id: number;
     created_at: string;
     updated_at: string;
-  }>;
+  }[];
   links: {
     first: string;
     last: string;
@@ -637,14 +637,186 @@ export interface TournamentApiResponse {
     current_page: number;
     from: number;
     last_page: number;
-    links: Array<{
+    links: {
       url: string | null;
       label: string;
       active: boolean;
-    }>;
+    }[];
     path: string;
     per_page: number;
     to: number;
     total: number;
+  };
+}
+
+// TypeScript interfaces for Referee Match Screen
+
+export type MatchStatus = 'waiting' | 'playing' | 'paused' | 'finished';
+export type TeamSide = 'left' | 'right';
+export type CourtSide = 'left' | 'right';
+export type GameMode = 'singles' | 'doubles';
+export type ModalType = 'coinFlip' | 'teamAssign' | 'serveOrder' | 'timeout' | null;
+
+export interface TournamentRef {
+  name: string;
+}
+
+export interface Category {
+  name: string;
+}
+
+export interface Round {
+  name: string;
+}
+
+export interface CourtRef {
+  name: string;
+  number: string;
+}
+
+export interface Athlete {
+  id: number;
+  name: string;
+  partnerName?: string;
+  pairName?: string;
+}
+
+export interface Referee {
+  id: number;
+  name: string;
+  level: string;
+}
+
+export interface GameScore {
+  game: number;
+  athlete1: number;
+  athlete2: number;
+}
+
+export interface SetScore {
+  set: number;
+  athlete1: number;
+  athlete2: number;
+}
+
+export interface MatchData {
+  id: number;
+  status: string;
+  isCompleted: boolean;
+  bestOf: number;
+  gameMode: GameMode;
+  tournament: TournamentRef;
+  category: Category;
+  round: Round;
+  court: CourtRef;
+  athlete1: Athlete;
+  athlete2: Athlete;
+  referee: Referee;
+  existingState: unknown;
+  gameScores: GameScore[];
+  setScores: SetScore[];
+  currentGame: number;
+  gamesWonAthlete1: number;
+  gamesWonAthlete2: number;
+  timerSeconds: number;
+  servingTeam: 'athlete1' | 'athlete2';
+  serverNumber: number;
+}
+
+export interface ApiEndpoints {
+  syncEvents: string;
+  endMatch: string;
+  getState: string;
+  backUrl: string;
+}
+
+export interface Player {
+  name: string;
+  courtSide: CourtSide;
+}
+
+export interface Team {
+  name: string;
+  athleteId: number;
+  score: number;
+  gamesWon: number;
+  players: Player[];
+}
+
+export interface Teams {
+  left: Team;
+  right: Team;
+}
+
+export interface Serving {
+  team: TeamSide;
+  serverIndex: number;
+  serverNumber: number;
+  isFirstServeOfGame: boolean;
+}
+
+export interface TimeoutState {
+  active: boolean;
+  team: TeamSide | null;
+  remaining: number;
+  leftRemaining: number;
+  rightRemaining: number;
+}
+
+export interface ToastState {
+  show: boolean;
+  icon: string;
+  message: string;
+}
+
+export interface EventLogItem {
+  time: string;
+  message: string;
+  score: string;
+}
+
+export interface HistoryItem {
+  leftScore: number;
+  rightScore: number;
+  servingTeam: TeamSide;
+  serverIndex: number;
+  serverNumber: number;
+  isFirstServeOfGame: boolean;
+  leftPlayers: Player[];
+  rightPlayers: Player[];
+}
+
+export interface MatchEvent {
+  type: string;
+  team: TeamSide | null;
+  data: {
+    leftScore: number;
+    rightScore: number;
+    gameNumber: number;
+    [key: string]: unknown;
+  };
+  timer_seconds: number;
+  created_at: string;
+}
+
+export interface MatchState {
+  currentGame: number;
+  gamesWonAthlete1: number;
+  gamesWonAthlete2: number;
+  gameScores: GameScore[];
+  servingTeam: 'athlete1' | 'athlete2';
+  serverNumber: number;
+  timerSeconds: number;
+}
+
+export interface FinalMatchState {
+  winner: TeamSide;
+  winnerId: number;
+  gameScores: GameScore[];
+  finalScore: string;
+  totalTimer: number;
+  teams: {
+    left: { gamesWon: number; athleteId: number };
+    right: { gamesWon: number; athleteId: number };
   };
 }

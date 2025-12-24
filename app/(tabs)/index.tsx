@@ -196,6 +196,9 @@ export default function HomeScreen() {
                 onPress={() => handleActionPress('find-opponent')}
               />
             </GridItem>
+            <GridItem>
+              <ActionCard icon="briefcase" label="Trọng tài" color="#9D00FF" onPress={() => router.push('/referee')} />
+            </GridItem>
           </Grid>
         </View>
 
