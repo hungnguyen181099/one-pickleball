@@ -5,14 +5,6 @@ import { AppColors, Radius } from '@/constants/theme';
 
 export const getHomeUserStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
-    container: {
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: Radius.lg,
-      padding: 24,
-      backgroundColor: colors.card,
-      overflow: 'hidden',
-    },
     corner: {
       width: 200,
       aspectRatio: 1 / 1,

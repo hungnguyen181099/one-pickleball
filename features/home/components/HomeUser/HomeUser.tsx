@@ -4,6 +4,7 @@ import { View } from 'react-native';
 
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Separator } from '@/components/ui/Separator';
@@ -30,7 +31,7 @@ const HomeUser = () => {
   const user = data.user;
 
   return (
-    <View style={styles.container}>
+    <Card padding={24}>
       {/* Corner */}
       <View style={styles.corner}></View>
 
@@ -123,7 +124,7 @@ const HomeUser = () => {
           </Text>
         </Flex>
       </Flex>
-    </View>
+    </Card>
   );
 };
 

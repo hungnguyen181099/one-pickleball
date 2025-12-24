@@ -14,14 +14,6 @@ export const getHomeActionsStyles = ({ colors }: StyleColorsProps) =>
       borderRadius: Radius.full,
       opacity: 1,
     },
-    item: {
-      paddingVertical: 16,
-      paddingHorizontal: 16,
-      borderRadius: Radius.xl,
-      borderWidth: 1,
-      borderColor: colors.border,
-      backgroundColor: colors.card,
-    },
     itemActive: {
       backgroundColor: AppColors.primary,
       

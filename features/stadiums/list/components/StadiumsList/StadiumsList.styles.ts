@@ -30,13 +30,6 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       paddingHorizontal: 4,
       marginHorizontal: -4,
     },
-    card: {
-      borderRadius: 24,
-      overflow: 'hidden',
-      backgroundColor: colors.card,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
     image: {
       aspectRatio: 4 / 3,
       maxHeight: 512,

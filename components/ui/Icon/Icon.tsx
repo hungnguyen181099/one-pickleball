@@ -9,7 +9,7 @@ import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { Text } from '../Text';
 
-type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent';
+type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent' | 'fit';
 type IconRadius = 'sm' | 'md' | 'lg' | 'full';
 type IconSize = 'sm' | 'md' | 'lg' | number;
 type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
@@ -76,17 +76,19 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       }),
 
       // Sizes
-      ...(size === 'sm' && {
-        width: 40,
-        height: 40,
-      }),
-      ...(size === 'md' && {
-        width: 44,
-        height: 44,
-      }),
-      ...(size === 'lg' && {
-        width: 48,
-        height: 48,
+      ...(variant !== 'fit' && {
+        ...(size === 'sm' && {
+          width: 40,
+          height: 40,
+        }),
+        ...(size === 'md' && {
+          width: 44,
+          height: 44,
+        }),
+        ...(size === 'lg' && {
+          width: 48,
+          height: 48,
+        }),
       }),
       ...(typeof size === 'number' && {
         width: size,
@@ -94,6 +96,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       }),
 
       // Variants
+      ...(variant === 'fit' && {
+        borderWidth: 0,
+      }),
       ...(variant === 'default' && {
         backgroundColor: colors.card,
         borderColor: colors.border,

@@ -4,8 +4,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Alert, Linking, Pressable, View } from 'react-native';
 
 import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
+import { Icon } from '@/components/ui/Icon';
 import { Separator } from '@/components/ui/Separator';
 import { Text } from '@/components/ui/Text';
 
@@ -79,23 +81,31 @@ const StadiumHeader = ({
       <Grid columns={2} gap={8}>
         <GridItem>
           <Pressable onPress={handleCall}>
-            <Flex justifyContent="center" style={styles.contact}>
-              <MaterialCommunityIcons name="phone" style={styles.contactIcon} />
-              <Text size="h4">Gọi điện</Text>
-            </Flex>
+            <Card padding={16} radius="full">
+              <Flex justifyContent="center">
+                <Icon variant="fit">
+                  <MaterialCommunityIcons name="phone" size={24} />
+                </Icon>
+                <Text size="h4">Gọi điện</Text>
+              </Flex>
+            </Card>
           </Pressable>
         </GridItem>
         <GridItem>
           <Pressable onPress={handleEmail}>
-            <Flex justifyContent="center" style={styles.contact}>
-              <MaterialCommunityIcons name="message-text" style={styles.contactIcon} />
-              <Text size="h4">Nhắn tin</Text>
-            </Flex>
+            <Card padding={16} radius="full">
+              <Flex justifyContent="center">
+                <Icon variant="fit">
+                  <MaterialCommunityIcons name="message-text" size={24} />
+                </Icon>
+                <Text size="h4">Nhắn tin</Text>
+              </Flex>
+            </Card>
           </Pressable>
         </GridItem>
       </Grid>
 
-      <Flex justifyContent="space-between" style={styles.card}>
+      <Card padding={24} radius="xl" style={styles.card}>
         <Flex direction="column" alignItems="flex-start" gap={4}>
           <Flex gap={4}>
             <Text size="h2">{rating}</Text>
@@ -108,20 +118,20 @@ const StadiumHeader = ({
         <Text fontWeight={500} size="sm" style={styles.ratingAction}>
           Viết đánh giá
         </Text>
-      </Flex>
+      </Card>
 
-      <View style={styles.card}>
+      <Card padding={24} radius="xl">
         <Flex gap={16}>
-          <Flex justifyContent="center" style={styles.cardIcon}>
-            <MaterialCommunityIcons name="map-marker" style={styles.cardItemIcon} />
-          </Flex>
+          <Icon variant="light">
+            <MaterialCommunityIcons name="map-marker" size={20} />
+          </Icon>
           <Text style={styles.cardItemText}>{address}</Text>
         </Flex>
         <Separator marginVertical={16} />
         <Flex gap={16}>
-          <Flex justifyContent="center" style={styles.cardIcon}>
-            <MaterialCommunityIcons name="clock" style={styles.cardItemIcon} />
-          </Flex>
+          <Icon variant="light">
+            <MaterialCommunityIcons name="clock" size={20} />
+          </Icon>
           <View style={styles.cardItemText}>
             <Text>
               {opening_time} - {closing_time}
@@ -131,7 +141,7 @@ const StadiumHeader = ({
             </Text>
           </View>
         </Flex>
-      </View>
+      </Card>
     </View>
   );
 };

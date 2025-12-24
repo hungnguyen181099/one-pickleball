@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 
+import { Card } from '@/components/ui/Card';
 import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Icon } from '@/components/ui/Icon';
@@ -31,32 +32,31 @@ const HomeActions = () => {
 
           return (
             <GridItem key={index}>
-              <Pressable
-                style={[styles.item, isActive && styles.itemActive]}
-                onPress={() => router.navigate(item.href)}
-              >
-                <Flex direction="column">
-                  <Icon
-                    size="lg"
-                    variant={isActive ? 'outline' : 'light'}
-                    onPress={() => router.navigate(item.href)}
-                    {...(!isActive && {
-                      styleOverrides: {
-                        container: {
-                          backgroundColor: item.backgroundColor,
+              <Pressable onPress={() => router.navigate(item.href)}>
+                <Card padding={16} radius='lg' style={isActive && styles.itemActive}>
+                  <Flex direction="column">
+                    <Icon
+                      size="lg"
+                      variant={isActive ? 'outline' : 'light'}
+                      onPress={() => router.navigate(item.href)}
+                      {...(!isActive && {
+                        styleOverrides: {
+                          container: {
+                            backgroundColor: item.backgroundColor,
+                          },
+                          icon: {
+                            color: item.primaryColor,
+                          },
                         },
-                        icon: {
-                          color: item.primaryColor,
-                        },
-                      },
-                    })}
-                  >
-                    <MaterialIcons name={item.icon} size={24} />
-                  </Icon>
-                  <Text size="h4" color={isActive ? 'primaryForeground' : 'default'}>
-                    {item.label}
-                  </Text>
-                </Flex>
+                      })}
+                    >
+                      <MaterialIcons name={item.icon} size={24} />
+                    </Icon>
+                    <Text size="h4" color={isActive ? 'primaryForeground' : 'default'}>
+                      {item.label}
+                    </Text>
+                  </Flex>
+                </Card>
               </Pressable>
             </GridItem>
           );
