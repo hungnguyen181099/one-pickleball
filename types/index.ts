@@ -156,37 +156,6 @@ export interface ThemeContextType {
 }
 
 // ============================================
-// Home Screen Types
-// ============================================
-export interface HomeStatCardProps {
-  id: string;
-  icon: string;
-  number: string;
-  label: string;
-  color: string;
-}
-
-export interface HomeEventCard {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  image: string;
-  badge?: string;
-  meta: string;
-}
-
-export interface HomeNewsItem {
-  id: string;
-  category: string;
-  title: string;
-  time: string;
-  readTime: string;
-  image: string;
-  categoryColor: string;
-}
-
-// ============================================
 // User Profile Types
 // ============================================
 export interface UserStatCardProps {
@@ -213,20 +182,6 @@ export interface UserSettingsItem {
 // ============================================
 // News Types (Extended)
 // ============================================
-export interface NewsItemDetailed {
-  id: string;
-  category: string;
-  categoryColor: string;
-  title: string;
-  description: string;
-  author: string;
-  time: string;
-  readTime: string;
-  image: string;
-  views: number;
-  likes: number;
-  isLiked: boolean;
-}
 
 export interface NewsArticle {
   id: number;
@@ -279,93 +234,9 @@ export interface NewsApiResponse {
   };
 }
 
-export interface NewsComment {
-  id: string;
-  userName: string;
-  userInitials: string;
-  userColor: string;
-  time: string;
-  text: string;
-  likes: number;
-  isLiked: boolean;
-}
-
-export interface RelatedNewsItem {
-  id: string;
-  category: string;
-  categoryColor: string;
-  title: string;
-  image: string;
-  time: string;
-}
-
-// ============================================
-// Tournament Types (Extended)
-// ============================================
-export interface TournamentDetailed {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  prize: string;
-  registered: number;
-  maxParticipants: number;
-  status: 'open' | 'upcoming' | 'closed';
-  image: string;
-  gradient: string[];
-}
-
-export interface MyTournamentItem {
-  id: string;
-  title: string;
-  status: string;
-  date: string;
-  type: 'registered' | 'completed' | 'cancelled';
-  result?: string;
-}
-
 // ============================================
 // Court/Area Types (Extended)
 // ============================================
-export interface CourtDetailed {
-  id: string;
-  name: string;
-  rating: number;
-  reviews: number;
-  price: number;
-  location: string;
-  distance: number;
-  courts: number;
-  features: string[];
-  status: 'open' | 'busy' | 'closed';
-  statusText: string;
-  isFavorite: boolean;
-  isPremium?: boolean;
-  image: string;
-  badgeColor?: string;
-}
-
-export interface Facility {
-  id: string;
-  icon: string;
-  name: string;
-}
-
-export interface Review {
-  id: string;
-  userName: string;
-  userInitials: string;
-  rating: number;
-  date: string;
-  text: string;
-  color: string;
-}
-
-export interface RatingBar {
-  stars: number;
-  count: number;
-  percentage: number;
-}
 
 export interface FavoriteCourt {
   id: string;
@@ -399,29 +270,6 @@ export interface BookingHistory {
   totalPrice: number;
   paymentMethod?: string;
   courtType: 'indoor' | 'outdoor';
-}
-
-export interface DateOption {
-  id: string;
-  day: string;
-  number: number;
-  month: string;
-  isToday?: boolean;
-}
-
-export interface TimeSlot {
-  id: string;
-  time: string;
-  price: string;
-  available: boolean;
-  popular?: boolean;
-}
-
-export interface CourtOption {
-  id: string;
-  name: string;
-  description: string;
-  available: boolean;
 }
 
 export interface PaymentMethod {
@@ -477,12 +325,6 @@ export interface EventInfoCard {
   value: string;
 }
 
-export interface EventCategory {
-  name: string;
-  count: string;
-  icon: string;
-}
-
 export interface EventFeeItem {
   id: number;
   category_name: string;
@@ -515,11 +357,6 @@ export interface ContactMethod {
 // ============================================
 // Auth Types (Extended)
 // ============================================
-export interface LoginFormData {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
 
 export interface RegisterFormData {
   fullName: string;
@@ -533,12 +370,9 @@ export interface RegisterFormData {
 // ============================================
 // Filter & Sort Types
 // ============================================
-export type TournamentFilterType = 'true' | 'fasle' | 'all';
-export type AreaFilterType = 'nearby' | 'open' | 'rated' | 'filter';
-export type MyTournamentFilterType = 'all' | 'registered' | 'completed' | 'cancelled';
+
 export type BookingFilterType = 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
 export type FavoriteCourtSortType = 'recent' | 'rating' | 'distance' | 'price';
-export type NewFilerType = '';
 
 export type StandardAPIResponse<T> = {
   success: boolean;
@@ -649,4 +483,3 @@ export interface CategoryResponse {
   success: boolean;
   data: NewsCategory[];
 }
-
