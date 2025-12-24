@@ -118,7 +118,7 @@ const BookingFooter = ({ step, setStep }: BookingFooterProps) => {
           <GridItem>
             <Button loading={isPending} disabled={isPending} radius="full" size="lg" fullWidth onPress={onSubmit}>
               <Text color="inherit" size="h3">
-                {isPending ? 'Đang tải' : 'Xác nhận'}
+                {isPending ? 'Đang đặt sân' : 'Xác nhận'}
               </Text>
             </Button>
           </GridItem>

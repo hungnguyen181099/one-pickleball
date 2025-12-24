@@ -43,8 +43,8 @@ export const Colors: ColorsType = {
     text: '#11181C',
     textSecondary: '#666',
     textTertiary: '#999',
-    background: '#fff',
-    backgroundSecondary: '#f9f9f9',
+    background: '#f0f4f4',
+    backgroundSecondary: '#f0f4f4',
     backgroundTertiary: '#f5f5f5',
     card: '#fff',
     cardSecondary: '#f9f9f9',
@@ -63,8 +63,8 @@ export const Colors: ColorsType = {
     // New
     muted: '#E5E5EA',
     mutedForeground: '#8E8E93',
-    secondary: '#f7f7f7',
-    secondaryForeground: '#64748b',
+    secondary: '#f8fafc',
+    secondaryForeground: '#94a3b8',
   },
   dark: {
     text: '#ECEDEE',
@@ -90,12 +90,12 @@ export const Colors: ColorsType = {
     // New
     muted: '#2C2C2E',
     mutedForeground: '#8E8E93',
-    secondary: '#2b2b2b',
+    secondary: '#1e293b',
     secondaryForeground: '#94a3b8',
   },
 };
 
-export const TOP_BAR_HEIGHT = 44;
+export const TOP_BAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 
 export const AppColors = {
   primary: '#00D9B5',

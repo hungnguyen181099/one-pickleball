@@ -24,6 +24,7 @@ type TextSizes = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'xs' | 'sm' | 'md' | 
 type TextProps = {
   fontWeight?: number;
   fontSize?: TextStyle['fontSize'];
+  textTransform?: TextStyle['textTransform'];
   color?: TextColors;
   size?: TextSizes;
   children: React.ReactNode;
@@ -32,6 +33,7 @@ type TextProps = {
 type GetStylesProps = {
   fontWeight?: number;
   fontSize: TextStyle['fontSize'];
+  textTransform?: TextStyle['textTransform'];
   color: TextColors;
   size: TextSizes;
 } & StyleColorsProps;
@@ -77,7 +79,16 @@ const fontFamilyImport = {
   blackItalic: 'BeVietnamPro-BlackItalic',
 };
 
-const Text = ({ color = 'default', fontWeight, size = 'md', children, style, fontSize, ...props }: TextProps) => {
+const Text = ({
+  color = 'default',
+  fontWeight,
+  size = 'md',
+  children,
+  style,
+  fontSize,
+  textTransform,
+  ...props
+}: TextProps) => {
   const styles = getStyles({ colors: useThemedColors(), size, color, fontWeight, fontSize });
 
   return (
@@ -87,7 +98,7 @@ const Text = ({ color = 'default', fontWeight, size = 'md', children, style, fon
   );
 };
 
-const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps) =>
+const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform }: GetStylesProps) =>
   StyleSheet.create({
     container: {
       fontFamily: fontFamilyImport.regular,
@@ -129,6 +140,11 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize }: GetStylesProps
       // Font size
       ...(fontSize && {
         fontSize,
+      }),
+
+      // Text transform
+      ...(textTransform && {
+        textTransform,
       }),
     },
   });
