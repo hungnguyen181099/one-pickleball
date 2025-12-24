@@ -4,7 +4,11 @@ import { StyleSheet } from 'react-native';
 export const getHomeScreenStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
-      gap: 16,
-      marginTop: 32,
+      flex: 1,
+      backgroundColor: colors.backgroundSecondary,
+    },
+    body: {
+      padding: 16,
+      gap: 32,
     },
   });
