@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
   },
   tabsContainer: {
     paddingHorizontal: 16,
-    marginBottom: 24,
+    marginVertical: 24,
     flexDirection: 'row',
     gap: 8,
   },
