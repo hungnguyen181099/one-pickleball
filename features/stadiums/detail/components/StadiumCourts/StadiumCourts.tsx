@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View } from 'react-native';
 
 import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { Flex } from '@/components/ui/Flex';
 import { Text } from '@/components/ui/Text';
 
@@ -35,7 +36,7 @@ const StadiumCourts = ({ items }: StadiumCourtsProps) => {
 
       <View style={styles.list}>
         {items.map((item, index) => (
-          <Flex justifyContent="space-between" key={index} style={styles.card}>
+          <Card key={index} padding={16} radius="lg" style={styles.card}>
             {/* Left */}
             <View style={styles.left}>
               {/* Name */}
@@ -66,7 +67,7 @@ const StadiumCourts = ({ items }: StadiumCourtsProps) => {
               </Text>
               <Text color="secondary">/giờ</Text>
             </Text>
-          </Flex>
+          </Card>
         ))}
       </View>
     </View>

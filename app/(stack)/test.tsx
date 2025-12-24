@@ -13,12 +13,17 @@ import { useThemedColors } from '@/hooks/use-theme';
 const TestScreen = () => {
   const styles = useThemedColors();
 
+
   return (
     <View style={{ backgroundColor: styles.backgroundSecondary, padding: 16 }}>
       {/* Button */}
+      <Text fontWeight={600}>123</Text>
+
+      <Button loading disabled variant='light' size='md'>123</Button>
+
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Button</Text>
-        <Button variant="default" size="md">
+        <Button variant="default" size="md" fullWidth>
           Default
         </Button>
         <Button variant="filled">Filled</Button>
@@ -26,7 +31,6 @@ const TestScreen = () => {
         <Button variant="outline">Outline</Button>
         <Button variant="transparent">Transparent</Button>
       </Flex>
-
       {/* Chip */}
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Chip</Text>
@@ -38,7 +42,6 @@ const TestScreen = () => {
           Light
         </Chip>
       </Flex>
-
       {/* Badge */}
       <Flex direction="column" gap={8} alignItems="stretch">
         <Text size="h2">Badge</Text>

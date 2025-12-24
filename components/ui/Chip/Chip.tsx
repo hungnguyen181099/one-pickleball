@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleColorsProps } from '@/types';
 import { GestureResponderEvent, Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
-import { AppColors, Radius, fontSize } from '@/constants/theme';
+import { AppColors, FontSize, Radius } from '@/constants/theme';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 import { useUncontrolled } from '@/hooks/useUncontrolled';
@@ -86,6 +86,7 @@ const getStyles = ({ colors, disabled, radius, size, variant }: GetStylesProps) 
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+      alignSelf: 'flex-start', // Make width fit content
       borderWidth: 1,
       backgroundColor: colors.muted,
       borderColor: colors.muted,
@@ -135,13 +136,13 @@ const getStyles = ({ colors, disabled, radius, size, variant }: GetStylesProps) 
 
       // Sizes
       ...(size === 'sm' && {
-        fontSize: fontSize.sm,
+        fontSize: FontSize.sm,
       }),
       ...(size === 'md' && {
-        fontSize: fontSize.md,
+        fontSize: FontSize.md,
       }),
       ...(size === 'lg' && {
-        fontSize: fontSize.lg,
+        fontSize: FontSize.lg,
       }),
 
       // Disabled

@@ -4,13 +4,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 
 import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Icon } from '@/components/ui/Icon';
 import { Separator } from '@/components/ui/Separator';
 import { Text } from '@/components/ui/Text';
 
-import { Radius, ThemeColors } from '@/constants/theme';
+import { ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -31,7 +32,7 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
       <Grid columns={1} gap={8}>
         {data.map((item, index) => (
           <GridItem key={item.rank}>
-            <View style={styles.item}>
+            <Card padding={24} radius="lg">
               {/* Header */}
               <Flex justifyContent="space-between">
                 <Flex>
@@ -79,7 +80,7 @@ const RankingDistribution = ({ data }: RankingDistributionProps) => {
                   </Text>
                 </Flex>
               </Flex>
-            </View>
+            </Card>
           </GridItem>
         ))}
       </Grid>
@@ -95,13 +96,6 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
     title: {
       marginBottom: 16,
       textAlign: 'center',
-    },
-    item: {
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: Radius.lg,
-      padding: 24,
-      backgroundColor: colors.card,
     },
     icon: {
       width: 48,

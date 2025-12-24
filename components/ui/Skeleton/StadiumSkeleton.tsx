@@ -4,12 +4,12 @@ import { ScrollView, View } from 'react-native';
 
 import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
-import { Skeleton } from '@/components/ui/Skeleton';
+import Skeleton from '@/components/ui/Skeleton/Skeleton';
 
+import { getStadiumRibbonStyles } from '@/features/stadiums/detail/components/StadiumRibbon/StadiumRibbon.styles';
+import { getStadiumScreenStyles } from '@/features/stadiums/detail/components/StadiumScreen/StadiumScreen.styles';
 import { useThemedColors } from '@/hooks/use-theme';
 import { useGetStyles } from '@/hooks/useGetStyles';
-import { getStadiumScreenStyles } from '@/features/stadiums/detail/components/StadiumScreen/StadiumScreen.styles';
-import { getStadiumRibbonStyles } from '@/features/stadiums/detail/components/StadiumRibbon/StadiumRibbon.styles';
 
 const StadiumSkeleton = () => {
     const styles = useGetStyles(getStadiumScreenStyles);

@@ -1,5 +1,5 @@
 import AppConfig from '@/config/app.config';
-import {  NewsApiResponse, NewsArticle, PaginatedResponse } from '@/types';
+import { CategoryResponse, NewsApiResponse, NewsArticle, PaginatedResponse } from '@/types';
 import qs from 'qs';
 
 const BASE_API_URL = AppConfig.api.baseUrl
@@ -12,6 +12,7 @@ class NewService {
         status?: string;
         search?: string;
         per_page?: number;
+        category?: string
     }): Promise<NewsApiResponse> {
         const queryString = qs.stringify(params)
         const url = `${BASE_API_URL}/news?${queryString}`;
@@ -32,6 +33,15 @@ class NewService {
         }
         const result: { data: NewsArticle } = await response.json();
         return result.data;
+    }
+
+    async getCategories(): Promise<CategoryResponse> {
+        const url = `${BASE_API_URL}/news/categories`;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
+
+        return response.json();
     }
 
 }

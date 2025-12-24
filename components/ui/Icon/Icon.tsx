@@ -3,13 +3,13 @@ import React from 'react';
 import { StyleColorsProps } from '@/types';
 import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
-import { AppColors, Radius, fontSize } from '@/constants/theme';
+import { AppColors, FontSize, Radius } from '@/constants/theme';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { Text } from '../Text';
 
-type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent';
+type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent' | 'fit';
 type IconRadius = 'sm' | 'md' | 'lg' | 'full';
 type IconSize = 'sm' | 'md' | 'lg' | number;
 type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
@@ -76,17 +76,19 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       }),
 
       // Sizes
-      ...(size === 'sm' && {
-        width: 40,
-        height: 40,
-      }),
-      ...(size === 'md' && {
-        width: 44,
-        height: 44,
-      }),
-      ...(size === 'lg' && {
-        width: 48,
-        height: 48,
+      ...(variant !== 'fit' && {
+        ...(size === 'sm' && {
+          width: 40,
+          height: 40,
+        }),
+        ...(size === 'md' && {
+          width: 44,
+          height: 44,
+        }),
+        ...(size === 'lg' && {
+          width: 48,
+          height: 48,
+        }),
       }),
       ...(typeof size === 'number' && {
         width: size,
@@ -94,6 +96,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       }),
 
       // Variants
+      ...(variant === 'fit' && {
+        borderWidth: 0,
+      }),
       ...(variant === 'default' && {
         backgroundColor: colors.card,
         borderColor: colors.border,
@@ -198,13 +203,13 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
 
       // Sizes
       ...(size === 'sm' && {
-        fontSize: fontSize.xs,
+        fontSize: FontSize.xs,
       }),
       ...(size === 'md' && {
-        fontSize: fontSize.sm,
+        fontSize: FontSize.sm,
       }),
       ...(size === 'lg' && {
-        fontSize: fontSize.md,
+        fontSize: FontSize.md,
       }),
 
       // Variants

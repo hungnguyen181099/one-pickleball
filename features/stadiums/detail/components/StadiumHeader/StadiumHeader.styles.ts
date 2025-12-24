@@ -13,31 +13,10 @@ export const getStadiumHeaderStyles = ({ colors }: StyleColorsProps) =>
       fontSize: 16,
       transform: [{ translateY: 1 }],
     },
-    contact: {
-      borderRadius: Radius.full,
-      borderWidth: 1,
-      borderColor: colors.inputBorder,
-      backgroundColor: colors.background,
-      paddingVertical: 16,
-      paddingHorizontal: 16,
-    },
-    contactIcon: {
-      color: AppColors.primary,
-      fontSize: 24,
-      transform: [{ translateY: 1 }],
-    },
     card: {
-      borderRadius: 32,
-      borderWidth: 1,
-      borderColor: colors.inputBorder,
-      backgroundColor: colors.background,
-      padding: 24,
-    },
-    cardIcon: {
-      width: 48,
-      height: 48,
-      backgroundColor: AppColors.primaryAlpha20,
-      borderRadius: Radius.full,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
     },
     cardItemIcon: {
       color: AppColors.primary,
@@ -46,17 +25,12 @@ export const getStadiumHeaderStyles = ({ colors }: StyleColorsProps) =>
     cardItemText: {
       flex: 1,
     },
-    cardDivider: {
-      height: 1,
-      marginVertical: 16,
-      backgroundColor: colors.border,
-    },
     ratingIcon: {
       fontSize: 20,
       color: '#FFC107',
     },
     ratingAction: {
-      backgroundColor: colors.backgroundTertiary,
+      backgroundColor: colors.secondary,
       paddingHorizontal: 16,
       paddingVertical: 8,
       borderRadius: Radius.full,

@@ -1,5 +1,5 @@
 import { Grid, GridItem } from '@/components/ui/Grid';
-import { Skeleton } from '@/components/ui/Skeleton';
+import Skeleton from '@/components/ui/Skeleton/Skeleton';
 import { styles } from '@/constants/styles/eventdeatil.styles';
 import { useThemedColors } from '@/hooks/use-theme';
 import { Ionicons } from '@expo/vector-icons';

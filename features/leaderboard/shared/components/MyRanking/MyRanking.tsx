@@ -19,12 +19,11 @@ const MyRanking = ({ avatar, point, name, tier }: LeaderboardItem) => {
       <View style={styles.item}>
         {/* Left */}
         <View style={styles.left}>
-          {/* <Text style={styles.rank}>{rank}</Text> */}
           <View style={styles.avatar}>
             <Avatar src={avatar} size={48} />
             <View>
               <Text size="h4">{name}</Text>
-              <Text size="sm" color="secondary">
+              <Text size="sm" color="primaryForeground">
                 {tier}
               </Text>
             </View>

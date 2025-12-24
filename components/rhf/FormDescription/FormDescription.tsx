@@ -1,25 +1,27 @@
 import React from 'react';
 
-import { Text } from 'react-native';
+import { TextStyle } from 'react-native';
 
-import { useThemedColors } from '@/hooks/use-theme';
+import { Text } from '@/components/ui/Text';
 
 type FormDescriptionProps = {
   children: React.ReactNode;
+  style?: TextStyle;
 };
 
-const FormDescription = ({ children }: FormDescriptionProps) => {
-  const colors = useThemedColors();
-
+const FormDescription = ({ children, style }: FormDescriptionProps) => {
   if (!children) return;
 
   return (
     <Text
-      style={{
-        color: colors.textSecondary,
-        fontSize: 13,
-        marginTop: 4,
-      }}
+      color="muted"
+      size="sm"
+      style={[
+        {
+          marginTop: 4,
+        },
+        style,
+      ]}
     >
       {children}
     </Text>

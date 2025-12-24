@@ -21,6 +21,14 @@ export const formatCurrencyWithoutUnit = (amount: number | string): string => {
   return new Intl.NumberFormat('vi-VN').format(value);
 };
 
+export const formatCurrencyWithUnit = (amount: number | string): string => {
+  const value = typeof amount === 'string' ? Number(amount.replace(/[^\d.-]/g, '')) : amount;
+
+  if (Number.isNaN(value)) return '';
+
+  return `${new Intl.NumberFormat('vi-VN').format(value)}đ`;
+};
+
 /**
  * Format number with thousand separators
  */

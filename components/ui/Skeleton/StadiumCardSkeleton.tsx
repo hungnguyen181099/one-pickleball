@@ -4,7 +4,7 @@ import { useGetStyles } from '@/hooks/useGetStyles';
 import React from 'react';
 import { View } from 'react-native';
 import { Flex } from '../Flex';
-import { Skeleton } from './index';
+import Skeleton from './Skeleton';
 
 export default function StadiumCardSkeleton() {
     const styles = useGetStyles(getStadiumListStyles);
@@ -45,7 +45,7 @@ export default function StadiumCardSkeleton() {
                 </View>
 
                 {/* Separator */}
-                <View style={[styles.cardSeparator, { opacity: 1, backgroundColor: 'transparent' }]}>
+                <View style={[styles.separator, { opacity: 1, backgroundColor: 'transparent' }]}>
                     <Skeleton width="100%" height={1} borderRadius={0} />
                 </View>
 

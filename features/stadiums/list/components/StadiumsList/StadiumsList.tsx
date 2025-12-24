@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import { FlatList, Keyboard, ScrollView, View } from 'react-native';
 
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { Flex } from '@/components/ui/Flex';
 import { Input } from '@/components/ui/Input';
 import { Pagination } from '@/components/ui/Pagination';
@@ -48,13 +49,14 @@ const StadiumsList = () => {
             placeholder="Nhập tên sân ..."
             startIcon={<MaterialCommunityIcons name="magnify" size={24} color={colors.icon} />}
             maxLength={50}
-            size="sm"
           />
         </View>
         <Button
           size="sm"
+          variant="light"
           onPress={handleSearch}
           styleOverrides={{
+            container: styles.searchButtonContainer,
             text: styles.searchButtonText,
           }}
         >
@@ -76,7 +78,7 @@ const StadiumsList = () => {
         <FlatList
           data={data.data}
           renderItem={({ item }) => (
-            <View style={styles.card}>
+            <Card>
               <Image source={item.image} contentFit="cover" style={styles.image} />
 
               <Flex gap={4} style={styles.rating}>
@@ -128,6 +130,7 @@ const StadiumsList = () => {
 
                 {/* CTA */}
                 <Button
+                  fullWidth
                   variant="filled"
                   onPress={() =>
                     router.navigate({
@@ -142,7 +145,7 @@ const StadiumsList = () => {
                   Đặt sân
                 </Button>
               </View>
-            </View>
+            </Card>
           )}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => String(item.id)}

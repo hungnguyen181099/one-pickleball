@@ -13,8 +13,8 @@ export const getStadiumAmenitiesStyles = ({ colors }: StyleColorsProps) =>
       paddingHorizontal: 16,
       borderRadius: Radius.full,
       borderWidth: 1,
-      borderColor: colors.inputBorder,
-      backgroundColor: colors.background,
+      borderColor: colors.border,
+      backgroundColor: colors.card,
       flexGrow: 1,
     },
   });

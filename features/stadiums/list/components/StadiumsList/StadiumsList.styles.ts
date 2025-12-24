@@ -7,6 +7,7 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      paddingHorizontal: 16,
     },
     // Search
     searchContainer: {
@@ -21,17 +22,13 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       fontWeight: 500,
       fontSize: 14,
     },
+    searchButtonContainer: {
+      alignSelf: 'stretch',
+    },
     // List
     list: {
       paddingHorizontal: 4,
       marginHorizontal: -4,
-    },
-    card: {
-      borderRadius: 24,
-      overflow: 'hidden',
-      backgroundColor: colors.card,
-      borderWidth: 1,
-      borderColor: colors.border,
     },
     image: {
       aspectRatio: 4 / 3,

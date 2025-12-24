@@ -4,7 +4,7 @@ import { EventInfoCard } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Alert, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable, ScrollView, TouchableOpacity, View } from 'react-native';
 
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { EventDetailSkeleton } from '@/components/ui/Skeleton';
@@ -20,6 +20,9 @@ import { fetchWrapper } from '@/utils/fetch.utils';
 import { formatCurrency } from '@/utils/format.utils';
 import { Image } from 'expo-image';
 import ImageView from 'react-native-image-viewing';
+import { Text } from '@/components/ui/Text';
+import { dayjsExt } from '@/lib/days';
+import { AppColors } from '@/constants/theme';
 
 type JoinTournamentBody = {
   athlete_name: string;
@@ -52,15 +55,6 @@ export default function EventDetailScreen() {
     queryKey: ['getCategories'],
     queryFn: () => tournamentService.getTournamentCategories(id),
   });
-  const { mutate: joinTournament } = useMutation({
-    mutationFn: (data: JoinTournamentBody) => fetchWrapper(`/tournaments/${id}/register`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["getUserTournament"] })
-    }
-  })
 
   if (status === 'pending') return <EventDetailSkeleton />;
 
@@ -101,6 +95,22 @@ export default function EventDetailScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={{ zIndex: 1000 }}><TouchableOpacity onPress={() => router.back()} activeOpacity={0.8} style={styles.backBtn}>
+        <Ionicons name="chevron-back" size={28} color="white" />
+      </TouchableOpacity>
+        <View style={styles.headerActions}>
+          <TouchableOpacity style={styles.iconBtn}>
+            <Ionicons name="share-social" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconBtn} onPress={() => setIsFavorite(!isFavorite)}>
+            <MaterialCommunityIcons
+              name={isFavorite ? 'heart' : 'heart-outline'}
+              size={24}
+              color={isFavorite ? '#FF6B6B' : 'white'}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
           <Pressable
@@ -109,21 +119,6 @@ export default function EventDetailScreen() {
           >
             <Image style={styles.headerGradient} source={data.image_url} />
           </Pressable>
-          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.8} style={styles.backBtn}>
-            <Ionicons name="chevron-back" size={28} color="white" />
-          </TouchableOpacity>
-          <View style={styles.headerActions}>
-            <TouchableOpacity style={styles.iconBtn}>
-              <Ionicons name="share-social" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconBtn} onPress={() => setIsFavorite(!isFavorite)}>
-              <MaterialCommunityIcons
-                name={isFavorite ? 'heart' : 'heart-outline'}
-                size={24}
-                color={isFavorite ? '#FF6B6B' : 'white'}
-              />
-            </TouchableOpacity>
-          </View>
         </View>
 
         <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
@@ -131,14 +126,14 @@ export default function EventDetailScreen() {
             <View style={[styles.statusDot, { backgroundColor: !isExpired ? '#00D9B5' : '#FF6B6B' }]} />
             <Text style={[styles.statusText, { color: !isExpired ? '#00D9B5' : '#FF6B6B' }]}>{!isExpired ? 'Đang mở đăng ký' : 'Đã đóng đăng ký'}</Text>
           </View>
-          <Text style={[styles.title, { color: colors.text }]}>{data?.name}</Text>
+          <Text size='h1'>{data?.name}</Text>
         </View>
 
         <Grid columns={2} gap={8} style={styles.infoCardsGrid}>
           {infoCards.map((card, index) => (
             <GridItem key={index}>
               <View
-                style={[styles.infoCard, { backgroundColor: colors.backgroundTertiary, borderColor: colors.border }]}
+                style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border }]}
               >
                 <MaterialCommunityIcons name={card.icon as any} size={24} color="#00D9B5" />
                 <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>{card.label}</Text>
@@ -149,7 +144,7 @@ export default function EventDetailScreen() {
         </Grid>
 
         <View style={[styles.tabsContainer, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-          {['overview', 'schedule', 'rules', 'prizes'].map((tab) => (
+          {['overview', 'schedule', 'result', 'prizes'].map((tab) => (
             <TouchableOpacity
               key={tab}
               style={[styles.tabBtn, activeTab === tab && styles.tabBtnActive]}
@@ -164,8 +159,8 @@ export default function EventDetailScreen() {
               >
                 {tab === 'overview' && 'Tổng quan'}
                 {tab === 'schedule' && 'Lịch thi đấu'}
-                {tab === 'rules' && 'Thể lệ'}
-                {tab === 'prizes' && 'Giải thưởng'}
+                {tab === 'result' && 'Kết quả'}
+                {tab === 'prizes' && 'VDV'}
               </Text>
             </TouchableOpacity>
           ))}
@@ -177,94 +172,101 @@ export default function EventDetailScreen() {
               <Text style={[styles.sectionHeading, { color: colors.text }]}>Về giải đấu</Text>
               <Text style={[styles.descriptionText, { color: colors.textSecondary }]}>{data.description}</Text>
             </View>
-
-            {/* <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
-              <Text style={[styles.sectionHeading, { color: colors.text }]}>Hạng đấu</Text>
-              <View style={styles.categoriesGrid}>
-                {categories.map((cat, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.categoryCard,
-                      { backgroundColor: colors.backgroundTertiary, borderColor: colors.border },
-                    ]}
-                  >
-                    <View style={styles.categoryIcon}>
-                      <MaterialCommunityIcons name={cat.icon as any} size={28} color="white" />
-                    </View>
-                    <Text style={[styles.categoryName, { color: colors.text }]}>{cat.name}</Text>
-                    <Text style={[styles.categoryCount, { color: colors.textSecondary }]}>{cat.count}</Text>
-                  </View>
-                ))}
-              </View>
-            </View> */}
-
-            <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
-              <Text style={[styles.sectionHeading, { color: colors.text }]}>Nội dung thi đấu</Text>
-              {Categories?.categories.map((fee) => {
-                const isSelected = selectedCategory === fee.id;
-                return (
-                  <Pressable
-                    key={fee.id}
-                    onPress={() => setSelectedCategory(fee.id)}
-                    style={[
-                      styles.feeItem,
-                      { backgroundColor: colors.backgroundTertiary, borderColor: colors.border },
-                      isSelected && styles.feeItemFeatured,
-                    ]}
-                  >
-                    <View>
-                      <Text style={[styles.feeName, { color: colors.text }]}>{fee.category_name} ({fee.age_group})</Text>
-                    </View>
-                    <View style={styles.feeRight}>
-                      <Text style={[styles.feeAmount, { color: colors.text }]}>{fee.current_participants}/{fee.max_participants}</Text>
-                    </View>
-                  </Pressable>
-                )
-              })}
-
-            </View>
-
-            <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
-              <Text style={[styles.sectionHeading, { color: colors.text }]}>Ban tổ chức</Text>
-              <View
-                style={[
-                  styles.organizerCard,
-                  { backgroundColor: colors.backgroundTertiary, borderColor: colors.border },
-                ]}
-              >
-                <View style={styles.organizerLogo}>
-                  <Text style={styles.organizerLogoText}>ONE</Text>
-                </View>
-                <View style={styles.organizerInfo}>
-                  <Text style={[styles.organizerName, { color: colors.text }]}>onePickleball Vietnam</Text>
-                  <Text style={[styles.organizerDesc, { color: colors.textSecondary }]}>
-                    Đơn vị tổ chức giải đấu Pickleball chuyên nghiệp
-                  </Text>
-                  <TouchableOpacity style={styles.contactLink}>
-                    <Ionicons name="call" size={18} color="#00D9B5" />
-                    <Text style={styles.contactText}>{data.organizer_hotline}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.contactLink}>
-                    <Ionicons name="mail" size={18} color="#00D9B5" />
-                    <Text style={styles.contactText}>{data.organizer_email}</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
           </>
         )}
 
-        {activeTab !== 'overview' && (
+        {activeTab == 'schedule' && (
           <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
-            <Text style={[styles.sectionHeading, { color: colors.text }]}>
-              {activeTab === 'schedule' && 'Lịch thi đấu'}
-              {activeTab === 'rules' && 'Thể lệ'}
-              {activeTab === 'prizes' && 'Giải thưởng'}
-            </Text>
-            <Text style={[styles.descriptionText, { color: colors.textSecondary }]}>Nội dung sẽ được cập nhật sớm</Text>
+            <Text style={[styles.sectionHeading, { color: colors.text }]}>Lịch thi đấu</Text>
+            <Text style={[styles.descriptionText, { color: colors.textSecondary }]}>{formatDate(data?.start_date)}</Text>
           </View>
         )}
+
+        {activeTab == 'result' && (
+          <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+            <Text style={[styles.sectionHeading, { color: colors.text }]}>Kết quả</Text>
+            <Text style={[styles.descriptionText, { color: colors.textSecondary }]}>Kết quả sẽ được cập nhật trong quá trình diễn ra giải đấu</Text>
+          </View>
+        )}
+
+        {activeTab == 'prizes' && (
+          <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+            <Text style={[styles.sectionHeading, { color: colors.text }]}>Vận động viên</Text>
+            <Grid columns={2} gap={8} style={styles.infoCardsGrid}>
+              <GridItem>
+                <View
+                  style={[styles.infoCard, { backgroundColor: AppColors.primary, borderColor: colors.border }]}
+                >
+                  <Text color='primaryForeground'>{data.participants_count}/{data.max_participants}</Text>
+                  <Text color='primaryForeground'>Đã đăng ký</Text>
+                </View>
+              </GridItem>
+              <GridItem>
+                <View
+                  style={[styles.infoCard, { backgroundColor: AppColors.primary, borderColor: colors.border }]}
+                >
+                  <Text color='primaryForeground'>{data.max_participants}</Text>
+                  <Text color='primaryForeground'>Còn lại</Text>
+                </View>
+              </GridItem>
+            </Grid>
+          </View>
+        )}
+
+        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+          <Text style={[styles.sectionHeading, { color: colors.text }]}>Nội dung thi đấu</Text>
+          {Categories?.categories.map((fee) => {
+            const isSelected = selectedCategory === fee.id;
+            return (
+              <Pressable
+                key={fee.id}
+                onPress={() => setSelectedCategory(fee.id)}
+                style={[
+                  styles.feeItem,
+                  { backgroundColor: colors.backgroundTertiary, borderColor: colors.border },
+                  isSelected && styles.feeItemFeatured,
+                ]}
+              >
+                <View>
+                  <Text style={[styles.feeName, { color: colors.text }]}>{fee.category_name} ({fee.age_group})</Text>
+                </View>
+                <View style={styles.feeRight}>
+                  <Text style={[styles.feeAmount, { color: colors.text }]}>{fee.current_participants}/{fee.max_participants}</Text>
+                </View>
+              </Pressable>
+            )
+          })}
+
+        </View>
+
+        <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
+          <Text style={[styles.sectionHeading, { color: colors.text }]}>Ban tổ chức</Text>
+          <View
+            style={[
+              styles.organizerCard,
+              { backgroundColor: colors.backgroundTertiary, borderColor: colors.border },
+            ]}
+          >
+            <View style={styles.organizerLogo}>
+              <Text style={styles.organizerLogoText}>ONE</Text>
+            </View>
+            <View style={styles.organizerInfo}>
+              <Text style={[styles.organizerName, { color: colors.text }]}>onePickleball Vietnam</Text>
+              <Text style={[styles.organizerDesc, { color: colors.textSecondary }]}>
+                Đơn vị tổ chức giải đấu Pickleball chuyên nghiệp
+              </Text>
+              <TouchableOpacity style={styles.contactLink}>
+                <Ionicons name="call" size={18} color="#00D9B5" />
+                <Text style={styles.contactText}>{data.organizer_hotline}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.contactLink}>
+                <Ionicons name="mail" size={18} color="#00D9B5" />
+                <Text style={styles.contactText}>{data.organizer_email}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
       </ScrollView>
 
       {isExpired ? null : <View style={[styles.footer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>

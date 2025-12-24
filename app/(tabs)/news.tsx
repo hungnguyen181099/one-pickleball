@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { NewsCategory } from '@/types';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { ActivityIndicator, FlatList, RefreshControl, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -9,66 +8,42 @@ import { styles } from '@/constants/styles/news.styles';
 
 import NewsCard from '@/components/NewsCard';
 import { Pagination } from '@/components/ui/Pagination';
-import { AppColors } from '@/constants/theme';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
 import { useQuery } from '@tanstack/react-query';
 import { DebouncedSearch } from '@/components/common/DebouncedSearch';
 import { CardSkeleton } from '@/components/ui/Skeleton';
+import { Chip } from '@/components/ui/Chip';
 
-const categories: NewsCategory[] = [
-  { id: 'all', name: 'Tất cả', icon: 'home', color: '#00D9B5' },
-  { id: 'technique', name: 'Kỹ thuật', icon: 'school', color: '#FF9800' },
-  { id: 'community', name: 'Cộng đồng', icon: 'account-multiple', color: '#2196F3' },
-  { id: 'tournament', name: 'Giải đấu', icon: 'trophy', color: '#E91E63' },
-  { id: 'lifestyle', name: 'Lối sống', icon: 'heart', color: '#9C27B0' },
-];
 
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState<string>('');
   const colors = useThemedColors();
   const [page, setPage] = useState<number>(1);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const { data, isPending, refetch, isRefetching } = useQuery({
-    queryKey: ['getNews', page, debouncedSearchQuery],
+    queryKey: ['getNews', page, debouncedSearchQuery, activeCategory],
     queryFn: () => newService.getNews({
       page: page,
-      search: debouncedSearchQuery
+      search: debouncedSearchQuery,
+      category: activeCategory
     })
   })
 
-  const CategoryChip = ({ item }: { item: NewsCategory }) => (
-    <TouchableOpacity
-      style={[
-        styles.categoryChip,
-        activeCategory === item.id && styles.categoryChipActive,
-        {
-          backgroundColor: activeCategory === item.id ? item.color : colors.backgroundTertiary,
-          borderColor: activeCategory === item.id ? item.color : colors.border,
-          borderWidth: 1,
-        },
-      ]}
-      onPress={() => setActiveCategory(item.id)}
-    >
-      <MaterialCommunityIcons
-        name={item.icon as any}
-        size={16}
-        color={activeCategory === item.id ? '#fff' : item.color}
-      />
-      <Text
-        style={[
-          styles.categoryChipText,
-          activeCategory === item.id && styles.categoryChipTextActive,
-          { color: activeCategory === item.id ? '#fff' : colors.text },
-        ]}
-      >
-        {item.name}
-      </Text>
-    </TouchableOpacity>
-  );
+  const { data: categories } = useQuery({
+    queryKey: ['newCategories'],
+    queryFn: () => newService.getCategories()
+  })
+
+  const categoriesData = categories?.data.map((item) => {
+    return {
+      label: item.name,
+      value: item.id
+    }
+  })
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -89,20 +64,24 @@ const NewsPage = () => {
         <DebouncedSearch onDebouncedChange={(text) => {
           setSearchQuery(text);
           setPage(1);
-        }} 
-        variant='filled'
-        placeholder='Tìm kiếm ...'
+        }}
+          variant='filled'
+          placeholder='Tìm kiếm ...'
         />
       </View>
 
-      <View style={styles.categoriesWrapper}>
+      <View style={[styles.categoriesWrapper, { borderColor: colors.border }]}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoriesContent}>
-          {categories.map((category) => (
-            <CategoryChip key={category.id} item={category} />
+
+          <Chip checked={"" === activeCategory}
+            onPress={() => setActiveCategory('')} size='sm'>{'Tất cả'}</Chip>
+          {categories?.data.map((category) => (
+            <Chip checked={category.id === Number(activeCategory)}
+              onPress={() => setActiveCategory(String(category.id))} size='sm' key={category.id}>{category.name}</Chip>
           ))}
         </ScrollView>
       </View>
-      <FlatList
+      {isPending ? <CardSkeleton /> : <FlatList
         data={data?.data}
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
@@ -113,12 +92,15 @@ const NewsPage = () => {
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <CardSkeleton />
+          <View style={{ alignItems: 'center', padding: 32 }}>
+            <Text style={{ color: '#94a3b8' }}>Không có tin tức nào</Text>
+          </View>
         }
         ListFooterComponent={
           data?.data ? <Pagination currentPage={Number(data?.meta.current_page)} totalPages={Number(data?.meta.last_page)} onPageChange={setPage} /> : null
         }
-      />
+      />}
+
     </View>
   );
 };

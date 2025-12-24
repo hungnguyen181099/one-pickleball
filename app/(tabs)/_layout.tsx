@@ -4,6 +4,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Text } from '@/components/ui/Text';
+
 import { Colors } from '@/constants/theme';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -29,6 +31,13 @@ export default function TabLayout() {
         tabBarLabelStyle: {
           fontSize: 12,
           marginTop: 2,
+        },
+        tabBarLabel(props) {
+          return (
+            <Text size="sm" color={props.focused ? 'primary' : 'default'}>
+              {props.children}
+            </Text>
+          );
         },
         headerShown: false,
       }}

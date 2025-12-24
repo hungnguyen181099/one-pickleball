@@ -9,7 +9,7 @@ export default function CardSkeleton() {
 
     return (
         <View style={[newsStyles.newsCard, { marginBottom: 16 }]}>
-            <View style={[newsStyles.newsCardInner, { backgroundColor: colors.backgroundSecondary, borderColor: colors.border }]}>
+            <View style={[newsStyles.newsCardInner, { backgroundColor: colors.card, borderColor: colors.border }]}>
                 {/* Thumbnail Skeleton */}
                 <View style={newsStyles.newsThumbnail}>
                     <Skeleton width="100%" height="100%" borderRadius={12} />

@@ -2,19 +2,39 @@ import React from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View, ViewStyle } from 'react-native';
 
+import { Flex } from '@/components/ui/Flex';
 import { Text } from '@/components/ui/Text';
+
+import { useGetStyles } from '@/hooks/useGetStyles';
+
+import { getScreenHeaderStyles } from './ScreenHeader.styles';
 
 type ScreenHeaderProps = {
   title?: string;
   showBack?: boolean;
+  withBorder?: boolean;
+  paddingHorizontal?: number;
+  rightSection?: React.ReactNode;
+  styleOverrides?: {
+    container?: ViewStyle;
+  };
 };
 
-const ScreenHeader = ({ title = '', showBack = true }: ScreenHeaderProps) => {
+const ScreenHeader = ({
+  paddingHorizontal = 16,
+  styleOverrides = {},
+  withBorder = true,
+  showBack = true,
+  rightSection,
+  title = '',
+}: ScreenHeaderProps) => {
+  const styles = useGetStyles(getScreenHeaderStyles, { withBorder, paddingHorizontal });
+
   return (
-    <View style={styles.container}>
-      <View style={styles.left}>
+    <View style={[styles.container, styleOverrides.container]}>
+      <Flex>
         {showBack && (
           <Pressable
             onPress={() => {
@@ -25,28 +45,10 @@ const ScreenHeader = ({ title = '', showBack = true }: ScreenHeaderProps) => {
           </Pressable>
         )}
         <Text size="h2">{title}</Text>
-      </View>
-      {/* <FontAwesome6 name="ranking-star" size={24} /> */}
+      </Flex>
+      {rightSection}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 48,
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  back: {
-    transform: [{ translateY: 1 }],
-    fontSize: 20,
-    width: 32,
-  },
-});
 
 export default ScreenHeader;

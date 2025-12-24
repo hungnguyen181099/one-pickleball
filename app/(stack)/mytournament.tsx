@@ -94,7 +94,7 @@ export default function MyTournamentScreen() {
           data={filteredTournaments}
           renderItem={({ item }) => <MyTournamentCard {...item} />}
           keyExtractor={(item) => item.registration_id.toString()}
-          contentContainerStyle={[styles.scrollContent, { padding: 16 }]}
+          contentContainerStyle={[styles.scrollContent, ]}
           ListEmptyComponent={
             <View style={{ alignItems: 'center', marginTop: 40 }}>
               <Ionicons name="documents-outline" size={48} color={colors.textTertiary} />

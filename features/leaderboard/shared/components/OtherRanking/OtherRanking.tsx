@@ -4,10 +4,11 @@ import { StyleSheet, View } from 'react-native';
 
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
+import { Card } from '@/components/ui/Card';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Text } from '@/components/ui/Text';
 
-import { Radius, ThemeColors } from '@/constants/theme';
+import { ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
@@ -21,7 +22,7 @@ const OtherRankingItem = ({ avatar, rank, name, tier, point }: LeaderboardItem) 
   const styles = getStyles({ colors: useThemedColors() });
 
   return (
-    <View style={styles.item}>
+    <Card padding={24} radius="lg" style={styles.item}>
       {/* Left */}
       <View style={styles.left}>
         <Text style={styles.rank}>{rank}</Text>
@@ -47,7 +48,7 @@ const OtherRankingItem = ({ avatar, rank, name, tier, point }: LeaderboardItem) 
       >
         ⭐ {point}
       </Badge>
-    </View>
+    </Card>
   );
 };
 
@@ -69,11 +70,6 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: Radius.lg,
-      padding: 24,
-      backgroundColor: colors.card,
       gap: 16,
     },
     left: {

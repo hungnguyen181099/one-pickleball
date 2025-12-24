@@ -1,17 +1,23 @@
-import { RHFProvider } from '@/components/rhf/RHFProvider'
-import { RHFTextInput } from '@/components/rhf/RHFTextInput'
-import { useSession } from '@/contexts/AuthProvider'
-import { useThemedColors } from '@/hooks/use-theme'
-import { fetchWrapper } from '@/utils/fetch.utils'
-import { formatCurrency } from '@/utils/format.utils'
-import { Ionicons } from '@expo/vector-icons'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import z from 'zod'
+import React from 'react';
+
+import { Ionicons } from '@expo/vector-icons';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import z from 'zod';
+
+import { RHFLayout } from '@/components/rhf/RHFLayout';
+import { RHFTextInput } from '@/components/rhf/RHFTextInput';
+
+import { useSession } from '@/contexts/AuthProvider';
+
+import { useThemedColors } from '@/hooks/use-theme';
+
+import { fetchWrapper } from '@/utils/fetch.utils';
+import { formatCurrency } from '@/utils/format.utils';
+import { Text } from '@/components/ui/Text';
 
 type JoinTournamentBody = {
   athlete_name: string;
@@ -19,27 +25,29 @@ type JoinTournamentBody = {
   phone: string;
   category_id: string;
   partner_name?: string;
-}
+};
 
 type SearchPamram = {
-  tournamentId: string,
-  categoryId: string,
-  categoryName: string,
-  ageGroup: string,
-  price: string,
-  categoryType: string
-}
+  tournamentId: string;
+  categoryId: string;
+  categoryName: string;
+  ageGroup: string;
+  price: string;
+  categoryType: string;
+};
 
-const getRegisterTournamentSchema = (isDouble: boolean) => z.object({
-  athleteName: z.string().min(1, 'Tên phải có ít nhất 1 ký tự'),
-  phone: z.string()
-    .min(1, 'Không được để trống')
-    .regex(/(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g, 'Vui lòng nhập đúng định dạng'),
-  email: z.string().email('Vui lòng nhập đúng định dạng'),
-  partnerName: isDouble ? z.string().min(1, 'Tên phải có ít nhất 1 ký tự') : z.string().optional(),
-  partnerEmail: z.string().optional(),
-  partnerPhone: z.string().optional(),
-});
+const getRegisterTournamentSchema = (isDouble: boolean) =>
+  z.object({
+    athleteName: z.string().min(1, 'Tên phải có ít nhất 1 ký tự'),
+    phone: z
+      .string()
+      .min(1, 'Không được để trống')
+      .regex(/(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g, 'Vui lòng nhập đúng định dạng'),
+    email: z.string().email('Vui lòng nhập đúng định dạng'),
+    partnerName: isDouble ? z.string().min(1, 'Tên phải có ít nhất 1 ký tự') : z.string().optional(),
+    partnerEmail: z.string().optional(),
+    partnerPhone: z.string().optional(),
+  });
 
 export default function RegisterTournament() {
   const params = useLocalSearchParams<SearchPamram>();
@@ -75,39 +83,44 @@ export default function RegisterTournament() {
       email: data.email,
       phone: data.phone,
       category_id: categoryId,
-      ...(isDouble && { partner_name: data.partnerName, partner_email: data.partnerEmail, partner_phone: data.partnerPhone })
-    }
+      ...(isDouble && {
+        partner_name: data.partnerName,
+        partner_email: data.partnerEmail,
+        partner_phone: data.partnerPhone,
+      }),
+    };
 
     joinTournament(body, {
       onSuccess: () => {
-        Alert.alert("Thành công", "Đăng ký giải đấu thành công!", [
+        Alert.alert('Thành công', 'Đăng ký giải đấu thành công!', [
           {
-            text: "OK",
+            text: 'OK',
             onPress: () => {
               router.back();
-            }
-          }
-        ])
+            },
+          },
+        ]);
       },
       onError: (error) => {
         console.log(error);
-        Alert.alert("Thất bại", "Đăng ký thất bại. Vui lòng thử lại.");
-      }
-    })
+        Alert.alert('Thất bại', 'Đăng ký thất bại. Vui lòng thử lại.');
+      },
+    });
   });
 
   const { mutate: joinTournament, isPending } = useMutation({
-    mutationFn: (data: JoinTournamentBody) => fetchWrapper(`/tournaments/${tournamentId}/register`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
+    mutationFn: (data: JoinTournamentBody) =>
+      fetchWrapper(`/tournaments/${tournamentId}/register`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["getUserTournament"] })
-    }
-  })
+      queryClient.invalidateQueries({ queryKey: ['getUserTournament'] });
+    },
+  });
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="chevron-back" size={28} color={colors.text} />
@@ -117,25 +130,28 @@ export default function RegisterTournament() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Thông tin giải đấu</Text>
 
           <View style={styles.infoRow}>
             <Text style={[styles.label, { color: colors.textSecondary }]}>Hạng mục:</Text>
-            <Text style={[styles.value, { color: colors.text }]}>{categoryName} ({ageGroup})</Text>
+            <Text style={[styles.value, { color: colors.text }]}>
+              {categoryName} ({ageGroup})
+            </Text>
           </View>
 
           <View style={styles.infoRow}>
             <Text style={[styles.label, { color: colors.textSecondary }]}>Lệ phí:</Text>
-            <Text style={[styles.value, { color: '#00D9B5', fontWeight: 'bold' }]}>{formatCurrency(Number(price) || 0)}</Text>
+            <Text style={[styles.value, { color: '#00D9B5', fontWeight: 'bold' }]}>
+              {formatCurrency(Number(price) || 0)}
+            </Text>
           </View>
         </View>
 
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Thông tin vận động viên</Text>
 
-          <RHFProvider>
+          <RHFLayout>
             <RHFTextInput
               controller={{
                 control: control,
@@ -171,14 +187,14 @@ export default function RegisterTournament() {
                 placeholder: 'onepickleball@gmail.com',
               }}
             />
-          </RHFProvider>
+          </RHFLayout>
         </View>
 
         {isDouble && (
           <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
             <Text style={[styles.sectionTitle, { color: colors.text }]}>Thông tin đồng đội</Text>
 
-            <RHFProvider>
+            <RHFLayout>
               <RHFTextInput
                 controller={{
                   control: control,
@@ -214,7 +230,7 @@ export default function RegisterTournament() {
                   placeholder: 'onepickleball@gmail.com (Tùy chọn)',
                 }}
               />
-            </RHFProvider>
+            </RHFLayout>
           </View>
         )}
       </ScrollView>
@@ -232,8 +248,8 @@ export default function RegisterTournament() {
           )}
         </TouchableOpacity>
       </View>
-    </View>
-  )
+    </KeyboardAvoidingView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -310,5 +326,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-  }
-})
+  },
+});

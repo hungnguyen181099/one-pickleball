@@ -7,7 +7,6 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -23,6 +22,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { WebView } from 'react-native-webview';
 import { DetailSkeleton } from '@/components/ui/Skeleton';
+import { Text } from '@/components/ui/Text';
 
 export default function NewsDetailScreen() {
   const [isLiked, setIsLiked] = useState(false);
@@ -92,9 +92,10 @@ export default function NewsDetailScreen() {
               </View>
 
               <View style={[styles.contentSection, { backgroundColor: colors.card }]}>
-                <View style={[styles.categoryBadge, { backgroundColor: '#FF980020' }]}>
-                  <Text style={[styles.categoryBadgeText, { color: '#FF9800' }]}>Kỹ thuật</Text>
-                </View>
+                {data.category_id ? <View style={[styles.categoryBadge, { backgroundColor: '#FF980020' }]}>
+                  <Text style={[styles.categoryBadgeText, { color: '#FF9800' }]}>{data.category?.name}</Text>
+                </View> : null}
+
 
                 <Text style={[styles.title, { color: colors.text }]}>
                   {data?.title}
@@ -111,7 +112,7 @@ export default function NewsDetailScreen() {
                     </View>
                   </View>
                   <TouchableOpacity>
-                    <Ionicons name="person-add-outline" size={24} color="#00D9B5" />
+                    {/* <Ionicons name="person-add-outline" size={24} color="#00D9B5" /> */}
                   </TouchableOpacity>
                 </View>
 

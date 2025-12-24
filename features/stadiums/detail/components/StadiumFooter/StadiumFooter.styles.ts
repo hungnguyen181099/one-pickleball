@@ -10,7 +10,6 @@ export const getStadiumFooterStyles = ({ colors }: StyleColorsProps) =>
       borderTopColor: colors.inputBorder,
     },
     button: {
-      padding: 16,
       flex: 1,
     },
     buttonText: {

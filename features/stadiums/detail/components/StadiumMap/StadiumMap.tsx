@@ -2,9 +2,9 @@ import React from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Linking, Pressable, View } from 'react-native';
+import { Linking, View } from 'react-native';
 
-import { Text } from '@/components/ui/Text';
+import { Button } from '@/components/ui/Button';
 
 import { StadiumDetailResponse } from '@/features/stadiums/shared/types';
 
@@ -27,10 +27,15 @@ const StadiumMap = ({ link }: StadiumMapProps) => {
     <View style={styles.container}>
       <Image source={require('@/assets/images/map.png')} style={styles.map} />
 
-      <Pressable onPress={() => Linking.openURL(link)} style={styles.button}>
-        <MaterialCommunityIcons name="map" style={styles.buttonIcon} />
-        <Text fontWeight={500}>Xem bản đồ</Text>
-      </Pressable>
+      <Button
+        variant="default"
+        radius="full"
+        startIcon={<MaterialCommunityIcons name="map" style={styles.buttonIcon} />}
+        onPress={() => Linking.openURL(link)}
+        styleOverrides={{ container: styles.button }}
+      >
+        Xem bản đồ
+      </Button>
     </View>
   );
 };

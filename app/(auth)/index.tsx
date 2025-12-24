@@ -17,10 +17,11 @@ import {
 } from 'react-native';
 import { z } from 'zod';
 
+import { RHFLayout } from '@/components/rhf/RHFLayout';
 import { RHFPassword } from '@/components/rhf/RHFPassword';
-import { RHFProvider } from '@/components/rhf/RHFProvider';
 import { RHFTextInput } from '@/components/rhf/RHFTextInput';
 
+import { phoneRegex } from '@/constants/global.constants';
 import { styles } from '@/constants/styles/login.styles';
 
 import { useSession } from '@/contexts/AuthProvider';
@@ -30,10 +31,7 @@ import { useTheme, useThemedColors } from '@/hooks/use-theme';
 const loginSchema = z.object({
   username: z.union([
     z.email('Vui lòng nhập đúng định dạng').min(1, 'Không được để trống'),
-    z
-      .string()
-      .min(1, 'Không được để trống')
-      .regex(/(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g, 'Vui lòng nhập đúng định dạng'),
+    z.string().min(1, 'Không được để trống').regex(phoneRegex, 'Vui lòng nhập đúng định dạng'),
   ]),
   password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
 });
@@ -93,7 +91,7 @@ export default function LoginScreen() {
             <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Đăng nhập để tiếp tục</Text>
           </View>
 
-          <RHFProvider>
+          <RHFLayout>
             <RHFTextInput
               controller={{
                 control: control,
@@ -129,7 +127,7 @@ export default function LoginScreen() {
             >
               <Text style={styles.buttonText}>{loading ? 'Đang đăng nhập...' : 'Đăng nhập'}</Text>
             </Pressable>
-          </RHFProvider>
+          </RHFLayout>
 
           <View style={styles.divider}>
             <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />

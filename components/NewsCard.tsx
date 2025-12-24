@@ -4,13 +4,16 @@ import { NewsArticle } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { styles } from '@/constants/styles/news.styles';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
 import { formatDate } from '@/utils/date.utils';
+
+import { Badge } from './ui/Badge';
+import { Text } from './ui/Text';
 
 export default function NewsCard(item: NewsArticle) {
   const colors = useThemedColors();
@@ -24,17 +27,19 @@ export default function NewsCard(item: NewsArticle) {
         })
       }
     >
-      <View style={[styles.newsCardInner, { backgroundColor: colors.backgroundSecondary, borderColor: colors.border }]}>
-        <View style={styles.newsThumbnail}>
+      <View style={[styles.newsCardInner, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View style={[styles.newsThumbnail]}>
           <Image style={styles.featuredImage} source={item.image} />
         </View>
 
         <View style={styles.newsContent}>
-          {/* <View style={[styles.categoryBadge,{backgroundColor: '#2196F3'}]}>
-            <Text style={[styles.categoryBadgeText]}>a</Text>
-          </View> */}
+          {item.category_id ? (
+            <Badge color="primary" size="sm" radius="sm">
+              {item.category?.name}
+            </Badge>
+          ) : null}
 
-          <Text style={[styles.newsTitle, { color: colors.text }]} numberOfLines={2}>
+          <Text size="h5" numberOfLines={2}>
             {item.title}
           </Text>
 

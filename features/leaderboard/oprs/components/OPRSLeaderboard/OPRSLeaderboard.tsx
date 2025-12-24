@@ -18,10 +18,12 @@ const OPRSLeaderboard = () => {
   return (
     <View style={styles.container}>
       <ScreenHeader title="Bảng xếp hạng OPRS" />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <OPRSTableFilter />
-        <OPRSDistribution />
-      </ScrollView>
+      <View style={styles.body}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <OPRSTableFilter />
+          <OPRSDistribution />
+        </ScrollView>
+      </View>
       <OPRSUserElo />
     </View>
   );
@@ -31,9 +33,11 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      paddingBottom: 96,
+      paddingBottom: 160,
+      backgroundColor: colors.background,
+    },
+    body: {
       paddingHorizontal: 16,
-      backgroundColor: colors.backgroundSecondary,
     },
   });
 

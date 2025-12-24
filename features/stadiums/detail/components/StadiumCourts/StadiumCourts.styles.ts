@@ -13,11 +13,8 @@ export const getStadiumCourtsStyles = ({ colors }: StyleColorsProps) =>
       gap: 16,
     },
     card: {
-      padding: 16,
-      borderRadius: 24,
-      borderWidth: 1,
-      borderColor: colors.inputBorder,
-      backgroundColor: colors.background,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     left: {
       flex: 1,
