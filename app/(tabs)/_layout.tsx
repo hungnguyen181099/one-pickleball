@@ -50,7 +50,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="stadiums"
+        name="stadium-overview"
         options={{
           title: 'Sân',
           tabBarIcon: ({ color }) => <MaterialCommunityIcons size={24} name="map" color={color} />,

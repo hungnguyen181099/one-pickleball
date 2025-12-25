@@ -14,7 +14,7 @@ const StadiumsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="Sân thi đấu" showBack={false} withBorder={false} />
+      <ScreenHeader title="Danh sách sân" withBorder={false} />
       <StadiumsList />
     </View>
   );

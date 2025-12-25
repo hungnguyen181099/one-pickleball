@@ -1,7 +1,8 @@
 import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
-import { AppColors, Radius } from '@/constants/theme';
+import { AppColors, Radius, Spacing } from '@/constants/theme';
+
 import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
@@ -14,7 +15,7 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
     searchContainer: {
       flexDirection: 'row',
       gap: 8,
-      marginBottom: 8,
+      marginBottom: 16,
     },
     searchInput: {
       flex: 1,
@@ -44,12 +45,6 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
     },
     textItem: {
       flex: 1,
-    },
-    iconSecondary: {
-      color: colors.textSecondary,
-    },
-    iconTranslate: {
-      transform: [{ translateY: 2 }],
     },
     textSecondary: {
       color: colors.textSecondary,

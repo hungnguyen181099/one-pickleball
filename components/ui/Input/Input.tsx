@@ -132,14 +132,17 @@ const getStyles = ({ variant, colors, radius, size }: StyleProps) =>
       ...(size === 'sm' && {
         paddingVertical: 12,
         paddingHorizontal: 12,
+        fontSize: 14,
       }),
       ...(size === 'md' && {
         paddingVertical: 16,
         paddingHorizontal: 16,
+        fontSize: 16,
       }),
       ...(size === 'lg' && {
         paddingVertical: 20,
         paddingHorizontal: 20,
+        fontSize: 18,
       }),
     },
   });

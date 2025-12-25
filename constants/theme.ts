@@ -2,7 +2,7 @@
  * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
-import { Platform } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 
 export type ThemeColors = {
   text: string;
@@ -28,11 +28,17 @@ export type ThemeColors = {
   mutedForeground: string;
   secondary: string;
   secondaryForeground: string;
+  backgroundInverse: string;
+  backgroundInverseForeground: string;
 };
 
 type ColorsType = Record<'light' | 'dark', ThemeColors>;
 
 export const TOP_BAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+
+export const PAGE_PADDING = 16;
+
+export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export const Colors: ColorsType = {
   light: {
@@ -61,6 +67,8 @@ export const Colors: ColorsType = {
     mutedForeground: '#8E8E93',
     secondary: '#f8fafc',
     secondaryForeground: '#94a3b8',
+    backgroundInverse: '#000000',
+    backgroundInverseForeground: '#ffffff',
   },
   dark: {
     text: '#ECEDEE',
@@ -88,6 +96,8 @@ export const Colors: ColorsType = {
     mutedForeground: '#8E8E93',
     secondary: '#1e293b',
     secondaryForeground: '#94a3b8',
+    backgroundInverse: '#ffffff',
+    backgroundInverseForeground: '#000000',
   },
 };
 
@@ -147,6 +157,14 @@ export const FontSize = {
   md: 16,
   lg: 18,
   xl: 20,
+};
+
+export const Spacing = {
+  xs: 2,
+  sm: 4,
+  md: 8,
+  lg: 16,
+  xl: 32,
 };
 
 export const Shadows = {

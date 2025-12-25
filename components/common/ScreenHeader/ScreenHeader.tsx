@@ -7,6 +7,8 @@ import { Pressable, View, ViewStyle } from 'react-native';
 import { Flex } from '@/components/ui/Flex';
 import { Text } from '@/components/ui/Text';
 
+import { PAGE_PADDING } from '@/constants/theme';
+
 import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { getScreenHeaderStyles } from './ScreenHeader.styles';
@@ -23,7 +25,7 @@ type ScreenHeaderProps = {
 };
 
 const ScreenHeader = ({
-  paddingHorizontal = 16,
+  paddingHorizontal = PAGE_PADDING,
   styleOverrides = {},
   withBorder = true,
   showBack = true,

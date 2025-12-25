@@ -7,13 +7,14 @@ import { AppColors, FontSize, Radius } from '@/constants/theme';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
-import { Text } from '../Text';
 import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
+
+import { Text } from '../Text';
 
 type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent' | 'fit';
 type IconRadius = 'sm' | 'md' | 'lg' | 'full';
 type IconSize = 'sm' | 'md' | 'lg' | number;
-type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
+type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'muted';
 
 type GetStylesProps = StyleColorsProps & {
   variant: IconVariant;
@@ -21,6 +22,7 @@ type GetStylesProps = StyleColorsProps & {
   radius: IconRadius;
   disabled: PressableProps['disabled'];
   color: IconColor;
+  translateY: number;
 };
 
 type IconProps = {
@@ -29,6 +31,7 @@ type IconProps = {
   size?: IconSize;
   radius?: IconRadius;
   color?: IconColor;
+  translateY?: number;
   styleOverrides?: {
     container?: ViewStyle;
     icon?: TextStyle;
@@ -41,11 +44,12 @@ const Icon = ({
   radius = 'full',
   size = 'md',
   color = 'primary',
+  translateY = 0,
   styleOverrides = {},
   disabled,
   ...props
 }: IconProps) => {
-  const styles = useGetStyles(getStyles, { variant, size, radius, disabled, color });
+  const styles = useGetStyles(getStyles, { variant, size, radius, disabled, color, translateY });
 
   return (
     <Pressable style={[styles.container, styleOverrides.container]} {...props}>
@@ -54,13 +58,14 @@ const Icon = ({
   );
 };
 
-const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStylesProps) =>
+const getStyles = ({ colors, variant, size, radius, disabled, color, translateY }: GetStylesProps) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1,
+      transform: [{ translateY }],
 
       // Radius
       ...(radius === 'sm' && {
@@ -111,6 +116,10 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
           backgroundColor: colors.secondary,
           borderColor: colors.secondary,
         }),
+        ...(color === 'muted' && {
+          backgroundColor: colors.muted,
+          borderColor: colors.muted,
+        }),
         ...(color === 'success' && {
           backgroundColor: AppColors.success,
           borderColor: AppColors.success,
@@ -135,6 +144,10 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
           backgroundColor: colors.secondary,
           borderColor: colors.secondary,
         }),
+        ...(color === 'muted' && {
+          backgroundColor: colors.muted,
+          borderColor: colors.muted,
+        }),
         ...(color === 'success' && {
           backgroundColor: hexToHexAlpha(AppColors.success),
           borderColor: hexToHexAlpha(AppColors.success),
@@ -157,6 +170,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         borderColor: AppColors.primary,
         ...(color === 'secondary' && {
           borderColor: colors.secondary,
+        }),
+        ...(color === 'muted' && {
+          borderColor: colors.muted,
         }),
         ...(color === 'success' && {
           borderColor: AppColors.success,
@@ -188,6 +204,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       // Colors
       ...(color === 'secondary' && {
         color: colors.secondaryForeground,
+      }),
+      ...(color === 'muted' && {
+        color: colors.mutedForeground,
       }),
       ...(color === 'success' && {
         color: AppColors.success,
@@ -221,6 +240,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         color: AppColors.primaryForeground,
         ...(color === 'secondary' && {
           color: colors.secondaryForeground,
+        }),
+        ...(color === 'muted' && {
+          color: colors.mutedForeground,
         }),
         ...(color === 'success' && {
           color: AppColors.successForeground,

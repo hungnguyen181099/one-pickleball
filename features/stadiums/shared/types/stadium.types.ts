@@ -34,7 +34,7 @@ export type StadiumListResponse = {
       code: number | null;
       created_at: string;
       updated_at: string;
-    };
+    } | null;
     created_at: string;
     updated_at: string;
   }[];

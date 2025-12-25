@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { FlatList, Keyboard, ScrollView, View } from 'react-native';
@@ -8,6 +8,7 @@ import { FlatList, Keyboard, ScrollView, View } from 'react-native';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Flex } from '@/components/ui/Flex';
+import { Icon } from '@/components/ui/Icon';
 import { Input } from '@/components/ui/Input';
 import { Pagination } from '@/components/ui/Pagination';
 import { Separator } from '@/components/ui/Separator';
@@ -47,7 +48,7 @@ const StadiumsList = () => {
             value={search}
             onChangeText={setSearch}
             placeholder="Nhập tên sân ..."
-            startIcon={<MaterialCommunityIcons name="magnify" size={24} color={colors.icon} />}
+            startIcon={<MaterialIcons name="search" size={24} color={colors.icon} />}
             maxLength={50}
           />
         </View>
@@ -82,7 +83,7 @@ const StadiumsList = () => {
               <Image source={item.image} contentFit="cover" style={styles.image} />
 
               <Flex gap={4} style={styles.rating}>
-                <MaterialCommunityIcons name="star" style={styles.ratingIcon} />
+                <MaterialIcons name="star" style={styles.ratingIcon} />
                 <Text style={styles.ratingText} fontWeight={600}>
                   {item.rating} ({item.rating_count})
                 </Text>
@@ -94,37 +95,23 @@ const StadiumsList = () => {
 
                 {/* Address */}
                 <Flex gap={8} alignItems="flex-start">
-                  <MaterialCommunityIcons
-                    name="map-marker"
-                    size={16}
-                    style={[styles.iconSecondary, styles.iconTranslate]}
-                  />
-                  <Text color="secondary" style={styles.textItem}>
+                  <Icon variant="fit" color="muted" translateY={3}>
+                    <MaterialIcons name="location-on" size={18} />
+                  </Icon>
+                  <Text color="muted" style={styles.textItem}>
                     {item.address}
                   </Text>
                 </Flex>
 
                 {/* Time */}
                 <Flex gap={8} alignItems="flex-start">
-                  <MaterialCommunityIcons
-                    name="clock"
-                    size={16}
-                    color="black"
-                    style={[styles.iconSecondary, styles.iconTranslate]}
-                  />
-                  <Text color="secondary" style={styles.textItem}>
+                  <Icon variant="fit" color="muted" translateY={3}>
+                    <MaterialIcons name="access-time-filled" size={18} />
+                  </Icon>
+                  <Text color="muted" style={styles.textItem}>
                     {item.opening_time} - {item.closing_time}
                   </Text>
                 </Flex>
-
-                {/* Amenities */}
-                {/* <View style={styles.amenity}>
-                  {item.amenities.map((amenity, index) => (
-                    <Badge key={index} variant="light" radius="sm">
-                      {amenity}
-                    </Badge>
-                  ))}
-                </View> */}
 
                 <Separator marginVertical={8} />
 

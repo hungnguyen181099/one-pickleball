@@ -7,13 +7,14 @@ import { AppColors, FontSize, Radius } from '@/constants/theme';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
-import { Text } from '../Text';
 import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
+
+import { Text } from '../Text';
 
 type BadgeVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent' | 'outline-light';
 type BadgeRadius = 'sm' | 'md' | 'lg' | 'full';
 type BadgeSize = 'sm' | 'md' | 'lg';
-type BadgeColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
+type BadgeColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'muted';
 
 type GetStylesProps = StyleColorsProps & {
   variant: BadgeVariant;
@@ -109,6 +110,10 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
           backgroundColor: colors.secondary,
           borderColor: colors.secondary,
         }),
+        ...(color === 'muted' && {
+          backgroundColor: colors.muted,
+          borderColor: colors.muted,
+        }),
         ...(color === 'success' && {
           backgroundColor: AppColors.success,
           borderColor: AppColors.success,
@@ -133,6 +138,10 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
           backgroundColor: hexToHexAlpha(colors.secondary),
           borderColor: hexToHexAlpha(colors.secondary),
         }),
+        ...(color === 'muted' && {
+          backgroundColor: hexToHexAlpha(colors.muted),
+          borderColor: hexToHexAlpha(colors.muted),
+        }),
         ...(color === 'success' && {
           backgroundColor: hexToHexAlpha(AppColors.success),
           borderColor: hexToHexAlpha(AppColors.success),
@@ -156,6 +165,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         ...(color === 'secondary' && {
           borderColor: colors.secondary,
         }),
+        ...(color === 'muted' && {
+          borderColor: colors.muted,
+        }),
         ...(color === 'success' && {
           borderColor: AppColors.success,
         }),
@@ -175,6 +187,10 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         ...(color === 'secondary' && {
           backgroundColor: hexToHexAlpha(colors.secondary),
           borderColor: colors.secondary,
+        }),
+        ...(color === 'muted' && {
+          backgroundColor: hexToHexAlpha(colors.muted),
+          borderColor: colors.muted,
         }),
         ...(color === 'success' && {
           backgroundColor: hexToHexAlpha(AppColors.success),
@@ -211,6 +227,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       ...(color === 'secondary' && {
         color: colors.secondaryForeground,
       }),
+      ...(color === 'muted' && {
+        color: colors.mutedForeground,
+      }),
       ...(color === 'success' && {
         color: AppColors.success,
       }),
@@ -244,6 +263,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         ...(color === 'secondary' && {
           color: colors.secondaryForeground,
         }),
+        ...(color === 'muted' && {
+          color: colors.mutedForeground,
+        }),
         ...(color === 'success' && {
           color: AppColors.successForeground,
         }),
@@ -270,6 +292,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
       // Colors
       ...(color === 'secondary' && {
         backgroundColor: colors.secondary,
+      }),
+      ...(color === 'muted' && {
+        backgroundColor: colors.muted,
       }),
       ...(color === 'success' && {
         backgroundColor: AppColors.success,
@@ -303,6 +328,9 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         backgroundColor: AppColors.primaryForeground,
         ...(color === 'secondary' && {
           color: colors.secondaryForeground,
+        }),
+        ...(color === 'muted' && {
+          color: colors.mutedForeground,
         }),
         ...(color === 'success' && {
           color: AppColors.successForeground,
