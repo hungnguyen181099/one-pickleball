@@ -29,34 +29,33 @@ const HomeActions = () => {
       </Flex>
 
       <Grid columns={2} gap={8}>
-        {homeActions.map((item, index) => {
-          return (
-            <GridItem key={index}>
-              <Pressable onPress={() => router.navigate(item.href)}>
-                <Card padding={16} radius="lg">
-                  <Flex direction="column">
-                    <Icon
-                      size="lg"
-                      variant="light"
-                      onPress={() => router.navigate(item.href)}
-                      styleOverrides={{
-                        container: {
-                          backgroundColor: hexToHexAlpha(item.color),
-                        },
-                        icon: {
-                          color: item.color,
-                        },
-                      }}
-                    >
-                      <MaterialIcons name={item.icon} size={24} />
-                    </Icon>
-                    <Text size="h4">{item.label}</Text>
-                  </Flex>
-                </Card>
-              </Pressable>
-            </GridItem>
-          );
-        })}
+        {homeActions.map((item, index) => (
+          <GridItem key={index}>
+            <Pressable onPress={() => router.navigate(item.href)}>
+              <Card padding={16} radius="lg">
+                <Flex direction="column">
+                  <Icon
+                    size="lg"
+                    variant="light"
+                    onPress={() => router.navigate(item.href)}
+                    styleOverrides={{
+                      container: {
+                        backgroundColor: hexToHexAlpha(item.color),
+                        borderColor: hexToHexAlpha(item.color),
+                      },
+                      icon: {
+                        color: item.color,
+                      },
+                    }}
+                  >
+                    <MaterialIcons name={item.icon} size={24} />
+                  </Icon>
+                  <Text size="h4">{item.label}</Text>
+                </Flex>
+              </Card>
+            </Pressable>
+          </GridItem>
+        ))}
       </Grid>
     </View>
   );
