@@ -1,3 +1,3 @@
-import { StadiumsScreen } from '@/features/stadiums/list/components/StadiumsScreen';
+import { StadiumsScreen } from '@/features/stadiums/pages/list/components/StadiumsScreen';
 
 export default StadiumsScreen;

@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { RankingTierFilter } from '@/features/leaderboard/shared/components/RankingTierFilter';
 import { OCRTiers } from '@/features/leaderboard/shared/constants';
 
-import { RankingTierFilter } from '../../../shared/components/RankingTierFilter';
 import { OCRTable } from '../OCRTable';
 
 // Use function as children component to pass props

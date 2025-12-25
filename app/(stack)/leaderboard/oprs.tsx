@@ -1,3 +1,3 @@
-import { OPRSLeaderboard } from '@/features/leaderboard/oprs/components/OPRSLeaderboard';
+import { OPRSLeaderboard } from '@/features/leaderboard/pages/oprs/components/OPRSLeaderboard';
 
 export default OPRSLeaderboard;

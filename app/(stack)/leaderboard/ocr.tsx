@@ -1,3 +1,3 @@
-import { OCRLeaderboard } from '@/features/leaderboard/ocr/components/OCRLeaderboard';
+import { OCRLeaderboard } from '@/features/leaderboard/pages/ocr/components/OCRLeaderboard';
 
 export default OCRLeaderboard;
