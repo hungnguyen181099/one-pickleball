@@ -1,5 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
+import { Radius } from '../theme';
+
 const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
@@ -7,7 +9,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   flatListContent: {
-    padding: 16
+    padding: 16,
   },
   header: {
     flexDirection: 'row',
@@ -63,7 +65,7 @@ export const styles = StyleSheet.create({
   featuredImage: {
     width: '100%',
     height: '100%',
-    borderRadius: 8
+    borderRadius: Radius.md,
   },
   featuredOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -91,7 +93,7 @@ export const styles = StyleSheet.create({
   },
   categoriesWrapper: {
     paddingBottom: 8,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   categoriesScroll: {
     paddingHorizontal: 16,
@@ -131,16 +133,15 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     backgroundColor: '#f9f9f9',
-    borderRadius: 12,
+    borderRadius: Radius.lg,
     overflow: 'hidden',
-    padding: 12,
-    gap: 12,
-    borderWidth: 1
+    padding: 16,
+    gap: 16,
+    borderWidth: 1,
   },
   newsThumbnail: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
+    width: 96,
+    height: 96,
     justifyContent: 'center',
     alignItems: 'center',
     flexShrink: 0,

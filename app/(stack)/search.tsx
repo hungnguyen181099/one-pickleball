@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { SearchResult } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import qs from 'qs';
 import {
@@ -18,14 +18,15 @@ import {
 } from 'react-native';
 
 import { styles } from '@/constants/styles/search.styles';
-
 import { AppColors } from '@/constants/theme';
+
 import { stadiumAPI } from '@/features/stadiums/shared/api/stadium.api';
+
 import { useDebounce } from '@/hooks/use-debounce';
 import { useThemedColors } from '@/hooks/use-theme';
+
 import newService from '@/services/api/new.service';
 import tournamentService from '@/services/api/tournament.service';
-import { Image } from 'expo-image';
 
 export default function SearchScreen() {
   const colors = useThemedColors();
@@ -157,7 +158,6 @@ export default function SearchScreen() {
         const resultsArray = await Promise.all(promises);
         const combinedResults = resultsArray.flat() as SearchResult[];
         setResults(combinedResults);
-
       } catch (error) {
         console.error('Search error:', error);
         // Handle error gracefully?
@@ -169,26 +169,21 @@ export default function SearchScreen() {
     fetchResults();
   }, [debouncedSearchQuery, activeFilter]);
 
-
   const renderResultItem = ({ item }: { item: SearchResult }) => (
     <TouchableOpacity
       style={[styles.resultItem, { backgroundColor: colors.card, borderColor: colors.border }]}
       activeOpacity={0.7}
       onPress={() => {
         if (item.type === 'court') {
-          router.push({ pathname: '/(details)/stadiums/[stadiumId]', params: { stadiumId: item.id } });
+          router.push({ pathname: '/stadiums/[stadiumId]', params: { stadiumId: item.id } });
         } else if (item.type === 'event') {
           router.push({ pathname: '/(details)/eventDetail/[id]', params: { id: item.id } });
-
         } else if (item.type === 'news') {
           router.push({ pathname: '/(details)/newDetail/[id]', params: { id: item.id } });
         }
       }}
     >
-      <Image
-        source={ item.image }
-        style={styles.resultImage}
-      />
+      <Image source={item.image} style={styles.resultImage} />
 
       <View style={styles.resultContent}>
         <Text style={[styles.resultType, { color: getTypeColor(item.type) }]}>{getTypeLabel(item.type)}</Text>
@@ -240,7 +235,7 @@ export default function SearchScreen() {
         <View style={{ paddingTop: 40 }}>
           <ActivityIndicator size="large" color={AppColors.primary} />
         </View>
-      )
+      );
     }
 
     if (searchQuery.trim()) {
@@ -324,4 +319,3 @@ export default function SearchScreen() {
     </KeyboardAvoidingView>
   );
 }
-

@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
-import { ActivityIndicator, FlatList, RefreshControl, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+import NewsCard from '@/components/NewsCard';
+import { DebouncedSearch } from '@/components/common/DebouncedSearch';
+import { Chip } from '@/components/ui/Chip';
+import { Pagination } from '@/components/ui/Pagination';
+import { CardSkeleton } from '@/components/ui/Skeleton';
 
 import { styles } from '@/constants/styles/news.styles';
 
-import NewsCard from '@/components/NewsCard';
-import { Pagination } from '@/components/ui/Pagination';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useThemedColors } from '@/hooks/use-theme';
-import newService from '@/services/api/new.service';
-import { useQuery } from '@tanstack/react-query';
-import { DebouncedSearch } from '@/components/common/DebouncedSearch';
-import { CardSkeleton } from '@/components/ui/Skeleton';
-import { Chip } from '@/components/ui/Chip';
 
+import newService from '@/services/api/new.service';
 
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,24 +27,25 @@ const NewsPage = () => {
 
   const { data, isPending, refetch, isRefetching } = useQuery({
     queryKey: ['getNews', page, debouncedSearchQuery, activeCategory],
-    queryFn: () => newService.getNews({
-      page: page,
-      search: debouncedSearchQuery,
-      category: activeCategory
-    })
-  })
+    queryFn: () =>
+      newService.getNews({
+        page: page,
+        search: debouncedSearchQuery,
+        category: activeCategory,
+      }),
+  });
 
   const { data: categories } = useQuery({
     queryKey: ['newCategories'],
-    queryFn: () => newService.getCategories()
-  })
+    queryFn: () => newService.getCategories(),
+  });
 
   const categoriesData = categories?.data.map((item) => {
     return {
       label: item.name,
-      value: item.id
-    }
-  })
+      value: item.id,
+    };
+  });
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -61,46 +63,60 @@ const NewsPage = () => {
       </View>
 
       <View style={styles.searchSection}>
-        <DebouncedSearch onDebouncedChange={(text) => {
-          setSearchQuery(text);
-          setPage(1);
-        }}
-          variant='filled'
-          placeholder='Tìm kiếm ...'
+        <DebouncedSearch
+          onDebouncedChange={(text) => {
+            setSearchQuery(text);
+            setPage(1);
+          }}
+          variant="filled"
+          placeholder="Tìm kiếm ..."
         />
       </View>
 
       <View style={[styles.categoriesWrapper, { borderColor: colors.border }]}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoriesContent}>
-
-          <Chip checked={"" === activeCategory}
-            onPress={() => setActiveCategory('')} size='sm'>{'Tất cả'}</Chip>
+          <Chip checked={'' === activeCategory} onPress={() => setActiveCategory('')} size="sm">
+            {'Tất cả'}
+          </Chip>
           {categories?.data.map((category) => (
-            <Chip checked={category.id === Number(activeCategory)}
-              onPress={() => setActiveCategory(String(category.id))} size='sm' key={category.id}>{category.name}</Chip>
+            <Chip
+              checked={category.id === Number(activeCategory)}
+              onPress={() => setActiveCategory(String(category.id))}
+              size="sm"
+              key={category.id}
+            >
+              {category.name}
+            </Chip>
           ))}
         </ScrollView>
       </View>
-      {isPending ? <CardSkeleton /> : <FlatList
-        data={data?.data}
-        refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
-        }
-        renderItem={({ item }) => <NewsCard {...item} />}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.flatListContent}
-        scrollEnabled={true}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View style={{ alignItems: 'center', padding: 32 }}>
-            <Text style={{ color: '#94a3b8' }}>Không có tin tức nào</Text>
-          </View>
-        }
-        ListFooterComponent={
-          data?.data ? <Pagination currentPage={Number(data?.meta.current_page)} totalPages={Number(data?.meta.last_page)} onPageChange={setPage} /> : null
-        }
-      />}
-
+      {isPending ? (
+        <CardSkeleton />
+      ) : (
+        <FlatList
+          data={data?.data}
+          refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
+          renderItem={({ item }) => <NewsCard {...item} />}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.flatListContent}
+          scrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View style={{ alignItems: 'center', padding: 32 }}>
+              <Text style={{ color: '#94a3b8' }}>Không có tin tức nào</Text>
+            </View>
+          }
+          ListFooterComponent={
+            data?.data ? (
+              <Pagination
+                currentPage={Number(data?.meta.current_page)}
+                totalPages={Number(data?.meta.last_page)}
+                onPageChange={setPage}
+              />
+            ) : null
+          }
+        />
+      )}
     </View>
   );
 };

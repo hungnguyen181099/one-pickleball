@@ -1,7 +1,7 @@
 import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
-import { AppColors, Radius, Spacing } from '@/constants/theme';
+import { AppColors, Radius } from '@/constants/theme';
 
 import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 

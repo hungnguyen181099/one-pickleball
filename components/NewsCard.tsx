@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { NewsArticle } from '@/types';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { TouchableOpacity, View } from 'react-native';
@@ -13,6 +13,9 @@ import { useThemedColors } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/date.utils';
 
 import { Badge } from './ui/Badge';
+import { Flex } from './ui/Flex';
+import { Icon } from './ui/Icon';
+import { Space } from './ui/Space';
 import { Text } from './ui/Text';
 
 export default function NewsCard(item: NewsArticle) {
@@ -28,34 +31,43 @@ export default function NewsCard(item: NewsArticle) {
       }
     >
       <View style={[styles.newsCardInner, { backgroundColor: colors.card, borderColor: colors.border }]}>
-        <View style={[styles.newsThumbnail]}>
+        <View style={styles.newsThumbnail}>
           <Image style={styles.featuredImage} source={item.image} />
         </View>
 
         <View style={styles.newsContent}>
-          {item.category_id ? (
+          {item.category_id && (
             <Badge color="primary" size="sm" radius="sm">
               {item.category?.name}
             </Badge>
-          ) : null}
+          )}
 
-          <Text size="h5" numberOfLines={2}>
+          <Text size="h4" textTransform="uppercase" numberOfLines={2}>
             {item.title}
           </Text>
 
-          <View style={styles.metaInfo}>
-            <Text style={[styles.author, { color: colors.textSecondary }]}>{item.author}</Text>
-            <Text style={[styles.dot, { color: colors.textTertiary }]}>•</Text>
-            <Text style={[styles.time, { color: colors.textTertiary }]}>{formatDate(item.created_at)}</Text>
-          </View>
+          <Space size="sm" />
 
-          <View style={styles.stats}>
-            <View style={styles.statItem}>
-              <Ionicons name="eye" size={14} color={colors.textTertiary} />
-              <Text style={[styles.statText, { color: colors.textTertiary }]}>{item.views ?? 0}</Text>
-            </View>
-            <View style={styles.statItem}></View>
-          </View>
+          <Flex>
+            <Icon variant="fit" color="muted" translateY={1}>
+              <MaterialIcons name="access-time-filled" size={18} />
+            </Icon>
+            <Text color="muted">{formatDate(item.created_at)}</Text>
+          </Flex>
+
+          <Flex>
+            <Icon variant="fit" color="muted" translateY={1}>
+              <MaterialIcons name="people" size={18} />
+            </Icon>
+            <Text color="muted">{item.author}</Text>
+          </Flex>
+
+          {/* <Flex>
+            <Icon variant="fit" color="muted" translateY={1}>
+              <MaterialIcons name="visibility" size={18} />
+            </Icon>
+            <Text color="muted">{item.views ?? 0}</Text>
+          </Flex> */}
         </View>
       </View>
     </TouchableOpacity>
