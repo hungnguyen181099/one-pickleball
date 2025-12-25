@@ -36,22 +36,22 @@ const StadiumHeader = ({
 
   const handleCall = async () => {
     const url = `tel:${phone}`;
-    const supported = await Linking.canOpenURL(url);
-    if (!supported) {
-      Alert.alert('Lỗi', 'Tính năng gọi không hỗ trợ trên thiết bị này');
-      return;
+
+    try {
+      await Linking.openURL(url);
+    } catch {
+      Alert.alert('Lỗi', 'Không thể thực hiện cuộc gọi trên thiết bị này');
     }
-    Linking.openURL(url);
   };
 
   const handleEmail = async () => {
     const url = `mailto:${email}`;
-    const supported = await Linking.canOpenURL(url);
-    if (!supported) {
-      Alert.alert('Lỗi', 'Tính năng email không hỗ trợ trên thiết bị này');
-      return;
+
+    try {
+      await Linking.openURL(url);
+    } catch {
+      Alert.alert('Lỗi', 'Thiết bị không hỗ trợ gửi email');
     }
-    Linking.openURL(url);
   };
 
   const isOpen = isNowInOpeningTime(opening_time, closing_time);
