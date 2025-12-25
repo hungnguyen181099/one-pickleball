@@ -4,9 +4,6 @@
  */
 import { Platform } from 'react-native';
 
-const tintColorLight = '#00D9B5';
-const tintColorDark = '#00D9B5';
-
 export type ThemeColors = {
   text: string;
   textSecondary: string;
@@ -33,10 +30,9 @@ export type ThemeColors = {
   secondaryForeground: string;
 };
 
-type ColorsType = {
-  light: ThemeColors;
-  dark: ThemeColors;
-};
+type ColorsType = Record<'light' | 'dark', ThemeColors>;
+
+export const TOP_BAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 
 export const Colors: ColorsType = {
   light: {
@@ -50,10 +46,10 @@ export const Colors: ColorsType = {
     cardSecondary: '#f9f9f9',
     border: '#e0e0e0',
     borderSecondary: '#e0e0e0',
-    tint: tintColorLight,
+    tint: '#00D9B5',
     icon: '#687076',
     tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    tabIconSelected: '#00D9B5',
     input: '#f5f5f5',
     inputBorder: '#e0e0e0',
     shadow: '#000',
@@ -77,10 +73,10 @@ export const Colors: ColorsType = {
     cardSecondary: '#1E293B',
     border: '#334155',
     borderSecondary: '#475569',
-    tint: tintColorDark,
+    tint: '#00D9B5',
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    tabIconSelected: '#00D9B5',
     input: '#1E293B',
     inputBorder: '#334155',
     shadow: '#000',
@@ -95,12 +91,9 @@ export const Colors: ColorsType = {
   },
 };
 
-export const TOP_BAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
-
 export const AppColors = {
   primary: '#00D9B5',
   primaryForeground: '#ffffff',
-  primaryAlpha20: '#00D9B520',
   primaryDark: '#00B399',
   primaryLight: '#33E4C6',
 
@@ -137,11 +130,6 @@ export const AppColors = {
   warningForeground: '#ffffff',
   errorForeground: '#ffffff',
   infoForeground: '#ffffff',
-
-  successAlpha20: '#10B98120',
-  warningAlpha20: '#F59E0B20',
-  errorAlpha20: '#EF444420',
-  infoAlpha20: '#3B82F620',
 };
 
 export const Radius = {
@@ -212,38 +200,3 @@ export const Shadows = {
     elevation: 12,
   },
 };
-
-export const ZIndex = {
-  dropdown: 1000,
-  sticky: 1020,
-  fixed: 1030,
-  modalBackdrop: 1040,
-  modal: 1050,
-  popover: 1060,
-  tooltip: 1070,
-};
-
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});

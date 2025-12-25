@@ -2,6 +2,7 @@ import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
 import { AppColors, Radius } from '@/constants/theme';
+import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
@@ -64,7 +65,7 @@ export const getStadiumListStyles = ({ colors }: StyleColorsProps) =>
       padding: 6,
       paddingHorizontal: 12,
       borderRadius: 8,
-      backgroundColor: AppColors.primaryAlpha20,
+      backgroundColor: hexToHexAlpha(AppColors.primary),
     },
     btn: {
       paddingVertical: 16,

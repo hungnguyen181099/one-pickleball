@@ -27,8 +27,6 @@ export type HomeProfileResponse = {
 export type HomeAction = {
   label: string;
   icon: keyof typeof MaterialIcons.glyphMap;
-  backgroundColor: string;
-  primaryColor: string;
-  active: boolean;
+  color: string;
   href: Href;
 };

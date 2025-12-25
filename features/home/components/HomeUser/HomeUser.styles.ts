@@ -2,13 +2,14 @@ import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
 import { AppColors, Radius } from '@/constants/theme';
+import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 export const getHomeUserStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     corner: {
       width: 200,
       aspectRatio: 1 / 1,
-      backgroundColor: AppColors.primaryAlpha20,
+      backgroundColor: hexToHexAlpha(AppColors.primary),
       position: 'absolute',
       top: 0,
       right: 0,
@@ -17,7 +18,7 @@ export const getHomeUserStyles = ({ colors }: StyleColorsProps) =>
     },
     avatar: {
       borderWidth: 4,
-      borderColor: AppColors.primaryAlpha20,
+      borderColor: hexToHexAlpha(AppColors.primary),
       borderRadius: Radius.full,
       padding: 4,
     },
@@ -52,12 +53,12 @@ export const getHomeUserStyles = ({ colors }: StyleColorsProps) =>
       borderColor: colors.secondary,
     },
     ocrItemSuccess: {
-      backgroundColor: AppColors.successAlpha20,
-      borderColor: AppColors.successAlpha20,
+      backgroundColor: hexToHexAlpha(AppColors.success),
+      borderColor: hexToHexAlpha(AppColors.success),
     },
     ocrItemError: {
-      backgroundColor: AppColors.errorAlpha20,
-      borderColor: AppColors.errorAlpha20,
+      backgroundColor: hexToHexAlpha(AppColors.error),
+      borderColor: hexToHexAlpha(AppColors.error),
     },
     oprContainer: {
       borderWidth: 1,
