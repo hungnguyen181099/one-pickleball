@@ -9,6 +9,7 @@ import { useGetStyles } from '@/hooks/useGetStyles';
 import { useUncontrolled } from '@/hooks/useUncontrolled';
 
 import { Text } from '../Text';
+import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 type ChipVariant = 'filled' | 'light' | 'outline';
 type ChipRadius = 'sm' | 'md' | 'lg' | 'full';
@@ -158,8 +159,8 @@ const getStyles = ({ colors, disabled, radius, size, variant }: GetStylesProps) 
         backgroundColor: AppColors.primary,
       }),
       ...(variant === 'light' && {
-        backgroundColor: AppColors.primaryAlpha20,
-        borderColor: AppColors.primaryAlpha20,
+        backgroundColor: hexToHexAlpha(AppColors.primary),
+        borderColor: hexToHexAlpha(AppColors.primary),
       }),
 
       // Disabled

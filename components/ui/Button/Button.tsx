@@ -5,11 +5,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Pressable, PressableProps, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
-import { AppColors, Radius, FontSize } from '@/constants/theme';
+import { AppColors, FontSize, Radius } from '@/constants/theme';
 
 import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { Text } from '../Text';
+import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 type ButtonVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent';
 type ButtonRadius = 'sm' | 'md' | 'lg' | 'full';
@@ -128,8 +129,8 @@ const getStyles = ({ colors, variant, size, radius, disabled, fullWidth }: GetSt
         borderColor: AppColors.primary,
       }),
       ...(variant === 'light' && {
-        backgroundColor: AppColors.primaryAlpha20,
-        borderColor: AppColors.primaryAlpha20,
+        backgroundColor: hexToHexAlpha(AppColors.primary),
+        borderColor: hexToHexAlpha(AppColors.primary),
       }),
       ...(variant === 'outline' && {
         backgroundColor: colors.card,

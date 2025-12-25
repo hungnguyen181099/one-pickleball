@@ -2,6 +2,7 @@ import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
 import { AppColors } from '@/constants/theme';
+import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 export const getStadiumCourtsStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
@@ -28,11 +29,11 @@ export const getStadiumCourtsStyles = ({ colors }: StyleColorsProps) =>
       flexShrink: 0,
     },
     statusActive: {
-      backgroundColor: `${AppColors.success}20`,
+      backgroundColor: hexToHexAlpha(AppColors.success),
       color: AppColors.success,
     },
     statusInactive: {
-      backgroundColor: `${AppColors.error}20`,
+      backgroundColor: hexToHexAlpha(AppColors.success),
       color: AppColors.error,
     },
   });

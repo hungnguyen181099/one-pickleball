@@ -10,6 +10,7 @@ import { Text } from '@/components/ui/Text';
 import { AppColors } from '@/constants/theme';
 
 import { LeaderboardItem } from '../../types';
+import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 type TopRankingProps = {
   data: LeaderboardItem[];
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     marginBottom: 12,
-    borderColor: AppColors.primaryAlpha20,
+    borderColor: hexToHexAlpha(AppColors.primary),
   },
   image: {
     width: '100%',

@@ -8,6 +8,7 @@ import { AppColors, FontSize, Radius } from '@/constants/theme';
 import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { Text } from '../Text';
+import { hexToHexAlpha } from '@/utils/hexToHexAlpha';
 
 type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent' | 'fit';
 type IconRadius = 'sm' | 'md' | 'lg' | 'full';
@@ -128,27 +129,27 @@ const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStyles
         }),
       }),
       ...(variant === 'light' && {
-        backgroundColor: AppColors.primaryAlpha20,
-        borderColor: AppColors.primaryAlpha20,
+        backgroundColor: hexToHexAlpha(AppColors.primary),
+        borderColor: hexToHexAlpha(AppColors.primary),
         ...(color === 'secondary' && {
           backgroundColor: colors.secondary,
           borderColor: colors.secondary,
         }),
         ...(color === 'success' && {
-          backgroundColor: AppColors.successAlpha20,
-          borderColor: AppColors.successAlpha20,
+          backgroundColor: hexToHexAlpha(AppColors.success),
+          borderColor: hexToHexAlpha(AppColors.success),
         }),
         ...(color === 'warning' && {
-          backgroundColor: AppColors.warningAlpha20,
-          borderColor: AppColors.warningAlpha20,
+          backgroundColor: hexToHexAlpha(AppColors.warning),
+          borderColor: hexToHexAlpha(AppColors.warning),
         }),
         ...(color === 'error' && {
-          backgroundColor: AppColors.errorAlpha20,
-          borderColor: AppColors.errorAlpha20,
+          backgroundColor: hexToHexAlpha(AppColors.error),
+          borderColor: hexToHexAlpha(AppColors.error),
         }),
         ...(color === 'info' && {
-          backgroundColor: AppColors.infoAlpha20,
-          borderColor: AppColors.infoAlpha20,
+          backgroundColor: hexToHexAlpha(AppColors.info),
+          borderColor: hexToHexAlpha(AppColors.info),
         }),
       }),
       ...(variant === 'outline' && {
