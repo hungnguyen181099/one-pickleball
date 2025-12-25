@@ -1,24 +1,28 @@
-import { getStadiumListStyles } from '@/features/stadiums/list/components/StadiumsList/StadiumsList.styles';
-import { useGetStyles } from '@/hooks/useGetStyles';
 import React from 'react';
+
 import { View } from 'react-native';
+
+import { getStadiumListStyles } from '@/features/stadiums/pages/list/components/StadiumsList/StadiumsList.styles';
+
+import { useGetStyles } from '@/hooks/useGetStyles';
+
 import { Card } from '../Card';
 import { Flex } from '../Flex';
 import Skeleton from './Skeleton';
 
 export default function StadiumCardSkeleton() {
-    const styles = useGetStyles(getStadiumListStyles);
+  const styles = useGetStyles(getStadiumListStyles);
 
-    return (
-        <Card>
-            {/* Image Placeholder */}
-            <View style={{ aspectRatio: 1 / 1, maxHeight: 512, width: '100%', position: 'relative' }}>
-                <Skeleton width="100%" height="100%" borderRadius={0} />
-                {/* Rating Badge */}
-                <View style={{ position: 'absolute', top: 16, right: 16 }}>
-                    <Skeleton width={80} height={32} borderRadius={16} />
-                </View>
-            </View>
+  return (
+    <Card>
+      {/* Image Placeholder */}
+      <View style={{ aspectRatio: 1 / 1, maxHeight: 512, width: '100%', position: 'relative' }}>
+        <Skeleton width="100%" height="100%" borderRadius={0} />
+        {/* Rating Badge */}
+        <View style={{ position: 'absolute', top: 16, right: 16 }}>
+          <Skeleton width={80} height={32} borderRadius={16} />
+        </View>
+      </View>
 
       <View style={styles.body}>
         {/* Name */}
@@ -48,9 +52,9 @@ export default function StadiumCardSkeleton() {
           <Skeleton width="100%" height={1} borderRadius={0} />
         </View>
 
-                {/* CTA */}
-                <Skeleton width="100%" height={52} borderRadius={26} />
-            </View>
-        </Card>
-    );
+        {/* CTA */}
+        <Skeleton width="100%" height={52} borderRadius={26} />
+      </View>
+    </Card>
+  );
 }

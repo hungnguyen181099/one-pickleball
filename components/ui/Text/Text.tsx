@@ -5,7 +5,7 @@ import { Text as NativeText, TextProps as NativeTextProps, StyleSheet, TextStyle
 
 import { AppColors, FontSize } from '@/constants/theme';
 
-import { useThemedColors } from '@/hooks/use-theme';
+import { useGetStyles } from '@/hooks/useGetStyles';
 
 type TextColors =
   | 'default'
@@ -25,6 +25,7 @@ type TextProps = {
   fontWeight?: number;
   fontSize?: TextStyle['fontSize'];
   textTransform?: TextStyle['textTransform'];
+  flex?: TextStyle['flex'];
   color?: TextColors;
   size?: TextSizes;
   children: React.ReactNode;
@@ -34,6 +35,7 @@ type GetStylesProps = {
   fontWeight?: number;
   fontSize: TextStyle['fontSize'];
   textTransform?: TextStyle['textTransform'];
+  flex?: TextStyle['flex'];
   color: TextColors;
   size: TextSizes;
 } & StyleColorsProps;
@@ -86,10 +88,11 @@ const Text = ({
   children,
   style,
   fontSize,
+  flex,
   textTransform,
   ...props
 }: TextProps) => {
-  const styles = getStyles({ colors: useThemedColors(), size, color, fontWeight, fontSize });
+  const styles = useGetStyles(getStyles, { size, color, fontWeight, fontSize, flex, textTransform });
 
   return (
     <NativeText style={[styles.container, style]} {...props}>
@@ -98,7 +101,7 @@ const Text = ({
   );
 };
 
-const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform }: GetStylesProps) =>
+const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform, flex }: GetStylesProps) =>
   StyleSheet.create({
     container: {
       fontFamily: fontFamilyImport.regular,
@@ -145,6 +148,11 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform }:
       // Text transform
       ...(textTransform && {
         textTransform,
+      }),
+
+      // Flex
+      ...(flex && {
+        flex,
       }),
     },
   });

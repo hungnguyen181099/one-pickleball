@@ -79,7 +79,7 @@ const StadiumsList = () => {
         <FlatList
           data={data.data}
           renderItem={({ item }) => (
-            <Card>
+            <Card radius="xl">
               <Image source={item.image} contentFit="cover" style={styles.image} />
 
               <Flex gap={4} style={styles.rating}>
@@ -121,7 +121,7 @@ const StadiumsList = () => {
                   variant="filled"
                   onPress={() =>
                     router.navigate({
-                      pathname: '/(details)/stadiums/[stadiumId]',
+                      pathname: '/stadiums/[stadiumId]',
                       params: {
                         stadiumId: item.id,
                       },

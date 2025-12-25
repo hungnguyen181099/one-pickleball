@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { Input, InputProps } from '@/components/ui/Input';
 
@@ -22,9 +22,9 @@ const DebouncedSearch = ({ delay = 500, onDebouncedChange, ...props }: Debounced
   return (
     <Input
       onChangeText={(text) => debounced(text)}
-      placeholder="Search"
+      placeholder="Tìm kiếm ..."
       size="sm"
-      startIcon={<MaterialCommunityIcons name="magnify" size={20} color={colors.icon} />}
+      startIcon={<MaterialIcons name="search" size={20} color={colors.mutedForeground} />}
       {...props}
     />
   );
