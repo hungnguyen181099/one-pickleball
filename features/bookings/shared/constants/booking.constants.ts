@@ -1,6 +1,6 @@
 import { SelectOption } from '@/components/ui/Select';
 
-import { BookingFormType } from '../types';
+import { BookingFormType } from '../../types';
 
 export const bookingDurationHours: SelectOption[] = Array.from({ length: 6 }, (_, index) => ({
   label: `${index + 1} giờ`,

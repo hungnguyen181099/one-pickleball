@@ -7,12 +7,13 @@ import { Pressable, View } from 'react-native';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Text } from '@/components/ui/Text';
 
+import { useBookingSlots } from '@/features/bookings/shared/hooks/useBookingSlots';
+import { BookingFormType } from '@/features/bookings/types';
+
 import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { formatCurrencyWithUnit } from '@/utils/format.utils';
 
-import { useBookingSlots } from '../../hooks/useBookingSlots';
-import { BookingFormType } from '../../types';
 import { getBookingFormTimeStyles } from './BookingFormTime.styles';
 
 const BookingFormTime = () => {

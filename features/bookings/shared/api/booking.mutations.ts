@@ -1,6 +1,6 @@
 import { mutationOptions } from '@tanstack/react-query';
 
-import { CreateBookingBody } from '../types';
+import { CreateBookingBody } from '../../types';
 import { bookingAPI } from './booking.api';
 
 export const bookingMutations = {

@@ -5,8 +5,8 @@ import { useFormContext } from 'react-hook-form';
 import { RHFLayout } from '@/components/rhf/RHFLayout';
 import { RHFSelect } from '@/components/rhf/RHFSelect';
 
-import { bookingPaymentMethods } from '../../constants';
-import { BookingFormType } from '../../types';
+import { bookingPaymentMethods } from '@/features/bookings/shared/constants';
+import { BookingFormType } from '@/features/bookings/types';
 
 const BookingFormStep3 = () => {
   const {

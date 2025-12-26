@@ -68,7 +68,7 @@ const Input = ({
       <TextInput
         value={value}
         onChangeText={handleChange}
-        placeholderTextColor={colors.secondaryForeground}
+        placeholderTextColor={colors.mutedForeground}
         style={[styles.input, styleOverrides.input]}
         {...props}
       />

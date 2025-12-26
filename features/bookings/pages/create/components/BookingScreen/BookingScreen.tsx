@@ -5,9 +5,10 @@ import { ScrollView, View } from 'react-native';
 
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 
+import { useBookingForm } from '@/features/bookings/shared/hooks/useBookingForm';
+
 import { useGetStyles } from '@/hooks/useGetStyles';
 
-import { useBookingForm } from '../../hooks/useBookingForm';
 import { BookingFooter } from '../BookingFooter';
 import { BookingForm } from '../BookingForm';
 import { getBookingScreenStyles } from './BookingScreen.styles';

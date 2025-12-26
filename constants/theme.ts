@@ -63,10 +63,10 @@ export const Colors: ColorsType = {
     error: '#EF4444',
 
     // New
-    muted: '#E5E5EA',
-    mutedForeground: '#8E8E93',
-    secondary: '#f8fafc',
-    secondaryForeground: '#94a3b8',
+    muted: '#ECEFF1',
+    mutedForeground: '#6B7280',
+    secondary: '#F1F3F5',
+    secondaryForeground: '#1C1F23',
     backgroundInverse: '#000000',
     backgroundInverseForeground: '#ffffff',
   },
@@ -92,10 +92,10 @@ export const Colors: ColorsType = {
     error: '#EF4444',
 
     // New
-    muted: '#2C2C2E',
-    mutedForeground: '#8E8E93',
-    secondary: '#1e293b',
-    secondaryForeground: '#94a3b8',
+    muted: '#262B31',
+    mutedForeground: '#9CA3AF',
+    secondary: '#1F2328',
+    secondaryForeground: '#E6E8EB',
     backgroundInverse: '#ffffff',
     backgroundInverseForeground: '#000000',
   },

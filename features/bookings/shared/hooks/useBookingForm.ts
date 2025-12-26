@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { useSession } from '@/contexts/AuthProvider';
 
-import { bookingSchema } from '../lib/schema';
+import { bookingSchema } from '../../pages/create/lib/schema';
 
 export const useBookingForm = () => {
   const { user } = useSession();

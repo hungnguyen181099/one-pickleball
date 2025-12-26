@@ -15,6 +15,6 @@ export const bookingQueries = {
   history: (filters: string) =>
     queryOptions({
       queryKey: [...bookingQueries.histories(), filters],
-      queryFn: () => bookingAPI.getHistories(filters),
+      queryFn: () => bookingAPI.getHistory(filters),
     }),
 };

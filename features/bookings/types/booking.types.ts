@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-import { bookingSchema } from '../lib/schema';
+import { bookingSchema } from '../pages/create/lib/schema';
 
 export type BookingFormType = z.infer<typeof bookingSchema>;
 
