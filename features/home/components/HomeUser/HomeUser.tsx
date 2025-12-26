@@ -117,7 +117,7 @@ const HomeUser = () => {
         <Separator orientation="vertical" opacity={0.2} />
         <Flex direction="column" style={styles.oprItem}>
           <Text size="h5" color="muted" textTransform="uppercase">
-            Tổng OPRS
+            Tổng OPS
           </Text>
           <Text size="h3" color="primary">
             {user.total_oprs}

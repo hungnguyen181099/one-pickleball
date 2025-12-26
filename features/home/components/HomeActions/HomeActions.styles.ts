@@ -6,6 +6,9 @@ import { AppColors, Radius } from '@/constants/theme';
 export const getHomeActionsStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
+      gap: 32,
+    },
+    section: {
       gap: 16,
     },
     line: {
@@ -16,6 +19,5 @@ export const getHomeActionsStyles = ({ colors }: StyleColorsProps) =>
     },
     itemActive: {
       backgroundColor: AppColors.primary,
-      
     },
   });
