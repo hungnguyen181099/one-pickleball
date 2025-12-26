@@ -63,7 +63,7 @@ const StadiumOverviewBooking = () => {
                     {history.court.court_name}
                   </Text>
                   <Text numberOfLines={1} color="muted">
-                    {history.court.stadium.name}
+                    {history.stadium.name}
                   </Text>
                 </Flex>
 

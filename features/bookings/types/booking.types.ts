@@ -78,11 +78,12 @@ export type BookingHistoriesResponse = {
       created_at: string;
       updated_at: string;
       rental_price: number;
-      stadium: {
-        id: number;
-        name: string;
-        slug: string;
-      };
+    };
+    stadium: {
+      id: number;
+      name: string;
+      slug: string;
+      image: string | null;
     };
   }[];
   pagination: {

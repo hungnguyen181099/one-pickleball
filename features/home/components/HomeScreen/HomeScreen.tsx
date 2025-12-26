@@ -2,6 +2,8 @@ import React from 'react';
 
 import { ScrollView, View } from 'react-native';
 
+import { ScreenContainer } from '@/components/common/ScreenContainer';
+
 import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { HomeActions } from '../HomeActions';
@@ -13,7 +15,7 @@ const HomeScreen = () => {
   const styles = useGetStyles(getHomeScreenStyles);
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer>
       <HomeTopBar />
       <ScrollView>
         <View style={styles.body}>
@@ -21,7 +23,7 @@ const HomeScreen = () => {
           <HomeActions />
         </View>
       </ScrollView>
-    </View>
+    </ScreenContainer>
   );
 };
 

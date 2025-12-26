@@ -11,6 +11,7 @@ import { Radius } from '@/constants/theme';
 import { useGetStyles } from '@/hooks/useGetStyles';
 import { useUncontrolled } from '@/hooks/useUncontrolled';
 
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 
 type DateMode = {
@@ -26,10 +27,10 @@ type TimeMode = {
 type Mode = DateMode | TimeMode;
 
 export type DateTimePickerProps = Mode & {
-  defaultValue?: Date;
-  value?: Date;
+  defaultValue?: Date | null;
+  value?: Date | null;
   disabled?: boolean;
-  onDateChange?: (date: Date) => void;
+  onDateChange?: (date: Date | null) => void;
   styleOverrides?: {
     container?: ViewStyle;
     text?: TextStyle;
@@ -50,7 +51,7 @@ const DateTimePicker = ({
   const [date, setDate] = useUncontrolled({
     defaultValue,
     value,
-    finalValue: dayjsExt().toDate(),
+    finalValue: null,
     onChange: onDateChange,
   });
 
@@ -71,25 +72,35 @@ const DateTimePicker = ({
       >
         {/* Trigger */}
         <View style={styles.textContainer}>
-          <Text
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            color={disabled ? 'muted' : 'default'}
-            style={styleOverrides.text}
-          >
-            {dayjsExt(date).format(mode === 'date' ? 'DD/MM/YYYY' : 'HH:mm')}
-          </Text>
+          {date ? (
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              color={disabled ? 'muted' : 'default'}
+              style={styleOverrides.text}
+            >
+              {dayjsExt(date).format(mode === 'date' ? 'DD/MM/YYYY' : 'HH:mm')}
+            </Text>
+          ) : (
+            <Text color="muted">Chọn ngày</Text>
+          )}
         </View>
 
-        <MaterialIcons
-          name={mode === 'date' ? 'calendar-month' : 'access-time'}
-          size={20}
-          style={(styles.icon, disabled && styles.iconDisabled)}
-        />
+        <Icon variant="fit" color={disabled || !date ? 'muted' : 'inherit'}>
+          <MaterialIcons name={mode === 'date' ? 'calendar-month' : 'access-time'} size={20} />
+        </Icon>
       </Pressable>
 
       {/* Picker */}
-      {show && <RNDateTimePicker value={date} mode={mode} is24Hour={true} onChange={onChange} {...props} />}
+      {show && (
+        <RNDateTimePicker
+          value={date || dayjsExt().toDate()}
+          mode={mode}
+          is24Hour={true}
+          onChange={onChange}
+          {...props}
+        />
+      )}
     </>
   );
 };

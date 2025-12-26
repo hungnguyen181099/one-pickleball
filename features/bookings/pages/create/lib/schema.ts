@@ -5,7 +5,7 @@ import { phoneRegex } from '@/constants/global.constants';
 export const bookingSchema = z.object({
   // Step 1
   courtId: z.preprocess((v) => v ?? undefined, z.string('Không được để trống').min(1, 'Không được để trống')),
-  bookingDate: z.date(),
+  bookingDate: z.preprocess((v) => v ?? undefined, z.date('Không được để trống')),
   durationHours: z.preprocess((v) => v ?? undefined, z.string('Không được để trống').min(1, 'Không được để trống')),
   startTime: z.string().min(1, 'Không được để trống'),
 

@@ -6,9 +6,11 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppColors, Radius } from '@/constants/theme';
 
-import { useThemedColors } from '@/hooks/use-theme';
+import { useGetStyles } from '@/hooks/useGetStyles';
+import { useUncontrolled } from '@/hooks/useUncontrolled';
 
 import { BottomSheet, BottomSheetProps } from '../BottomSheet';
+import { Icon } from '../Icon';
 import { Separator } from '../Separator';
 import { Text } from '../Text';
 
@@ -22,53 +24,66 @@ export type SelectProps = {
   options: SelectOption[];
   placeholder?: string;
   value?: string | null;
+  disabled?: boolean;
   onChangeValue?: (value: string | null) => void;
   renderLabel?: (label: string) => React.ReactNode;
 } & Pick<BottomSheetProps, 'styleOverrides' | 'fullSize'>;
+
+type GetStylesProps = {
+  disabled: boolean;
+} & StyleColorsProps;
 
 const Select = ({
   value,
   options,
   placeholder = 'Chọn',
   fullSize = false,
+  disabled = false,
   onChangeValue,
   renderLabel,
   ...props
 }: SelectProps) => {
   const [visible, setVisible] = useState<boolean>(false);
-  const [uncontrolledValue, setUncontrolledValue] = useState<string | null>(null);
 
-  const styles = getStyles({ colors: useThemedColors() });
+  const styles = useGetStyles(getStyles, { disabled });
 
-  const isControlled = value !== undefined;
-  const finalValue = isControlled ? value : uncontrolledValue;
+  const [selectedValue, setSelectedValue] = useUncontrolled({
+    defaultValue: null,
+    value,
+    finalValue: null,
+    onChange: onChangeValue,
+  });
 
-  const label = options.find((item) => item.value === finalValue)?.label || placeholder;
+  const label = options.find((item) => item.value === selectedValue)?.label || placeholder;
 
   const handleSelect = (selectedValue: string) => {
-    if (!isControlled) {
-      setUncontrolledValue(selectedValue === finalValue ? null : selectedValue);
-    }
-    onChangeValue?.(selectedValue === finalValue ? null : selectedValue);
+    setSelectedValue(selectedValue === value ? null : selectedValue);
     setVisible(false);
   };
 
   return (
     <>
       {/* Trigger */}
-      <Pressable onPress={() => setVisible(true)} style={styles.trigger}>
+      <Pressable
+        disabled={disabled}
+        onPress={() => setVisible(true)}
+        style={[styles.container, disabled && styles.containerDisabled]}
+      >
         <View style={styles.textTrigger}>
-          <Text numberOfLines={1} ellipsizeMode="tail" color={finalValue === null ? 'secondary' : 'default'}>
-            {finalValue === null ? placeholder : label}
+          <Text numberOfLines={1} ellipsizeMode="tail" color={selectedValue === null ? 'muted' : 'default'}>
+            {selectedValue === null ? placeholder : label}
           </Text>
         </View>
-        <MaterialIcons name="keyboard-arrow-down" size={18} style={finalValue === null && styles.colorSecondary} />
+
+        <Icon variant="fit" color={selectedValue === null ? 'muted' : 'inherit'}>
+          <MaterialIcons name="keyboard-arrow-down" size={20} />
+        </Icon>
       </Pressable>
 
       {/* Sheet */}
       <BottomSheet visible={visible} onVisibleChange={setVisible} fullSize={fullSize} {...props}>
         {options.map((item, index) => {
-          const isSelected = item.value === finalValue;
+          const isSelected = item.value === selectedValue;
           const isDisabled = item.disabled;
 
           if (isDisabled) {
@@ -102,9 +117,9 @@ const Select = ({
   );
 };
 
-const getStyles = ({ colors }: StyleColorsProps) =>
+const getStyles = ({ colors, disabled }: GetStylesProps) =>
   StyleSheet.create({
-    trigger: {
+    container: {
       paddingVertical: 16,
       paddingHorizontal: 16,
       borderWidth: 1,
@@ -113,6 +128,9 @@ const getStyles = ({ colors }: StyleColorsProps) =>
       backgroundColor: colors.card,
       flexDirection: 'row',
       alignItems: 'center',
+    },
+    containerDisabled: {
+      backgroundColor: colors.muted,
     },
     textTrigger: {
       flex: 1,
@@ -135,8 +153,8 @@ const getStyles = ({ colors }: StyleColorsProps) =>
     labelDisabled: {
       color: colors.mutedForeground,
     },
-    colorSecondary: {
-      color: colors.secondaryForeground,
+    colorMuted: {
+      color: colors.mutedForeground,
     },
     label: {
       flex: 1,

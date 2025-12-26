@@ -3,12 +3,10 @@ import { StyleSheet } from 'react-native';
 
 import { PAGE_PADDING } from '@/constants/theme';
 
-export const getBookingHistoryScreenStyles = ({ colors }: StyleColorsProps) =>
+export const getBookingHistoryFilterStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
-    filter: {
+    container: {
       paddingHorizontal: PAGE_PADDING,
       paddingBottom: PAGE_PADDING,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
     },
   });

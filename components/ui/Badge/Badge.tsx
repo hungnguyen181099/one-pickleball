@@ -21,6 +21,7 @@ type GetStylesProps = StyleColorsProps & {
   size: BadgeSize;
   radius: BadgeRadius;
   disabled: PressableProps['disabled'];
+  alignSelf: ViewStyle['alignSelf'];
   color: BadgeColor;
 };
 
@@ -31,6 +32,7 @@ type BadgeProps = {
   withDot?: boolean;
   radius?: BadgeRadius;
   color?: BadgeColor;
+  alignSelf?: ViewStyle['alignSelf'];
   styleOverrides?: {
     container?: ViewStyle;
     text?: TextStyle;
@@ -43,12 +45,13 @@ const Badge = ({
   radius = 'full',
   size = 'md',
   color = 'primary',
+  alignSelf = 'flex-start', // Make width fit content
   withDot = false,
   styleOverrides = {},
   disabled,
   ...props
 }: BadgeProps) => {
-  const styles = useGetStyles(getStyles, { variant, size, radius, disabled, color });
+  const styles = useGetStyles(getStyles, { variant, size, radius, disabled, color, alignSelf });
 
   return (
     <Pressable style={[styles.container, styleOverrides.container]} {...props}>
@@ -58,13 +61,13 @@ const Badge = ({
   );
 };
 
-const getStyles = ({ colors, variant, size, radius, disabled, color }: GetStylesProps) =>
+const getStyles = ({ colors, variant, size, radius, disabled, color, alignSelf }: GetStylesProps) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      alignSelf: 'flex-start', // Make width fit content
+      alignSelf: alignSelf,
       borderWidth: 1,
 
       // Radius

@@ -25,6 +25,7 @@ type TextProps = {
   fontWeight?: number;
   fontSize?: TextStyle['fontSize'];
   textTransform?: TextStyle['textTransform'];
+  textAlign?: TextStyle['textAlign'];
   flex?: TextStyle['flex'];
   color?: TextColors;
   size?: TextSizes;
@@ -35,6 +36,7 @@ type GetStylesProps = {
   fontWeight?: number;
   fontSize: TextStyle['fontSize'];
   textTransform?: TextStyle['textTransform'];
+  textAlign?: TextStyle['textAlign'];
   flex?: TextStyle['flex'];
   color: TextColors;
   size: TextSizes;
@@ -90,9 +92,10 @@ const Text = ({
   fontSize,
   flex,
   textTransform,
+  textAlign,
   ...props
 }: TextProps) => {
-  const styles = useGetStyles(getStyles, { size, color, fontWeight, fontSize, flex, textTransform });
+  const styles = useGetStyles(getStyles, { size, color, fontWeight, fontSize, flex, textTransform, textAlign });
 
   return (
     <NativeText style={[styles.container, style]} {...props}>
@@ -101,7 +104,7 @@ const Text = ({
   );
 };
 
-const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform, flex }: GetStylesProps) =>
+const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform, flex, textAlign }: GetStylesProps) =>
   StyleSheet.create({
     container: {
       fontFamily: fontFamilyImport.regular,
@@ -153,6 +156,11 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform, f
       // Flex
       ...(flex && {
         flex,
+      }),
+
+      // Text align
+      ...(textAlign && {
+        textAlign,
       }),
     },
   });

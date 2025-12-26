@@ -14,7 +14,7 @@ import { Text } from '../Text';
 type IconVariant = 'default' | 'filled' | 'light' | 'outline' | 'transparent' | 'fit';
 type IconRadius = 'sm' | 'md' | 'lg' | 'full';
 type IconSize = 'sm' | 'md' | 'lg' | number;
-type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'muted';
+type IconColor = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'muted' | 'inherit';
 
 type GetStylesProps = StyleColorsProps & {
   variant: IconVariant;
@@ -199,26 +199,28 @@ const getStyles = ({ colors, variant, size, radius, disabled, color, translateY 
       }),
     },
     icon: {
-      color: AppColors.primary,
-
       // Colors
-      ...(color === 'secondary' && {
-        color: colors.secondaryForeground,
-      }),
-      ...(color === 'muted' && {
-        color: colors.mutedForeground,
-      }),
-      ...(color === 'success' && {
-        color: AppColors.success,
-      }),
-      ...(color === 'warning' && {
-        color: AppColors.warning,
-      }),
-      ...(color === 'error' && {
-        color: AppColors.error,
-      }),
-      ...(color === 'info' && {
-        color: AppColors.info,
+      ...(color !== 'inherit' && {
+        color: AppColors.primary,
+
+        ...(color === 'secondary' && {
+          color: colors.secondaryForeground,
+        }),
+        ...(color === 'muted' && {
+          color: colors.mutedForeground,
+        }),
+        ...(color === 'success' && {
+          color: AppColors.success,
+        }),
+        ...(color === 'warning' && {
+          color: AppColors.warning,
+        }),
+        ...(color === 'error' && {
+          color: AppColors.error,
+        }),
+        ...(color === 'info' && {
+          color: AppColors.info,
+        }),
       }),
 
       // Sizes
