@@ -58,7 +58,7 @@ const StadiumFooter = ({ courts }: StadiumFooterProps) => {
         }}
         onPress={() =>
           router.navigate({
-            pathname: '/(stack)/bookings/[stadiumId]',
+            pathname: '/bookings/create/[stadiumId]',
             params: { stadiumId },
           })
         }

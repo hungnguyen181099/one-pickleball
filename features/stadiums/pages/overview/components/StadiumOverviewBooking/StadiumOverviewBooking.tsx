@@ -38,7 +38,7 @@ const StadiumOverviewBooking = () => {
     <View>
       <Flex justifyContent="space-between" alignItems="flex-end">
         <Text size="h2">Lịch sử đặt sân</Text>
-        <Link href="/stadiums">
+        <Link href="/bookings/history">
           <Text size="h4" color="primary">
             Xem tất cả
           </Text>

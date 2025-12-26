@@ -256,22 +256,6 @@ export interface FavoriteCourt {
   totalBookings?: number;
 }
 
-// ============================================
-// Booking Types (Extended)
-// ============================================
-export interface BookingHistory {
-  id: string;
-  courtName: string;
-  courtAddress: string;
-  date: string;
-  time: string;
-  duration: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  totalPrice: number;
-  paymentMethod?: string;
-  courtType: 'indoor' | 'outdoor';
-}
-
 export interface PaymentMethod {
   id: string;
   name: string;
@@ -371,7 +355,6 @@ export interface RegisterFormData {
 // Filter & Sort Types
 // ============================================
 
-export type BookingFilterType = 'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled';
 export type FavoriteCourtSortType = 'recent' | 'rating' | 'distance' | 'price';
 
 export type StandardAPIResponse<T> = {
