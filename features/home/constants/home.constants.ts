@@ -8,10 +8,10 @@ export const homeActions: HomeAction[] = [
     href: '/',
   },
   {
-    label: 'Trọng tài',
+    label: 'Tạo trận đấu',
     icon: 'add',
-    color: '#00d9b5',
-    href: '/(stack)/referee',
+    color: '#FFD400',
+    href: '/',
   },
   {
     label: 'BXH OCR',
@@ -20,7 +20,7 @@ export const homeActions: HomeAction[] = [
     href: '/(stack)/leaderboard/ocr',
   },
   {
-    label: 'BXH OPRS',
+    label: 'BXH OPS',
     icon: 'emoji-events',
     color: '#a855f7',
     href: '/(stack)/leaderboard/oprs',

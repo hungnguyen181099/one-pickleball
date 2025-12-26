@@ -2,6 +2,8 @@ import React from 'react';
 
 import { StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/ui/Text';
+
 import { LeaderboardItem } from '../../types';
 import { OtherRanking } from '../OtherRanking';
 import { TopRanking } from '../TopRanking';
@@ -15,7 +17,11 @@ const RankingTable = ({ data }: RankingTableProps) => {
   const otherRankings = data.slice(3);
 
   if (!data.length) {
-    return null;
+    return (
+      <Text color="muted" textAlign="center" style={styles.container}>
+        Không có dữ liệu
+      </Text>
+    );
   }
 
   return (

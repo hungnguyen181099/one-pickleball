@@ -9,7 +9,7 @@ export const bookingQueries = {
     queryOptions({
       queryKey: [...bookingQueries.slots(), courtId, filters],
       queryFn: () => bookingAPI.getAvailableSlots(courtId!, filters),
-      enabled: !!courtId,
+      enabled: !!courtId && !!filters,
     }),
   histories: () => [...bookingQueries.all(), 'histories'],
   history: (filters: string) =>

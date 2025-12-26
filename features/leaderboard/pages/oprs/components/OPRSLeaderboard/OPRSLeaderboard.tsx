@@ -17,7 +17,7 @@ const OPRSLeaderboard = () => {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="Bảng xếp hạng OPRS" />
+      <ScreenHeader title="Bảng xếp hạng OPS" />
       <View style={styles.body}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <OPRSTableFilter />

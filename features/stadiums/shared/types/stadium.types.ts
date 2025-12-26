@@ -101,9 +101,9 @@ export type StadiumDetailResponse = {
       id: number;
       court_name: string;
       court_number: string;
-      court_type: 'indoor' | 'outdoor' | string;
+      court_type: string;
       surface_type: string;
-      status: 'available' | 'unavailable' | string;
+      status: string;
       description: string | null;
       amenities: string | null;
       capacity: number;

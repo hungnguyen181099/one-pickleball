@@ -58,7 +58,7 @@ const BookingFormTime = () => {
 
       {status === 'success' && (
         <Grid columns={2} gap={8} style={styles.grid}>
-          {data.available_slots.map((item) => {
+          {data.available_slots?.map((item) => {
             const isSelected = item.time === startTime;
             const isDisabled = item.is_pending || item.is_booked;
 

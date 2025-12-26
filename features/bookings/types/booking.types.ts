@@ -6,7 +6,7 @@ export type BookingFormType = z.infer<typeof bookingSchema>;
 
 export type BookingAvailableSlotsResponse = {
   success: boolean;
-  available_slots: {
+  available_slots?: {
     time: string;
     hour: number;
     end_hour: number;
@@ -14,11 +14,13 @@ export type BookingAvailableSlotsResponse = {
     is_booked: boolean;
     is_pending: boolean;
   }[];
-  booked_slots: {
+  booked_slots?: {
     start_time: string;
     end_time: string;
     status: string;
   }[];
+  // If error but still status 200
+  message?: string;
 };
 
 export type CreateBookingResponse = {
