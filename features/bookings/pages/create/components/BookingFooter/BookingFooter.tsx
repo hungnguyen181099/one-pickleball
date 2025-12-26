@@ -10,13 +10,14 @@ import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Text } from '@/components/ui/Text';
 
+import { bookingStepFields } from '@/features/bookings/shared/constants';
+import { useCreateBooking } from '@/features/bookings/shared/hooks/useCreateBooking';
+import { BookingFormType, CreateBookingBody } from '@/features/bookings/types';
+
 import { useGetStyles } from '@/hooks/useGetStyles';
 
 import { formatCurrencyWithUnit } from '@/utils/format.utils';
 
-import { bookingStepFields } from '../../constants';
-import { useCreateBooking } from '../../hooks/useCreateBooking';
-import { BookingFormType, CreateBookingBody } from '../../types';
 import { getBookingFooterStyles } from './BookingFooter.styles';
 
 type BookingFooterProps = {

@@ -10,7 +10,7 @@ type Filters = {
   page?: number;
 };
 
-export const useBookingHistories = (filters: Filters = {}) => {
+export const useBookingHistory = (filters: Filters = {}) => {
   const queryString = qs.stringify(filters);
   return useQuery(bookingQueries.history(queryString));
 };

@@ -14,12 +14,12 @@ import { Separator } from '@/components/ui/Separator';
 import { Space } from '@/components/ui/Space';
 import { Text } from '@/components/ui/Text';
 
-import { useBookingHistories } from '@/features/bookings/hooks/useBookingHistories';
+import { useBookingHistory } from '@/features/bookings/shared/hooks/useBookingHistory';
 
 const StadiumOverviewBooking = () => {
   // const styles = useGetStyles(getStadiumOverviewBookingStyles);
 
-  const { data, status } = useBookingHistories({
+  const { data, status } = useBookingHistory({
     per_page: 5,
     page: 1,
   });

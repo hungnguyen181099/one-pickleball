@@ -9,10 +9,10 @@ import { RHFLayout } from '@/components/rhf/RHFLayout';
 import { RHFSelect } from '@/components/rhf/RHFSelect';
 import { SelectOption } from '@/components/ui/Select';
 
+import { bookingDurationHours } from '@/features/bookings/shared/constants';
+import { BookingFormType } from '@/features/bookings/types';
 import { useStadium } from '@/features/stadiums/shared/hooks/useStadium';
 
-import { bookingDurationHours } from '../../constants';
-import { BookingFormType } from '../../types';
 import { BookingFormTime } from '../BookingFormTime';
 
 const BookingFormStep1 = () => {

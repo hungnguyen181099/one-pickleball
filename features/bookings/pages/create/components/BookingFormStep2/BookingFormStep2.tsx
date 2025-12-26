@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { RHFLayout } from '@/components/rhf/RHFLayout';
 import { RHFTextInput } from '@/components/rhf/RHFTextInput';
 
-import { BookingFormType } from '../../types';
+import { BookingFormType } from '@/features/bookings/types';
 
 const BookingFormStep2 = () => {
   const {

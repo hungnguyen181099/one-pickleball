@@ -53,13 +53,13 @@ const HomeUser = () => {
 
         <Flex>
           <Text style={styles.nameBadge}>
-            <Text color="secondary">ELO: </Text>
+            <Text color="muted">ELO: </Text>
             <Text color="primary" size="h4">
               {user.elo_rating}
             </Text>
           </Text>
           <Text style={styles.nameBadge}>
-            <Text color="secondary">OPR: </Text>
+            <Text color="muted">OPR: </Text>
             <Text size="h4">{user.opr_level}</Text>
           </Text>
         </Flex>
@@ -71,7 +71,7 @@ const HomeUser = () => {
       <Grid columns={3} gap={4}>
         <GridItem>
           <Flex direction="column" gap={2} style={[styles.ocrItem, styles.ocrItemSecondary]}>
-            <Text size="h5" color="secondary" textTransform="uppercase">
+            <Text size="h5" color="muted" textTransform="uppercase">
               Tổng OCR
             </Text>
             <Text size="h3">{user.total_ocr_matches}</Text>
@@ -102,21 +102,21 @@ const HomeUser = () => {
       {/* OPR */}
       <Flex gap={0} style={styles.oprContainer}>
         <Flex direction="column" style={styles.oprItem}>
-          <Text size="h5" color="secondary" textTransform="uppercase">
+          <Text size="h5" color="muted" textTransform="uppercase">
             Thử thách
           </Text>
           <Text size="h3">{user.challenge_score}</Text>
         </Flex>
         <Separator orientation="vertical" opacity={0.2} />
         <Flex direction="column" style={styles.oprItem}>
-          <Text size="h5" color="secondary" textTransform="uppercase">
+          <Text size="h5" color="muted" textTransform="uppercase">
             Cộng đồng
           </Text>
           <Text size="h2">{user.community_score}</Text>
         </Flex>
         <Separator orientation="vertical" opacity={0.2} />
         <Flex direction="column" style={styles.oprItem}>
-          <Text size="h5" color="secondary" textTransform="uppercase">
+          <Text size="h5" color="muted" textTransform="uppercase">
             Tổng OPRS
           </Text>
           <Text size="h3" color="primary">
