@@ -34,7 +34,7 @@ export default function TabLayout() {
         },
         tabBarLabel(props) {
           return (
-            <Text size="sm" color={props.focused ? 'primary' : 'default'}>
+            <Text size="xs" color={props.focused ? 'primary' : 'default'}>
               {props.children}
             </Text>
           );
