@@ -71,7 +71,7 @@ const HomeUser = () => {
       <Grid columns={3} gap={4}>
         <GridItem>
           <Flex direction="column" gap={2} style={[styles.ocrItem, styles.ocrItemSecondary]}>
-            <Text size="h5" color="muted" textTransform="uppercase">
+            <Text size="h6" color="muted" textTransform="uppercase">
               Tổng OCR
             </Text>
             <Text size="h3">{user.total_ocr_matches}</Text>
@@ -79,7 +79,7 @@ const HomeUser = () => {
         </GridItem>
         <GridItem>
           <Flex direction="column" gap={2} style={[styles.ocrItem, styles.ocrItemSuccess]}>
-            <Text size="h5" color="success" textTransform="uppercase">
+            <Text size="h6" color="success" textTransform="uppercase">
               Thắng
             </Text>
             <Text size="h3" color="success">
@@ -89,7 +89,7 @@ const HomeUser = () => {
         </GridItem>
         <GridItem>
           <Flex direction="column" gap={2} style={[styles.ocrItem, styles.ocrItemError]}>
-            <Text size="h5" color="error" textTransform="uppercase">
+            <Text size="h6" color="error" textTransform="uppercase">
               Thua
             </Text>
             <Text size="h3" color="error">
@@ -102,21 +102,21 @@ const HomeUser = () => {
       {/* OPR */}
       <Flex gap={0} style={styles.oprContainer}>
         <Flex direction="column" style={styles.oprItem}>
-          <Text size="h5" color="muted" textTransform="uppercase">
+          <Text size="h6" color="muted" textTransform="uppercase">
             Thử thách
           </Text>
           <Text size="h3">{user.challenge_score}</Text>
         </Flex>
         <Separator orientation="vertical" opacity={0.2} />
         <Flex direction="column" style={styles.oprItem}>
-          <Text size="h5" color="muted" textTransform="uppercase">
+          <Text size="h6" color="muted" textTransform="uppercase">
             Cộng đồng
           </Text>
           <Text size="h2">{user.community_score}</Text>
         </Flex>
         <Separator orientation="vertical" opacity={0.2} />
         <Flex direction="column" style={styles.oprItem}>
-          <Text size="h5" color="muted" textTransform="uppercase">
+          <Text size="h6" color="muted" textTransform="uppercase">
             Tổng OPS
           </Text>
           <Text size="h3" color="primary">

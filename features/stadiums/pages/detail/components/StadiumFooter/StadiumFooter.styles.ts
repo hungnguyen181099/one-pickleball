@@ -1,6 +1,8 @@
 import { StyleColorsProps } from '@/types';
 import { StyleSheet } from 'react-native';
 
+import { FontSize } from '@/constants/theme';
+
 export const getStadiumFooterStyles = ({ colors }: StyleColorsProps) =>
   StyleSheet.create({
     container: {
@@ -14,6 +16,6 @@ export const getStadiumFooterStyles = ({ colors }: StyleColorsProps) =>
     },
     buttonText: {
       fontWeight: 600,
-      fontSize: 18,
+      fontSize: FontSize.xl,
     },
   });

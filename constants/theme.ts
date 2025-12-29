@@ -153,10 +153,10 @@ export const Radius = {
 
 export const FontSize = {
   xs: 12,
-  sm: 14,
-  md: 16,
-  lg: 18,
-  xl: 20,
+  sm: 13,
+  md: 14,
+  lg: 15,
+  xl: 16,
 };
 
 export const Spacing = {
