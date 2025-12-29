@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
-import { FlatList, RefreshControl, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
 
 import NewsCard from '@/components/NewsCard';
 import { DebouncedSearch } from '@/components/common/DebouncedSearch';
@@ -17,6 +17,7 @@ import { useDebounce } from '@/hooks/use-debounce';
 import { useThemedColors } from '@/hooks/use-theme';
 
 import newService from '@/services/api/new.service';
+import { Text } from '@/components/ui/Text';
 
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,17 +41,10 @@ const NewsPage = () => {
     queryFn: () => newService.getCategories(),
   });
 
-  const categoriesData = categories?.data.map((item) => {
-    return {
-      label: item.name,
-      value: item.id,
-    };
-  });
-
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Tin tức & Sự kiện</Text>
+        <Text size='h2'>Tin tức & Sự kiện</Text>
         <TouchableOpacity
           onPress={() => router.navigate('/notification')}
           style={[styles.notificationBtn, { backgroundColor: colors.backgroundTertiary }]}
@@ -75,11 +69,12 @@ const NewsPage = () => {
 
       <View style={[styles.categoriesWrapper, { borderColor: colors.border }]}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoriesContent}>
-          <Chip checked={'' === activeCategory} onPress={() => setActiveCategory('')} size="sm">
+          <Chip variant='outline' checked={'' === activeCategory} onPress={() => setActiveCategory('')} size="sm">
             {'Tất cả'}
           </Chip>
           {categories?.data.map((category) => (
             <Chip
+              variant='outline'
               checked={category.id === Number(activeCategory)}
               onPress={() => setActiveCategory(String(category.id))}
               size="sm"

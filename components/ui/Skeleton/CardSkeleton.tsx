@@ -8,7 +8,7 @@ export default function CardSkeleton() {
     const colors = useThemedColors();
 
     return (
-        <View style={[newsStyles.newsCard, { marginBottom: 16 }]}>
+        <View style={ { margin: 16 }}>
             <View style={[newsStyles.newsCardInner, { backgroundColor: colors.card, borderColor: colors.border }]}>
                 {/* Thumbnail Skeleton */}
                 <View style={newsStyles.newsThumbnail}>

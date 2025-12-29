@@ -194,9 +194,7 @@ const getStyles = ({ colors }: StyleColorsProps) =>
       height: '100%',
     },
     imageGrayscale: {
-      // Expo Image doesn't support grayscale prop directly easily without plugin,
-      // but we can manipulate opacity or tint. For now just keeping it standard image.
-      // Alternatively could use a tintColor overlaid or opacity.
+
     },
     badgeContainer: {
       position: 'absolute',
@@ -209,7 +207,6 @@ const getStyles = ({ colors }: StyleColorsProps) =>
       paddingHorizontal: 12,
       paddingVertical: 4,
       borderRadius: Radius.full,
-      // rough backdrop blur simulation with opacity
     },
     badgeDot: {
       width: 6,

@@ -638,3 +638,29 @@ export interface FinalMatchState {
     right: { gamesWon: number; athleteId: number };
   };
 }
+
+export type TournamentStatus = 'ongoing' | 'upcoming' | 'completed';
+
+export type Status = {
+  label: string;
+  value: TournamentStatus | undefined;
+};
+
+export const statuses: Status[] = [
+  {
+    label: 'Tất cả',
+    value: undefined,
+  },
+  {
+    label: 'Sắp diễn ra',
+    value: 'upcoming',
+  },
+  {
+    label: 'Đang diễn ra',
+    value: 'ongoing',
+  },
+  {
+    label: 'Đã hoàn thành',
+    value: 'completed',
+  },
+];

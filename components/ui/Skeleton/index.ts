@@ -5,5 +5,6 @@ export { default as Skeleton } from './Skeleton';
 export { default as StadiumCardSkeleton } from './StadiumCardSkeleton';
 
 export { default as StadiumSkeleton } from './StadiumSkeleton';
+export { default as TournamentCardSkeleton } from './TournamentCardSkeleton';
 
 
