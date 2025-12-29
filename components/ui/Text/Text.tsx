@@ -124,7 +124,7 @@ const getStyles = ({ colors, color, size, fontWeight, fontSize, textTransform, f
 
       // Sizes
       ...(size !== 'inherit' && {
-        ...(size === 'h1' && { fontSize: 24, fontWeight: 700, fontFamily: fontWeightMap['700'] }),
+        ...(size === 'h1' && { fontSize: 20, fontWeight: 700, fontFamily: fontWeightMap['700'] }),
         ...(size === 'h2' && { fontSize: FontSize.xl, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
         ...(size === 'h3' && { fontSize: FontSize.lg, fontWeight: 600, fontFamily: fontWeightMap['600'] }),
         ...(size === 'h4' && { fontSize: FontSize.md, fontWeight: 500, fontFamily: fontWeightMap['500'] }),

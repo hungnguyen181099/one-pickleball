@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StyleSheet, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
-import { Radius, ThemeColors } from '@/constants/theme';
+import { FontSize, Radius, ThemeColors } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 import { useUncontrolled } from '@/hooks/useUncontrolled';
@@ -105,24 +105,24 @@ const getStyles = ({ variant, colors, radius, size }: StyleProps) =>
     },
     endIcon: {
       ...(size === 'sm' && {
-        paddingRight: 12,
+        paddingRight: 10,
       }),
       ...(size === 'md' && {
-        paddingRight: 16,
+        paddingRight: 12,
       }),
       ...(size === 'lg' && {
-        paddingRight: 20,
+        paddingRight: 14,
       }),
     },
     startIcon: {
       ...(size === 'sm' && {
-        paddingLeft: 12,
+        paddingLeft: 10,
       }),
       ...(size === 'md' && {
-        paddingLeft: 16,
+        paddingLeft: 12,
       }),
       ...(size === 'lg' && {
-        paddingLeft: 20,
+        paddingLeft: 14,
       }),
     },
     input: {
@@ -130,19 +130,19 @@ const getStyles = ({ variant, colors, radius, size }: StyleProps) =>
       color: colors.text,
 
       ...(size === 'sm' && {
-        paddingVertical: 12,
-        paddingHorizontal: 12,
-        fontSize: 14,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        fontSize: FontSize.sm,
       }),
       ...(size === 'md' && {
-        paddingVertical: 16,
-        paddingHorizontal: 16,
-        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 12,
+        fontSize: FontSize.md,
       }),
       ...(size === 'lg' && {
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-        fontSize: 18,
+        paddingVertical: 14,
+        paddingHorizontal: 14,
+        fontSize: FontSize.lg,
       }),
     },
   });
