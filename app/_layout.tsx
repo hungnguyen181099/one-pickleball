@@ -1,10 +1,11 @@
 import { Stack } from 'expo-router';
-import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { StatusBarWrapper } from '@/components/StatusBarWrapper';
 import { useSession } from '@/contexts/AuthProvider';
 import RootProvider from '@/contexts/RootProvider';
-import { StatusBarWrapper } from '@/components/StatusBarWrapper';
+
+import { useThemedColors } from '@/hooks/use-theme';
 
 export default function Root() {
   return (
@@ -16,11 +17,11 @@ export default function Root() {
 }
 
 function RootNavigator() {
-  const edgeInsets = useSafeAreaInsets();
   const { session } = useSession();
+  const colors = useThemedColors();
 
   return (
-    <View style={{ marginTop: edgeInsets.top, flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.card }}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={!session}>
           <Stack.Screen name="(auth)" />
@@ -30,6 +31,6 @@ function RootNavigator() {
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal 123', headerShown: true }} />
         </Stack.Protected>
       </Stack>
-    </View>
+    </SafeAreaView>
   );
 }
