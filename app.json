@@ -2,6 +2,7 @@
   "expo": {
     "name": "one-pickleball",
     "slug": "one-pickleball",
+    "owner": "lddm4200",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
@@ -10,7 +11,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hungg1810.onepickleball",
+      "bundleIdentifier": "com.lddm4200.onepickleball",
       "infoPlist": {
         "LSApplicationQueriesSchemes": [
           "tel",
@@ -33,7 +34,7 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.CALL_PHONE"
       ],
-      "package": "com.hungg1810.onepickleball",
+      "package": "com.lddm4200.onepickleball",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -100,7 +101,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "96039bae-b7dd-4305-972b-7cd8dcab54d2"
+        "projectId": "cb69a13f-f75d-484d-9efc-799bb80e192c"
       }
     }
   }

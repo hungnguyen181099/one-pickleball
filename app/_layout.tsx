@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { NavigationBarWrapper } from '@/components/NavigationBarWrapper';
 import { StatusBarWrapper } from '@/components/StatusBarWrapper';
 import { useSession } from '@/contexts/AuthProvider';
 import RootProvider from '@/contexts/RootProvider';
@@ -11,6 +12,7 @@ export default function Root() {
   return (
     <RootProvider>
       <StatusBarWrapper />
+      <NavigationBarWrapper />
       <RootNavigator />
     </RootProvider>
   );
