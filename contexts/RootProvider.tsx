@@ -5,11 +5,11 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { StatusBarWrapper } from '@/components/StatusBarWrapper';
 import { PortalProvider } from '@/components/ui/Portal';
 
 import { ThemeProvider as CustomThemeProvider } from '@/contexts/ThemeContext';
 
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { SessionProvider } from './AuthProvider';
 
 type RootProviderProps = {
@@ -21,6 +21,7 @@ export const queryClient = new QueryClient();
 SplashScreen.preventAutoHideAsync();
 
 const RootProvider = ({ children }: RootProviderProps) => {
+  usePushNotifications();
   const [loaded, error] = useFonts({
     'BeVietnamPro-Thin': require('@/assets/fonts/BeVietnamPro/BeVietnamPro-Thin.ttf'),
     'BeVietnamPro-ThinItalic': require('@/assets/fonts/BeVietnamPro/BeVietnamPro-ThinItalic.ttf'),
