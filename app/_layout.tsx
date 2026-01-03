@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, useSegments } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { NavigationBarWrapper } from '@/components/NavigationBarWrapper';
@@ -21,9 +21,15 @@ export default function Root() {
 function RootNavigator() {
   const { session } = useSession();
   const colors = useThemedColors();
+  const segments = useSegments();
+
+  const isReferee = segments.some((s: string) => s === 'referee');
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.card }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: isReferee ? '#000' : colors.card }}
+      edges={isReferee ? [] : undefined}
+    >
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={!session}>
           <Stack.Screen name="(auth)" />

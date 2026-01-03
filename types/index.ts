@@ -502,6 +502,7 @@ export interface Referee {
   id: number;
   name: string;
   level: string;
+  avatar: string;
 }
 
 export interface GameScore {

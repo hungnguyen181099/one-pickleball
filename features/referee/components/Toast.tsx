@@ -11,16 +11,20 @@ interface ToastProps {
 
 export const Toast: React.FC<ToastProps> = ({ toast }) => {
   const translateX = useRef(new Animated.Value(400)).current;
+  const wasShownRef = useRef(false);
 
   useEffect(() => {
     if (toast.show) {
+      wasShownRef.current = true;
       Animated.spring(translateX, {
         toValue: 0,
         useNativeDriver: true,
         friction: 8,
         tension: 40,
       }).start();
-    } else {
+    } else if (wasShownRef.current) {
+      // Only animate out if we were showing before
+      wasShownRef.current = false;
       Animated.timing(translateX, {
         toValue: 400,
         duration: 200,
@@ -29,7 +33,8 @@ export const Toast: React.FC<ToastProps> = ({ toast }) => {
     }
   }, [toast.show, translateX]);
 
-  if (!toast.show && !toast.message) {
+  // Only render when show is true (not based on message)
+  if (!toast.show) {
     return null;
   }
 

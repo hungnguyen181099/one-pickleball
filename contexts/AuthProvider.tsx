@@ -60,8 +60,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
         signIn: async (data: LoginRequest) => {
           try {
             const response = await authService.login(data);
-            console.log('Login Response Debug:', JSON.stringify(response, null, 2));
-
             // Check for token in different common places
             const token =
               response.data?.token ||
@@ -69,7 +67,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
               (typeof response.data === 'string' ? response.data : null);
 
             if (response.success && token) {
-              console.log('Setting session token:', token);
               setSession(token);
             } else {
               console.log('Login successful but no token found in response.data');

@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 
 import { Teams } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { Animated, Easing, Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Easing, Modal, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 
 import { styles } from '../../styles';
 
@@ -14,6 +14,9 @@ interface CoinFlipModalProps {
 }
 
 export const CoinFlipModal: React.FC<CoinFlipModalProps> = ({ visible, teams, onClose, onConfirm }) => {
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+
   const [coinResult, setCoinResult] = useState('');
   const [isFlipping, setIsFlipping] = useState(false);
   const rotateAnim = useRef(new Animated.Value(0)).current;
@@ -72,75 +75,100 @@ export const CoinFlipModal: React.FC<CoinFlipModalProps> = ({ visible, teams, on
     outputRange: [0, 0, 1, 1],
   });
 
+  // Responsive sizes for landscape
+  const coinSize = isLandscape ? 80 : 140;
+  const iconSize = isLandscape ? 56 : 96;
+
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={handleClose}>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Bốc thăm chia sân</Text>
-            <Text style={styles.modalSubtitle}>Nhấn vào đồng xu để bốc thăm ngẫu nhiên</Text>
-          </View>
+      <View style={[styles.modalOverlay, isLandscape && { padding: 16 }]}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={[
+            styles.modalContent,
+            isLandscape && {
+              maxWidth: 360,
+              alignSelf: 'center',
+            }
+          ]}>
+            <View style={[styles.modalHeader, isLandscape && { paddingVertical: 12, paddingHorizontal: 16 }]}>
+              <Text style={[styles.modalTitle, isLandscape && { fontSize: 16, marginBottom: 4 }]}>Bốc thăm chia sân</Text>
+              <Text style={[styles.modalSubtitle, isLandscape && { fontSize: 11 }]}>Nhấn vào đồng xu để bốc thăm ngẫu nhiên</Text>
+            </View>
 
-          <View style={styles.modalBody}>
-            <View style={styles.coinContainer}>
-              <TouchableOpacity style={styles.coin3d} onPress={flipCoin} disabled={isFlipping} activeOpacity={0.9}>
-                <Animated.View style={[styles.coinInner, { transform: [{ rotateY }] }]}>
-                  {/* Front - Blue */}
-                  <Animated.View style={[styles.coinSide, styles.coinFront, { opacity: frontOpacity }]}>
-                    <Text
-                      style={[styles.coinText, { display: 'flex', alignItems: 'center', justifyContent: 'center' }]}
-                    >
-                      <Ionicons name="ellipse" size={96} color="#0000FF" />
-                    </Text>
-                  </Animated.View>
-
-                  {/* Back - Red */}
-                  <Animated.View
-                    style={[
+            <View style={[styles.modalBody, isLandscape && { paddingVertical: 12, paddingHorizontal: 16 }]}>
+              <View style={[styles.coinContainer, isLandscape && { gap: 12 }]}>
+                <TouchableOpacity
+                  style={[styles.coin3d, { width: coinSize, height: coinSize }]}
+                  onPress={flipCoin}
+                  disabled={isFlipping}
+                  activeOpacity={0.9}
+                >
+                  <Animated.View style={[styles.coinInner, { transform: [{ rotateY }] }]}>
+                    {/* Front - Blue */}
+                    <Animated.View style={[
                       styles.coinSide,
-                      styles.coinBack,
-                      {
-                        opacity: backOpacity,
-                        transform: [{ rotateY: '180deg' }],
-                      },
-                    ]}
-                  >
-                    <Text
-                      style={[styles.coinText, { display: 'flex', alignItems: 'center', justifyContent: 'center' }]}
-                    >
-                      <Ionicons name="ellipse" size={96} color="#FF8080" />
-                    </Text>
-                  </Animated.View>
-                </Animated.View>
-              </TouchableOpacity>
+                      styles.coinFront,
+                      { opacity: frontOpacity, borderRadius: coinSize / 2 }
+                    ]}>
+                      <Text
+                        style={[styles.coinText, { display: 'flex', alignItems: 'center', justifyContent: 'center' }]}
+                      >
+                        <Ionicons name="ellipse" size={iconSize} color="#0000FF" />
+                      </Text>
+                    </Animated.View>
 
-              {coinResult ? (
-                <Text style={styles.coinResultText}>{coinResult}</Text>
-              ) : isFlipping ? (
-                <Text style={styles.coinHint}>Đang bốc thăm...</Text>
-              ) : (
-                <Text style={styles.coinHint}>Nhấn vào đồng xu để bốc thăm</Text>
-              )}
+                    {/* Back - Red */}
+                    <Animated.View
+                      style={[
+                        styles.coinSide,
+                        styles.coinBack,
+                        {
+                          opacity: backOpacity,
+                          transform: [{ rotateY: '180deg' }],
+                          borderRadius: coinSize / 2,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[styles.coinText, { display: 'flex', alignItems: 'center', justifyContent: 'center' }]}
+                      >
+                        <Ionicons name="ellipse" size={iconSize} color="#FF8080" />
+                      </Text>
+                    </Animated.View>
+                  </Animated.View>
+                </TouchableOpacity>
+
+                {coinResult ? (
+                  <Text style={[styles.coinResultText, isLandscape && { fontSize: 13 }]}>{coinResult}</Text>
+                ) : isFlipping ? (
+                  <Text style={[styles.coinHint, isLandscape && { fontSize: 11 }]}>Đang bốc thăm...</Text>
+                ) : (
+                  <Text style={[styles.coinHint, isLandscape && { fontSize: 11 }]}>Nhấn vào đồng xu để bốc thăm</Text>
+                )}
+              </View>
+            </View>
+
+            <View style={[styles.modalFooter, isLandscape && { paddingVertical: 10, paddingHorizontal: 16, gap: 10 }]}>
+              <TouchableOpacity
+                style={[styles.btnModal, styles.btnModalSecondary, isLandscape && { paddingVertical: 10 }]}
+                onPress={handleClose}
+                disabled={isFlipping}
+              >
+                <Text style={[styles.btnModalText, styles.btnModalTextSecondary, isLandscape && { fontSize: 12 }]}>Đóng</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.btnModal, styles.btnModalPrimary, (!coinResult || isFlipping) && styles.btnModalDisabled, isLandscape && { paddingVertical: 10 }]}
+                onPress={handleConfirm}
+                disabled={!coinResult || isFlipping}
+              >
+                <Text style={[styles.btnModalText, styles.btnModalTextPrimary, isLandscape && { fontSize: 12 }]}>Tiếp tục</Text>
+              </TouchableOpacity>
             </View>
           </View>
-
-          <View style={styles.modalFooter}>
-            <TouchableOpacity
-              style={[styles.btnModal, styles.btnModalSecondary]}
-              onPress={handleClose}
-              disabled={isFlipping}
-            >
-              <Text style={[styles.btnModalText, styles.btnModalTextSecondary]}>Đóng</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.btnModal, styles.btnModalPrimary, (!coinResult || isFlipping) && styles.btnModalDisabled]}
-              onPress={handleConfirm}
-              disabled={!coinResult || isFlipping}
-            >
-              <Text style={[styles.btnModalText, styles.btnModalTextPrimary]}>Tiếp tục</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </ScrollView>
       </View>
     </Modal>
   );
