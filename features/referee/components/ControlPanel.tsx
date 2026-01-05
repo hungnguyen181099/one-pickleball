@@ -113,12 +113,9 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         </View>
       </View>
 
-      {/* Quick Actions */}
-      {!isLandscape && (
         <View style={styles.controlCardHeader}>
           <Text style={styles.controlCardTitleText}>Thao tác nhanh</Text>
         </View>
-      )}
       <View style={[styles.controlCardBody, isLandscape && styles.landscapeControlCardBody]}>
         <View style={styles.quickActionsGrid}>
           {/* Undo */}

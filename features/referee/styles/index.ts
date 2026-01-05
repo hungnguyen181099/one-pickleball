@@ -25,7 +25,6 @@ export const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     gap: 20,
-
     width: '100%',
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -1102,15 +1101,13 @@ export const styles = StyleSheet.create({
 
   // Modal styles
   modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    flex: 1,
+    width: '100%',
+    height: '100%',
     backgroundColor: 'rgba(6, 13, 24, 0.95)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 32,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    padding: 24,
   },
   modalContent: {
     width: '100%',

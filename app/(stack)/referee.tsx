@@ -415,33 +415,36 @@ export const RefereeScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-      ]}
-    >
-      <StatusBar hidden={isLandscape} style='light' />
+    <>
 
-      <View style={styles.appContainer}>
-        {/* Header */}
-        <Header
-          timerDisplay={timerDisplay}
-          status={status}
-          statusText={statusText}
-          currentGame={currentGame}
-          totalGames={totalGames}
-          leftGamesWon={teams.left.gamesWon}
-          rightGamesWon={teams.right.gamesWon}
-          gameMode={gameMode}
-          referee={matchData.referee}
-          onBack={handleBack}
-          isLandscape={isLandscape}
-          onToggleOrientation={handleToggleOrientation}
-        />
+      <SafeAreaView
+        style={[
+          styles.container,
+        ]}
+      >
+        <StatusBar hidden={isLandscape} style='light' />
 
-        {/* Main Content */}
-        {renderMainContent()}
-      </View>
+        <View style={styles.appContainer}>
+          {/* Header */}
+          <Header
+            timerDisplay={timerDisplay}
+            status={status}
+            statusText={statusText}
+            currentGame={currentGame}
+            totalGames={totalGames}
+            leftGamesWon={teams.left.gamesWon}
+            rightGamesWon={teams.right.gamesWon}
+            gameMode={gameMode}
+            referee={matchData.referee}
+            onBack={handleBack}
+            isLandscape={isLandscape}
+            onToggleOrientation={handleToggleOrientation}
+          />
+
+          {/* Main Content */}
+          {renderMainContent()}
+        </View>
+      </SafeAreaView>
 
       {/* Modals */}
       <CoinFlipModal
@@ -480,7 +483,7 @@ export const RefereeScreen: React.FC = () => {
 
       {/* Toast */}
       <Toast toast={toast} />
-    </SafeAreaView>
+    </>
   );
 };
 
