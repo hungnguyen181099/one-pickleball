@@ -6,6 +6,7 @@ import { AppColors, Radius } from '@/constants/theme';
 
 import { useThemedColors } from '@/hooks/use-theme';
 
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 
 type PaginationAlign = 'center' | 'left' | 'right';
@@ -77,7 +78,9 @@ const Pagination = ({
             onPress={() => onPageChange?.(currentPage - 1)}
             style={[styles.item, currentPage <= 1 && styles.disabled]}
           >
-            <MaterialIcons name="chevron-left" />
+            <Icon variant="fit" color="inherit">
+              <MaterialIcons name="chevron-left" />
+            </Icon>
           </Pressable>
         )}
 
@@ -110,7 +113,9 @@ const Pagination = ({
             onPress={() => onPageChange?.(currentPage + 1)}
             style={[styles.item, currentPage >= totalPages && styles.disabled]}
           >
-            <MaterialIcons name="chevron-right" />
+            <Icon variant="fit" color="inherit">
+              <MaterialIcons name="chevron-right" />
+            </Icon>
           </Pressable>
         )}
       </View>
