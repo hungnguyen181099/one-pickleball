@@ -43,6 +43,7 @@ export const MATCH_DATA: MatchData = {
     id: 2,
     name: 'Viet',
     level: 'N/A',
+    avatar: ''
   },
   existingState: null,
   gameScores: [
