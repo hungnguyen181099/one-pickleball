@@ -27,7 +27,7 @@ import { useMatchState } from '@/hooks/useMatchState';
 import { useTimer } from '@/hooks/useTimer';
 import { Image } from 'expo-image';
 
-export const RefereeScreen: React.FC = () => {
+export const RefereeScreen = () => {
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const isLandscape = width > height;

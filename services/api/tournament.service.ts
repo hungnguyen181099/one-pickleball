@@ -74,7 +74,7 @@ class TournamentService {
      * Delete tournament
      */
     async getUserTournament() {
-        return await fetchWrapper<GetUserTournamentResponse>("/user/tournaments");;
+        return await fetchWrapper<GetUserTournamentResponse>("/user/tournaments");
     }
 
     /**
