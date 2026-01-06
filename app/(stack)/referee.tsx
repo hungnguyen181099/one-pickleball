@@ -1,7 +1,7 @@
 import { ModalType, TeamSide } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import * as NavigationBar from 'expo-navigation-bar';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { OrientationLock, lockAsync } from 'expo-screen-orientation';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useState } from 'react';
@@ -26,12 +26,23 @@ import { styles } from '@/features/referee/styles';
 import { useMatchState } from '@/hooks/useMatchState';
 import { useTimer } from '@/hooks/useTimer';
 import { Image } from 'expo-image';
+import { useQuery } from '@tanstack/react-query';
+import refereeService from '@/services/api/referee.service';
 
 export const RefereeScreen = () => {
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const isLandscape = width > height;
   const [currentOrientationLock, setCurrentOrientationLock] = useState<'landscape' | 'portrait'>('landscape');
+
+  const { id } = useLocalSearchParams<{ id: string }>()
+
+  const {data, status: refereeStatus } = useQuery({
+    queryKey: ['getRefereeDetail', id],
+    queryFn: () => refereeService.getRefereeById(id)
+  })
+
+  console.log(data?.data);
 
   React.useEffect(() => {
     async function setDefaultLandscapeOrientation() {
