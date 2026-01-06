@@ -437,9 +437,6 @@ export const styles = StyleSheet.create({
     gap: 4,
     zIndex: 1,
   },
-  landscapeBtnBackText: {
-    fontSize: 11,
-  },
   landscapeMatchTimerBox: {
     paddingVertical: 1,
     paddingHorizontal: 6,

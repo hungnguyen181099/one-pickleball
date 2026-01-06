@@ -2,7 +2,6 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { endMatchAPI, syncEventsToServer } from '@/features/referee/api/referee.api';
 import {
-  MATCH_DATA,
   MAX_EVENT_LOG_LENGTH,
   MAX_HISTORY_LENGTH,
   SYNC_THRESHOLD,
@@ -18,6 +17,7 @@ import {
   GameScore,
   HistoryItem,
   MatchData,
+  MatchDetailResponse,
   MatchEvent,
   MatchStatus,
   Player,
@@ -84,42 +84,98 @@ function buildPlayersArray(athlete: { name: string; partnerName?: string }, isDo
   return [{ name: athlete.name || 'TBD', courtSide: 'right' }];
 }
 
-export function useMatchState(timer: number, startTimer: () => void, stopTimer: () => void): UseMatchStateReturn {
-  // Initial state from MATCH_DATA
-  const [gameMode] = useState<GameMode>(MATCH_DATA.gameMode);
+export function useMatchState(
+  data: MatchDetailResponse,
+  timer: number,
+  startTimer: () => void,
+  stopTimer: () => void
+): UseMatchStateReturn {
+  const match = data.data;
+
+  const matchData: MatchData = {
+    id: match.id,
+    status: match.status,
+    isCompleted: match.status === 'completed',
+    bestOf: match.best_of,
+    gameMode: match.category.category_type,
+    tournament: {
+      name: match.tournament.name,
+    },
+    category: {
+      name: match.category.category_name,
+    },
+    round: {
+      name: match.round.round_name,
+    },
+    court: {
+      name: match.court?.court_name || '',
+      number: match.court?.court_number || '--',
+    },
+    athlete1: {
+      id: match.athlete1.id,
+      name: match.athlete1.athlete_name,
+      partnerName: match.athlete1_name.split(' / ')[1],
+      pairName: match.athlete1_name,
+    },
+    athlete2: {
+      id: match.athlete2.id,
+      name: match.athlete2.athlete_name,
+      partnerName: match.athlete2_name.split(' / ')[1],
+      pairName: match.athlete2_name,
+    },
+    referee: {
+      id: match.referee_id,
+      name: match.referee_name,
+      level: 'N/A',
+      avatar: '',
+    },
+    gameScores: match.match_state?.gameScores || [],
+    setScores: match.set_scores || [],
+    currentGame: match.current_game,
+    gamesWonAthlete1: match.games_won_athlete1,
+    gamesWonAthlete2: match.games_won_athlete2,
+    timerSeconds: match.match_state?.timerSeconds || 0,
+    servingTeam: match.match_state?.servingTeam || '',
+    serverNumber: match.match_state?.serverNumber || 0,
+  };
+
+  const gameMode = matchData.gameMode;
+
+  const totalGames = matchData.bestOf;
+
   const [status, setStatus] = useState<MatchStatus>(
-    MATCH_DATA.isCompleted ? 'finished' : MATCH_DATA.status === 'in_progress' ? 'paused' : 'waiting'
+    matchData.isCompleted ? 'finished' : matchData.status === 'in_progress' ? 'paused' : 'waiting'
   );
-  const [currentGame, setCurrentGame] = useState(MATCH_DATA.currentGame || 1);
-  const [totalGames] = useState(MATCH_DATA.bestOf || 3);
+  const [currentGame, setCurrentGame] = useState(matchData.currentGame);
 
   const [teams, setTeams] = useState<Teams>({
     left: {
-      name: MATCH_DATA.athlete1.pairName || MATCH_DATA.athlete1.name || 'TBD',
-      athleteId: MATCH_DATA.athlete1.id,
+      name: matchData.athlete1.pairName || matchData.athlete1.name || 'TBD',
+      athleteId: matchData.athlete1.id,
       score: 0,
-      gamesWon: MATCH_DATA.gamesWonAthlete1 || 0,
-      players: buildPlayersArray(MATCH_DATA.athlete1, MATCH_DATA.gameMode === 'doubles'),
+      gamesWon: matchData.gamesWonAthlete1 || 0,
+      players: buildPlayersArray(matchData.athlete1, matchData.gameMode.includes('double')),
     },
     right: {
-      name: MATCH_DATA.athlete2.pairName || MATCH_DATA.athlete2.name || 'TBD',
-      athleteId: MATCH_DATA.athlete2.id,
+      name: matchData.athlete2.pairName || matchData.athlete2.name || 'TBD',
+      athleteId: matchData.athlete2.id,
       score: 0,
-      gamesWon: MATCH_DATA.gamesWonAthlete2 || 0,
-      players: buildPlayersArray(MATCH_DATA.athlete2, MATCH_DATA.gameMode === 'doubles'),
+      gamesWon: matchData.gamesWonAthlete2 || 0,
+      players: buildPlayersArray(matchData.athlete2, matchData.gameMode.includes('double')),
     },
   });
 
   const [serving, setServing] = useState<Serving>({
-    team: MATCH_DATA.servingTeam === 'athlete2' ? 'right' : 'left',
+    team: matchData.servingTeam === 'athlete2' ? 'right' : 'left',
     serverIndex: 0,
-    serverNumber: MATCH_DATA.serverNumber || 2,
+    serverNumber: matchData.serverNumber,
     isFirstServeOfGame: true,
   });
 
+  const [gameScores, setGameScores] = useState<GameScore[]>(matchData.gameScores);
+
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [eventLog, setEventLog] = useState<EventLogItem[]>([]);
-  const [gameScores, setGameScores] = useState<GameScore[]>(MATCH_DATA.gameScores || []);
   const [hasSwitchedSidesInDecidingGame, setHasSwitchedSidesInDecidingGame] = useState(false);
 
   const pendingEventsRef = useRef<MatchEvent[]>([]);
@@ -140,17 +196,17 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
   const toastTimeoutRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Computed values
-  const isMatchCompleted = useMemo(() => MATCH_DATA.isCompleted || status === 'finished', [status]);
+  const isMatchCompleted = useMemo(() => matchData.isCompleted || status === 'finished', [status]);
 
   const matchWinnerName = useMemo(() => {
-    if (!MATCH_DATA.isCompleted) return '';
-    const firstGameWinner = MATCH_DATA.setScores?.[0];
+    if (!matchData.isCompleted) return '';
+    const firstGameWinner = matchData.setScores?.[0];
     if (!firstGameWinner) return '';
     const winnerId =
-      firstGameWinner.athlete1 > firstGameWinner.athlete2 ? MATCH_DATA.athlete1.id : MATCH_DATA.athlete2.id;
-    return winnerId === MATCH_DATA.athlete1.id
-      ? MATCH_DATA.athlete1.pairName || MATCH_DATA.athlete1.name
-      : MATCH_DATA.athlete2.pairName || MATCH_DATA.athlete2.name;
+      firstGameWinner.athlete1 > firstGameWinner.athlete2 ? matchData.athlete1.id : matchData.athlete2.id;
+    return winnerId === matchData.athlete1.id
+      ? matchData.athlete1.pairName || matchData.athlete1.name
+      : matchData.athlete2.pairName || matchData.athlete2.name;
   }, []);
 
   const scoreCall = useMemo(() => {
@@ -762,7 +818,7 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
     toast,
     isMatchCompleted,
     hasSwitchedSidesInDecidingGame,
-    matchData: MATCH_DATA,
+    matchData: matchData,
 
     // Computed
     scoreCall,
