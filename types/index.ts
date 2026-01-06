@@ -858,6 +858,60 @@ export interface RefereeData {
       to: number;
       total: number;
     };
+    tournaments: Array<{
+      id: number;
+      user_id: number;
+      name: string;
+      slug: string;
+      tournament_code: string | null;
+      description: string;
+      start_date: string;
+      end_date: string;
+      registration_deadline: string;
+      location: string;
+      max_participants: number;
+      price: number;
+      rules: string | null;
+      prizes: number;
+      competition_format: string | null;
+      format_type: string;
+      seeding_enabled: number;
+      auto_bracket_generation: number;
+      balanced_groups: number;
+      group_count: number | null;
+      players_per_group: number;
+      bracket_data: any | null;
+      tournament_rank: string;
+      registration_benefits: string;
+      competition_rules: string;
+      event_timeline: string | null;
+      social_information: string;
+      organizer_email: string | null;
+      organizer_hotline: string;
+      competition_schedule: any | null;
+      results: any | null;
+      gallery: any | null;
+      banner: any | null;
+      status: boolean;
+      tournament_courts: any | null;
+      tournament_stage: string;
+      total_matches: number;
+      completed_matches: number;
+      image: string | null;
+      created_at: string;
+      updated_at: string;
+      is_watch: boolean;
+      is_ocr: boolean;
+      pivot: {
+        user_id: number;
+        tournament_id: number;
+        assigned_at: string;
+        assigned_by: number;
+        status: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }>;
   };
 }
 
@@ -889,12 +943,12 @@ export interface MatchDetailResponse {
     best_of: number;
     points_per_set: number;
     set_scores:
-      | {
-          set: number;
-          athlete1: number;
-          athlete2: number;
-        }[]
-      | null;
+    | {
+      set: number;
+      athlete1: number;
+      athlete2: number;
+    }[]
+    | null;
     final_score: string | null;
     notes: string | null;
     match_state: {

@@ -70,12 +70,12 @@ export const Header: React.FC<HeaderProps> = ({
 
         <View style={styles.landscapeHeaderRight}>
           <View style={[styles.gameModeSwitch, styles.landscapeGameModeSwitch]}>
-            {gameMode === 'singles' && (
+            {gameMode.includes('single') && (
               <View style={[styles.modeBtn, styles.modeBtnActive]}>
                 <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Đơn</Text>
               </View>
             )}
-            {gameMode === 'doubles' && (
+            {gameMode.includes('double')&& (
               <View style={[styles.modeBtn, styles.modeBtnActive]}>
                 <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Đôi</Text>
               </View>
