@@ -1,5 +1,5 @@
 import AppConfig from '@/config/app.config';
-import { RefereeData } from '@/types';
+import { MatchDetailResponse, RefereeData } from '@/types';
 import qs from 'qs';
 import { fetchWrapper } from '@/utils/fetch.utils';
 
@@ -24,16 +24,9 @@ class RefereeService {
     /**
      * Get NewsArticle by ID
      */
-    async getRefereeById(id: string): Promise<RefereeData> {
-        const response = await fetch(`${BASE_API_URL}/referee/matches/${id}`);
-        if (!response.ok) {
-            throw new Error('Không thể tải chi tiết news');
-        }
-        const result: { data: RefereeData } = await response.json();
-        return result.data;
+    async getRefereeById(id: string): Promise<MatchDetailResponse> {
+        return await fetchWrapper<MatchDetailResponse>(`/referee/matches/${id}`);
     }
-
-
 }
 
 export default new RefereeService();
