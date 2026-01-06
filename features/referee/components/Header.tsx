@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { GameMode, MatchStatus, Referee } from '@/types';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { styles } from '../styles';
 
 interface HeaderProps {
@@ -43,7 +43,9 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Left Section */}
         <View style={styles.landscapeHeaderLeft}>
           <TouchableOpacity style={styles.btnBack} onPress={onBack}>
-            <Text style={[styles.btnBackText, styles.landscapeBtnBackText]}>Quay lại</Text>
+            <Text style={styles.btnBackText}>
+              <MaterialIcons name="chevron-left" />
+            </Text>
           </TouchableOpacity>
           <View style={[styles.matchTimerBox, styles.landscapeMatchTimerBox]}>
             <Text style={[styles.timerValue, styles.landscapeTimerValue]}>{timerDisplay}</Text>
@@ -122,14 +124,19 @@ export const Header: React.FC<HeaderProps> = ({
       <View style={styles.headerCenter}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
           {/* Left: Timer Box - styled larger relative to other items */}
-          <View style={[styles.matchTimerBox, {
-            paddingVertical: 8,
-            paddingHorizontal: 16,
-            borderRadius: 16,
-            backgroundColor: '#008bb9', // Light blue/teal from image
-            minWidth: 120,
-            alignItems: 'center'
-          }]}>
+          <View
+            style={[
+              styles.matchTimerBox,
+              {
+                paddingVertical: 8,
+                paddingHorizontal: 16,
+                borderRadius: 16,
+                backgroundColor: '#008bb9', // Light blue/teal from image
+                minWidth: 120,
+                alignItems: 'center',
+              },
+            ]}
+          >
             <Text style={[styles.timerLabel, { fontSize: 8, letterSpacing: 1, marginBottom: 2 }]}>THỜI GIAN</Text>
             <Text style={[styles.timerValue, { fontSize: 24, letterSpacing: 1, lineHeight: 28 }]}>{timerDisplay}</Text>
           </View>
@@ -137,30 +144,53 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Right: Info Column */}
           <View style={{ gap: 4, alignItems: 'center' }}>
             {/* Status Badge - styled as pill */}
-            <View style={[styles.statusBadge, {
-              backgroundColor: 'transparent',
-              borderWidth: 1,
-              borderColor: 'rgba(255,255,255,0.2)',
-              borderRadius: 50,
-              paddingVertical: 4,
-              paddingHorizontal: 10
-            }]}>
-              <View style={[styles.statusDot, status === 'playing' ? styles.statusDotLive : { backgroundColor: '#f59e0b', width: 6, height: 6 }]} />
+            <View
+              style={[
+                styles.statusBadge,
+                {
+                  backgroundColor: 'transparent',
+                  borderWidth: 1,
+                  borderColor: 'rgba(255,255,255,0.2)',
+                  borderRadius: 50,
+                  paddingVertical: 4,
+                  paddingHorizontal: 10,
+                },
+              ]}
+            >
+              <View
+                style={[
+                  styles.statusDot,
+                  status === 'playing' ? styles.statusDotLive : { backgroundColor: '#f59e0b', width: 6, height: 6 },
+                ]}
+              />
               <Text style={[styles.statusText, { fontSize: 10 }]}>{statusText}</Text>
             </View>
 
             {/* Game Count */}
             <Text style={[styles.gameBadge, { fontSize: 10 }]}>
-              Game <Text style={[styles.gameBadgeStrong, { color: '#f59e0b', fontSize: 12 }]}>{currentGame}</Text> / {totalGames}
+              Game <Text style={[styles.gameBadgeStrong, { color: '#f59e0b', fontSize: 12 }]}>{currentGame}</Text> /{' '}
+              {totalGames}
             </Text>
 
             {/* Score Display */}
             <View style={[styles.gameScoreDisplay, { gap: 6 }]}>
-              <View style={[styles.gameScoreItem, styles.gameScoreItemLeft, { backgroundColor: '#1e3a8a', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 6 }]}>
+              <View
+                style={[
+                  styles.gameScoreItem,
+                  styles.gameScoreItemLeft,
+                  { backgroundColor: '#1e3a8a', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 6 },
+                ]}
+              >
                 <Text style={{ color: '#fff', fontSize: 13, fontWeight: '700' }}>{leftGamesWon}</Text>
               </View>
               <Text style={[styles.gameScoreSeparator, { fontSize: 10 }]}>-</Text>
-              <View style={[styles.gameScoreItem, styles.gameScoreItemRight, { backgroundColor: '#581c1c', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 6 }]}>
+              <View
+                style={[
+                  styles.gameScoreItem,
+                  styles.gameScoreItemRight,
+                  { backgroundColor: '#581c1c', paddingHorizontal: 12, paddingVertical: 4, borderRadius: 6 },
+                ]}
+              >
                 <Text style={{ color: '#fff', fontSize: 13, fontWeight: '700' }}>{rightGamesWon}</Text>
               </View>
             </View>

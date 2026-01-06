@@ -1,12 +1,16 @@
-import { ModalType, TeamSide } from '@/types';
+import React, { useCallback, useState } from 'react';
+
+import { MatchDetailResponse, ModalType, TeamSide } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
+import { Image } from 'expo-image';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { OrientationLock, lockAsync } from 'expo-screen-orientation';
 import { StatusBar } from 'expo-status-bar';
-import React, { useCallback, useState } from 'react';
 import { Alert, Platform, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 // Hooks
 // Components
 import { ControlPanel } from '@/features/referee/components/ControlPanel';
@@ -20,29 +24,41 @@ import { ServeOrderModal } from '@/features/referee/components/modal/ServeOrderM
 import { TeamAssignModal } from '@/features/referee/components/modal/TeamAssignModal';
 import { TimeoutCountdown } from '@/features/referee/components/modal/TimeoutCountdown';
 import { TimeoutModal } from '@/features/referee/components/modal/TimeoutModal';
-import { MATCH_DATA } from '@/features/referee/constants';
 import { styles } from '@/features/referee/styles';
 
 import { useMatchState } from '@/hooks/useMatchState';
 import { useTimer } from '@/hooks/useTimer';
-import { Image } from 'expo-image';
-import { useQuery } from '@tanstack/react-query';
+
 import refereeService from '@/services/api/referee.service';
 
-export const RefereeScreen = () => {
-  const insets = useSafeAreaInsets();
+type RefereeScreenProps = {
+  data: MatchDetailResponse;
+};
+
+const RefereeScreenWrapper = () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  // Prefetch
+  const { data, status } = useQuery({
+    queryKey: ['getRefereeDetail', id],
+    queryFn: () => refereeService.getRefereeById(id),
+  });
+
+  if (status === 'pending') {
+    return null;
+  }
+
+  if (status === 'error') {
+    return null;
+  }
+
+  return <RefereeScreen data={data} />;
+};
+
+const RefereeScreen = ({ data }: RefereeScreenProps) => {
   const { width, height } = useWindowDimensions();
   const isLandscape = width > height;
   const [currentOrientationLock, setCurrentOrientationLock] = useState<'landscape' | 'portrait'>('landscape');
-
-  const { id } = useLocalSearchParams<{ id: string }>()
-
-  const {data, status: refereeStatus } = useQuery({
-    queryKey: ['getRefereeDetail', id],
-    queryFn: () => refereeService.getRefereeById(id)
-  })
-
-  console.log(data?.data);
 
   React.useEffect(() => {
     async function setDefaultLandscapeOrientation() {
@@ -56,9 +72,7 @@ export const RefereeScreen = () => {
     setDefaultLandscapeOrientation();
 
     return () => {
-      lockAsync(OrientationLock.PORTRAIT_UP).catch((err: any) =>
-        console.error('Error locking orientation:', err)
-      );
+      lockAsync(OrientationLock.PORTRAIT_UP).catch((err: any) => console.error('Error locking orientation:', err));
     };
   }, []);
 
@@ -95,7 +109,8 @@ export const RefereeScreen = () => {
   }, [isLandscape]);
 
   // Timer hook
-  const { timer, timerDisplay, startTimer, stopTimer, setTimer } = useTimer(MATCH_DATA.timerSeconds || 0);
+  const { timer, timerDisplay, startTimer, stopTimer, setTimer } = useTimer(data.data.match_state?.timerSeconds || 0);
+
   const router = useRouter();
   // Match state hook
   const {
@@ -129,7 +144,7 @@ export const RefereeScreen = () => {
     clearEventLog,
     showToast,
     performSideSwitch,
-  } = useMatchState(timer, startTimer, stopTimer);
+  } = useMatchState(data, timer, startTimer, stopTimer);
 
   // Modal state
   const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -178,7 +193,7 @@ export const RefereeScreen = () => {
       if (selectedLeftTeam === 'right') {
         performSideSwitch();
       }
-      addEvent(` Đã phân chia vị trí sân`);
+      addEvent(`Đã phân chia vị trí sân`);
       showToast(``, 'Da gan doi vao vi tri san');
       setActiveModal('serveOrder');
     },
@@ -228,7 +243,8 @@ export const RefereeScreen = () => {
   const renderCompletedResults = () => (
     <View style={styles.completedResults}>
       <Text style={styles.completedTitle}>
-        <Ionicons name="trophy-outline" size={24} color="#fff" /> TRẠN ĐẤU ĐÃ KẾT THÚC
+        <Ionicons name="trophy-outline" size={24} color="#fff" />
+        TRẬN ĐẤU ĐÃ KẾT THÚC
       </Text>
       <View style={styles.completedTournament}>
         <Text style={styles.tournamentName}>{matchData.tournament.name}</Text>
@@ -239,11 +255,9 @@ export const RefereeScreen = () => {
         </Text>
       </View>
       <Text style={styles.winnerText}>
-        Nguoi thang: <Text style={styles.winnerName}>{matchWinnerName}</Text>
+        Người thắng: <Text style={styles.winnerName}>{matchWinnerName}</Text>
       </Text>
-      <Text style={styles.scoreText}>
-        Ti so: {matchData.setScores?.map((s) => `${s.athlete1}-${s.athlete2}`).join(', ') || 'N/A'}
-      </Text>
+      <Text style={styles.scoreText}>Tỉ số: {data.data.final_score || 'N/A'}</Text>
     </View>
   );
 
@@ -283,17 +297,33 @@ export const RefereeScreen = () => {
 
             {/* Center Column: Controls & Info */}
             <ScrollView showsVerticalScrollIndicator={false} style={styles.landscapeCenterColumn}>
-              <View style={[styles.courtInfoBar, styles.landscapeCourtInfoBar, { flexDirection: 'column', height: 'auto', gap: 2, paddingVertical: 4 }]}>
+              <View
+                style={[
+                  styles.courtInfoBar,
+                  styles.landscapeCourtInfoBar,
+                  { flexDirection: 'column', height: 'auto', gap: 2, paddingVertical: 4 },
+                ]}
+              >
                 <View style={styles.courtDisplay}>
                   <View style={[styles.courtIconLg, styles.landscapeCourtIconLg]}>
                     <Ionicons name="baseball-outline" size={16} color="#fff" />
                   </View>
-                  <View style={[styles.courtText, { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' }]}>
+                  <View
+                    style={[
+                      styles.courtText,
+                      { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' },
+                    ]}
+                  >
                     <Text style={styles.courtLabel}>Sân thi đấu:</Text>
                     <Text style={[styles.courtNumber, styles.landscapeCourtNumber]}>{matchData.court.number}</Text>
                   </View>
                 </View>
-                <View style={[styles.tournamentInfo, { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' }]}>
+                <View
+                  style={[
+                    styles.tournamentInfo,
+                    { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' },
+                  ]}
+                >
                   <Text style={styles.tournamentName}>{matchData.tournament.name}:</Text>
                   <Text style={styles.tournamentRoundAccent}>{matchData.round.name}</Text>
                 </View>
@@ -362,8 +392,9 @@ export const RefereeScreen = () => {
     // Default Portrait Mode
     return (
       <ScrollView style={styles.mainContent} contentContainerStyle={styles.scrollContent}>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+        <View
+          style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12, marginBottom: 16 }}
+        >
           <View style={styles.gameModeSwitch}>
             {gameMode === 'singles' && (
               <View style={[styles.modeBtn, styles.modeBtnActive]}>
@@ -427,13 +458,8 @@ export const RefereeScreen = () => {
 
   return (
     <>
-
-      <SafeAreaView
-        style={[
-          styles.container,
-        ]}
-      >
-        <StatusBar hidden={isLandscape} style='light' />
+      <SafeAreaView style={styles.container}>
+        <StatusBar hidden={isLandscape} style="light" />
 
         <View style={styles.appContainer}>
           {/* Header */}
@@ -498,4 +524,4 @@ export const RefereeScreen = () => {
   );
 };
 
-export default RefereeScreen;
+export default RefereeScreenWrapper;

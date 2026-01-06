@@ -471,7 +471,7 @@ export interface CategoryResponse {
 export type MatchStatus = 'waiting' | 'playing' | 'paused' | 'finished';
 export type TeamSide = 'left' | 'right';
 export type CourtSide = 'left' | 'right';
-export type GameMode = 'singles' | 'doubles';
+export type GameMode = string;
 export type ModalType = 'coinFlip' | 'teamAssign' | 'serveOrder' | 'timeout' | null;
 
 export interface TournamentRef {
@@ -530,14 +530,13 @@ export interface MatchData {
   athlete1: Athlete;
   athlete2: Athlete;
   referee: Referee;
-  existingState: unknown;
   gameScores: GameScore[];
   setScores: SetScore[];
   currentGame: number;
   gamesWonAthlete1: number;
   gamesWonAthlete2: number;
   timerSeconds: number;
-  servingTeam: 'athlete1' | 'athlete2';
+  servingTeam: string;
   serverNumber: number;
 }
 
@@ -670,7 +669,7 @@ export interface RefereeData {
   data: {
     matches: {
       current_page: number;
-      data: Array<{
+      data: {
         id: number;
         tournament_id: number;
         category_id: number;
@@ -699,11 +698,11 @@ export interface RefereeData {
         final_score: any | null;
         notes: string | null;
         match_state: {
-          gameScores: Array<{
+          gameScores: {
             game: number;
             athlete1: number;
             athlete2: number;
-          }>;
+          }[];
           currentGame: number;
           servingTeam: string;
           serverNumber: number;
@@ -714,11 +713,11 @@ export interface RefereeData {
         current_game: number;
         games_won_athlete1: number;
         games_won_athlete2: number;
-        game_scores: Array<{
+        game_scores: {
           game: number;
           athlete1: number;
           athlete2: number;
-        }>;
+        }[];
         serving_team: string;
         server_number: number;
         timer_seconds: number;
@@ -842,16 +841,16 @@ export interface RefereeData {
           updated_at: string;
         };
         court: any | null;
-      }>;
+      }[];
       first_page_url: string;
       from: number;
       last_page: number;
       last_page_url: string;
-      links: Array<{
+      links: {
         url: string | null;
         label: string;
         active: boolean;
-      }>;
+      }[];
       next_page_url: string | null;
       path: string;
       per_page: number;
@@ -889,34 +888,36 @@ export interface MatchDetailResponse {
     status: string;
     best_of: number;
     points_per_set: number;
-    set_scores: Array<{
-      set: number;
-      athlete1: number;
-      athlete2: number;
-    }> | null;
+    set_scores:
+      | {
+          set: number;
+          athlete1: number;
+          athlete2: number;
+        }[]
+      | null;
     final_score: string | null;
     notes: string | null;
     match_state: {
-      gameScores: Array<{
+      gameScores: {
         game: number;
         athlete1: number;
         athlete2: number;
-      }>;
+      }[];
       currentGame: number;
       servingTeam: string;
       serverNumber: number;
-      timerSeconds: number;
+      timerSeconds: number | null;
       gamesWonAthlete1: number;
       gamesWonAthlete2: number;
-    };
+    } | null;
     current_game: number;
     games_won_athlete1: number;
     games_won_athlete2: number;
-    game_scores: Array<{
+    game_scores: {
       game: number;
       athlete1: number;
       athlete2: number;
-    }>;
+    }[];
     serving_team: string;
     server_number: number;
     timer_seconds: number;
@@ -1000,7 +1001,25 @@ export interface MatchDetailResponse {
       created_at: string;
       updated_at: string;
     };
-    court: any | null;
+    court: {
+      id: number;
+      stadium_id: number;
+      tournament_id: number | null;
+      court_name: string;
+      court_number: string;
+      court_type: string;
+      surface_type: string;
+      capacity: number;
+      size: string | null;
+      status: string;
+      description: string | null;
+      amenities: string | null;
+      is_active: boolean;
+      daily_matches: number;
+      created_at: string;
+      updated_at: string;
+      rental_price: number;
+    } | null;
     athlete1: {
       id: number;
       tournament_id: number;
