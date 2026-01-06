@@ -396,12 +396,12 @@ const RefereeScreen = ({ data }: RefereeScreenProps) => {
           style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12, marginBottom: 16 }}
         >
           <View style={styles.gameModeSwitch}>
-            {gameMode === 'singles' && (
+            {gameMode.includes('single') && (
               <View style={[styles.modeBtn, styles.modeBtnActive]}>
                 <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Đơn</Text>
               </View>
             )}
-            {gameMode === 'doubles' && (
+            {gameMode.includes('double') && (
               <View style={[styles.modeBtn, styles.modeBtnActive]}>
                 <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Đôi</Text>
               </View>

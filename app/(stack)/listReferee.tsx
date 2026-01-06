@@ -3,9 +3,15 @@ import { ScreenHeader } from '@/components/common/ScreenHeader'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { Chip } from '@/components/ui/Chip'
+import { DateTimePicker } from '@/components/ui/DateTimePicker'
 import { Flex } from '@/components/ui/Flex'
+import { Grid, GridItem } from '@/components/ui/Grid'
+import { Pagination } from '@/components/ui/Pagination'
+import { Select } from '@/components/ui/Select'
+import { Space } from '@/components/ui/Space'
 import { Text } from '@/components/ui/Text'
 import { useThemedColors } from '@/hooks/use-theme'
+import { dayjsExt } from '@/lib/days'
 import refereeService from '@/services/api/referee.service'
 import { formatDate } from '@/utils/date.utils'
 import { useQuery } from '@tanstack/react-query'
@@ -15,6 +21,9 @@ import { RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native
 
 const filter = [
     { label: "Tất cả", value: '' },
+    { label: "Hủy", value: 'cancelled' },
+    { label: "Sẵn sàng", value: 'ready' },
+    { label: "Hoãn lại", value: 'postponed' },
     { label: "Đang diễn ra", value: 'in_progress' },
     { label: "Đã lên lịch", value: 'scheduled' },
     { label: "Đã hoàn thành", value: 'completed' },
@@ -23,22 +32,38 @@ const filter = [
 
 export default function ListReferee() {
     const [thao, setThao] = useState('')
+    const [tournamenntId, setTournamenntId] = useState<string | null>(null)
+    const [date, setDate] = useState<Date | null>(null)
+    const [dateTo, setDateTo] = useState<Date | null>(null)
+    const [page, setPage] = useState<number>(1)
     const colors = useThemedColors();
     const { data, isPending, refetch, isRefetching } = useQuery({
-        queryKey: ['getReferees', thao],
+        queryKey: ['getReferees', thao, tournamenntId, date, dateTo, page],
         queryFn: () =>
             refereeService.getReferees({
-                status: thao
+                status: thao,
+                tournament_id: tournamenntId || '',
+                date_from: date ? dayjsExt(date).format('YYYY-MM-DD') : '',
+                date_to: dateTo ? dayjsExt(dateTo).format('YYYY-MM-DD') : '',
+                page: page
             }),
     });
 
     const getReferees = data?.data.matches.data
+
+    const filters = [{ label: 'Tất cả', value: '' },
+    ...(data?.data.tournaments.map(item => ({ label: item.name, value: String(item.id) })) || [])
+
+    ]
 
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'in_progress': return 'info';
             case 'scheduled': return 'warning';
             case 'completed': return 'success';
+            case 'cancelled': return 'error';
+            case 'ready': return 'primary';
+            case 'postponed': return 'secondary';
             default: return 'muted';
         }
     }
@@ -47,6 +72,18 @@ export default function ListReferee() {
         <ScreenContainer>
             <ScreenHeader withBorder={false} title='Danh sách trận đấu' />
             <View style={{ paddingHorizontal: 16, gap: 8, borderBottomWidth: 1, borderColor: colors.border, paddingBottom: 16 }}>
+                <View>
+                    <Select value={tournamenntId} onChangeValue={setTournamenntId} options={filters} placeholder='Chọn giải đấu' />
+                    <Space />
+                    <Grid gap={4} columns={2}>
+                        <GridItem>
+                            <DateTimePicker value={date} onDateChange={setDate} />
+                        </GridItem>
+                        <GridItem>
+                            <DateTimePicker value={dateTo} onDateChange={setDateTo} />
+                        </GridItem>
+                    </Grid>
+                </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{
                     gap: 8,
                 }}>
@@ -171,6 +208,8 @@ export default function ListReferee() {
                         </TouchableOpacity>
                     )
                 })}
+                {data &&
+                    <Pagination currentPage={data.data.matches.current_page || 1} totalPages={data.data.matches.last_page || 1} onPageChange={setPage} />}
             </ScrollView>
         </ScreenContainer>
     )
