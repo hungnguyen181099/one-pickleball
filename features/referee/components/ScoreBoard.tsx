@@ -21,6 +21,7 @@ interface ScoreBoardProps {
   isLandscape?: boolean;
   showLeftTeamOnly?: boolean;
   showRightTeamOnly?: boolean;
+  onRecordFault: () => void;
 }
 
 export const ScoreBoard = ({
@@ -37,6 +38,7 @@ export const ScoreBoard = ({
   isLandscape,
   showLeftTeamOnly,
   showRightTeamOnly,
+  onRecordFault,
 }: ScoreBoardProps) => {
   // Single team display for 3-column landscape layout
   if (showLeftTeamOnly) {
@@ -51,6 +53,7 @@ export const ScoreBoard = ({
           isMatchCompleted={isMatchCompleted}
           onRallyWon={() => onRallyWon('left')}
           onAdjustScore={(delta) => onAdjustScore('left', delta)}
+          onRecordFault={onRecordFault}
           isLandscape={isLandscape}
         />
       </View>
@@ -69,6 +72,7 @@ export const ScoreBoard = ({
           isMatchCompleted={isMatchCompleted}
           onRallyWon={() => onRallyWon('right')}
           onAdjustScore={(delta) => onAdjustScore('right', delta)}
+          onRecordFault={onRecordFault}
           isLandscape={isLandscape}
         />
       </View>
@@ -122,6 +126,7 @@ export const ScoreBoard = ({
           isMatchCompleted={isMatchCompleted}
           onRallyWon={() => onRallyWon('left')}
           onAdjustScore={(delta) => onAdjustScore('left', delta)}
+          onRecordFault={onRecordFault}
           isLandscape={isLandscape}
         />
 
@@ -150,6 +155,7 @@ export const ScoreBoard = ({
           isMatchCompleted={isMatchCompleted}
           onRallyWon={() => onRallyWon('right')}
           onAdjustScore={(delta) => onAdjustScore('right', delta)}
+          onRecordFault={onRecordFault}
           isLandscape={isLandscape}
         />
       </View>
