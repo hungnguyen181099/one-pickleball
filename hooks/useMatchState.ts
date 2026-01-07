@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { useLocalSearchParams } from 'expo-router';
-import { Alert } from 'react-native';
 
 import { endMatchAPI, syncEventsToServer } from '@/features/referee/api/referee.api';
 import {
@@ -314,20 +313,15 @@ export function useMatchState(
       if (pendingEventsRef.current.length >= SYNC_THRESHOLD) {
         const eventsToSync = [...pendingEventsRef.current];
         pendingEventsRef.current = [];
-
-        try {
-          await syncEventsToServer(id, eventsToSync, {
-            currentGame,
-            gamesWonAthlete1: teams.left.gamesWon,
-            gamesWonAthlete2: teams.right.gamesWon,
-            gameScores,
-            servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
-            serverNumber: serving.serverNumber,
-            timerSeconds: timer,
-          });
-        } catch {
-          Alert.alert('Lỗi', 'Đồng bộ sự kiện thất bại');
-        }
+        syncEventsToServer(id, eventsToSync, {
+          currentGame,
+          gamesWonAthlete1: teams.left.gamesWon,
+          gamesWonAthlete2: teams.right.gamesWon,
+          gameScores,
+          servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
+          serverNumber: serving.serverNumber,
+          timerSeconds: timer,
+        });
       }
     },
     [teams, currentGame, timer, gameScores, serving, id]
@@ -719,19 +713,15 @@ export function useMatchState(
     const eventsToSync = [...pendingEventsRef.current];
     pendingEventsRef.current = [];
 
-    try {
-      await syncEventsToServer(id, eventsToSync, {
-        currentGame,
-        gamesWonAthlete1: newTeams.left.gamesWon,
-        gamesWonAthlete2: newTeams.right.gamesWon,
-        gameScores: newGameScores,
-        servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
-        serverNumber: serving.serverNumber,
-        timerSeconds: timer,
-      });
-    } catch {
-      Alert.alert('Lỗi', 'Đồng bộ sự kiện thất bại');
-    }
+    await syncEventsToServer(id, eventsToSync, {
+      currentGame,
+      gamesWonAthlete1: newTeams.left.gamesWon,
+      gamesWonAthlete2: newTeams.right.gamesWon,
+      gameScores: newGameScores,
+      servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
+      serverNumber: serving.serverNumber,
+      timerSeconds: timer,
+    });
 
     const winsNeeded = Math.ceil(totalGames / 2);
     if (newTeams.left.gamesWon >= winsNeeded || newTeams.right.gamesWon >= winsNeeded) {
@@ -745,21 +735,17 @@ export function useMatchState(
       const finalScoreParts = newGameScores.map((g) => `${g.athlete1}-${g.athlete2}`);
       const finalScore = `${newTeams.left.gamesWon}-${newTeams.right.gamesWon} (${finalScoreParts.join(', ')})`;
 
-      try {
-        await endMatchAPI(id, {
-          winner: newTeams.left.gamesWon > newTeams.right.gamesWon ? 'left' : 'right',
-          winnerId,
-          gameScores: newGameScores,
-          finalScore,
-          totalTimer: timer,
-          teams: {
-            left: { gamesWon: newTeams.left.gamesWon, athleteId: newTeams.left.athleteId },
-            right: { gamesWon: newTeams.right.gamesWon, athleteId: newTeams.right.athleteId },
-          },
-        });
-      } catch {
-        Alert.alert('Lỗi', 'Có lỗi khi kết thúc trận đấu');
-      }
+      endMatchAPI(id, {
+        winner: newTeams.left.gamesWon > newTeams.right.gamesWon ? 'left' : 'right',
+        winnerId,
+        gameScores: newGameScores,
+        finalScore,
+        totalTimer: timer,
+        teams: {
+          left: { gamesWon: newTeams.left.gamesWon, athleteId: newTeams.left.athleteId },
+          right: { gamesWon: newTeams.right.gamesWon, athleteId: newTeams.right.athleteId },
+        },
+      });
     } else if (currentGame < totalGames) {
       setCurrentGame((prev) => prev + 1);
       resetScores();
