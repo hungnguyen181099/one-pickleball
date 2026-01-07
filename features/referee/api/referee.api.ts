@@ -25,46 +25,38 @@ export async function syncEventsToServer(
   events: MatchEvent[],
   matchState: MatchState
 ): Promise<SyncEventsResponse> {
-  return fetchWrapper<SyncEventsResponse>(`/referee/matches/${matchId}/sync-events`, {
-    method: 'POST',
-    body: JSON.stringify({
-      events,
-      match_state: matchState,
-    }),
-  });
+  try {
+    const data = fetchWrapper<SyncEventsResponse>(`/referee/matches/${matchId}/sync-events`, {
+      method: 'POST',
+      body: JSON.stringify({
+        events,
+        match_state: matchState,
+      }),
+    });
+
+    return { success: true, ...data };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
 }
 
 export async function endMatchAPI(matchId: string, finalState: FinalMatchState): Promise<EndMatchResponse> {
-  console.log('finalState', finalState);
+  try {
+    const data = fetchWrapper<EndMatchResponse>(`/api/referee/matches/${matchId}/end`, {
+      method: 'POST',
+      body: JSON.stringify(finalState),
+    });
 
-  return fetchWrapper<EndMatchResponse>(`/api/referee/matches/${matchId}/end`, {
-    method: 'POST',
-    body: JSON.stringify(finalState),
-  });
-
-  // try {
-  //   const response = await fetch(API_ENDPOINTS.endMatch, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Accept: 'application/json',
-  //     },
-  //     body: JSON.stringify(finalState),
-  //   });
-
-  //   if (!response.ok) {
-  //     throw new Error('End match failed');
-  //   }
-
-  //   const data = await response.json();
-  //   return { success: true, ...data };
-  // } catch (error) {
-  //   console.error('End match failed:', error);
-  //   return {
-  //     success: false,
-  //     message: error instanceof Error ? error.message : 'Unknown error',
-  //   };
-  // }
+    return { success: true, ...data };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
 }
 
 export async function getMatchState(): Promise<GetStateResponse> {
