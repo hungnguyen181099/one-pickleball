@@ -2,10 +2,10 @@ import React from 'react';
 
 import { GameMode, HistoryItem, MatchStatus } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
-import { styles } from '../styles';
 import { Grid, GridItem } from '@/components/ui/Grid';
+import { styles } from '../styles';
 
 interface ControlPanelProps {
   status: MatchStatus;
@@ -113,9 +113,9 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         </View>
       </View>
 
-        <View style={styles.controlCardHeader}>
-          <Text style={styles.controlCardTitleText}>Thao tác nhanh</Text>
-        </View>
+      <View style={styles.controlCardHeader}>
+        <Text style={styles.controlCardTitleText}>Thao tác nhanh</Text>
+      </View>
       <View style={[styles.controlCardBody, isLandscape && styles.landscapeControlCardBody]}>
         <View style={styles.quickActionsGrid}>
           {/* Undo */}
@@ -128,15 +128,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             <Text style={styles.btnQuickText}>Hoàn tác</Text>
           </TouchableOpacity>
 
-          {/* Fault */}
-          <TouchableOpacity
-            style={[styles.btnQuick, isLandscape && styles.landscapeBtnQuick, status !== 'playing' && styles.btnScoreDisabled]}
-            onPress={onRecordFault}
-            disabled={status !== 'playing'}
-          >
-            <Ionicons name="ban-outline" size={14} color="#e2e8f0" />
-            <Text style={styles.btnQuickText}>Lỗi giao</Text>
-          </TouchableOpacity>
 
           {/* Switch Server */}
           <TouchableOpacity

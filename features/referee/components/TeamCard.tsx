@@ -15,6 +15,7 @@ interface TeamCardProps {
   isMatchCompleted: boolean;
   onRallyWon: () => void;
   onAdjustScore: (delta: number) => void;
+  onRecordFault: () => void;
   isLandscape?: boolean;
 }
 
@@ -27,6 +28,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
   isMatchCompleted,
   onRallyWon,
   onAdjustScore,
+  onRecordFault,
   isLandscape,
 }) => {
   const isBlue = side === 'left';
@@ -171,6 +173,25 @@ export const TeamCard: React.FC<TeamCardProps> = ({
             </Text>
           </TouchableOpacity>
         </View>
+      )}
+
+      {/* Fault / Sideout Button */}
+      {isServing && !isMatchCompleted && (
+        <TouchableOpacity
+          style={[
+            styles.btnScore,
+            styles.btnQuick, // Reuse btnQuick style for consistency or define new
+            { marginTop: 8, backgroundColor: '#fff', flexDirection: 'column', height: 'auto', paddingVertical: 8 },
+            isLandscape && styles.landscapeBtnScore,
+            status !== 'playing' && styles.btnScoreDisabled,
+          ]}
+          onPress={onRecordFault}
+          disabled={status !== 'playing'}
+        >
+          <Text style={[{ fontSize: 13, marginBottom: 2, color:'#000000ff' }, isLandscape && styles.landscapeBtnScoreText]}>
+            {gameMode === 'singles' || (gameMode === 'doubles' && serving.serverNumber === 2) ? 'Sideout' : '2-END'}
+          </Text>
+        </TouchableOpacity>
       )}
     </View>
   );

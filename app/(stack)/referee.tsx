@@ -292,6 +292,7 @@ const RefereeScreen = ({ data }: RefereeScreenProps) => {
                 onRallyWon={rallyWon}
                 onAdjustScore={adjustScore}
                 onSwitchSides={switchSides}
+                onRecordFault={recordFault}
                 isLandscape={isLandscape}
                 showLeftTeamOnly={true}
               />
@@ -382,6 +383,7 @@ const RefereeScreen = ({ data }: RefereeScreenProps) => {
                 onRallyWon={rallyWon}
                 onAdjustScore={adjustScore}
                 onSwitchSides={switchSides}
+                onRecordFault={recordFault}
                 isLandscape={isLandscape}
                 showRightTeamOnly={true}
               />
@@ -433,6 +435,7 @@ const RefereeScreen = ({ data }: RefereeScreenProps) => {
           onRallyWon={rallyWon}
           onAdjustScore={adjustScore}
           onSwitchSides={switchSides}
+          onRecordFault={recordFault}
           isLandscape={isLandscape}
         />
 

@@ -17,8 +17,6 @@ class RefereeService {
     tournament_id?: string;
   }): Promise<RefereeData> {
     const queryString = qs.stringify(params);
-    console.log(queryString);
-
     return await fetchWrapper<RefereeData>(`/referee/matches?${queryString}`);
   }
 
