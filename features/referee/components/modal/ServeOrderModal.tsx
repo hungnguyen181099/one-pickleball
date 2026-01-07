@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 
 import { GameMode, Serving, Teams } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { Modal, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { useMutation } from '@tanstack/react-query';
+import { useLocalSearchParams } from 'expo-router';
+import { Alert, Modal, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import refereeService from '@/services/api/referee.service';
 
 import { styles } from '../../styles';
 
@@ -15,6 +19,12 @@ interface ServeOrderModalProps {
   onBack: () => void;
   onConfirm: (serverIndex: number) => void;
 }
+
+const useStartMatch = (id: string) => {
+  return useMutation({
+    mutationFn: () => refereeService.startMatch(id),
+  });
+};
 
 export const ServeOrderModal: React.FC<ServeOrderModalProps> = ({
   visible,
@@ -28,12 +38,22 @@ export const ServeOrderModal: React.FC<ServeOrderModalProps> = ({
   const isLandscape = width > height;
 
   const [selectedServerIndex, setSelectedServerIndex] = useState(0);
+  const { id } = useLocalSearchParams<{ id: string }>();
 
   const servingTeamPlayers = teams[serving.team].players;
   const servingTeamName = teams[serving.team].name;
 
+  const { mutate: startMatch } = useStartMatch(id);
+
   const handleConfirm = () => {
-    onConfirm(selectedServerIndex);
+    startMatch(undefined, {
+      onSuccess: () => {
+        onConfirm(selectedServerIndex);
+      },
+      onError: () => {
+        Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại!');
+      },
+    });
   };
 
   return (
@@ -53,17 +73,23 @@ export const ServeOrderModal: React.FC<ServeOrderModalProps> = ({
             contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
             showsVerticalScrollIndicator={false}
           >
-            <View style={[
-              styles.modalContent,
-              isLandscape && {
-                maxWidth: 400,
-                alignSelf: 'center',
-              }
-            ]}>
+            <View
+              style={[
+                styles.modalContent,
+                isLandscape && {
+                  maxWidth: 400,
+                  alignSelf: 'center',
+                },
+              ]}
+            >
               <View style={[styles.modalHeader, isLandscape && { paddingVertical: 12, paddingHorizontal: 16 }]}>
                 <Ionicons name="baseball-outline" size={isLandscape ? 32 : 56} color="#fff" />
-                <Text style={[styles.modalTitle, isLandscape && { fontSize: 16, marginBottom: 4 }]}>Xác định người giao bóng</Text>
-                <Text style={[styles.modalSubtitle, isLandscape && { fontSize: 11 }]}>{servingTeamName} được quyền giao bóng trước</Text>
+                <Text style={[styles.modalTitle, isLandscape && { fontSize: 16, marginBottom: 4 }]}>
+                  Xác định người giao bóng
+                </Text>
+                <Text style={[styles.modalSubtitle, isLandscape && { fontSize: 11 }]}>
+                  {servingTeamName} được quyền giao bóng trước
+                </Text>
               </View>
 
               <View style={[styles.modalBody, isLandscape && { paddingVertical: 12, paddingHorizontal: 16 }]}>
@@ -78,7 +104,7 @@ export const ServeOrderModal: React.FC<ServeOrderModalProps> = ({
                         style={[
                           styles.playerOption,
                           selectedServerIndex === index && styles.playerOptionSelected,
-                          isLandscape && { paddingVertical: 10, paddingHorizontal: 12 }
+                          isLandscape && { paddingVertical: 10, paddingHorizontal: 12 },
                         ]}
                         onPress={() => setSelectedServerIndex(index)}
                       >
@@ -86,7 +112,7 @@ export const ServeOrderModal: React.FC<ServeOrderModalProps> = ({
                           style={[
                             styles.playerOptionRadio,
                             selectedServerIndex === index && styles.playerOptionRadioSelected,
-                            isLandscape && { width: 16, height: 16 }
+                            isLandscape && { width: 16, height: 16 },
                           ]}
                         />
                         <Text style={[styles.playerOptionName, isLandscape && { fontSize: 12 }]}>{player.name}</Text>
@@ -95,24 +121,46 @@ export const ServeOrderModal: React.FC<ServeOrderModalProps> = ({
                   </View>
                 ) : (
                   <View style={[styles.serveSection, isLandscape && { gap: 8 }]}>
-                    <Text style={[styles.serveLabel, isLandscape && { fontSize: 11, marginBottom: 6 }]}>Người giao bóng</Text>
-                    <View style={[
-                      styles.playerOption,
-                      styles.playerOptionSelected,
-                      isLandscape && { paddingVertical: 10, paddingHorizontal: 12 }
-                    ]}>
-                      <View style={[styles.playerOptionRadio, styles.playerOptionRadioSelected, isLandscape && { width: 16, height: 16 }]} />
-                      <Text style={[styles.playerOptionName, isLandscape && { fontSize: 12 }]}>{servingTeamPlayers[0]?.name}</Text>
+                    <Text style={[styles.serveLabel, isLandscape && { fontSize: 11, marginBottom: 6 }]}>
+                      Người giao bóng
+                    </Text>
+                    <View
+                      style={[
+                        styles.playerOption,
+                        styles.playerOptionSelected,
+                        isLandscape && { paddingVertical: 10, paddingHorizontal: 12 },
+                      ]}
+                    >
+                      <View
+                        style={[
+                          styles.playerOptionRadio,
+                          styles.playerOptionRadioSelected,
+                          isLandscape && { width: 16, height: 16 },
+                        ]}
+                      />
+                      <Text style={[styles.playerOptionName, isLandscape && { fontSize: 12 }]}>
+                        {servingTeamPlayers[0]?.name}
+                      </Text>
                     </View>
                   </View>
                 )}
               </View>
 
-              <View style={[styles.modalFooter, isLandscape && { paddingVertical: 10, paddingHorizontal: 16, gap: 10 }]}>
-                <TouchableOpacity style={[styles.btnModal, styles.btnModalSecondary, isLandscape && { paddingVertical: 10 }]} onPress={onBack}>
-                  <Text style={[styles.btnModalText, styles.btnModalTextSecondary, isLandscape && { fontSize: 12 }]}>Quay lại</Text>
+              <View
+                style={[styles.modalFooter, isLandscape && { paddingVertical: 10, paddingHorizontal: 16, gap: 10 }]}
+              >
+                <TouchableOpacity
+                  style={[styles.btnModal, styles.btnModalSecondary, isLandscape && { paddingVertical: 10 }]}
+                  onPress={onBack}
+                >
+                  <Text style={[styles.btnModalText, styles.btnModalTextSecondary, isLandscape && { fontSize: 12 }]}>
+                    Quay lại
+                  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.btnModal, styles.btnModalPrimary, isLandscape && { paddingVertical: 10 }]} onPress={handleConfirm}>
+                <TouchableOpacity
+                  style={[styles.btnModal, styles.btnModalPrimary, isLandscape && { paddingVertical: 10 }]}
+                  onPress={handleConfirm}
+                >
                   <Text style={[styles.btnModalText, styles.btnModalTextPrimary, isLandscape && { fontSize: 12 }]}>
                     <Ionicons name="play" size={isLandscape ? 12 : 16} color="#fff" /> Bắt đầu trận đấu
                   </Text>

@@ -858,7 +858,7 @@ export interface RefereeData {
       to: number;
       total: number;
     };
-    tournaments: Array<{
+    tournaments: {
       id: number;
       user_id: number;
       name: string;
@@ -911,7 +911,7 @@ export interface RefereeData {
         created_at: string;
         updated_at: string;
       };
-    }>;
+    }[];
   };
 }
 
@@ -943,12 +943,12 @@ export interface MatchDetailResponse {
     best_of: number;
     points_per_set: number;
     set_scores:
-    | {
-      set: number;
-      athlete1: number;
-      athlete2: number;
-    }[]
-    | null;
+      | {
+          set: number;
+          athlete1: number;
+          athlete2: number;
+        }[]
+      | null;
     final_score: string | null;
     notes: string | null;
     match_state: {
@@ -1160,3 +1160,73 @@ export interface MatchDetailResponse {
     } | null;
   };
 }
+
+export type MatchStateResponse = {
+  success: boolean;
+  data: {
+    id: number;
+    status: string;
+    isCompleted: boolean;
+    bestOf: number;
+    pointsPerSet: number;
+    gameMode: 'singles' | 'doubles';
+    tournament: {
+      name: string;
+    };
+    category: {
+      name: string;
+    };
+    round: {
+      name: string;
+    };
+    court: {
+      name: string;
+      number: string;
+    };
+    athlete1: {
+      id: number;
+      name: string;
+      partnerName: string | null;
+      pairName: string;
+    };
+    athlete2: {
+      id: number;
+      name: string;
+      partnerName: string | null;
+      pairName: string;
+    };
+    referee: {
+      id: number;
+      name: string;
+    };
+    existingState: {
+      gameScores: {
+        game: number;
+        athlete1: number;
+        athlete2: number;
+      }[];
+      currentGame: number;
+      servingTeam: 'athlete1' | 'athlete2';
+      serverNumber: number;
+      timerSeconds: number;
+      gamesWonAthlete1: number;
+      gamesWonAthlete2: number;
+    } | null;
+    gameScores: {
+      game: number;
+      athlete1: number;
+      athlete2: number;
+    }[];
+    setScores: {
+      set: number;
+      athlete1: number;
+      athlete2: number;
+    }[];
+    currentGame: number;
+    gamesWonAthlete1: number;
+    gamesWonAthlete2: number;
+    timerSeconds: number;
+    servingTeam: 'athlete1' | 'athlete2' | null;
+    serverNumber: number | null;
+  };
+};

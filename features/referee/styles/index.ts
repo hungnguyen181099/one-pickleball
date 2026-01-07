@@ -328,8 +328,8 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   landscapeTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'stretch',
     justifyContent: 'space-around',
     gap: 8,
   },
