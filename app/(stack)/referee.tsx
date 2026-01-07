@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import { MatchDetailResponse, ModalType, TeamSide } from '@/types';
+import { MatchStateResponse, ModalType, TeamSide } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
@@ -32,7 +32,7 @@ import { useTimer } from '@/hooks/useTimer';
 import refereeService from '@/services/api/referee.service';
 
 type RefereeScreenProps = {
-  data: MatchDetailResponse;
+  data: MatchStateResponse;
 };
 
 const RefereeScreenWrapper = () => {
@@ -41,7 +41,7 @@ const RefereeScreenWrapper = () => {
   // Prefetch
   const { data, status } = useQuery({
     queryKey: ['getRefereeDetail', id],
-    queryFn: () => refereeService.getRefereeById(id),
+    queryFn: () => refereeService.getMatchState(id),
   });
 
   if (status === 'pending') {
@@ -109,7 +109,7 @@ const RefereeScreen = ({ data }: RefereeScreenProps) => {
   }, [isLandscape]);
 
   // Timer hook
-  const { timer, timerDisplay, startTimer, stopTimer, setTimer } = useTimer(data.data.match_state?.timerSeconds || 0);
+  const { timer, timerDisplay, startTimer, stopTimer, setTimer } = useTimer(data.data.timerSeconds);
 
   const router = useRouter();
   // Match state hook
@@ -257,7 +257,9 @@ const RefereeScreen = ({ data }: RefereeScreenProps) => {
       <Text style={styles.winnerText}>
         Người thắng: <Text style={styles.winnerName}>{matchWinnerName}</Text>
       </Text>
-      <Text style={styles.scoreText}>Tỉ số: {data.data.final_score || 'N/A'}</Text>
+      <Text style={styles.scoreText}>
+        Tỉ số: {matchData.setScores?.map((s) => `${s.athlete1}-${s.athlete2}`).join(', ') || 'N/A'}
+      </Text>
     </View>
   );
 

@@ -1,5 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
+import { useLocalSearchParams } from 'expo-router';
+import { Alert } from 'react-native';
+
 import { endMatchAPI, syncEventsToServer } from '@/features/referee/api/referee.api';
 import {
   MAX_EVENT_LOG_LENGTH,
@@ -17,8 +20,8 @@ import {
   GameScore,
   HistoryItem,
   MatchData,
-  MatchDetailResponse,
   MatchEvent,
+  MatchStateResponse,
   MatchStatus,
   Player,
   Serving,
@@ -85,7 +88,7 @@ function buildPlayersArray(athlete: { name: string; partnerName?: string }, isDo
 }
 
 export function useMatchState(
-  data: MatchDetailResponse,
+  data: MatchStateResponse,
   timer: number,
   startTimer: () => void,
   stopTimer: () => void
@@ -95,48 +98,48 @@ export function useMatchState(
   const matchData: MatchData = {
     id: match.id,
     status: match.status,
-    isCompleted: match.status === 'completed',
-    bestOf: match.best_of,
-    gameMode: match.category.category_type,
+    isCompleted: match.isCompleted,
+    bestOf: match.bestOf,
+    gameMode: match.gameMode,
     tournament: {
       name: match.tournament.name,
     },
     category: {
-      name: match.category.category_name,
+      name: match.category.name,
     },
     round: {
-      name: match.round.round_name,
+      name: match.round.name,
     },
     court: {
-      name: match.court?.court_name || '',
-      number: match.court?.court_number || '--',
+      name: match.court.name,
+      number: match.court.number,
     },
     athlete1: {
       id: match.athlete1.id,
-      name: match.athlete1.athlete_name,
-      partnerName: match.athlete1_name.split(' / ')[1],
-      pairName: match.athlete1_name,
+      name: match.athlete1.name,
+      partnerName: match.athlete1.partnerName || '',
+      pairName: match.athlete1.pairName,
     },
     athlete2: {
       id: match.athlete2.id,
-      name: match.athlete2.athlete_name,
-      partnerName: match.athlete2_name.split(' / ')[1],
-      pairName: match.athlete2_name,
+      name: match.athlete2.name,
+      partnerName: match.athlete2.partnerName || '',
+      pairName: match.athlete2.pairName,
     },
     referee: {
-      id: match.referee_id,
-      name: match.referee_name,
+      id: match.referee.id,
+      name: match.referee.name,
       level: 'N/A',
       avatar: '',
     },
-    gameScores: match.match_state?.gameScores || [],
-    setScores: match.set_scores || [],
-    currentGame: match.current_game,
-    gamesWonAthlete1: match.games_won_athlete1,
-    gamesWonAthlete2: match.games_won_athlete2,
-    timerSeconds: match.match_state?.timerSeconds || 0,
-    servingTeam: match.match_state?.servingTeam || '',
-    serverNumber: match.match_state?.serverNumber || 0,
+    gameScores: match.gameScores,
+    setScores: match.setScores,
+    currentGame: match.currentGame,
+    gamesWonAthlete1: match.gamesWonAthlete1,
+    gamesWonAthlete2: match.gamesWonAthlete2,
+    timerSeconds: match.timerSeconds,
+    servingTeam: match.servingTeam || '',
+    serverNumber: match.serverNumber || 0,
   };
 
   const gameMode = matchData.gameMode;
@@ -146,6 +149,9 @@ export function useMatchState(
   const [status, setStatus] = useState<MatchStatus>(
     matchData.isCompleted ? 'finished' : matchData.status === 'in_progress' ? 'paused' : 'waiting'
   );
+
+  const { id } = useLocalSearchParams<{ id: string }>();
+
   const [currentGame, setCurrentGame] = useState(matchData.currentGame);
 
   const [teams, setTeams] = useState<Teams>({
@@ -154,14 +160,14 @@ export function useMatchState(
       athleteId: matchData.athlete1.id,
       score: 0,
       gamesWon: matchData.gamesWonAthlete1 || 0,
-      players: buildPlayersArray(matchData.athlete1, matchData.gameMode.includes('double')),
+      players: buildPlayersArray(matchData.athlete1, matchData.gameMode.includes('doubles')),
     },
     right: {
       name: matchData.athlete2.pairName || matchData.athlete2.name || 'TBD',
       athleteId: matchData.athlete2.id,
       score: 0,
       gamesWon: matchData.gamesWonAthlete2 || 0,
-      players: buildPlayersArray(matchData.athlete2, matchData.gameMode.includes('double')),
+      players: buildPlayersArray(matchData.athlete2, matchData.gameMode.includes('doubles')),
     },
   });
 
@@ -290,7 +296,7 @@ export function useMatchState(
   }, [showToast]);
 
   const recordEvent = useCallback(
-    (type: string, team: TeamSide | null, data: Record<string, unknown> = {}) => {
+    async (type: string, team: TeamSide | null, data: Record<string, unknown> = {}) => {
       const event: MatchEvent = {
         type,
         team,
@@ -308,18 +314,23 @@ export function useMatchState(
       if (pendingEventsRef.current.length >= SYNC_THRESHOLD) {
         const eventsToSync = [...pendingEventsRef.current];
         pendingEventsRef.current = [];
-        syncEventsToServer(eventsToSync, {
-          currentGame,
-          gamesWonAthlete1: teams.left.gamesWon,
-          gamesWonAthlete2: teams.right.gamesWon,
-          gameScores,
-          servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
-          serverNumber: serving.serverNumber,
-          timerSeconds: timer,
-        });
+
+        try {
+          await syncEventsToServer(id, eventsToSync, {
+            currentGame,
+            gamesWonAthlete1: teams.left.gamesWon,
+            gamesWonAthlete2: teams.right.gamesWon,
+            gameScores,
+            servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
+            serverNumber: serving.serverNumber,
+            timerSeconds: timer,
+          });
+        } catch {
+          Alert.alert('Lỗi', 'Đồng bộ sự kiện thất bại');
+        }
       }
     },
-    [teams, currentGame, timer, gameScores, serving]
+    [teams, currentGame, timer, gameScores, serving, id]
   );
 
   const saveHistory = useCallback(() => {
@@ -707,15 +718,20 @@ export function useMatchState(
     // Sync events
     const eventsToSync = [...pendingEventsRef.current];
     pendingEventsRef.current = [];
-    await syncEventsToServer(eventsToSync, {
-      currentGame,
-      gamesWonAthlete1: newTeams.left.gamesWon,
-      gamesWonAthlete2: newTeams.right.gamesWon,
-      gameScores: newGameScores,
-      servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
-      serverNumber: serving.serverNumber,
-      timerSeconds: timer,
-    });
+
+    try {
+      await syncEventsToServer(id, eventsToSync, {
+        currentGame,
+        gamesWonAthlete1: newTeams.left.gamesWon,
+        gamesWonAthlete2: newTeams.right.gamesWon,
+        gameScores: newGameScores,
+        servingTeam: serving.team === 'left' ? 'athlete1' : 'athlete2',
+        serverNumber: serving.serverNumber,
+        timerSeconds: timer,
+      });
+    } catch {
+      Alert.alert('Lỗi', 'Đồng bộ sự kiện thất bại');
+    }
 
     const winsNeeded = Math.ceil(totalGames / 2);
     if (newTeams.left.gamesWon >= winsNeeded || newTeams.right.gamesWon >= winsNeeded) {
@@ -729,17 +745,21 @@ export function useMatchState(
       const finalScoreParts = newGameScores.map((g) => `${g.athlete1}-${g.athlete2}`);
       const finalScore = `${newTeams.left.gamesWon}-${newTeams.right.gamesWon} (${finalScoreParts.join(', ')})`;
 
-      await endMatchAPI({
-        winner: newTeams.left.gamesWon > newTeams.right.gamesWon ? 'left' : 'right',
-        winnerId,
-        gameScores: newGameScores,
-        finalScore,
-        totalTimer: timer,
-        teams: {
-          left: { gamesWon: newTeams.left.gamesWon, athleteId: newTeams.left.athleteId },
-          right: { gamesWon: newTeams.right.gamesWon, athleteId: newTeams.right.athleteId },
-        },
-      });
+      try {
+        await endMatchAPI(id, {
+          winner: newTeams.left.gamesWon > newTeams.right.gamesWon ? 'left' : 'right',
+          winnerId,
+          gameScores: newGameScores,
+          finalScore,
+          totalTimer: timer,
+          teams: {
+            left: { gamesWon: newTeams.left.gamesWon, athleteId: newTeams.left.athleteId },
+            right: { gamesWon: newTeams.right.gamesWon, athleteId: newTeams.right.athleteId },
+          },
+        });
+      } catch {
+        Alert.alert('Lỗi', 'Có lỗi khi kết thúc trận đấu');
+      }
     } else if (currentGame < totalGames) {
       setCurrentGame((prev) => prev + 1);
       resetScores();

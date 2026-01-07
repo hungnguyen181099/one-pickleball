@@ -33,7 +33,7 @@ export const TeamCard: React.FC<TeamCardProps> = ({
   const isServing = serving.team === side;
 
   const getCourtSideText = (courtSide: 'left' | 'right') => {
-    return courtSide === 'right' ? 'Ben Phai (Chan)' : 'Ben Trai (Le)';
+    return courtSide === 'right' ? 'Bên phải (Chẵn)' : 'Bên trái (Lẻ)';
   };
 
   return (
@@ -105,11 +105,21 @@ export const TeamCard: React.FC<TeamCardProps> = ({
             return (
               <View
                 key={index}
-                style={[styles.playerCard, isLandscape && styles.landscapePlayerCard, isActiveServer && styles.playerCardActive]}
+                style={[
+                  styles.playerCard,
+                  isLandscape && styles.landscapePlayerCard,
+                  isActiveServer && styles.playerCardActive,
+                ]}
               >
                 <View style={[styles.playerStatus, isActiveServer && styles.playerStatusActive]} />
                 <View style={styles.playerDetails}>
-                  <Text style={[styles.playerName, isLandscape && styles.landscapePlayerName, isActiveServer && styles.playerNameActive]}>
+                  <Text
+                    style={[
+                      styles.playerName,
+                      isLandscape && styles.landscapePlayerName,
+                      isActiveServer && styles.playerNameActive,
+                    ]}
+                  >
                     {player.name}
                   </Text>
                   <Text style={[styles.playerPosition, isLandscape && styles.landscapePlayerPosition]}>
@@ -153,8 +163,12 @@ export const TeamCard: React.FC<TeamCardProps> = ({
             onPress={() => onAdjustScore(-1)}
             disabled={status !== 'playing'}
           >
-            <Text style={[styles.btnScoreText, isLandscape && styles.landscapeBtnScoreText, styles.btnScoreTextMuted]}>-</Text>
-            <Text style={[styles.btnScoreText, isLandscape && styles.landscapeBtnScoreText, styles.btnScoreTextMuted]}>Trừ điểm</Text>
+            <Text style={[styles.btnScoreText, isLandscape && styles.landscapeBtnScoreText, styles.btnScoreTextMuted]}>
+              -
+            </Text>
+            <Text style={[styles.btnScoreText, isLandscape && styles.landscapeBtnScoreText, styles.btnScoreTextMuted]}>
+              Trừ điểm
+            </Text>
           </TouchableOpacity>
         </View>
       )}
