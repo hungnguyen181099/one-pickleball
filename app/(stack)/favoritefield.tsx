@@ -103,10 +103,10 @@ export default function FavoriteFieldScreen() {
   };
 
   const handleBookCourt = (courtId: string) => {
-    router.push({
-      pathname: '/(details)/courtDetail/[id]',
-      params: { id: courtId },
-    });
+    // router.push({
+    //   pathname: '/(details)/courtDetail/[id]',
+    //   params: { id: courtId },
+    // });
   };
 
   const getStatusColor = (status: string) => {

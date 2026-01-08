@@ -1,6 +1,6 @@
-import { ThemeColor } from "@/constants/theme";
+import { ThemeColors } from "@/constants/theme";
 
-export const createHtmlContent = (htmlContent: string, colors: ThemeColor) => {
+export const createHtmlContent = (htmlContent: string, colors: ThemeColors) => {
     return `
       <!DOCTYPE html>
       <html>

@@ -23,6 +23,7 @@ export interface User {
   opr_level: string;
   created_at: string;
   updated_at: string;
+  avatar: string
 }
 
 // Tournament Types

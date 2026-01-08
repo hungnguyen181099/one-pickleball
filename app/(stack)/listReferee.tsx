@@ -99,7 +99,6 @@ export default function ListReferee() {
             onChangeValue={setTournamenntId}
             options={filters}
             placeholder="Chọn giải đấu"
-            fullSize
           />
         </Flex>
         <Button onPress={() => setVisible(true)} styleOverrides={{ container: { alignSelf: 'stretch' } }}>
