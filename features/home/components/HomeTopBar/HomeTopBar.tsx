@@ -17,7 +17,9 @@ const HomeTopBar = () => {
     <Flex justifyContent="space-between" style={styles.container}>
       {/* Left */}
       <Flex gap={16}>
-        <MaterialCommunityIcons name="menu" size={24} />
+        <Icon variant="fit" color="inherit">
+          <MaterialCommunityIcons name="menu" size={24} />
+        </Icon>
         <Flex>
           <Icon variant="fit" translateY={1}>
             <MaterialCommunityIcons name="tennis" size={24} />
@@ -32,7 +34,9 @@ const HomeTopBar = () => {
       </Flex>
 
       {/* Right */}
-      <MaterialCommunityIcons name="bell" size={20} />
+      <Icon variant="fit" color="inherit">
+        <MaterialCommunityIcons name="bell" size={20} />
+      </Icon>
     </Flex>
   );
 };

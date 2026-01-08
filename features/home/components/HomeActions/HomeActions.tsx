@@ -62,16 +62,16 @@ const HomeActions = () => {
         </Grid>
       </View>
 
-      {user?.role_type === 'referee' && (
+      {user?.role_type?.includes('referee') && (
         <View style={styles.section}>
           <Flex>
             <Separator style={styles.line} orientation="vertical"></Separator>
             <Text size="h2">Trọng tài</Text>
           </Flex>
-          <Pressable onPress={() => router.navigate('/referee')}>
+          <Pressable onPress={() => router.navigate('/listReferee')}>
             <Card radius="xl" padding={16}>
               <Flex direction="column">
-                <Icon size="lg" variant="light" onPress={() => router.navigate('/referee')}>
+                <Icon size="lg" variant="light" onPress={() => router.navigate('/listReferee')}>
                   <MaterialIcons name="dashboard" size={24} />
                 </Icon>
                 <Text size="h4">Quản lý giải đấu</Text>

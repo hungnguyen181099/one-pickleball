@@ -16,8 +16,8 @@ import { styles } from '@/constants/styles/news.styles';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useThemedColors } from '@/hooks/use-theme';
 
-import newService from '@/services/api/new.service';
 import { Text } from '@/components/ui/Text';
+import newService from '@/services/api/new.service';
 
 const NewsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -76,7 +76,10 @@ const NewsPage = () => {
             <Chip
               variant='outline'
               checked={category.id === Number(activeCategory)}
-              onPress={() => setActiveCategory(String(category.id))}
+              onPress={() => {
+                setActiveCategory(String(category.id))
+                setPage(1)
+              }}
               size="sm"
               key={category.id}
             >
@@ -97,12 +100,30 @@ const NewsPage = () => {
           scrollEnabled={true}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-            <View style={{ alignItems: 'center', padding: 32 }}>
-              <Text style={{ color: '#94a3b8' }}>Không có tin tức nào</Text>
+            <View style={{ alignItems: 'center', justifyContent: 'center', padding: 40, gap: 12 }}>
+              <View
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 40,
+                  backgroundColor: colors.backgroundTertiary,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 8,
+                }}
+              >
+                <Ionicons name="newspaper-outline" size={40} color={colors.textTertiary} />
+              </View>
+              <Text style={{ color: colors.text, fontSize: 16, fontWeight: '600' }}>
+                Không có tin tức nào
+              </Text>
+              <Text style={{ color: colors.textTertiary, fontSize: 14, textAlign: 'center', maxWidth: '80%' }}>
+                Hiện tại chưa có bài viết nào trong danh mục này. Vui lòng quay lại sau.
+              </Text>
             </View>
           }
           ListFooterComponent={
-            data?.data ? (
+            data?.data.length ? (
               <Pagination
                 currentPage={Number(data?.meta.current_page)}
                 totalPages={Number(data?.meta.last_page)}

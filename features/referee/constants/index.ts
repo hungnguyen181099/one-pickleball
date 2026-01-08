@@ -1,4 +1,4 @@
-import { ApiEndpoints, MatchData } from '@/types';
+import { ApiEndpoints } from '@/types';
 
 export const SYNC_THRESHOLD = 10;
 export const WIN_SCORE = 11;
@@ -7,61 +7,6 @@ export const MAX_EVENT_LOG_LENGTH = 50;
 export const TIMEOUT_DURATION = 60;
 export const TIMEOUTS_PER_GAME = 2;
 export const TOAST_DURATION = 3000;
-
-export const MATCH_DATA: MatchData = {
-  id: 3,
-  status: 'in_progress',
-  isCompleted: false,
-  bestOf: 3,
-  gameMode: 'doubles',
-  tournament: {
-    name: 'Giải đấu',
-  },
-  category: {
-    name: 'Đôi',
-  },
-  round: {
-    name: 'Vòng bảng',
-  },
-  court: {
-    name: 'TBA',
-    number: '--',
-  },
-  athlete1: {
-    id: 26,
-    name: 'abc',
-    partnerName: 'xyz',
-    pairName: 'abc / xyz',
-  },
-  athlete2: {
-    id: 28,
-    name: 'cde',
-    partnerName: 'ghy',
-    pairName: 'cde / ghy',
-  },
-  referee: {
-    id: 2,
-    name: 'Viet',
-    level: 'N/A',
-  },
-  existingState: null,
-  gameScores: [
-    { game: 1, athlete1: 9, athlete2: 11 },
-    { game: 2, athlete1: 11, athlete2: 0 },
-    { game: 3, athlete1: 11, athlete2: 3 },
-  ],
-  setScores: [
-    { set: 1, athlete1: 9, athlete2: 11 },
-    { set: 2, athlete1: 11, athlete2: 0 },
-    { set: 3, athlete1: 11, athlete2: 3 },
-  ],
-  currentGame: 3,
-  gamesWonAthlete1: 2,
-  gamesWonAthlete2: 1,
-  timerSeconds: 128,
-  servingTeam: 'athlete1',
-  serverNumber: 1,
-};
 
 export const API_ENDPOINTS: ApiEndpoints = {
   syncEvents: 'http://localhost:8000/referee/matches/3/sync-events',

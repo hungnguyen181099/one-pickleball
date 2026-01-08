@@ -1,9 +1,15 @@
 import React, { useCallback, useState } from 'react';
 
-import { ModalType, TeamSide } from '@/types';
+import { MatchStateResponse, ModalType, TeamSide } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { Alert, ScrollView, Text, View } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+import { Image } from 'expo-image';
+import * as NavigationBar from 'expo-navigation-bar';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { OrientationLock, lockAsync } from 'expo-screen-orientation';
+import { StatusBar } from 'expo-status-bar';
+import { Alert, Platform, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Hooks
 // Components
@@ -18,15 +24,93 @@ import { ServeOrderModal } from '@/features/referee/components/modal/ServeOrderM
 import { TeamAssignModal } from '@/features/referee/components/modal/TeamAssignModal';
 import { TimeoutCountdown } from '@/features/referee/components/modal/TimeoutCountdown';
 import { TimeoutModal } from '@/features/referee/components/modal/TimeoutModal';
-import { MATCH_DATA } from '@/features/referee/constants';
 import { styles } from '@/features/referee/styles';
 
 import { useMatchState } from '@/hooks/useMatchState';
 import { useTimer } from '@/hooks/useTimer';
 
-export const RefereeScreen: React.FC = () => {
+import refereeService from '@/services/api/referee.service';
+
+type RefereeScreenProps = {
+  data: MatchStateResponse;
+};
+
+const RefereeScreenWrapper = () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  // Prefetch
+  const { data, status } = useQuery({
+    queryKey: ['getRefereeDetail', id],
+    queryFn: () => refereeService.getMatchState(id),
+  });
+
+  if (status === 'pending') {
+    return null;
+  }
+
+  if (status === 'error') {
+    return null;
+  }
+
+  return <RefereeScreen data={data} />;
+};
+
+const RefereeScreen = ({ data }: RefereeScreenProps) => {
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+  const [currentOrientationLock, setCurrentOrientationLock] = useState<'landscape' | 'portrait'>('landscape');
+
+  React.useEffect(() => {
+    async function setDefaultLandscapeOrientation() {
+      try {
+        await lockAsync(OrientationLock.LANDSCAPE);
+        setCurrentOrientationLock('landscape');
+      } catch (error) {
+        console.error('Error setting landscape orientation:', error);
+      }
+    }
+    setDefaultLandscapeOrientation();
+
+    return () => {
+      lockAsync(OrientationLock.PORTRAIT_UP).catch((err: any) => console.error('Error locking orientation:', err));
+    };
+  }, []);
+
+  // Hàm toggle xoay màn hình thủ công
+  const handleToggleOrientation = useCallback(async () => {
+    try {
+      if (currentOrientationLock === 'landscape') {
+        await lockAsync(OrientationLock.PORTRAIT_UP);
+        setCurrentOrientationLock('portrait');
+      } else {
+        await lockAsync(OrientationLock.LANDSCAPE);
+        setCurrentOrientationLock('landscape');
+      }
+    } catch (error) {
+      console.error('Error toggling orientation:', error);
+    }
+  }, [currentOrientationLock]);
+
+  React.useEffect(() => {
+    if (Platform.OS === 'android') {
+      if (isLandscape) {
+        NavigationBar.setVisibilityAsync('hidden');
+        // Note: setBehaviorAsync is not supported with edge-to-edge enabled
+      } else {
+        NavigationBar.setVisibilityAsync('visible');
+      }
+    }
+
+    return () => {
+      if (Platform.OS === 'android') {
+        NavigationBar.setVisibilityAsync('visible');
+      }
+    };
+  }, [isLandscape]);
+
   // Timer hook
-  const { timer, timerDisplay, startTimer, stopTimer, setTimer } = useTimer(MATCH_DATA.timerSeconds || 0);
+  const { timer, timerDisplay, startTimer, stopTimer, setTimer } = useTimer(data.data.timerSeconds);
+
   const router = useRouter();
   // Match state hook
   const {
@@ -60,7 +144,7 @@ export const RefereeScreen: React.FC = () => {
     clearEventLog,
     showToast,
     performSideSwitch,
-  } = useMatchState(timer, startTimer, stopTimer);
+  } = useMatchState(data, timer, startTimer, stopTimer);
 
   // Modal state
   const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -109,7 +193,7 @@ export const RefereeScreen: React.FC = () => {
       if (selectedLeftTeam === 'right') {
         performSideSwitch();
       }
-      addEvent(` Đã phân chia vị trí sân`);
+      addEvent(`Đã phân chia vị trí sân`);
       showToast(``, 'Da gan doi vao vi tri san');
       setActiveModal('serveOrder');
     },
@@ -159,7 +243,8 @@ export const RefereeScreen: React.FC = () => {
   const renderCompletedResults = () => (
     <View style={styles.completedResults}>
       <Text style={styles.completedTitle}>
-        <Ionicons name="trophy-outline" size={24} color="#fff" /> TRẠN ĐẤU ĐÃ KẾT THÚC
+        <Ionicons name="trophy-outline" size={24} color="#fff" />
+        TRẬN ĐẤU ĐÃ KẾT THÚC
       </Text>
       <View style={styles.completedTournament}>
         <Text style={styles.tournamentName}>{matchData.tournament.name}</Text>
@@ -170,41 +255,32 @@ export const RefereeScreen: React.FC = () => {
         </Text>
       </View>
       <Text style={styles.winnerText}>
-        Nguoi thang: <Text style={styles.winnerName}>{matchWinnerName}</Text>
+        Người thắng: <Text style={styles.winnerName}>{matchWinnerName}</Text>
       </Text>
       <Text style={styles.scoreText}>
-        Ti so: {matchData.setScores?.map((s) => `${s.athlete1}-${s.athlete2}`).join(', ') || 'N/A'}
+        Tỉ số: {matchData.setScores?.map((s) => `${s.athlete1}-${s.athlete2}`).join(', ') || 'N/A'}
       </Text>
     </View>
   );
 
-  return (
-    <View style={styles.container}>
-      {/* Background pattern placeholder */}
-      <View style={styles.bgPattern} />
-
-      <View style={styles.appContainer}>
-        {/* Header */}
-        <Header
-          timerDisplay={timerDisplay}
-          status={status}
-          statusText={statusText}
-          currentGame={currentGame}
-          totalGames={totalGames}
-          leftGamesWon={teams.left.gamesWon}
-          rightGamesWon={teams.right.gamesWon}
-          gameMode={gameMode}
-          referee={matchData.referee}
-          onBack={handleBack}
-        />
-
-        {/* Main Content */}
+  const renderMainContent = () => {
+    // Check if match is completed
+    if (isMatchCompleted) {
+      return (
         <ScrollView style={styles.mainContent} contentContainerStyle={styles.scrollContent}>
-          {isMatchCompleted ? (
-            renderCompletedResults()
-          ) : (
-            <>
-              {/* Scoreboard */}
+          {renderCompletedResults()}
+        </ScrollView>
+      );
+    }
+
+    // Check landscape mode
+    if (isLandscape) {
+      return (
+        <View style={styles.landscapeContainer}>
+          {/* 3-Column Grid Layout for Landscape */}
+          <View style={styles.landscapeGridMain}>
+            {/* Left Column: Team 1 Score Card */}
+            <View style={styles.landscapeTeamColumn}>
               <ScoreBoard
                 teams={teams}
                 serving={serving}
@@ -216,9 +292,66 @@ export const RefereeScreen: React.FC = () => {
                 onRallyWon={rallyWon}
                 onAdjustScore={adjustScore}
                 onSwitchSides={switchSides}
+                onRecordFault={recordFault}
+                isLandscape={isLandscape}
+                showLeftTeamOnly={true}
               />
+            </View>
 
-              {/* Control Panel */}
+            {/* Center Column: Controls & Info */}
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.landscapeCenterColumn}>
+              <View
+                style={[
+                  styles.courtInfoBar,
+                  styles.landscapeCourtInfoBar,
+                  { flexDirection: 'column', height: 'auto', gap: 2, paddingVertical: 4 },
+                ]}
+              >
+                <View style={styles.courtDisplay}>
+                  <View style={[styles.courtIconLg, styles.landscapeCourtIconLg]}>
+                    <Ionicons name="baseball-outline" size={16} color="#fff" />
+                  </View>
+                  <View
+                    style={[
+                      styles.courtText,
+                      { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' },
+                    ]}
+                  >
+                    <Text style={styles.courtLabel}>Sân thi đấu:</Text>
+                    <Text style={[styles.courtNumber, styles.landscapeCourtNumber]}>{matchData.court.number}</Text>
+                  </View>
+                </View>
+                <View
+                  style={[
+                    styles.tournamentInfo,
+                    { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' },
+                  ]}
+                >
+                  <Text style={styles.tournamentName}>{matchData.tournament.name}:</Text>
+                  <Text style={styles.tournamentRoundAccent}>{matchData.round.name}</Text>
+                </View>
+              </View>
+
+              <View style={styles.landscapeTopRow}>
+                <View style={styles.landscapeCenterScoreCall}>
+                  <Text style={styles.landscapeCenterScoreLabel}>Score Call</Text>
+                  <Text style={styles.landscapeCenterScoreValue}>{scoreCall}</Text>
+                </View>
+                <View style={styles.landscapeVsCenterCompact}>
+                  <View style={styles.landscapeVsBadgeSmall}>
+                    <Text style={styles.landscapeVsBadgeTextSmall}>VS</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={[styles.landscapeSwitchBtnCompact, { opacity: status !== 'playing' ? 0.5 : 1 }]}
+                    onPress={switchSides}
+                    disabled={status !== 'playing'}
+                  >
+                    <Ionicons name="swap-horizontal" size={14} color="#94a3b8" />
+                    <Text style={styles.landscapeSwitchBtnTextCompact}>Đổi sân</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
               <ControlPanel
                 status={status}
                 gameMode={gameMode}
@@ -231,14 +364,129 @@ export const RefereeScreen: React.FC = () => {
                 onRecordFault={recordFault}
                 onManualSwitchServer={manualSwitchServer}
                 onRequestTimeout={handleRequestTimeout}
+                isLandscape={isLandscape}
               />
 
-              {/* Event History */}
-              <EventHistory eventLog={eventLog} onClear={handleClearEventLog} />
-            </>
-          )}
-        </ScrollView>
-      </View>
+              <EventHistory eventLog={eventLog} onClear={handleClearEventLog} isLandscape={isLandscape} />
+            </ScrollView>
+
+            {/* Right Column: Team 2 Score Card */}
+            <View style={styles.landscapeTeamColumn}>
+              <ScoreBoard
+                teams={teams}
+                serving={serving}
+                gameMode={gameMode}
+                status={status}
+                isMatchCompleted={isMatchCompleted}
+                scoreCall={scoreCall}
+                matchData={matchData}
+                onRallyWon={rallyWon}
+                onAdjustScore={adjustScore}
+                onSwitchSides={switchSides}
+                onRecordFault={recordFault}
+                isLandscape={isLandscape}
+                showRightTeamOnly={true}
+              />
+            </View>
+          </View>
+        </View>
+      );
+    }
+
+    // Default Portrait Mode
+    return (
+      <ScrollView style={styles.mainContent} contentContainerStyle={styles.scrollContent}>
+        <View
+          style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12, marginBottom: 16 }}
+        >
+          <View style={styles.gameModeSwitch}>
+            {gameMode.includes('single') && (
+              <View style={[styles.modeBtn, styles.modeBtnActive]}>
+                <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Đơn</Text>
+              </View>
+            )}
+            {gameMode.includes('double') && (
+              <View style={[styles.modeBtn, styles.modeBtnActive]}>
+                <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Đôi</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.refereeInfoHeader}>
+            <Image
+              source={matchData.referee.avatar ? matchData.referee.avatar : require('@/assets/images/referee.png')}
+              style={styles.refereeAvatarSm}
+              contentFit="cover"
+            />
+            <View style={styles.refereeDetails}>
+              <Text style={styles.refereeNameSm}>{matchData.referee.name}</Text>
+              <Text style={styles.refereeRole}>Trọng tài - {matchData.referee.level}</Text>
+            </View>
+          </View>
+        </View>
+
+        <ScoreBoard
+          teams={teams}
+          serving={serving}
+          gameMode={gameMode}
+          status={status}
+          isMatchCompleted={isMatchCompleted}
+          scoreCall={scoreCall}
+          matchData={matchData}
+          onRallyWon={rallyWon}
+          onAdjustScore={adjustScore}
+          onSwitchSides={switchSides}
+          onRecordFault={recordFault}
+          isLandscape={isLandscape}
+        />
+
+        {/* Control Panel */}
+        <ControlPanel
+          status={status}
+          gameMode={gameMode}
+          history={history}
+          onShowCoinFlip={handleShowCoinFlip}
+          onPauseMatch={pauseMatch}
+          onToggleMatch={handleToggleMatch}
+          onEndGame={endGame}
+          onUndo={undo}
+          onRecordFault={recordFault}
+          onManualSwitchServer={manualSwitchServer}
+          onRequestTimeout={handleRequestTimeout}
+          isLandscape={isLandscape}
+        />
+
+        {/* Event History */}
+        <EventHistory eventLog={eventLog} onClear={handleClearEventLog} isLandscape={isLandscape} />
+      </ScrollView>
+    );
+  };
+
+  return (
+    <>
+      <SafeAreaView style={styles.container}>
+        <StatusBar hidden={isLandscape} style="light" />
+
+        <View style={styles.appContainer}>
+          {/* Header */}
+          <Header
+            timerDisplay={timerDisplay}
+            status={status}
+            statusText={statusText}
+            currentGame={currentGame}
+            totalGames={totalGames}
+            leftGamesWon={teams.left.gamesWon}
+            rightGamesWon={teams.right.gamesWon}
+            gameMode={gameMode}
+            referee={matchData.referee}
+            onBack={handleBack}
+            isLandscape={isLandscape}
+            onToggleOrientation={handleToggleOrientation}
+          />
+
+          {/* Main Content */}
+          {renderMainContent()}
+        </View>
+      </SafeAreaView>
 
       {/* Modals */}
       <CoinFlipModal
@@ -277,8 +525,8 @@ export const RefereeScreen: React.FC = () => {
 
       {/* Toast */}
       <Toast toast={toast} />
-    </View>
+    </>
   );
 };
 
-export default RefereeScreen;
+export default RefereeScreenWrapper;

@@ -133,7 +133,6 @@ export const styles = StyleSheet.create({
     borderRadius: Radius.lg,
     borderWidth: 1,
     borderColor: AppColors.gray100,
-    ...Shadows.sm,
   },
   myTournamentHeader: {
     flexDirection: 'row',

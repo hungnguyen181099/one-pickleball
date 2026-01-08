@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   // Container styles
   container: {
     flex: 1,
-    backgroundColor: COLORS.bgDarker,
+    backgroundColor: '#0f172a',
   },
   bgPattern: {
     position: 'absolute',
@@ -25,7 +25,6 @@ export const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     gap: 20,
-
     width: '100%',
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -211,8 +210,6 @@ export const styles = StyleSheet.create({
     height: 36,
     borderRadius: RADIUS.sm,
     backgroundColor: COLORS.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   refereeAvatarText: {
     fontSize: 14,
@@ -238,6 +235,301 @@ export const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 20,
+  },
+  landscapeMain: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  landscapeLeftColumn: {
+    flex: 1.3,
+  },
+  landscapeRightColumn: {
+    flex: 1,
+    gap: 8,
+  },
+  // New 3-column landscape layout styles
+  landscapeContainer: {
+    flex: 1,
+    padding: 8,
+  },
+  landscapeGridMain: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+  },
+  landscapeTeamColumn: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  landscapeCenterColumn: {
+    flex: 0.9,
+    padding: 4,
+  },
+  landscapeCenterScoreCall: {
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: COLORS.bgCard,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.borderColor,
+  },
+  landscapeCenterScoreLabel: {
+    fontSize: 9,
+    color: COLORS.textMuted,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  landscapeCenterScoreValue: {
+    fontFamily: 'monospace',
+    fontSize: 16,
+    fontWeight: '700',
+    color: COLORS.accent,
+    letterSpacing: 2,
+  },
+  landscapeVsCenterCompact: {
+    alignItems: 'center',
+    gap: 4,
+    paddingVertical: 4,
+  },
+  landscapeVsBadgeSmall: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  landscapeVsBadgeTextSmall: {
+    fontSize: 10,
+    fontWeight: '900',
+    color: COLORS.textWhite,
+  },
+  landscapeSwitchBtnCompact: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: COLORS.bgCard,
+    borderWidth: 1,
+    borderColor: COLORS.borderColor,
+    borderRadius: RADIUS.sm,
+  },
+  landscapeSwitchBtnTextCompact: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: COLORS.textMuted,
+  },
+  landscapeTeamCard: {
+    flex: 1,
+  },
+  landscapeTopRow: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'space-around',
+    gap: 8,
+  },
+  landscapeCenterGrid: {
+    flex: 1,
+  },
+  landscapeHeader: {
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    backgroundColor: '#0f172a',
+    borderBottomWidth: 1,
+    borderBottomColor: '#1e293b',
+    position: 'relative',
+  },
+  landscapeHeaderCenter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 12,
+    pointerEvents: 'none',
+  },
+  landscapeHeaderRight: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingRight: 8,
+    zIndex: 1,
+  },
+  landscapeGameModeSwitch: {
+    padding: 2,
+    marginRight: 8,
+  },
+  landscapeRefereeAvatar: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+  },
+  landscapeRefereeInfoHeader: {
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    gap: 6,
+    height: 32,
+  },
+  rotateBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: COLORS.primary,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    marginLeft: 8,
+  },
+  landscapeRefereeNameSm: {
+    fontSize: 11,
+  },
+  landscapeRefereeRole: {
+    fontSize: 9,
+  },
+  landscapeMatchInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  landscapeScoreBoard: {
+    marginBottom: 0,
+    gap: 6,
+  },
+  landscapeCourtIconLg: {
+    width: 24,
+    height: 24,
+  },
+  landscapeCourtNumber: {
+    fontSize: 12,
+  },
+  landscapeVsCenter: {
+    marginVertical: 4,
+    height: 40,
+  },
+  landscapeVsBadge: {
+    width: 24,
+    height: 24,
+  },
+  landscapeTeamScore: {
+    fontSize: 32,
+    lineHeight: 36,
+  },
+  landscapeControlPanel: {
+    marginTop: 0,
+    gap: 6,
+  },
+  landscapeHistoryList: {
+    maxHeight: 100,
+  },
+  landscapeHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    zIndex: 1,
+  },
+  landscapeMatchTimerBox: {
+    paddingVertical: 1,
+    paddingHorizontal: 6,
+  },
+  landscapeTimerValue: {
+    fontSize: 18,
+  },
+  landscapeStatusBadge: {
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+  },
+  landscapeStatusText: {
+    fontSize: 11,
+  },
+  landscapeGameBadge: {
+    fontSize: 11,
+  },
+  landscapeScoreCallBar: {
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    marginBottom: 2,
+  },
+  landscapeScoreCallValue: {
+    fontSize: 18,
+    letterSpacing: 2,
+  },
+  landscapeCourtInfoBar: {
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    marginBottom: 4,
+    height: 32,
+  },
+  landscapeTeamHeader: {
+    marginBottom: 4,
+    marginTop: 0,
+    gap: 6,
+  },
+  landscapeTeamAvatar: {
+    width: 24,
+    height: 24,
+  },
+  landscapeTeamName: {
+    fontSize: 13,
+  },
+  landscapeTeamScoreSection: {
+    paddingVertical: 2,
+    marginBottom: 4,
+  },
+  landscapeScoreLabel: {
+    fontSize: 9,
+    marginTop: 0,
+  },
+  landscapePlayersSection: {
+    marginBottom: 4,
+  },
+  landscapePlayerCard: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    gap: 6,
+  },
+  landscapePlayerName: {
+    fontSize: 11,
+  },
+  landscapePlayerPosition: {
+    fontSize: 9,
+  },
+  landscapeScoreControls: {
+    gap: 4,
+  },
+  landscapeBtnScore: {
+    height: 32,
+  },
+  landscapeBtnScoreText: {
+    fontSize: 11,
+  },
+  landscapeControlCardHeader: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
+  landscapeControlCardBody: {
+    padding: 8,
+  },
+  landscapeBtnGame: {
+    paddingVertical: 8,
+    minHeight: 48,
+  },
+  landscapeBtnQuick: {
+    paddingVertical: 8,
+  },
+  landscapeHistoryItem: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginBottom: 4,
   },
 
   // Completed results styles
@@ -406,20 +698,19 @@ export const styles = StyleSheet.create({
   },
   servingIndicator: {
     position: 'absolute',
-    top: 16,
-    right: 16,
+    top: 6,
+    right: 8,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    padding: 6,
     backgroundColor: COLORS.primary,
     borderRadius: 16,
   },
   servingIndicatorText: {
     color: COLORS.textWhite,
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '500',
     textTransform: 'uppercase',
   },
   teamHeader: {
@@ -487,14 +778,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    marginTop: 10,
-    paddingVertical: 6,
-    paddingHorizontal: 14,
+    marginTop: 8,
+    padding:4,
     backgroundColor: COLORS.primary,
     borderRadius: 16,
   },
   serverLabel: {
-    fontSize: 10,
+    fontSize: 12,
     color: 'rgba(255, 255, 255, 0.8)',
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -502,7 +792,7 @@ export const styles = StyleSheet.create({
   },
   serverValue: {
     fontFamily: 'monospace',
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '700',
     color: COLORS.textWhite,
   },
@@ -674,7 +964,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.borderColor,
     overflow: 'hidden',
-    marginTop: 16,
   },
   controlCardHeader: {
     paddingVertical: 14,
@@ -702,9 +991,6 @@ export const styles = StyleSheet.create({
     padding: 16,
   },
   gameControlsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
   },
   btnGame: {
     minWidth: '48%',
@@ -810,15 +1096,13 @@ export const styles = StyleSheet.create({
 
   // Modal styles
   modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    flex: 1,
+    width: '100%',
+    height: '100%',
     backgroundColor: 'rgba(6, 13, 24, 0.95)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 32,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    padding: 24,
   },
   modalContent: {
     width: '100%',

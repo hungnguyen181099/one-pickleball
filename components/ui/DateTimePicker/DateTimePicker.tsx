@@ -30,6 +30,7 @@ export type DateTimePickerProps = Mode & {
   defaultValue?: Date | null;
   value?: Date | null;
   disabled?: boolean;
+  placeholder?: string;
   onDateChange?: (date: Date | null) => void;
   styleOverrides?: {
     container?: ViewStyle;
@@ -42,6 +43,7 @@ const DateTimePicker = ({
   defaultValue,
   value,
   disabled,
+  placeholder = 'Chọn ngày',
   onDateChange,
   styleOverrides = {},
   ...props
@@ -82,7 +84,7 @@ const DateTimePicker = ({
               {dayjsExt(date).format(mode === 'date' ? 'DD/MM/YYYY' : 'HH:mm')}
             </Text>
           ) : (
-            <Text color="muted">Chọn ngày</Text>
+            <Text color="muted">{placeholder}</Text>
           )}
         </View>
 

@@ -6,11 +6,11 @@ import { ThemeColors } from '@/constants/theme';
 
 // User Types
 export interface User {
-  id: number; // id might be missing in the provided example, keeping optional or assuming it might come
+  id: number;
   name: string;
   email: string;
   phone: string;
-  role_type: string;
+  role_type: string[];
   status: string;
   elo_rating: number;
   elo_rank: string;
@@ -21,9 +21,9 @@ export interface User {
   community_score: string;
   total_oprs: string;
   opr_level: string;
-  avatar?: string; // Keeping for UI compatibility if needed
   created_at: string;
   updated_at: string;
+  avatar: string
 }
 
 // Tournament Types
@@ -472,7 +472,7 @@ export interface CategoryResponse {
 export type MatchStatus = 'waiting' | 'playing' | 'paused' | 'finished';
 export type TeamSide = 'left' | 'right';
 export type CourtSide = 'left' | 'right';
-export type GameMode = 'singles' | 'doubles';
+export type GameMode = string;
 export type ModalType = 'coinFlip' | 'teamAssign' | 'serveOrder' | 'timeout' | null;
 
 export interface TournamentRef {
@@ -503,6 +503,7 @@ export interface Referee {
   id: number;
   name: string;
   level: string;
+  avatar: string;
 }
 
 export interface GameScore {
@@ -530,14 +531,13 @@ export interface MatchData {
   athlete1: Athlete;
   athlete2: Athlete;
   referee: Referee;
-  existingState: unknown;
   gameScores: GameScore[];
   setScores: SetScore[];
   currentGame: number;
   gamesWonAthlete1: number;
   gamesWonAthlete2: number;
   timerSeconds: number;
-  servingTeam: 'athlete1' | 'athlete2';
+  servingTeam: string;
   serverNumber: number;
 }
 
@@ -664,3 +664,570 @@ export const statuses: Status[] = [
     value: 'completed',
   },
 ];
+
+export interface RefereeData {
+  success: boolean;
+  data: {
+    matches: {
+      current_page: number;
+      data: {
+        id: number;
+        tournament_id: number;
+        category_id: number;
+        round_id: number;
+        court_id: number | null;
+        group_id: number;
+        match_number: string;
+        bracket_position: number | null;
+        athlete1_id: number;
+        athlete1_name: string;
+        athlete1_score: number;
+        athlete2_id: number;
+        athlete2_name: string;
+        athlete2_score: number;
+        winner_id: number | null;
+        referee_id: number;
+        referee_name: string;
+        match_date: string;
+        match_time: string | null;
+        actual_start_time: string;
+        actual_end_time: string | null;
+        status: string;
+        best_of: number;
+        points_per_set: number;
+        set_scores: any | null;
+        final_score: any | null;
+        notes: string | null;
+        match_state: {
+          gameScores: {
+            game: number;
+            athlete1: number;
+            athlete2: number;
+          }[];
+          currentGame: number;
+          servingTeam: string;
+          serverNumber: number;
+          timerSeconds: number;
+          gamesWonAthlete1: number;
+          gamesWonAthlete2: number;
+        };
+        current_game: number;
+        games_won_athlete1: number;
+        games_won_athlete2: number;
+        game_scores: {
+          game: number;
+          athlete1: number;
+          athlete2: number;
+        }[];
+        serving_team: string;
+        server_number: number;
+        timer_seconds: number;
+        next_match_id: number | null;
+        winner_advances_to: number | null;
+        created_at: string;
+        updated_at: string;
+        tournament: {
+          id: number;
+          user_id: number;
+          name: string;
+          slug: string;
+          tournament_code: string | null;
+          description: string;
+          start_date: string;
+          end_date: string;
+          registration_deadline: string;
+          location: string;
+          max_participants: number;
+          price: number;
+          rules: string | null;
+          prizes: number;
+          competition_format: string | null;
+          format_type: string;
+          seeding_enabled: number;
+          auto_bracket_generation: number;
+          balanced_groups: number;
+          group_count: number | null;
+          players_per_group: number;
+          bracket_data: any | null;
+          tournament_rank: string;
+          registration_benefits: string;
+          competition_rules: string;
+          event_timeline: string;
+          social_information: string;
+          organizer_email: string;
+          organizer_hotline: string;
+          competition_schedule: any | null;
+          results: any | null;
+          gallery: any | null;
+          banner: any | null;
+          status: boolean;
+          tournament_courts: any | null;
+          tournament_stage: string;
+          total_matches: number;
+          completed_matches: number;
+          image: string | null;
+          created_at: string;
+          updated_at: string;
+          is_watch: boolean;
+          is_ocr: boolean;
+        };
+        athlete1: {
+          id: number;
+          tournament_id: number;
+          user_id: number;
+          athlete_name: string;
+          email: string;
+          phone: string;
+          status: string;
+          payment_status: string;
+          registration_fee: string;
+          amount_paid: string;
+          registered_at: string | null;
+          confirmed_at: string | null;
+          position: number | null;
+          matches_played: number;
+          matches_won: number;
+          matches_lost: number;
+          win_rate: string;
+          total_points: number;
+          sets_won: number;
+          sets_lost: number;
+          created_at: string;
+          updated_at: string;
+          category_id: number;
+          partner_id: number;
+          group_id: number;
+          seed_number: number;
+        };
+        athlete2: {
+          id: number;
+          tournament_id: number;
+          user_id: number;
+          athlete_name: string;
+          email: string;
+          phone: string;
+          status: string;
+          payment_status: string;
+          registration_fee: string;
+          amount_paid: string;
+          registered_at: string | null;
+          confirmed_at: string | null;
+          position: number | null;
+          matches_played: number;
+          matches_won: number;
+          matches_lost: number;
+          win_rate: string;
+          total_points: number;
+          sets_won: number;
+          sets_lost: number;
+          created_at: string;
+          updated_at: string;
+          category_id: number;
+          partner_id: number;
+          group_id: number;
+          seed_number: number;
+        };
+        category: {
+          id: number;
+          tournament_id: number;
+          category_name: string;
+          category_type: string;
+          age_group: string;
+          max_participants: number;
+          prize_money: string;
+          description: string | null;
+          status: string;
+          current_participants: number;
+          created_at: string;
+          updated_at: string;
+        };
+        court: any | null;
+      }[];
+      first_page_url: string;
+      from: number;
+      last_page: number;
+      last_page_url: string;
+      links: {
+        url: string | null;
+        label: string;
+        active: boolean;
+      }[];
+      next_page_url: string | null;
+      path: string;
+      per_page: number;
+      prev_page_url: string | null;
+      to: number;
+      total: number;
+    };
+    tournaments: {
+      id: number;
+      user_id: number;
+      name: string;
+      slug: string;
+      tournament_code: string | null;
+      description: string;
+      start_date: string;
+      end_date: string;
+      registration_deadline: string;
+      location: string;
+      max_participants: number;
+      price: number;
+      rules: string | null;
+      prizes: number;
+      competition_format: string | null;
+      format_type: string;
+      seeding_enabled: number;
+      auto_bracket_generation: number;
+      balanced_groups: number;
+      group_count: number | null;
+      players_per_group: number;
+      bracket_data: any | null;
+      tournament_rank: string;
+      registration_benefits: string;
+      competition_rules: string;
+      event_timeline: string | null;
+      social_information: string;
+      organizer_email: string | null;
+      organizer_hotline: string;
+      competition_schedule: any | null;
+      results: any | null;
+      gallery: any | null;
+      banner: any | null;
+      status: boolean;
+      tournament_courts: any | null;
+      tournament_stage: string;
+      total_matches: number;
+      completed_matches: number;
+      image: string | null;
+      created_at: string;
+      updated_at: string;
+      is_watch: boolean;
+      is_ocr: boolean;
+      pivot: {
+        user_id: number;
+        tournament_id: number;
+        assigned_at: string;
+        assigned_by: number;
+        status: string;
+        created_at: string;
+        updated_at: string;
+      };
+    }[];
+  };
+}
+
+export interface MatchDetailResponse {
+  success: boolean;
+  data: {
+    id: number;
+    tournament_id: number;
+    category_id: number;
+    round_id: number;
+    court_id: number | null;
+    group_id: number;
+    match_number: string;
+    bracket_position: number | null;
+    athlete1_id: number;
+    athlete1_name: string;
+    athlete1_score: number;
+    athlete2_id: number;
+    athlete2_name: string;
+    athlete2_score: number;
+    winner_id: number | null;
+    referee_id: number;
+    referee_name: string;
+    match_date: string;
+    match_time: string | null;
+    actual_start_time: string;
+    actual_end_time: string | null;
+    status: string;
+    best_of: number;
+    points_per_set: number;
+    set_scores:
+      | {
+          set: number;
+          athlete1: number;
+          athlete2: number;
+        }[]
+      | null;
+    final_score: string | null;
+    notes: string | null;
+    match_state: {
+      gameScores: {
+        game: number;
+        athlete1: number;
+        athlete2: number;
+      }[];
+      currentGame: number;
+      servingTeam: string;
+      serverNumber: number;
+      timerSeconds: number | null;
+      gamesWonAthlete1: number;
+      gamesWonAthlete2: number;
+    } | null;
+    current_game: number;
+    games_won_athlete1: number;
+    games_won_athlete2: number;
+    game_scores: {
+      game: number;
+      athlete1: number;
+      athlete2: number;
+    }[];
+    serving_team: string;
+    server_number: number;
+    timer_seconds: number;
+    next_match_id: number | null;
+    winner_advances_to: number | null;
+    created_at: string;
+    updated_at: string;
+    tournament: {
+      id: number;
+      user_id: number;
+      name: string;
+      slug: string;
+      tournament_code: string | null;
+      description: string;
+      start_date: string;
+      end_date: string;
+      registration_deadline: string;
+      location: string;
+      max_participants: number;
+      price: number;
+      rules: string | null;
+      prizes: number;
+      competition_format: string | null;
+      format_type: string;
+      seeding_enabled: number;
+      auto_bracket_generation: number;
+      balanced_groups: number;
+      group_count: number | null;
+      players_per_group: number;
+      bracket_data: any | null;
+      tournament_rank: string;
+      registration_benefits: string;
+      competition_rules: string;
+      event_timeline: string;
+      social_information: string;
+      organizer_email: string;
+      organizer_hotline: string;
+      competition_schedule: any | null;
+      results: any | null;
+      gallery: any | null;
+      banner: any | null;
+      status: boolean;
+      tournament_courts: any | null;
+      tournament_stage: string;
+      total_matches: number;
+      completed_matches: number;
+      image: string | null;
+      created_at: string;
+      updated_at: string;
+      is_watch: boolean;
+      is_ocr: boolean;
+    };
+    category: {
+      id: number;
+      tournament_id: number;
+      category_name: string;
+      category_type: string;
+      age_group: string;
+      max_participants: number;
+      prize_money: string;
+      description: string | null;
+      status: string;
+      current_participants: number;
+      created_at: string;
+      updated_at: string;
+    };
+    round: {
+      id: number;
+      tournament_id: number;
+      category_id: number | null;
+      round_name: string;
+      round_number: number;
+      round_type: string;
+      start_date: string;
+      end_date: string | null;
+      start_time: string;
+      status: string;
+      total_matches: number;
+      completed_matches: number;
+      notes: string | null;
+      created_at: string;
+      updated_at: string;
+    };
+    court: {
+      id: number;
+      stadium_id: number;
+      tournament_id: number | null;
+      court_name: string;
+      court_number: string;
+      court_type: string;
+      surface_type: string;
+      capacity: number;
+      size: string | null;
+      status: string;
+      description: string | null;
+      amenities: string | null;
+      is_active: boolean;
+      daily_matches: number;
+      created_at: string;
+      updated_at: string;
+      rental_price: number;
+    } | null;
+    athlete1: {
+      id: number;
+      tournament_id: number;
+      user_id: number;
+      athlete_name: string;
+      email: string;
+      phone: string;
+      status: string;
+      payment_status: string;
+      registration_fee: string;
+      amount_paid: string;
+      registered_at: string | null;
+      confirmed_at: string | null;
+      position: number | null;
+      matches_played: number;
+      matches_won: number;
+      matches_lost: number;
+      win_rate: string;
+      total_points: number;
+      sets_won: number;
+      sets_lost: number;
+      created_at: string;
+      updated_at: string;
+      category_id: number;
+      partner_id: number;
+      group_id: number;
+      seed_number: number;
+    };
+    athlete2: {
+      id: number;
+      tournament_id: number;
+      user_id: number;
+      athlete_name: string;
+      email: string;
+      phone: string;
+      status: string;
+      payment_status: string;
+      registration_fee: string;
+      amount_paid: string;
+      registered_at: string | null;
+      confirmed_at: string | null;
+      position: number | null;
+      matches_played: number;
+      matches_won: number;
+      matches_lost: number;
+      win_rate: string;
+      total_points: number;
+      sets_won: number;
+      sets_lost: number;
+      created_at: string;
+      updated_at: string;
+      category_id: number;
+      partner_id: number;
+      group_id: number;
+      seed_number: number;
+    };
+    winner: {
+      id: number;
+      tournament_id: number;
+      user_id: number;
+      athlete_name: string;
+      email: string;
+      phone: string;
+      status: string;
+      payment_status: string;
+      registration_fee: string;
+      amount_paid: string;
+      registered_at: string | null;
+      confirmed_at: string | null;
+      position: number | null;
+      matches_played: number;
+      matches_won: number;
+      matches_lost: number;
+      win_rate: string;
+      total_points: number;
+      sets_won: number;
+      sets_lost: number;
+      created_at: string;
+      updated_at: string;
+      category_id: number;
+      partner_id: number;
+      group_id: number;
+      seed_number: number;
+    } | null;
+  };
+}
+
+export type MatchStateResponse = {
+  success: boolean;
+  data: {
+    id: number;
+    status: string;
+    isCompleted: boolean;
+    bestOf: number;
+    pointsPerSet: number;
+    gameMode: 'singles' | 'doubles';
+    tournament: {
+      name: string;
+    };
+    category: {
+      name: string;
+    };
+    round: {
+      name: string;
+    };
+    court: {
+      name: string;
+      number: string;
+    };
+    athlete1: {
+      id: number;
+      name: string;
+      partnerName: string | null;
+      pairName: string;
+    };
+    athlete2: {
+      id: number;
+      name: string;
+      partnerName: string | null;
+      pairName: string;
+    };
+    referee: {
+      id: number;
+      name: string;
+    };
+    existingState: {
+      gameScores: {
+        game: number;
+        athlete1: number;
+        athlete2: number;
+      }[];
+      currentGame: number;
+      servingTeam: 'athlete1' | 'athlete2';
+      serverNumber: number;
+      timerSeconds: number;
+      gamesWonAthlete1: number;
+      gamesWonAthlete2: number;
+    } | null;
+    gameScores: {
+      game: number;
+      athlete1: number;
+      athlete2: number;
+    }[];
+    setScores: {
+      set: number;
+      athlete1: number;
+      athlete2: number;
+    }[];
+    currentGame: number;
+    gamesWonAthlete1: number;
+    gamesWonAthlete2: number;
+    timerSeconds: number;
+    servingTeam: 'athlete1' | 'athlete2' | null;
+    serverNumber: number | null;
+  };
+};

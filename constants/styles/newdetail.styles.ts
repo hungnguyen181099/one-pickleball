@@ -230,6 +230,7 @@ export const styles = StyleSheet.create({
   relatedSection: {
     padding: 16,
     gap: 12,
+    marginBottom: 16,
   },
   relatedNewsItem: {
     flexDirection: 'row',

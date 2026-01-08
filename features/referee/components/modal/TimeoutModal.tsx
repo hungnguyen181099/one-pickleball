@@ -2,7 +2,8 @@ import React from 'react';
 
 import { TeamSide, Teams, TimeoutState } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { styles } from '../../styles';
 
@@ -15,69 +16,102 @@ interface TimeoutModalProps {
 }
 
 export const TimeoutModal: React.FC<TimeoutModalProps> = ({ visible, teams, timeout, onClose, onSelectTeam }) => {
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Gọi Timeout</Text>
-            <Text style={styles.modalSubtitle}>Chọn đội muốn timeout (mỗi đội 2 lần/game)</Text>
-          </View>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+      supportedOrientations={['portrait', 'landscape']}
+    >
+      <View style={{ width, height, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <SafeAreaView
+          style={[styles.modalOverlay, isLandscape && { padding: 16 }]}
+          edges={isLandscape ? ['left', 'right', 'bottom'] : ['top', 'bottom']}
+        >
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={[
+              styles.modalContent,
+              isLandscape && {
+                maxWidth: 400,
+                alignSelf: 'center',
+              }
+            ]}>
+              <View style={[styles.modalHeader, isLandscape && { paddingVertical: 12, paddingHorizontal: 16 }]}>
+                <Text style={[styles.modalTitle, isLandscape && { fontSize: 16, marginBottom: 4 }]}>Gọi Timeout</Text>
+                <Text style={[styles.modalSubtitle, isLandscape && { fontSize: 11 }]}>Chọn đội muốn timeout (mỗi đội 2 lần/game)</Text>
+              </View>
 
-          <View style={styles.modalBody}>
-            <View style={styles.teamOptions}>
-              {/* Left Team */}
-              <TouchableOpacity
-                style={[styles.teamOption, timeout.leftRemaining <= 0 && styles.teamOptionDisabled]}
-                onPress={() => timeout.leftRemaining > 0 && onSelectTeam('left')}
-                disabled={timeout.leftRemaining <= 0}
-              >
-                <View style={[styles.teamOptionIndicator, styles.teamOptionIndicatorBlue]} />
-                <View style={styles.teamOptionContent}>
-                  <Text style={styles.teamOptionName}>{teams.left.name}</Text>
-                  <Text style={styles.teamOptionPlayers}>Còn {timeout.leftRemaining} timeout</Text>
-                </View>
-                <View style={styles.teamOptionRadio}>
-                  {timeout.leftRemaining > 0 ? (
-                    <Text style={{ fontSize: 18 }}>
-                      <Ionicons name="timer-outline" size={40} />
-                    </Text>
-                  ) : (
-                    <Text style={{ fontSize: 14, color: '#ef4444' }}>Hết</Text>
-                  )}
-                </View>
-              </TouchableOpacity>
+              <View style={[styles.modalBody, isLandscape && { paddingVertical: 12, paddingHorizontal: 16 }]}>
+                <View style={[styles.teamOptions, isLandscape && { gap: 8 }]}>
+                  {/* Left Team */}
+                  <TouchableOpacity
+                    style={[
+                      styles.teamOption,
+                      timeout.leftRemaining <= 0 && styles.teamOptionDisabled,
+                      isLandscape && { paddingVertical: 10, paddingHorizontal: 12 }
+                    ]}
+                    onPress={() => timeout.leftRemaining > 0 && onSelectTeam('left')}
+                    disabled={timeout.leftRemaining <= 0}
+                  >
+                    <View style={[styles.teamOptionIndicator, styles.teamOptionIndicatorBlue, isLandscape && { height: 32 }]} />
+                    <View style={styles.teamOptionContent}>
+                      <Text style={[styles.teamOptionName, isLandscape && { fontSize: 13 }]}>{teams.left.name}</Text>
+                      <Text style={[styles.teamOptionPlayers, isLandscape && { fontSize: 10 }]}>Còn {timeout.leftRemaining} timeout</Text>
+                    </View>
+                    <View style={[styles.teamOptionRadio, isLandscape && { width: 28, height: 28 }]}>
+                      {timeout.leftRemaining > 0 ? (
+                        <Text style={{ fontSize: isLandscape ? 14 : 18 }}>
+                          <Ionicons name="timer-outline" size={isLandscape ? 24 : 40} />
+                        </Text>
+                      ) : (
+                        <Text style={{ fontSize: isLandscape ? 11 : 14, color: '#ef4444' }}>Hết</Text>
+                      )}
+                    </View>
+                  </TouchableOpacity>
 
-              {/* Right Team */}
-              <TouchableOpacity
-                style={[styles.teamOption, timeout.rightRemaining <= 0 && styles.teamOptionDisabled]}
-                onPress={() => timeout.rightRemaining > 0 && onSelectTeam('right')}
-                disabled={timeout.rightRemaining <= 0}
-              >
-                <View style={[styles.teamOptionIndicator, styles.teamOptionIndicatorRed]} />
-                <View style={styles.teamOptionContent}>
-                  <Text style={styles.teamOptionName}>{teams.right.name}</Text>
-                  <Text style={styles.teamOptionPlayers}>Còn {timeout.rightRemaining} timeout</Text>
+                  {/* Right Team */}
+                  <TouchableOpacity
+                    style={[
+                      styles.teamOption,
+                      timeout.rightRemaining <= 0 && styles.teamOptionDisabled,
+                      isLandscape && { paddingVertical: 10, paddingHorizontal: 12 }
+                    ]}
+                    onPress={() => timeout.rightRemaining > 0 && onSelectTeam('right')}
+                    disabled={timeout.rightRemaining <= 0}
+                  >
+                    <View style={[styles.teamOptionIndicator, styles.teamOptionIndicatorRed, isLandscape && { height: 32 }]} />
+                    <View style={styles.teamOptionContent}>
+                      <Text style={[styles.teamOptionName, isLandscape && { fontSize: 13 }]}>{teams.right.name}</Text>
+                      <Text style={[styles.teamOptionPlayers, isLandscape && { fontSize: 10 }]}>Còn {timeout.rightRemaining} timeout</Text>
+                    </View>
+                    <View style={[styles.teamOptionRadio, isLandscape && { width: 28, height: 28 }]}>
+                      {timeout.rightRemaining > 0 ? (
+                        <Text style={{ fontSize: isLandscape ? 14 : 18 }}>
+                          <Ionicons name="timer-outline" size={isLandscape ? 24 : 40} />
+                        </Text>
+                      ) : (
+                        <Text style={{ fontSize: isLandscape ? 11 : 14, color: '#ef4444' }}>Hết</Text>
+                      )}
+                    </View>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.teamOptionRadio}>
-                  {timeout.rightRemaining > 0 ? (
-                    <Text style={{ fontSize: 18 }}>
-                      <Ionicons name="timer-outline" size={40} />
-                    </Text>
-                  ) : (
-                    <Text style={{ fontSize: 14, color: '#ef4444' }}>Hết</Text>
-                  )}
-                </View>
-              </TouchableOpacity>
+              </View>
+
+              <View style={[styles.modalFooter, isLandscape && { paddingVertical: 10, paddingHorizontal: 16, gap: 10 }]}>
+                <TouchableOpacity style={[styles.btnModal, styles.btnModalSecondary, isLandscape && { paddingVertical: 10 }]} onPress={onClose}>
+                  <Text style={[styles.btnModalText, styles.btnModalTextSecondary, isLandscape && { fontSize: 12 }]}>Huỷ</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-
-          <View style={styles.modalFooter}>
-            <TouchableOpacity style={[styles.btnModal, styles.btnModalSecondary]} onPress={onClose}>
-              <Text style={[styles.btnModalText, styles.btnModalTextSecondary]}>Huỷ</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+          </ScrollView>
+        </SafeAreaView>
       </View>
     </Modal>
   );

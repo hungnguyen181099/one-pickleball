@@ -1,36 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Ionicons } from '@expo/vector-icons';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
+import { useForm } from 'react-hook-form';
 import {
   Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Text,
-  TextInput,
+  StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { z } from 'zod';
+
+import { RHFLayout } from '@/components/rhf/RHFLayout';
+import { RHFTextInput } from '@/components/rhf/RHFTextInput';
+import { BottomSheet } from '@/components/ui/BottomSheet';
+import { phoneRegex } from '@/constants/global.constants';
+
+const editProfileSchema = z.object({
+  name: z.string().min(1, 'Vui lòng nhập tên của bạn'),
+  email: z.email('Email không hợp lệ'),
+  phone: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ'),
+});
 
 import { styles } from '@/constants/styles/editprofile.styles';
-
+import { useSession } from '@/contexts/AuthProvider';
 import { useThemedColors } from '@/hooks/use-theme';
+import { Text } from '@/components/ui/Text';
 
 export default function EditProfileScreen() {
   const [image, setImage] = useState<string | null>(null);
+  const [coverImage, setCoverImage] = useState<string | null>(null);
   const colors = useThemedColors();
-  const [name, setName] = useState('Minh Tuấn');
-  const [username, setUsername] = useState('minhtuan_pb');
-  const [email, setEmail] = useState('minhtuan@example.com');
-  const [phone, setPhone] = useState('0975241204');
-  const [bio, setBio] = useState('🏓 Pickleball enthusiast | 🏆 Level 4.5 | 📍 TP.HCM');
-  const [location, setLocation] = useState('TP. Hồ Chí Minh');
-  const [skillLevel, setSkillLevel] = useState('4.5');
-
+  const { user: sessionUser, isLoading: isSessionLoading } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const [showSheet, setShowSheet] = useState<boolean>(false);
+  const [previewType, setPreviewType] = useState<'avatar' | 'cover'>('avatar');
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, defaultValues },
+  } = useForm({
+    resolver: zodResolver(editProfileSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+    },
+  });
+
+  // Watch name for avatar fallback
+  const watchedName = watch('name');
+
+  useEffect(() => {
+    if (sessionUser) {
+      reset({
+        name: sessionUser.name,
+        email: sessionUser.email,
+        phone: sessionUser.phone,
+      });
+      if (sessionUser.avatar) {
+        setImage(sessionUser.avatar);
+      }
+    }
+  }, [sessionUser, reset]);
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -43,44 +84,50 @@ export default function EditProfileScreen() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: previewType === 'avatar' ? [1, 1] : [16, 9],
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const uri = result.assets[0].uri;
+      if (previewType === 'avatar') {
+        setImage(uri);
+      } else {
+        setCoverImage(uri);
+      }
     }
   };
 
-  const handleSave = () => {
-    // Validation
-    if (!name.trim()) {
-      Alert.alert('Lỗi', 'Vui lòng nhập tên của bạn');
+  const takePhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (!permissionResult.granted) {
+      Alert.alert('Permission required', 'Permission to access the camera is required.');
       return;
     }
 
-    if (!username.trim()) {
-      Alert.alert('Lỗi', 'Vui lòng nhập tên người dùng');
-      return;
-    }
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: previewType === 'avatar' ? [1, 1] : [16, 9],
+      quality: 1,
+    });
 
-    if (!email.trim()) {
-      Alert.alert('Lỗi', 'Vui lòng nhập email');
-      return;
+    if (!result.canceled) {
+      const uri = result.assets[0].uri;
+      if (previewType === 'avatar') {
+        setImage(uri);
+      } else {
+        setCoverImage(uri);
+      }
     }
+  };
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert('Lỗi', 'Email không hợp lệ');
-      return;
-    }
-
+  const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
 
-    // Simulate API call
+    // Simulate API call for now as update endpoint is not yet defined in auth service/confirmed
+    // In a real scenario, you would call authService.updateProfile(user) here
     setTimeout(() => {
       setIsLoading(false);
       Alert.alert('Thành công', 'Thông tin cá nhân đã được cập nhật', [
@@ -89,66 +136,40 @@ export default function EditProfileScreen() {
           onPress: () => router.back(),
         },
       ]);
+      console.log('Saving user data:', { ...data, avatar: image });
     }, 1000);
-  };
+  });
 
   const handleChangeAvatar = () => {
-    Alert.alert('Thay đổi ảnh đại diện', 'Chọn nguồn ảnh', [
-      { text: 'Hủy', style: 'cancel' },
-      { text: 'Chụp ảnh', onPress: () => console.log('Camera') },
-      { text: 'Chọn từ thư viện', onPress: () => pickImage() },
-    ]);
+    setPreviewType('avatar');
+    setShowSheet(true);
   };
 
   const handleChangeCover = () => {
-    Alert.alert('Thay đổi ảnh bìa', 'Chọn nguồn ảnh', [
-      { text: 'Hủy', style: 'cancel' },
-      { text: 'Chụp ảnh', onPress: () => console.log('Camera') },
-      { text: 'Chọn từ thư viện', onPress: () => console.log('Gallery') },
-    ]);
+    setPreviewType('cover');
+    setShowSheet(true);
   };
 
-  const renderInput = (
-    label: string,
-    value: string,
-    onChangeText: (text: string) => void,
-    placeholder: string,
-    icon: string,
-    keyboardType: 'default' | 'email-address' | 'phone-pad' | 'numeric' = 'default',
-    multiline: boolean = false,
-    maxLength?: number
-  ) => (
-    <View style={styles.inputGroup}>
-      <View style={styles.inputLabel}>
-        <Ionicons name={icon as any} size={18} color={colors.icon} />
-        <Text style={[styles.labelText, { color: colors.text }]}>{label}</Text>
+
+  if (!sessionUser && isSessionLoading) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ color: colors.text }}>Đang tải...</Text>
       </View>
-      <TextInput
-        style={[
-          styles.input,
-          multiline && styles.inputMultiline,
-          {
-            backgroundColor: colors.backgroundTertiary,
-            color: colors.text,
-            borderColor: colors.border,
-          },
-        ]}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor={colors.textTertiary}
-        keyboardType={keyboardType}
-        multiline={multiline}
-        numberOfLines={multiline ? 3 : 1}
-        maxLength={maxLength}
-      />
-      {maxLength && (
-        <Text style={[styles.charCount, { color: colors.textTertiary }]}>
-          {value.length}/{maxLength}
-        </Text>
-      )}
-    </View>
-  );
+    );
+  }
+
+  // Fallback if no user is found/not logged in, though protected routes usually prevent this
+  if (!sessionUser) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ color: colors.text }}>Không tìm thấy thông tin người dùng.</Text>
+        <TouchableOpacity onPress={() => router.back()} style={{ marginTop: 20 }}>
+          <Text style={{ color: colors.tint }}>Quay lại</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -161,7 +182,7 @@ export default function EditProfileScreen() {
           <Ionicons name="arrow-back" size={24} color={colors.icon} />
         </TouchableOpacity>
         <Text style={[styles.pageTitle, { color: colors.text }]}>Chỉnh sửa trang cá nhân</Text>
-        <TouchableOpacity style={styles.backBtn} onPress={handleSave} disabled={isLoading}>
+        <TouchableOpacity style={styles.backBtn} onPress={onSubmit} disabled={isLoading}>
           <Text style={[styles.saveText, { color: isLoading ? colors.textTertiary : colors.tint }]}>
             {isLoading ? 'Đang lưu...' : 'Lưu'}
           </Text>
@@ -179,13 +200,19 @@ export default function EditProfileScreen() {
             style={[styles.coverPhoto, { backgroundColor: colors.backgroundTertiary }]}
             onPress={handleChangeCover}
           >
-            <Ionicons name="camera" size={32} color={colors.textTertiary} />
-            <Text style={[styles.photoText, { color: colors.textSecondary }]}>Thay đổi ảnh bìa</Text>
+            {coverImage ? (
+              <Image source={{ uri: coverImage }} style={StyleSheet.absoluteFill} />
+            ) : (
+              <>
+                <Ionicons name="camera" size={32} color={colors.textTertiary} />
+                <Text style={[styles.photoText, { color: colors.textSecondary }]}>Thay đổi ảnh bìa</Text>
+              </>
+            )}
           </TouchableOpacity>
 
           <View style={styles.avatarContainer}>
             <TouchableOpacity style={[styles.avatar, { backgroundColor: colors.tint }]} onPress={handleChangeAvatar}>
-              <Text style={styles.avatarText}>MT</Text>
+              <Text style={styles.avatarText}>{watchedName ? watchedName.substring(0, 2).toUpperCase() : '??'}</Text>
               {image && <Image source={{ uri: image }} style={styles.avatarImage} />}
               <View style={styles.avatarOverlay}>
                 <Ionicons name="camera" size={24} color="#fff" />
@@ -197,29 +224,109 @@ export default function EditProfileScreen() {
         {/* Form Section */}
         <View style={[styles.settingsSection, { marginTop: 60 }]}>
           <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>THÔNG TIN CƠ BẢN</Text>
-          <View style={[styles.settingsMenu, { backgroundColor: colors.card }]}>
-            {renderInput('Họ và tên', name, setName, 'Nhập họ và tên', 'person-outline')}
-            {renderInput('Tên người dùng', username, setUsername, 'Nhập tên người dùng', 'at', 'default')}
-            {renderInput('Email', email, setEmail, 'Nhập email', 'mail-outline', 'email-address')}
-            {renderInput('Số điện thoại', phone, setPhone, 'Nhập số điện thoại', 'call-outline', 'phone-pad')}
-          </View>
-        </View>
-
-        <View style={styles.settingsSection}>
-          <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>GIỚI THIỆU</Text>
-          <View style={[styles.settingsMenu, { backgroundColor: colors.card }]}>
-            {renderInput('Tiểu sử', bio, setBio, 'Viết vài dòng về bạn...', 'create-outline', 'default', true, 150)}
+          <View style={[styles.settingsMenu, { backgroundColor: colors.card, padding: 16 }]}>
+            <RHFLayout>
+              <RHFTextInput
+                controller={{
+                  control: control,
+                  name: 'name',
+                  message: errors.name?.message,
+                }}
+                label="Họ và tên"
+                input={{
+                  placeholder: 'Nhập họ và tên',
+                }}
+              />
+              <RHFTextInput
+                controller={{
+                  control: control,
+                  name: 'email',
+                  message: errors.email?.message,
+                }}
+                label="Email"
+                input={{
+                  placeholder: 'Nhập email',
+                  keyboardType: 'email-address',
+                }}
+              />
+              <RHFTextInput
+                controller={{
+                  control: control,
+                  name: 'phone',
+                  message: errors.phone?.message,
+                }}
+                label="Số điện thoại"
+                input={{
+                  placeholder: 'Nhập số điện thoại',
+                  keyboardType: 'phone-pad',
+                }}
+              />
+            </RHFLayout>
           </View>
         </View>
 
         <View style={styles.settingsSection}>
           <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>PICKLEBALL</Text>
-          <View style={[styles.settingsMenu, { backgroundColor: colors.card }]}>
-            {renderInput('Trình độ', skillLevel, setSkillLevel, 'VD: 4.5', 'trophy-outline', 'numeric')}
-            {renderInput('Vị trí', location, setLocation, 'Nhập vị trí', 'location-outline')}
+          <View style={[styles.settingsMenu, { backgroundColor: colors.card, padding: 16 }]}>
+            {/* OPR Level - Mapped to Skill Level, assuming edible or at least visible */}
+            <View>
+              <Text style={{ marginBottom: 8, color: colors.text }}>OPR Level </Text>
+              <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
+                {sessionUser.opr_level?.toString() || '0'}
+              </Text>
+            </View>
+
+            {/* ELO Rating - Read only example */}
+            <View>
+              <Text style={{ marginBottom: 8, color: colors.text }}>ELO Rating</Text>
+              <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
+                {sessionUser.elo_rating?.toString() || '0'}
+              </Text>
+            </View>
+            <View>
+              <Text style={{ marginBottom: 8, color: colors.text }}>ELO Rank</Text>
+              <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
+                {sessionUser.elo_rank?.toString() || 'N/A'}
+              </Text>
+            </View>
           </View>
         </View>
       </ScrollView>
+      <BottomSheet visible={showSheet} onVisibleChange={setShowSheet}>
+        <View style={{ paddingHorizontal: 16, gap: 4 }}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 12,
+              gap: 12,
+            }}
+            onPress={() => {
+              setShowSheet(false);
+              takePhoto();
+            }}
+          >
+            <Ionicons name="camera-outline" size={24} color={colors.text} />
+            <Text style={{ fontSize: 16, color: colors.text }}>Chụp ảnh</Text>
+          </TouchableOpacity>
+          <View style={{ height: 1, backgroundColor: colors.border, opacity: 0.5 }} />
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 12,
+              gap: 12,
+            }}
+            onPress={() => {
+              setShowSheet(false);
+              pickImage();
+            }}
+          >
+            <Ionicons name="image-outline" size={24} color={colors.text} />
+            <Text style={{ fontSize: 16, color: colors.text }}>Chọn từ thư viện</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
     </KeyboardAvoidingView>
   );
 }

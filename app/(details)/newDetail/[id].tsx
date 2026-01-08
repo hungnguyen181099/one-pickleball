@@ -15,14 +15,14 @@ import { styles } from '@/constants/styles/newdetail.styles';
 
 import { createHtmlContent } from '@/components/createHtmlContent';
 import NewsCard from '@/components/NewsCard';
+import { DetailSkeleton } from '@/components/ui/Skeleton';
+import { Text } from '@/components/ui/Text';
 import { useThemedColors } from '@/hooks/use-theme';
 import newService from '@/services/api/new.service';
 import { formatDate } from '@/utils/date.utils';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { WebView } from 'react-native-webview';
-import { DetailSkeleton } from '@/components/ui/Skeleton';
-import { Text } from '@/components/ui/Text';
 
 export default function NewsDetailScreen() {
   const [isLiked, setIsLiked] = useState(false);
@@ -190,12 +190,15 @@ export default function NewsDetailScreen() {
 
               <View style={[styles.relatedSection, { backgroundColor: colors.card }]}>
                 <Text style={[styles.sectionTitle, { color: colors.text }]}>Tin tức liên quan</Text>
-
               </View>
             </>
           }
           data={news?.data}
-          renderItem={({ item }) => <NewsCard {...item} />}
+          renderItem={({ item }) => (
+            <View style={{ paddingHorizontal: 16,}}>
+              <NewsCard {...item} />
+            </View>
+          )}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.flatListContent}
         />

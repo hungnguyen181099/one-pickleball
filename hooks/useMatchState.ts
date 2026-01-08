@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
+import { useLocalSearchParams } from 'expo-router';
+
 import { endMatchAPI, syncEventsToServer } from '@/features/referee/api/referee.api';
 import {
-  MATCH_DATA,
   MAX_EVENT_LOG_LENGTH,
   MAX_HISTORY_LENGTH,
   SYNC_THRESHOLD,
@@ -19,6 +20,7 @@ import {
   HistoryItem,
   MatchData,
   MatchEvent,
+  MatchStateResponse,
   MatchStatus,
   Player,
   Serving,
@@ -84,42 +86,101 @@ function buildPlayersArray(athlete: { name: string; partnerName?: string }, isDo
   return [{ name: athlete.name || 'TBD', courtSide: 'right' }];
 }
 
-export function useMatchState(timer: number, startTimer: () => void, stopTimer: () => void): UseMatchStateReturn {
-  // Initial state from MATCH_DATA
-  const [gameMode] = useState<GameMode>(MATCH_DATA.gameMode);
+export function useMatchState(
+  data: MatchStateResponse,
+  timer: number,
+  startTimer: () => void,
+  stopTimer: () => void
+): UseMatchStateReturn {
+  const match = data.data;
+
+  const matchData: MatchData = {
+    id: match.id,
+    status: match.status,
+    isCompleted: match.isCompleted,
+    bestOf: match.bestOf,
+    gameMode: match.gameMode,
+    tournament: {
+      name: match.tournament.name,
+    },
+    category: {
+      name: match.category.name,
+    },
+    round: {
+      name: match.round.name,
+    },
+    court: {
+      name: match.court.name,
+      number: match.court.number,
+    },
+    athlete1: {
+      id: match.athlete1.id,
+      name: match.athlete1.name,
+      partnerName: match.athlete1.partnerName || '',
+      pairName: match.athlete1.pairName,
+    },
+    athlete2: {
+      id: match.athlete2.id,
+      name: match.athlete2.name,
+      partnerName: match.athlete2.partnerName || '',
+      pairName: match.athlete2.pairName,
+    },
+    referee: {
+      id: match.referee.id,
+      name: match.referee.name,
+      level: 'N/A',
+      avatar: '',
+    },
+    gameScores: match.gameScores,
+    setScores: match.setScores,
+    currentGame: match.currentGame,
+    gamesWonAthlete1: match.gamesWonAthlete1,
+    gamesWonAthlete2: match.gamesWonAthlete2,
+    timerSeconds: match.timerSeconds,
+    servingTeam: match.servingTeam || '',
+    serverNumber: match.serverNumber || 0,
+  };
+
+  const gameMode = matchData.gameMode;
+
+  const totalGames = matchData.bestOf;
+
   const [status, setStatus] = useState<MatchStatus>(
-    MATCH_DATA.isCompleted ? 'finished' : MATCH_DATA.status === 'in_progress' ? 'paused' : 'waiting'
+    matchData.isCompleted ? 'finished' : matchData.status === 'in_progress' ? 'paused' : 'waiting'
   );
-  const [currentGame, setCurrentGame] = useState(MATCH_DATA.currentGame || 1);
-  const [totalGames] = useState(MATCH_DATA.bestOf || 3);
+
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  const [currentGame, setCurrentGame] = useState(matchData.currentGame);
 
   const [teams, setTeams] = useState<Teams>({
     left: {
-      name: MATCH_DATA.athlete1.pairName || MATCH_DATA.athlete1.name || 'TBD',
-      athleteId: MATCH_DATA.athlete1.id,
+      name: matchData.athlete1.pairName || matchData.athlete1.name || 'TBD',
+      athleteId: matchData.athlete1.id,
       score: 0,
-      gamesWon: MATCH_DATA.gamesWonAthlete1 || 0,
-      players: buildPlayersArray(MATCH_DATA.athlete1, MATCH_DATA.gameMode === 'doubles'),
+      gamesWon: matchData.gamesWonAthlete1 || 0,
+      players: buildPlayersArray(matchData.athlete1, matchData.gameMode.includes('doubles')),
     },
     right: {
-      name: MATCH_DATA.athlete2.pairName || MATCH_DATA.athlete2.name || 'TBD',
-      athleteId: MATCH_DATA.athlete2.id,
+      name: matchData.athlete2.pairName || matchData.athlete2.name || 'TBD',
+      athleteId: matchData.athlete2.id,
       score: 0,
-      gamesWon: MATCH_DATA.gamesWonAthlete2 || 0,
-      players: buildPlayersArray(MATCH_DATA.athlete2, MATCH_DATA.gameMode === 'doubles'),
+      gamesWon: matchData.gamesWonAthlete2 || 0,
+      players: buildPlayersArray(matchData.athlete2, matchData.gameMode.includes('doubles')),
     },
   });
 
   const [serving, setServing] = useState<Serving>({
-    team: MATCH_DATA.servingTeam === 'athlete2' ? 'right' : 'left',
+    team: matchData.servingTeam === 'athlete2' ? 'right' : 'left',
     serverIndex: 0,
-    serverNumber: MATCH_DATA.serverNumber || 2,
+    serverNumber: matchData.serverNumber,
     isFirstServeOfGame: true,
   });
 
+  const [gameScores, setGameScores] = useState<GameScore[]>(matchData.gameScores);
+
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [eventLog, setEventLog] = useState<EventLogItem[]>([]);
-  const [gameScores, setGameScores] = useState<GameScore[]>(MATCH_DATA.gameScores || []);
   const [hasSwitchedSidesInDecidingGame, setHasSwitchedSidesInDecidingGame] = useState(false);
 
   const pendingEventsRef = useRef<MatchEvent[]>([]);
@@ -140,17 +201,17 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
   const toastTimeoutRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Computed values
-  const isMatchCompleted = useMemo(() => MATCH_DATA.isCompleted || status === 'finished', [status]);
+  const isMatchCompleted = useMemo(() => matchData.isCompleted || status === 'finished', [status]);
 
   const matchWinnerName = useMemo(() => {
-    if (!MATCH_DATA.isCompleted) return '';
-    const firstGameWinner = MATCH_DATA.setScores?.[0];
+    if (!matchData.isCompleted) return '';
+    const firstGameWinner = matchData.setScores?.[0];
     if (!firstGameWinner) return '';
     const winnerId =
-      firstGameWinner.athlete1 > firstGameWinner.athlete2 ? MATCH_DATA.athlete1.id : MATCH_DATA.athlete2.id;
-    return winnerId === MATCH_DATA.athlete1.id
-      ? MATCH_DATA.athlete1.pairName || MATCH_DATA.athlete1.name
-      : MATCH_DATA.athlete2.pairName || MATCH_DATA.athlete2.name;
+      firstGameWinner.athlete1 > firstGameWinner.athlete2 ? matchData.athlete1.id : matchData.athlete2.id;
+    return winnerId === matchData.athlete1.id
+      ? matchData.athlete1.pairName || matchData.athlete1.name
+      : matchData.athlete2.pairName || matchData.athlete2.name;
   }, []);
 
   const scoreCall = useMemo(() => {
@@ -234,7 +295,7 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
   }, [showToast]);
 
   const recordEvent = useCallback(
-    (type: string, team: TeamSide | null, data: Record<string, unknown> = {}) => {
+    async (type: string, team: TeamSide | null, data: Record<string, unknown> = {}) => {
       const event: MatchEvent = {
         type,
         team,
@@ -252,7 +313,7 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
       if (pendingEventsRef.current.length >= SYNC_THRESHOLD) {
         const eventsToSync = [...pendingEventsRef.current];
         pendingEventsRef.current = [];
-        syncEventsToServer(eventsToSync, {
+        syncEventsToServer(id, eventsToSync, {
           currentGame,
           gamesWonAthlete1: teams.left.gamesWon,
           gamesWonAthlete2: teams.right.gamesWon,
@@ -263,7 +324,7 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
         });
       }
     },
-    [teams, currentGame, timer, gameScores, serving]
+    [teams, currentGame, timer, gameScores, serving, id]
   );
 
   const saveHistory = useCallback(() => {
@@ -651,7 +712,8 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
     // Sync events
     const eventsToSync = [...pendingEventsRef.current];
     pendingEventsRef.current = [];
-    await syncEventsToServer(eventsToSync, {
+
+    await syncEventsToServer(id, eventsToSync, {
       currentGame,
       gamesWonAthlete1: newTeams.left.gamesWon,
       gamesWonAthlete2: newTeams.right.gamesWon,
@@ -673,7 +735,7 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
       const finalScoreParts = newGameScores.map((g) => `${g.athlete1}-${g.athlete2}`);
       const finalScore = `${newTeams.left.gamesWon}-${newTeams.right.gamesWon} (${finalScoreParts.join(', ')})`;
 
-      await endMatchAPI({
+      endMatchAPI(id, {
         winner: newTeams.left.gamesWon > newTeams.right.gamesWon ? 'left' : 'right',
         winnerId,
         gameScores: newGameScores,
@@ -762,7 +824,7 @@ export function useMatchState(timer: number, startTimer: () => void, stopTimer: 
     toast,
     isMatchCompleted,
     hasSwitchedSidesInDecidingGame,
-    matchData: MATCH_DATA,
+    matchData: matchData,
 
     // Computed
     scoreCall,

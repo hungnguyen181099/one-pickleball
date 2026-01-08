@@ -46,7 +46,7 @@ const UserPage = () => {
     {
       icon: <Ionicons name="calendar" size={20} color="#FF9800" />,
       name: 'Lịch sử đặt sân',
-      href: '/historybooking',
+      href: '/bookings/history',
     },
     {
       icon: <Ionicons name="heart" size={20} color="#E91E63" />,
@@ -54,22 +54,6 @@ const UserPage = () => {
       href: '/favoritefield',
     },
   ];
-
-  const handleThemeToggle = () => {
-    toggleTheme();
-  };
-
-  const handleMyTournament = () => {
-    router.navigate('/mytournament');
-  };
-
-  const handleMyHistory = () => {
-    console.log('My History pressed');
-  };
-
-  const handleMyFavorite = () => {
-    console.log('My Favorite pressed');
-  };
 
   const settingsItems: UserSettingsItem[] = [
     {
@@ -186,7 +170,6 @@ const UserPage = () => {
           </Grid>
         </View>
 
-        {/* Settings */}
         <View style={[styles.section, styles.lastSection]}>
           <Text style={[styles.sectionHeading, { color: colors.text }]}>Cài đặt</Text>
           <View style={[styles.settingsMenu, { backgroundColor: colors.card }]}>

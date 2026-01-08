@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
+import { ScreenContainer } from '@/components/common/ScreenContainer';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 
 import { ThemeColors } from '@/constants/theme';
@@ -16,26 +17,19 @@ const OPRSLeaderboard = () => {
   const styles = getStyles({ colors: useThemedColors() });
 
   return (
-    <View style={styles.container}>
+    <ScreenContainer>
       <ScreenHeader title="Bảng xếp hạng OPS" />
-      <View style={styles.body}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <OPRSTableFilter />
-          <OPRSDistribution />
-        </ScrollView>
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.body}>
+        <OPRSTableFilter />
+        <OPRSDistribution />
+      </ScrollView>
       <OPRSUserElo />
-    </View>
+    </ScreenContainer>
   );
 };
 
 const getStyles = ({ colors }: { colors: ThemeColors }) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingBottom: 160,
-      backgroundColor: colors.background,
-    },
     body: {
       paddingHorizontal: 16,
     },

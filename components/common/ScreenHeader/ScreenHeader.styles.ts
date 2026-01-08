@@ -29,5 +29,6 @@ export const getScreenHeaderStyles = ({ colors, withBorder, paddingHorizontal }:
       transform: [{ translateY: 1 }],
       fontSize: 20,
       width: 32,
+      color: colors.text
     },
   });
