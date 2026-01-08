@@ -12,7 +12,6 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -25,14 +24,14 @@ import { phoneRegex } from '@/constants/global.constants';
 
 const editProfileSchema = z.object({
   name: z.string().min(1, 'Vui lòng nhập tên của bạn'),
-  email: z.string().email('Email không hợp lệ'),
-  phone: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ').optional().or(z.literal('')),
-  opr_level: z.string().optional(),
+  email: z.email('Email không hợp lệ'),
+  phone: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ'),
 });
 
 import { styles } from '@/constants/styles/editprofile.styles';
 import { useSession } from '@/contexts/AuthProvider';
 import { useThemedColors } from '@/hooks/use-theme';
+import { Text } from '@/components/ui/Text';
 
 export default function EditProfileScreen() {
   const [image, setImage] = useState<string | null>(null);
@@ -55,7 +54,6 @@ export default function EditProfileScreen() {
       name: '',
       email: '',
       phone: '',
-      opr_level: '',
     },
   });
 
@@ -68,7 +66,6 @@ export default function EditProfileScreen() {
         name: sessionUser.name,
         email: sessionUser.email,
         phone: sessionUser.phone,
-        opr_level: sessionUser.opr_level,
       });
       if (sessionUser.avatar) {
         setImage(sessionUser.avatar);
@@ -271,35 +268,27 @@ export default function EditProfileScreen() {
         <View style={styles.settingsSection}>
           <Text style={[styles.sectionTitle, { color: colors.textTertiary }]}>PICKLEBALL</Text>
           <View style={[styles.settingsMenu, { backgroundColor: colors.card, padding: 16 }]}>
-            <RHFLayout>
-              {/* OPR Level - Mapped to Skill Level, assuming edible or at least visible */}
-              <RHFTextInput
-                controller={{
-                  control: control,
-                  name: 'opr_level',
-                  message: errors.opr_level?.message,
-                }}
-                label="Trình độ (OPR)"
-                input={{
-                  placeholder: 'VD: 2.0',
-                  keyboardType: 'numeric',
-                }}
-              />
+            {/* OPR Level - Mapped to Skill Level, assuming edible or at least visible */}
+            <View>
+              <Text style={{ marginBottom: 8, color: colors.text }}>OPR Level </Text>
+              <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
+                {sessionUser.opr_level?.toString() || '0'}
+              </Text>
+            </View>
 
-              {/* ELO Rating - Read only example */}
-              <View>
-                <Text style={{ marginBottom: 8, color: colors.text }}>ELO Rating</Text>
-                <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
-                  {sessionUser.elo_rating?.toString() || '0'}
-                </Text>
-              </View>
-              <View>
-                <Text style={{ marginBottom: 8, color: colors.text }}>ELO Rank</Text>
-                <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
-                  {sessionUser.elo_rank?.toString() || 'N/A'}
-                </Text>
-              </View>
-            </RHFLayout>
+            {/* ELO Rating - Read only example */}
+            <View>
+              <Text style={{ marginBottom: 8, color: colors.text }}>ELO Rating</Text>
+              <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
+                {sessionUser.elo_rating?.toString() || '0'}
+              </Text>
+            </View>
+            <View>
+              <Text style={{ marginBottom: 8, color: colors.text }}>ELO Rank</Text>
+              <Text style={{ padding: 12, backgroundColor: colors.backgroundSecondary, borderRadius: 8, color: colors.textTertiary, borderWidth: 1, borderColor: colors.border }}>
+                {sessionUser.elo_rank?.toString() || 'N/A'}
+              </Text>
+            </View>
           </View>
         </View>
       </ScrollView>
