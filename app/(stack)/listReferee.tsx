@@ -18,7 +18,6 @@ import { Flex } from '@/components/ui/Flex';
 import { Grid, GridItem } from '@/components/ui/Grid';
 import { Pagination } from '@/components/ui/Pagination';
 import { Select } from '@/components/ui/Select';
-import { Space } from '@/components/ui/Space';
 import { Text } from '@/components/ui/Text';
 
 import { useThemedColors } from '@/hooks/use-theme';
@@ -81,6 +80,13 @@ export default function ListReferee() {
       default:
         return 'muted';
     }
+  };
+
+  const handleClearFilter = () => {
+    setThao('');
+    setTournamenntId(null);
+    setDate(null);
+    setDateTo(null);
   };
 
   return (
@@ -258,41 +264,53 @@ export default function ListReferee() {
       </ScrollView>
 
       <BottomSheet visible={visible} onVisibleChange={setVisible}>
-        <View style={{ paddingHorizontal: 16 }}>
-          <Text size="h4">Chọn ngày</Text>
-          <Space />
-          <Grid gap={4} columns={2}>
-            <GridItem>
-              <DateTimePicker value={date} onDateChange={setDate} placeholder="Bắt đầu" />
-            </GridItem>
-            <GridItem>
-              <DateTimePicker value={dateTo} onDateChange={setDateTo} placeholder="Kết thúc" />
-            </GridItem>
-          </Grid>
+        <View style={{ paddingHorizontal: 16, gap: 8 }}>
+          <View style={{ gap: 8 }}>
+            <Text size="h4">Chọn ngày</Text>
+            <Grid gap={4} columns={2}>
+              <GridItem>
+                <DateTimePicker value={date} onDateChange={setDate} placeholder="Bắt đầu" />
+              </GridItem>
+              <GridItem>
+                <DateTimePicker value={dateTo} onDateChange={setDateTo} placeholder="Kết thúc" />
+              </GridItem>
+            </Grid>
+          </View>
 
-          <Text size="h4">Trạng thái</Text>
-          <Space />
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              gap: 8,
-            }}
+          <View style={{ gap: 8 }}>
+            <Text size="h4">Trạng thái</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                gap: 8,
+              }}
+            >
+              {filter.map((item, index) => (
+                <Chip
+                  variant="filled"
+                  checked={item.value === thao}
+                  onPress={() => {
+                    setThao(item.value);
+                  }}
+                  size="sm"
+                  key={index}
+                >
+                  {item.label}
+                </Chip>
+              ))}
+            </ScrollView>
+          </View>
+
+          <Button
+            fullWidth
+            variant="light"
+            startIcon={<MaterialIcons name="filter-alt-off" />}
+            onPress={handleClearFilter}
+            styleOverrides={{ container: { marginTop: 8 } }}
           >
-            {filter.map((item, index) => (
-              <Chip
-                variant="filled"
-                checked={item.value === thao}
-                onPress={() => {
-                  setThao(item.value);
-                }}
-                size="sm"
-                key={index}
-              >
-                {item.label}
-              </Chip>
-            ))}
-          </ScrollView>
+            Xoá bộ lọc
+          </Button>
         </View>
       </BottomSheet>
     </ScreenContainer>
