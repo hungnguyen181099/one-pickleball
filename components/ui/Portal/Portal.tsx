@@ -50,7 +50,10 @@ export const PortalProvider = ({ children }: PropsWithChildren) => {
       <View style={styles.container}>
         {children}
 
-        <View style={[styles.portalHost, { marginTop: edgeInsets.top }]} pointerEvents="box-none">
+        <View
+          style={[styles.portalHost, { marginTop: edgeInsets.top, marginBottom: edgeInsets.bottom }]}
+          pointerEvents="box-none"
+        >
           {Object.entries(portals).map(([key, component]) => (
             <View key={key} style={StyleSheet.absoluteFill} pointerEvents="box-none">
               {component}
