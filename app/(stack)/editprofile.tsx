@@ -25,13 +25,13 @@ import { phoneRegex } from '@/constants/global.constants';
 const editProfileSchema = z.object({
   name: z.string().min(1, 'Vui lòng nhập tên của bạn'),
   email: z.email('Email không hợp lệ'),
-  phone: z.string().regex(phoneRegex, 'Số điện thoại không hợp lệ'),
+  phone: z.string().min(1, 'Vui lòng nhập số điện thoại').regex(phoneRegex, 'Số điện thoại không hợp lệ'),
 });
 
+import { Text } from '@/components/ui/Text';
 import { styles } from '@/constants/styles/editprofile.styles';
 import { useSession } from '@/contexts/AuthProvider';
 import { useThemedColors } from '@/hooks/use-theme';
-import { Text } from '@/components/ui/Text';
 
 export default function EditProfileScreen() {
   const [image, setImage] = useState<string | null>(null);
@@ -65,7 +65,7 @@ export default function EditProfileScreen() {
       reset({
         name: sessionUser.name,
         email: sessionUser.email,
-        phone: sessionUser.phone,
+        phone: sessionUser.phone || '',
       });
       if (sessionUser.avatar) {
         setImage(sessionUser.avatar);
@@ -150,6 +150,14 @@ export default function EditProfileScreen() {
     setShowSheet(true);
   };
 
+  const handleDeletePhoto = () => {
+    if (previewType === 'avatar') {
+      setImage(null);
+    } else {
+      setCoverImage(null);
+    }
+  };
+
 
   if (!sessionUser && isSessionLoading) {
     return (
@@ -212,7 +220,7 @@ export default function EditProfileScreen() {
 
           <View style={styles.avatarContainer}>
             <TouchableOpacity style={[styles.avatar, { backgroundColor: colors.tint }]} onPress={handleChangeAvatar}>
-              <Text style={styles.avatarText}>{watchedName ? watchedName.substring(0, 2).toUpperCase() : '??'}</Text>
+              <Text style={styles.avatarText}>{watchedName ? watchedName.substring(0, 1).toUpperCase() : '??'}</Text>
               {image && <Image source={{ uri: image }} style={styles.avatarImage} />}
               <View style={styles.avatarOverlay}>
                 <Ionicons name="camera" size={24} color="#fff" />
@@ -234,7 +242,7 @@ export default function EditProfileScreen() {
                 }}
                 label="Họ và tên"
                 input={{
-                  placeholder: 'Nhập họ và tên',
+                  placeholder: 'Phạm Thảo',
                 }}
               />
               <RHFTextInput
@@ -245,7 +253,7 @@ export default function EditProfileScreen() {
                 }}
                 label="Email"
                 input={{
-                  placeholder: 'Nhập email',
+                  placeholder: 'phamthao@gmail.com',
                   keyboardType: 'email-address',
                 }}
               />
@@ -257,7 +265,7 @@ export default function EditProfileScreen() {
                 }}
                 label="Số điện thoại"
                 input={{
-                  placeholder: 'Nhập số điện thoại',
+                  placeholder: '0987654321',
                   keyboardType: 'phone-pad',
                 }}
               />
@@ -292,7 +300,7 @@ export default function EditProfileScreen() {
           </View>
         </View>
       </ScrollView>
-      <BottomSheet visible={showSheet} onVisibleChange={setShowSheet}>
+      <BottomSheet visible={showSheet} onVisibleChange={setShowSheet} >
         <View style={{ paddingHorizontal: 16, gap: 4 }}>
           <TouchableOpacity
             style={{
@@ -325,6 +333,26 @@ export default function EditProfileScreen() {
             <Ionicons name="image-outline" size={24} color={colors.text} />
             <Text style={{ fontSize: 16, color: colors.text }}>Chọn từ thư viện</Text>
           </TouchableOpacity>
+          {((previewType === 'avatar' && image) || (previewType === 'cover' && coverImage)) && (
+            <>
+              <View style={{ height: 1, backgroundColor: colors.border, opacity: 0.5 }} />
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: 12,
+                  gap: 12,
+                }}
+                onPress={() => {
+                  setShowSheet(false);
+                  handleDeletePhoto();
+                }}
+              >
+                <Ionicons name="trash-outline" size={24} color="#FF3B30" />
+                <Text style={{ fontSize: 16, color: "#FF3B30" }}>Xóa ảnh</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </BottomSheet>
     </KeyboardAvoidingView>
