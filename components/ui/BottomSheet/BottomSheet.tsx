@@ -153,7 +153,6 @@ const getStyles = ({ colors, fullSize }: StyleProps) =>
     },
     content: {
       backgroundColor: colors.card,
-      minHeight: 384,
       ...(!fullSize && { maxHeight: 512 }),
       paddingBottom: 16,
     },

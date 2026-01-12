@@ -32,6 +32,7 @@ const getStyles = ({ colors }: { colors: ThemeColors }) =>
   StyleSheet.create({
     body: {
       paddingHorizontal: 16,
+      paddingBottom: 112,
     },
   });
 
