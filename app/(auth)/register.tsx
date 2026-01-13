@@ -100,7 +100,7 @@ export default function RegisterScreen() {
           <View style={styles.titleSection}>
             <View style={styles.logo}>
               {/* <AntDesign name="check" size={40} color="#fff" /> */}
-              <Image style={styles.image} source={require('@/assets/images/logo.png')} />
+              <Image style={styles.image} source={require('@/assets/images/android-icon-foreground.png')} />
             </View>
             <Text style={[styles.title, { color: colors.text }]}>Tạo tài khoản</Text>
             <Text style={[styles.subtitle, { color: colors.textSecondary }]}>

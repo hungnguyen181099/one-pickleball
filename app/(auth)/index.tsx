@@ -84,7 +84,7 @@ export default function LoginScreen() {
           <View style={styles.header}>
             <View style={styles.logoContainer}>
               <View style={styles.logo}>
-                <Image style={styles.image} source={require('@/assets/images/logo.png')} />
+                <Image style={styles.image} source={require('@/assets/images/android-icon-foreground.png')} />
               </View>
             </View>
             <Text style={[styles.title, { color: colors.text }]}>Chào mừng trở lại</Text>

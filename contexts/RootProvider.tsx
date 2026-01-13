@@ -5,12 +5,14 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { StatusBarWrapper } from '@/components/StatusBarWrapper';
 import { PortalProvider } from '@/components/ui/Portal';
 
 import { ThemeProvider as CustomThemeProvider } from '@/contexts/ThemeContext';
 
+import { usePushNotifications } from '@/hooks/useNotificationPermission';
+
 import { SessionProvider } from './AuthProvider';
+
 
 type RootProviderProps = {
   children: React.ReactNode;
@@ -21,6 +23,9 @@ export const queryClient = new QueryClient();
 SplashScreen.preventAutoHideAsync();
 
 const RootProvider = ({ children }: RootProviderProps) => {
+  // khi nào cần push notification thì mới enable -_-
+  // usePushNotifications();
+
   const [loaded, error] = useFonts({
     'BeVietnamPro-Thin': require('@/assets/fonts/BeVietnamPro/BeVietnamPro-Thin.ttf'),
     'BeVietnamPro-ThinItalic': require('@/assets/fonts/BeVietnamPro/BeVietnamPro-ThinItalic.ttf'),
